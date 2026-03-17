@@ -1,415 +1,63 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="A clean, basic, responsive one-page website template." />
-    <title>Anro le Roux</title>
-    <style>
-        :root {
-            --bg: #ffffff;
-            --text: #0f172a;
-            /* slate-900 */
-            --muted: #475569;
-            /* slate-600 */
-            --accent: #2563eb;
-            /* blue-600 */
-            --accent-fg: #ffffff;
-            --border: #e2e8f0;
-            /* slate-200 */
-            --card: #f8fafc;
-            /* slate-50 */
-            --radius: 16px;
-            --shadow: 0 10px 25px rgba(0, 0, 0, .06);
-        }
-
-        /* Global reset */
-        *,
-        *::before,
-        *::after {
-            box-sizing: border-box;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
-        body {
-            margin: 0;
-            font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
-            color: var(--text);
-            background: var(--bg);
-            line-height: 1.6;
-        }
-
-        a {
-            color: #000;
-            text-decoration: none;
-        }
-
-        .social-links>a {
-            color: var(--accent);
-            text-decoration: none;
-        }
-
-        .social-links>a:hover {
-            text-decoration: underline;
-        }
-
-        /* Layout helpers */
-        .container {
-            max-width: 1100px;
-            margin-inline: auto;
-            padding: 0 20px;
-        }
-
-        .section {
-            padding: 72px 0;
-        }
-
-        /* Header */
-        header {
-            position: sticky;
-            top: 0;
-            z-index: 50;
-            background: rgba(255, 255, 255, 0.8);
-            backdrop-filter: saturate(180%) blur(12px);
-            border-bottom: 1px solid var(--border);
-        }
-
-        .nav {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            height: 64px;
-        }
-
-        .brand {
-            font-weight: 700;
-            letter-spacing: .2px;
-        }
-
-        .menu {
-            display: flex;
-            gap: 22px;
-            align-items: center;
-        }
-
-        .menu a.socials {
-            width: 38px;
-            height: 38px;
-        }
-
-        .menu a {
-            color: var(--muted);
-            font-weight: 600;
-        }
-
-        .menu a:hover {
-            color: var(--text);
-        }
-
-        .icon-links {
-            display: flex;
-            gap: 16px;
-            align-items: center;
-        }
-
-        .icon-links a svg {
-            width: 20px;
-            height: 20px;
-            fill: var(--muted);
-            transition: fill 0.2s;
-        }
-
-        .icon-links a:hover svg {
-            fill: var(--accent);
-        }
-
-        .btn {
-            display: inline-block;
-            padding: 10px 16px;
-            border-radius: 999px;
-            border: 1px solid var(--border);
-        }
-
-        .btn-primary {
-            background: var(--accent);
-            color: var(--accent-fg);
-            border-color: transparent;
-            box-shadow: var(--shadow);
-        }
-
-        .btn-primary:hover {
-            filter: brightness(.96);
-        }
-
-        /* Hero */
-        .hero {
-            display: grid;
-            grid-template-columns: 1.1fr 0.9fr;
-            gap: 32px;
-            align-items: center;
-        }
-
-        .hero h1 {
-            font-size: clamp(32px, 5vw, 52px);
-            line-height: 1.1;
-            margin: 0 0 12px;
-        }
-
-        .hero p {
-            color: var(--muted);
-            margin: 0 0 24px;
-        }
-
-        .card {
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            padding: 22px;
-            box-shadow: var(--shadow);
-            height: 100%;
-        }
-
-        /* Features */
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(3, minmax(0, 1fr));
-            gap: 16px;
-        }
-
-        .feature h3 {
-            margin: 0 0 6px;
-        }
-
-        .feature p {
-            color: var(--muted);
-            margin: 0;
-        }
-
-        /* About */
-        .about p {
-            color: var(--muted);
-            max-width: 65ch;
-        }
-
-        /* Contact */
-        form {
-            display: grid;
-            gap: 12px;
-            max-width: 560px;
-        }
-
-        label {
-            font-weight: 600;
-        }
-
-        input,
-        textarea {
-            width: 100%;
-            padding: 12px 14px;
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            font: inherit;
-            background: #fff;
-        }
-
-        textarea {
-            min-height: 140px;
-            resize: vertical;
-        }
-
-        /* Footer */
-        footer {
-            border-top: 1px solid var(--border);
-            padding: 28px 0;
-            color: var(--muted);
-            font-size: 0.95rem;
-        }
-
-        .social-links {
-            display: flex;
-            gap: 16px;
-        }
-
-        .social-links a {
-            color: var(--muted);
-            transition: color 0.2s;
-        }
-
-        .social-links a:hover {
-            color: var(--accent);
-        }
-
-        /* Responsive */
-        @media (max-width: 900px) {
-            .hero {
-                grid-template-columns: 1fr;
-            }
-
-            .grid {
-                grid-template-columns: repeat(2, minmax(0, 1fr));
-            }
-        }
-
-        @media (max-width: 600px) {
-            .menu {
-                display: none;
-            }
-
-            .grid {
-                grid-template-columns: 1fr;
-            }
-
-            .section {
-                padding: 56px 0;
-            }
-        }
-
-        /* Accessibility */
-        @media (prefers-reduced-motion: reduce) {
-            html {
-                scroll-behavior: auto;
-            }
-        }
-    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anro</title>
+    <link rel="stylesheet" href="/index.css"/>
 </head>
-
 <body>
     <header>
-        <div class="container nav">
+        <div class="navbar">
             <div class="brand">Anro le Roux</div>
             <nav class="menu" aria-label="Primary">
-                <!-- <a href="#features">Features</a>
-                <a href="#about">About</a>
-                <a href="#contact">Contact</a>
-                <a class="btn btn-primary" href="#contact">Get Started</a> -->
-                <a class="socials" href="https://linkedin.com/in/yourprofile" target="_blank" aria-label="LinkedIn">
-                    <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 382 382" xml:space="preserve">
-                        <path style="fill:#0077B7;" d="M347.445,0H34.555C15.471,0,0,15.471,0,34.555v312.889C0,366.529,15.471,382,34.555,382h312.889 C366.529,382,382,366.529,382,347.444V34.555C382,15.471,366.529,0,347.445,0z M118.207,329.844c0,5.554-4.502,10.056-10.056,10.056 H65.345c-5.554,0-10.056-4.502-10.056-10.056V150.403c0-5.554,4.502-10.056,10.056-10.056h42.806 c5.554,0,10.056,4.502,10.056,10.056V329.844z M86.748,123.432c-22.459,0-40.666-18.207-40.666-40.666S64.289,42.1,86.748,42.1 s40.666,18.207,40.666,40.666S109.208,123.432,86.748,123.432z M341.91,330.654c0,5.106-4.14,9.246-9.246,9.246H286.73 c-5.106,0-9.246-4.14-9.246-9.246v-84.168c0-12.556,3.683-55.021-32.813-55.021c-28.309,0-34.051,29.066-35.204,42.11v97.079 c0,5.106-4.139,9.246-9.246,9.246h-44.426c-5.106,0-9.246-4.14-9.246-9.246V149.593c0-5.106,4.14-9.246,9.246-9.246h44.426 c5.106,0,9.246,4.14,9.246,9.246v15.655c10.497-15.753,26.097-27.912,59.312-27.912c73.552,0,73.131,68.716,73.131,106.472 L341.91,330.654L341.91,330.654z" />
-                    </svg>
-                    <!-- <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 0h-14c-2.76 0-5 2.24-5 5v14c0 2.76 2.24 5 5 5h14c2.76 0 5-2.24 5-5v-14c0-2.76-2.24-5-5-5zm-11.75 20h-2.5v-10h2.5v10zm-1.25-11.15c-.8 0-1.45-.65-1.45-1.45s.65-1.45 1.45-1.45 1.45.65 1.45 1.45-.65 1.45-1.45 1.45zm13 11.15h-2.5v-5.6c0-1.34-.03-3.06-1.87-3.06-1.87 0-2.16 1.46-2.16 2.96v5.7h-2.5v-10h2.4v1.36h.03c.33-.63 1.13-1.29 2.33-1.29 2.49 0 2.95 1.64 2.95 3.77v6.16z"/></svg> -->
-                </a>
-                <a class="socials" href="https://github.com/yourusername" target="_blank" aria-label="GitHub">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 98 96">
-                        <path fill-rule="evenodd" clip-rule="evenodd" fill="#24292f" d="M48.854 0C21.839 0 0 22 0 49.217c0 21.756 13.993 40.172 33.405 46.69 2.427.49 3.316-1.059 3.316-2.362 0-1.141-.08-5.052-.08-9.127-13.59 2.934-16.42-5.867-16.42-5.867-2.184-5.704-5.42-7.17-5.42-7.17-4.448-3.015.324-3.015.324-3.015 4.934.326 7.523 5.052 7.523 5.052 4.367 7.496 11.404 5.378 14.235 4.074.404-3.178 1.699-5.378 3.074-6.6-10.839-1.141-22.243-5.378-22.243-24.283 0-5.378 1.94-9.778 5.014-13.2-.485-1.222-2.184-6.275.486-13.038 0 0 4.125-1.304 13.426 5.052a46.97 46.97 0 0 1 12.214-1.63c4.125 0 8.33.571 12.213 1.63 9.302-6.356 13.427-5.052 13.427-5.052 2.67 6.763.97 11.816.485 13.038 3.155 3.422 5.015 7.822 5.015 13.2 0 18.905-11.404 23.06-22.324 24.283 1.78 1.548 3.316 4.481 3.316 9.126 0 6.6-.08 11.897-.08 13.526 0 1.304.89 2.853 3.316 2.364 19.412-6.52 33.405-24.935 33.405-46.691C97.707 22 75.788 0 48.854 0z"/>
-                    </svg>
-                    <!-- <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 .5c-6.63 0-12 5.37-12 12 0 5.3 3.438 9.8 8.205 11.385.6.11.82-.26.82-.577 0-.285-.01-1.04-.015-2.04-3.338.725-4.042-1.61-4.042-1.61-.547-1.387-1.335-1.757-1.335-1.757-1.09-.745.083-.73.083-.73 1.205.085 1.84 1.237 1.84 1.237 1.07 1.833 2.807 1.303 3.492.997.108-.776.42-1.303.763-1.603-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.382 1.235-3.222-.123-.303-.535-1.523.118-3.176 0 0 1.008-.323 3.3 1.23.957-.266 1.984-.398 3.005-.403 1.02.005 2.047.137 3.006.403 2.29-1.553 3.297-1.23 3.297-1.23.655 1.653.243 2.873.12 3.176.77.84 1.232 1.912 1.232 3.222 0 4.61-2.804 5.627-5.475 5.922.43.37.823 1.102.823 2.222 0 1.604-.015 2.896-.015 3.286 0 .32.217.694.825.576 4.765-1.587 8.2-6.087 8.2-11.384 0-6.63-5.37-12-12-12z"/></svg> -->
-                </a>
-                <!-- <div class="icon-links">
-        </div> -->
+                
+                
             </nav>
         </div>
     </header>
-
     <main>
-        <section class="section container hero" id="home">
-            <div>
-                <h1>Engineering Software Mathematics Leadership</h1>
-                <p>This is my personal site where I hope to inspire and help engineers and others with an interest to
-                    improve
-                    their proficiency in software and implementation of mathematics. On a relational level I wish to see
-                    us work
-                    and rest well, having strong human connections and adhearing to convictions we can trust.</p>
-                <!-- <div class="actions">
-                <a class="btn btn-primary" href="#features">See Features</a>
-                <a class="btn" href="#about">Learn More</a>
-                </div> -->
-            </div>
-            <div class="card" role="img" aria-label="Abstract placeholder illustration">
-                <svg viewBox="0 0 400 240" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
-                    <defs>
-                        <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
-                            <stop offset="0%" stop-color="#93c5fd" />
-                            <stop offset="100%" stop-color="#3b82f6" />
-                        </linearGradient>
-                    </defs>
-                    <rect x="0" y="0" width="400" height="240" rx="14" fill="url(#g)" opacity="0.35" />
-                    <g transform="translate(24,24)">
-                        <rect width="352" height="44" rx="8" fill="#ffffff" opacity=".9" />
-                        <rect y="60" width="220" height="12" rx="6" fill="#ffffff" opacity=".9" />
-                        <rect y="80" width="280" height="12" rx="6" fill="#ffffff" opacity=".9" />
-                        <rect y="100" width="260" height="12" rx="6" fill="#ffffff" opacity=".9" />
-                        <rect y="140" width="352" height="60" rx="12" fill="#ffffff" opacity=".9" />
-                    </g>
-                </svg>
-            </div>
+        <section class="hero">
+            <h1>Engineering Software Mathematics Leadership</h1>
+            <p>
+                This is my personal site where I hope to inspire
+                and help engineers and others with an interest to
+                improve their proficiency in software
+                and implementation of mathematics. On a relational
+                level I believe in strong, humble, and sacrificial
+                leadership where trust is the engine driving success.
+            </p>
         </section>
-
-        <section class="section" id="features">
-            <div class="container">
-                <h2>Material</h2>
-                <!-- <p class="muted">Everything you need to start fast—nothing you don't.</p> -->
-                <div class="grid">
-                    <a class="socials" href="/bom.html" target="_blank" aria-label="Beauty of Motion">
-                        <div class="card feature">
-                            <h3>The Beauty of Motion</h3>
-                            <p>The general way systems move how its found everywhere in nature.</p>
-                        </div>
-                    </a>
-                    <div class="card feature">
-                        <h3>neoGraph Control System</h3>
-                        <p>Drop-in software that turns affordable Wifi enabled micro-controller boards into a meshable
-                            user friendly
-                            customizable general contol system.</p>
-                    </div>
-                    <div class="card feature">
-                        <h3>Accessible</h3>
-                        <p>Semantic HTML, focusable controls, and reduced‑motion support.</p>
-                    </div>
-                </div>
-            </div>
+        <section class="material">
+            <a class="card" href="https://github.com/aleroux85/twitcher" target="_blank">
+                <h3>neoGraph Control System</h3>
+                <p>
+                    Drop-in software that turns affordable Wifi enabled
+                    micro-controller boards into a meshable
+                    user friendly customizable contol system.
+                </p>
+            </a>
+            <a class="card" href="/rsa.html">
+                <h3>Primes and Security</h3>
+                <p>
+                    How the modern world is build on a
+                    seeminly insignificant math peculiarity.
+                </p>
+            </a>
         </section>
-
-        <section class="section about" id="about">
-            <div class="container">
-                <h2>About</h2>
-                <p>This single‑file template is intentionally minimal. Use it as a foundation for landing pages, simple
-                    product
-                    sites, or internal docs. Customize the color variables, add or remove sections, and wire up the
-                    contact form
-                    below to your preferred backend or no‑code tool.</p>
-            </div>
-        </section>
-
-        <!-- <section class="section" id="contact">
-      <div class="container">
-        <h2>Contact</h2>
-        <form onsubmit="event.preventDefault(); alert('Thanks! This demo form is client‑side only.');" aria-label="Contact form">
-          <div>
-            <label for="name">Name</label>
-            <input id="name" name="name" type="text" placeholder="Jane Doe" required />
-          </div>
-          <div>
-            <label for="email">Email</label>
-            <input id="email" name="email" type="email" placeholder="jane@example.com" required />
-          </div>
-          <div>
-            <label for="message">Message</label>
-            <textarea id="message" name="message" placeholder="How can we help?" required></textarea>
-          </div>
-          <button class="btn btn-primary" type="submit">Send Message</button>
-        </form>
-      </div>
-    </section> -->
     </main>
-
     <footer>
         <div class="container">
             © <span id="year"></span> Anro le Roux. All rights reserved.
             <div class="social-links">
-                <a href="https://linkedin.com/in/yourprofile" target="_blank" aria-label="LinkedIn">LinkedIn</a>
-                <a href="https://github.com/yourusername" target="_blank" aria-label="GitHub">GitHub</a>
+                <a href="https://linkedin.com/in/anroleroux" target="_blank" aria-label="LinkedIn">LinkedIn</a>
+                <a href="https://github.com/aleroux85" target="_blank" aria-label="GitHub">GitHub</a>
             </div>
         </div>
     </footer>
 
     <script>
-        // Update year automatically
         document.getElementById('year').textContent = new Date().getFullYear();
     </script>
 </body>
-
 </html>

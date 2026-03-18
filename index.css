@@ -1,7 +1,36 @@
 :root {
     --bg-color: #ffffff;
     --text-color: #0d0e10;
-    --border: #000;
+    --muted: #475569;
+    --accent: #cad0eb;
+    --border: #e2e8f0;
+    --card: #cad0eb;
+    --radius: 16px;
+    --shadow: 0 10px 25px rgba(0, 0, 0, .06);
+
+    --ratio: 1.25;
+    --step-0: 1rem;
+    --step-1: calc(var(--step-0) * var(--ratio));
+    --step-2: calc(var(--step-1) * var(--ratio));
+    --step-3: calc(var(--step-2) * var(--ratio));
+    --step-4: calc(var(--step-3) * var(--ratio));
+    --step-5: calc(var(--step-4) * var(--ratio));
+    --step-6: calc(var(--step-5) * var(--ratio));
+    --step-7: calc(var(--step-6) * var(--ratio));
+    --step-8: calc(var(--step-7) * var(--ratio));
+    --step-9: calc(var(--step-8) * var(--ratio));
+    --step-10: calc(var(--step-9) * var(--ratio));
+    --step-11: calc(var(--step-10) * var(--ratio));
+    --step-12: calc(var(--step-11) * var(--ratio));
+    --step-13: calc(var(--step-12) * var(--ratio));
+    --step-14: calc(var(--step-13) * var(--ratio));
+    --step-15: calc(var(--step-14) * var(--ratio));
+    --step--1: calc(var(--step-0) / var(--ratio));
+    --step--2: calc(var(--step--1) / var(--ratio));
+    --step--3: calc(var(--step--2) / var(--ratio));
+    --step--4: calc(var(--step--3) / var(--ratio));
+    --step--5: calc(var(--step--4) / var(--ratio));
+    --step--6: calc(var(--step--5) / var(--ratio));
 }
 
 *,
@@ -12,7 +41,7 @@
 
 body {
     margin: 0;
-    font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+    font-family: Segoe UI, Roboto, Verdana, Cantarell, Noto Sans, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
     background-color: var(--bg-color);
     color: var(--text-color);
     line-height: 1.4;
@@ -40,13 +69,91 @@ header {
     letter-spacing: .2px;
 }
 
+
+
 section {
     padding: 0 1.5rem;
 }
 
+article {
+  padding: 0rem 0rem;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+article > section {
+  padding: 4rem 0rem;
+  width: 42rem;
+}
+
+.hero {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    padding: 4rem var(--step-8);
+    margin-bottom: var(--step-6);
+    background: var(--accent);
+}
+
+@media (min-width: 768px) {
+    .hero {
+        flex-direction: row;
+        align-items: flex-start;
+    }
+}
+
+.hero h1 {
+    flex: 1;
+    margin: 0;
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    line-height: 1.1;
+}
+
+.hero p {
+    flex: 1;
+    margin: 0;
+    font-size: 1.2rem;
+}
+
+.material {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+    margin-bottom: var(--step-6);
+}
+
+.card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 22px;
+    box-shadow: var(--shadow);
+    height: 100%;
+}
+
 footer {
     border-top: 1px solid var(--border);
-    padding: 0 28px;
     color: var(--muted);
-    font-size: 0.95rem;
+    font-size: var(--step-0);
+}
+
+footer > div {
+    max-width: var(--step-15);
+    margin-inline: auto;
+    padding: var(--step-3) var(--step-2);
+}
+
+.social-links {
+    display: flex;
+    gap: 16px;
+}
+
+.social-links a {
+    color: var(--muted);
+    transition: color 0.2s;
+}
+
+.social-links a:hover {
+    color: var(--accent);
 }

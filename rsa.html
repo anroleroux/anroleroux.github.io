@@ -16,14 +16,14 @@
             </nav>
         </div>
     </header>
-    <main>
-        <section class="hero">
+    <article>
+        <div class="hero">
             <h1>Primes and Security</h1>
             <p>
                 How the modern world is build on a
                 seeminly insignificant math peculiarity.
             </p>
-        </section>
+        </div>
         <section class="content">
             <p>
                 I have always wondered why primes are such a big deal in mathematics.
@@ -52,7 +52,7 @@
                 is established without exchanging any secret keys.
             </p>
         </section>
-    </main>
+    </article>
     <footer>
         <div class="container">
             © <span id="year"></span> Anro le Roux. All rights reserved.
@@ -62,5 +62,9 @@
             </div>
         </div>
     </footer>
+
+    <script>
+        document.getElementById('year').textContent = new Date().getFullYear();
+    </script>
 </body>
 </html>

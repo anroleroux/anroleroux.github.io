@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Anro</title>
     <link rel="stylesheet" href="/index.css"/>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
 </head>
 <body>
     <header>
@@ -20,8 +21,8 @@
         <div class="hero">
             <h1>Primes and Security</h1>
             <p>
-                How the modern world is build on a
-                seeminly insignificant math peculiarity.
+                How the modern world is built on a
+                seemingly insignificant math peculiarity.
             </p>
         </div>
         <section class="content">
@@ -52,9 +53,90 @@
                 is established without exchanging any secret keys.
             </p>
         </section>
+        <section class="content">
+            <h2>Inventing RSA</h2>
+            <p>
+                In order to enable asymmetric cryptography one needs a function
+                that is easy to calculate but cannot be reversed. Rivest, Shamir
+                and Adleman published RSA in 1977 that uses primes for such a
+                function. It relies on the mathematical property that
+                multiplying two large primes is easy but factoring their product
+                back into the original primes is hard. RSA is one of the oldest
+                public key cryptosystems and is the cornerstone of security
+                today.
+            </p>
+            <span class="keyidea">
+                <h3>Key Idea 1)</h3>
+                <p>
+                    RSA starts by generating two large prime numbers, \(p\) and \(q\).
+                </p>
+                <p>
+                    \[n = p q\]
+                </p>
+                <p>
+                    \(n\) is a new prime number that can be publicly shared while
+                    \(p\) and \(q\) remain secret because of the irreversibility of
+                    the product. Thus, \(p\) and \(q\) can still be used to calculate
+                    additional cryptographic elements.
+                </p>
+            </span>
+            <p>
+                The RSA authors, however, will build on math discovered three
+                centuries earlier. The initial version of Euler's theorem was
+                first published in 1736 as a proof of Fermat's little theorem
+                (published without 1640). I wonder if Euler and Fermat were also
+                grilled for showing the usefulness of their work to get funding
+                like today.
+            </p>
+            <span class="keyidea">
+                <h3>Key Idea 2)</h3>
+                <p>
+                    With modulo arithmetic Euler's theorem:
+                </p>
+                <p>
+                    \[a^{\varphi(n)} \equiv 1 \pmod{n}\]
+                </p>
+                <p>
+                    shows that there is a power (Euler's Totient) one can raise
+                    a number to, resulting in 1. This property can be used to
+                    obtain the original value of an encrypted value.
+                </p>
+            </span>
+            <p>
+                As an example, take \(n=10\) and \(a=3\).
+                If we increment \(b\) in \(a^b \pmod{n}\)
+                from 1 to 10, we get the sequence 3, 9, 7, 1, 3, 9, 7, 1, 3, 9.
+            </p>
+            <span class="keyidea">
+                <h3>Key Idea 3)</h3>
+                <p>
+                    From Euler’s theorem we also get the idea of raising numbers
+                    to a power to decrypt it. And, while we're at it, why not
+                    also use a power to encrypt it?
+                </p>
+            </span>
+            <p>
+                So, what if the encrypted number, \(c\), is
+            </p>
+            <p>\[c=m^e \pmod{n}\]</p>
+            <p>and</p>
+            <p>\[m=c^d \pmod{n}=m^{ed} \pmod{n}\]</p>
+            <p>where \(e\) and \(d\) are encryption and decryption exponents.</p>
+            <p>All we need to do now is to calculate \(e\) and so that</p>
+            <p>\[m^{ed} \equiv m \pmod{n}\]</p>
+            <p>
+                Well, Euler's theorem has a one in so we can substitute
+                the \(1^k\) at the lone \(m\) with
+            </p>
+            <p>\[m^{ed} = m (m^{\varphi(n)})^k\]</p>
+            <p>where k is the amount of modulo cycles, and now</p>
+            <p>\[m^{ed} = m^{1+k\varphi(n)}\]</p>
+            <p>So if we take the exponents as an equation \(ed = 1+k\varphi(n)\) or \(ed-k\varphi(n) = 1\) so that</p>
+            <p>\[ed \equiv 1 \pmod{\varphi(n)}\]</p>
+        </section>
     </article>
     <footer>
-        <div class="container">
+        <div>
             © <span id="year"></span> Anro le Roux. All rights reserved.
             <div class="social-links">
                 <a href="https://linkedin.com/in/anroleroux" target="_blank" aria-label="LinkedIn">LinkedIn</a>

@@ -3,6 +3,7 @@
     --text-color: #0d0e10;
     --muted: #475569;
     --accent: #cad0eb;
+    --keyidea: #a54b1e;
     --border: #e2e8f0;
     --card: #cad0eb;
     --radius: 16px;
@@ -76,15 +77,16 @@ section {
 }
 
 article {
-  padding: 0rem 0rem;
-  display: flex;
-  align-items: center;
-  flex-direction: column;
+    padding: 0rem 0rem;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
 }
 
 article > section {
-  padding: 4rem 0rem;
-  width: 42rem;
+    padding: 0;
+    margin-bottom: var(--step-6);
+    width: 42rem;
 }
 
 .hero {
@@ -130,6 +132,20 @@ article > section {
     padding: 22px;
     box-shadow: var(--shadow);
     height: 100%;
+}
+
+.keyidea {
+    color: var(--keyidea);
+    margin-bottom: var(--step--4);
+}
+
+.keyidea>h3 {
+    margin: 0;
+}
+
+.keyidea>p {
+    margin: 0;
+    margin-bottom: var(--step--4);
 }
 
 footer {

@@ -26,6 +26,8 @@
     --step-13: calc(var(--step-12) * var(--ratio));
     --step-14: calc(var(--step-13) * var(--ratio));
     --step-15: calc(var(--step-14) * var(--ratio));
+    --step-16: calc(var(--step-15) * var(--ratio));
+    --step-17: calc(var(--step-16) * var(--ratio));
     --step--1: calc(var(--step-0) / var(--ratio));
     --step--2: calc(var(--step--1) / var(--ratio));
     --step--3: calc(var(--step--2) / var(--ratio));
@@ -46,7 +48,7 @@ body {
     background-color: var(--bg-color);
     color: var(--text-color);
     line-height: 1.4;
-    font-size: 18px;
+    font-size: 14px;
     /* transition: background-color 0.3s, color 0.3s; */
 }
 
@@ -77,16 +79,16 @@ section {
 }
 
 article {
-    padding: 0rem 0rem;
+    padding: 0;
     display: flex;
     align-items: center;
     flex-direction: column;
 }
 
 article > section {
-    padding: 0;
+    padding: 0 var(--step-1);
     margin-bottom: var(--step-6);
-    width: 42rem;
+    width: unset;
 }
 
 .hero {
@@ -96,13 +98,6 @@ article > section {
     padding: 4rem var(--step-8);
     margin-bottom: var(--step-6);
     background: var(--accent);
-}
-
-@media (min-width: 768px) {
-    .hero {
-        flex-direction: row;
-        align-items: flex-start;
-    }
 }
 
 .hero h1 {
@@ -120,7 +115,7 @@ article > section {
 
 .material {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(1, minmax(0, 1fr));
     gap: 16px;
     margin-bottom: var(--step-6);
 }
@@ -172,4 +167,35 @@ footer > div {
 
 .social-links a:hover {
     color: var(--accent);
+}
+
+@media (min-width: 600px) {
+    body {
+        font-size: 16px;
+    }
+    .material {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    article > section {
+        width: unset;
+    }
+}
+
+@media (min-width: 768px) {
+    .hero {
+        flex-direction: row;
+        align-items: flex-start;
+    }
+}
+
+@media (min-width: 900px) {
+    body {
+        font-size: 18px;
+    }
+    .material {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+    article > section {
+        width: var(--step-17);
+    }
 }

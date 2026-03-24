@@ -143,6 +143,24 @@ article > section {
     margin-bottom: var(--step--4);
 }
 
+.interactions input {
+    margin-left: var(--step-1);
+    padding: 12px 14px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    font: inherit;
+    background: #fff;
+}
+
+.interactions span {
+    margin-left: var(--step-1);
+    padding: 12px 14px;
+    /* border: 1px solid var(--border); */
+    /* border-radius: 10px; */
+    font: inherit;
+    background: #fff;
+}
+
 footer {
     border-top: 1px solid var(--border);
     color: var(--muted);

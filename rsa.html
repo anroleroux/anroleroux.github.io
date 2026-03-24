@@ -134,6 +134,28 @@
             <p>So if we take the exponents as an equation \(ed = 1+k\varphi(n)\) or \(ed-k\varphi(n) = 1\) so that</p>
             <p>\[ed \equiv 1 \pmod{\varphi(n)}\]</p>
         </section>
+        <section>
+            <h2>Encryption</h2>
+            <p>
+                The required encryption values are the two primes that are used
+                to produce the modulus \(n\) and Euler's Totient \(\varphi(n)\).
+            </p>
+            <p>
+                \[n = p q\]
+                \[\varphi(n) = (p-1)(q-1)\]
+            </p>
+            <div class="interactions">
+                <p>\(p\):<input id="in_p" value="1777" type="number" /></p>
+                <p>\(q\):<input id="in_q" value="937" type="number" /></p>
+                <p>\(n\):<span id="out_n"></span></p>
+                <p>\(\varphi(n)\):<span id="out_phi"></span></p>
+            </div>
+            <p>\(e\) must be smaller than \(\varphi(n)\) and share no factors with it.</p>
+            <div class="interactions">
+                <p>\(e\):<span id="out_e"></span></p>
+                <p>\(d\):<span id="out_d"></span></p>
+            </div>
+        </section>
     </article>
     <footer>
         <div>
@@ -147,6 +169,65 @@
 
     <script>
         document.getElementById('year').textContent = new Date().getFullYear();
+
+        const pInput = document.getElementById('in_p');
+        const qInput = document.getElementById('in_q');
+        const nSpan = document.getElementById('out_n');
+        const phiSpan = document.getElementById('out_phi');
+        const eSpan = document.getElementById('out_e');
+        const dSpan = document.getElementById('out_d');
+
+        function gcd(a, b) {
+            while (b) {
+                a %= b;
+                [a, b] = [b, a];
+            }
+            return a;
+        }
+
+        function modInverse(e, phi) {
+            let m0 = phi, t, q;
+            let x0 = 0, x1 = 1;
+            if (phi === 1) return 0;
+            while (e > 1) {
+                q = Math.floor(e / phi);
+                t = phi;
+                phi = e % phi, e = t;
+                t = x0;
+                x0 = x1 - q * x0;
+                x1 = t;
+            }
+            if (x1 < 0) x1 += m0;
+            return x1;
+        }
+
+        function updateCalculations() {
+            const p = parseInt(pInput.value);
+            const q = parseInt(qInput.value);
+            const n = p * q;
+            const phi = (p - 1) * (q - 1);
+            
+            nSpan.textContent = n;
+            phiSpan.textContent = phi;
+
+            // Find a suitable e (starting with 65537)
+            let e = 65537;
+            if (gcd(e, phi) !== 1) {
+                e = 3;
+                while (gcd(e, phi) !== 1) {
+                    e += 2;
+                }
+            }
+            
+            eSpan.textContent = e;
+            const d = modInverse(e, phi);
+            dSpan.textContent = d;
+        }
+
+        pInput.addEventListener('input', updateCalculations);
+        qInput.addEventListener('input', updateCalculations);
+
+        updateCalculations();
     </script>
 </body>
 </html>

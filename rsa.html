@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="/index.css"/>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
 </head>
-<body>
+<body class="sumner">
     <header>
         <div class="navbar">
             <a class="brand" href="/">Anro le Roux</a>
@@ -150,10 +150,42 @@
                 <p>\(n\):<span id="out_n"></span></p>
                 <p>\(\varphi(n)\):<span id="out_phi"></span></p>
             </div>
-            <p>\(e\) must be smaller than \(\varphi(n)\) and share no factors with it.</p>
+            <p>
+                \(e\) must be smaller than \(\varphi(n)\) and share no factors
+                with it. 65537 is a preferred choice for \(e\) if it adheres
+                to the rules. \(d\) is then obtained by finding \(d\) where
+                \(e d \bmod{\varphi(n)} = 1\).
+
+            </p>
             <div class="interactions">
                 <p>\(e\):<span id="out_e"></span></p>
                 <p>\(d\):<span id="out_d"></span></p>
+            </div>
+            <p>
+                The public key consists of \(e\) and \(n\). Anyone can use a recipient's public key to encrypt a number \(x\) with \(c = x^e \bmod{n}\).
+            </p>
+            <div class="interactions">
+                <p>\(x\):<input id="in_x" value="1234" type="number" /></p>
+                <p>\(c\):<span id="out_c"></span></p>
+            </div>
+            <p>
+                The recipient's private key consists of \(d\) and \(n\). The encrypted number can be decrypted with \(x = c^d \bmod{n}\).
+            </p>
+            <div class="interactions">
+                <p>\(x\):<span id="out_x"></span></p>
+            </div>
+            <p>
+                The number \(x\) is probably only 4 bytes. To encrypt strings of
+                bytes a padding scheme is used that first converts the string
+                into a 4 byte sequence of padded numbers that can be passed
+                through encryption. The padding scheme is reversed after
+                decoding to obtain the original message.
+            </p>
+            <div class="interactions">
+                <p>Original message:<input id="in_orig_msg" value="Does this work?" type="text" /></p>
+                <p>Padded message:<span id="out_padd_msg"></span></p>
+                <p>Encrypted message:<span id="out_encr_msg"></span></p>
+                <p>Decrypted message:<span id="out_decr_msg"></span></p>
             </div>
         </section>
     </article>
@@ -172,10 +204,17 @@
 
         const pInput = document.getElementById('in_p');
         const qInput = document.getElementById('in_q');
+        const xInput = document.getElementById('in_x');
+        const mInput = document.getElementById('in_orig_msg');
         const nSpan = document.getElementById('out_n');
         const phiSpan = document.getElementById('out_phi');
         const eSpan = document.getElementById('out_e');
         const dSpan = document.getElementById('out_d');
+        const cSpan = document.getElementById('out_c');
+        const xSpan = document.getElementById('out_x');
+        const pmSpan = document.getElementById('out_padd_msg');
+        const emSpan = document.getElementById('out_encr_msg');
+        const dmSpan = document.getElementById('out_decr_msg');
 
         function gcd(a, b) {
             while (b) {
@@ -201,6 +240,19 @@
             return x1;
         }
 
+        function modPow(base, exp, mod) {
+            let res = 1n;
+            base = BigInt(base) % BigInt(mod);
+            exp = BigInt(exp);
+            mod = BigInt(mod);
+            while (exp > 0n) {
+                if (exp % 2n === 1n) res = (res * base) % mod;
+                base = (base * base) % mod;
+                exp = exp / 2n;
+            }
+            return res;
+        }
+
         function updateCalculations() {
             const p = parseInt(pInput.value);
             const q = parseInt(qInput.value);
@@ -222,10 +274,28 @@
             eSpan.textContent = e;
             const d = modInverse(e, phi);
             dSpan.textContent = d;
+
+            const x = parseInt(xInput.value);
+
+            const c = modPow(x, e, n);
+            cSpan.textContent = c;
+            xSpan.textContent = modPow(c, d, n);
+
+            const msg = mInput.value;
+            const codes = Array.from(msg).map(c => c.charCodeAt(0));
+            pmSpan.textContent = codes.join(', ');
+
+            const encCodes = codes.map(m => modPow(m, e, n));
+            emSpan.textContent = encCodes.map(c => c.toString()).join(', ');
+
+            const decMsg = encCodes.map(c => String.fromCharCode(Number(modPow(c, d, n)))).join('');
+            dmSpan.textContent = decMsg;
         }
 
         pInput.addEventListener('input', updateCalculations);
         qInput.addEventListener('input', updateCalculations);
+        xInput.addEventListener('input', updateCalculations);
+        mInput.addEventListener('input', updateCalculations);
 
         updateCalculations();
     </script>

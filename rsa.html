@@ -48,7 +48,7 @@
                 We need something called asymmetric cryptography where each person
                 has a public key and a private key. Anyone can see the public key
                 but only the owner ever knows the private key. Now, Person A can
-                encrypt the message with person B’s public key and only person B
+                encrypt the message with person B's public key and only person B
                 can decrypt the message with the matching private key. Encryption
                 is established without exchanging any secret keys.
             </p>
@@ -110,7 +110,7 @@
             <span class="keyidea">
                 <h3>Key Idea 3)</h3>
                 <p>
-                    From Euler’s theorem we also get the idea of raising numbers
+                    From Euler's theorem we also get the idea of raising numbers
                     to a power to decrypt it. And, while we're at it, why not
                     also use a power to encrypt it?
                 </p>
@@ -182,7 +182,8 @@
                 decoding to obtain the original message.
             </p>
             <div class="interactions">
-                <p>Original message:<input id="in_orig_msg" value="Does this work?" type="text" /></p>
+                <p>Original message:<input id="in_orig_msg" value="Testing. Does this work? Great!" type="text" /></p>
+                <p>Original characters:<span id="out_orig_msg"></span></p>
                 <p>Padded message:<span id="out_padd_msg"></span></p>
                 <p>Encrypted message:<span id="out_encr_msg"></span></p>
                 <p>Decrypted message:<span id="out_decr_msg"></span></p>
@@ -212,6 +213,7 @@
         const dSpan = document.getElementById('out_d');
         const cSpan = document.getElementById('out_c');
         const xSpan = document.getElementById('out_x');
+        const omSpan = document.getElementById('out_orig_msg');
         const pmSpan = document.getElementById('out_padd_msg');
         const emSpan = document.getElementById('out_encr_msg');
         const dmSpan = document.getElementById('out_decr_msg');
@@ -282,14 +284,37 @@
             xSpan.textContent = modPow(c, d, n);
 
             const msg = mInput.value;
-            const codes = Array.from(msg).map(c => c.charCodeAt(0));
-            pmSpan.textContent = codes.join(', ');
+            const encoder = new TextEncoder();
+            const bytes = encoder.encode(msg);
+            omSpan.textContent = bytes.join(', ');
+            const blockSize = Math.max(1, Math.floor(Math.log2(n) / 8));
+            
+            const blocks = [];
+            for (let i = 0; i < bytes.length; i += blockSize) {
+                let block = 0n;
+                for (let j = 0; j < blockSize && (i + j) < bytes.length; j++) {
+                    block = (block << 8n) | BigInt(bytes[i + j]);
+                }
+                blocks.push(block);
+            }
+            pmSpan.textContent = blocks.join(', ');
 
-            const encCodes = codes.map(m => modPow(m, e, n));
-            emSpan.textContent = encCodes.map(c => c.toString()).join(', ');
+            const encBlocks = blocks.map(m => modPow(m, e, n));
+            emSpan.textContent = encBlocks.join(', ');
 
-            const decMsg = encCodes.map(c => String.fromCharCode(Number(modPow(c, d, n)))).join('');
-            dmSpan.textContent = decMsg;
+            const decBlocks = encBlocks.map(c => modPow(c, d, n));
+            let recoveredBytes = [];
+            for (let i = 0; i < decBlocks.length; i++) {
+                let block = decBlocks[i];
+                let chunk = [];
+                let count = (i === decBlocks.length - 1) ? (bytes.length % blockSize || blockSize) : blockSize;
+                for (let j = 0; j < count; j++) {
+                    chunk.push(Number(block & 255n));
+                    block >>= 8n;
+                }
+                recoveredBytes.push(...chunk.reverse());
+            }
+            dmSpan.textContent = new TextDecoder().decode(new Uint8Array(recoveredBytes));
         }
 
         pInput.addEventListener('input', updateCalculations);

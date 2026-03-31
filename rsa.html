@@ -27,43 +27,87 @@
         </div>
         <section class="content">
             <p>
-                I have always wondered why primes are such a big deal in mathematics.
-                Sure, it's quirky, but can it be of any use? Well, like many,
-                and with many math concepts, I have fallen ignorant to the value
-                that a seemingly child-counting mathematical property can hold.
-                So much so that any and all trust among 5 billion people using
-                the internet rely on the humble prime.
+                Why are primes such a big deal in mathematics? It's quirky, but
+                of what use is it really? I have fallen ignorant of the value that a
+                seemingly child-counting mathematical property can hold. Primes
+                are extensively used in cryptography, random number generation
+                and key exchange. Trust among 5 billion people using the
+                internet rely on the humble prime.
             </p>
 
             <p>
-                Consider the problem where person A want to send person B a message:
+                Consider the problem where a sender need to send a message to a recipient:
             </p>
             <ul>
                 <li>that no one else can read (encryption),</li>
-                <li>where person B can verify the sender is person A (authentication),</li>
+                <li>where the recipient can verify the sender is the sender (authentication),</li>
                 <li>and without prior exchanging of a secret key that can be intercepted.</li>
             </ul>
 
             <p>
-                We need something called asymmetric cryptography where each person
-                has a public key and a private key. Anyone can see the public key
-                but only the owner ever knows the private key. Now, Person A can
-                encrypt the message with person B's public key and only person B
-                can decrypt the message with the matching private key. Encryption
-                is established without exchanging any secret keys.
+                There are two types of cryptography, symmetric where the same
+                key is used for encryption and decryption, and asymmetric where
+                each person has a key that is publicly accessible and a key that
+                stays private/secret. Symmetric cryptography immediately raises
+                the question of key exchange.
+            </p>
+        </section>
+        <section class="content">
+            <h2>Key Exchange</h2>
+            <p>
+                Diffie-Hellman (DH) key exchange was published in 1967 as a
+                method to exchange a secret key over an insecure channel. It
+                uses the hardness of the discrete logarithm problem to calculate an irreversible
+                representation of a secret key. The representation can be
+                publicly accessible since the secret cannot be obtained from it.
+            </p>
+            <p>
+                \[A = g^a \bmod{n}\]
+            </p>
+            <p>
+                Person A's secret key is \(a\), \(g\) is a base (usually 2 or 5) and \(n\)
+                is a large number that makes it hard to get back to \(a\) from \(A\).
+                Person B does the same and gives \(B\) to person A to compute:
+            </p>
+            <p>
+                \[B^a \bmod{n} = g^{b a} \bmod{n} = g^{a b} \bmod{n}\]
+            </p>
+            <p>
+                Person B's can also get to the same shared key by using \(A\) and \(b\).
+            </p>
+            <p>
+                \[A^b \bmod{n} = g^{a b} \bmod{n}\]
+            </p>
+            <p>
+                Note that \(g^{a b} \bmod{n}\) was established without ever exposing secret keys
+                \(a\) and \(b\) to anyone and no one else can calculate it with only \(g\),
+                \(n\), \(A\) and \(B\). However, there is one very important piece
+                neglected, and that is \(n\).
+            </p>
+            <p>
+                If just any number is picked for \(n\) there is a risk that it may
+                be very easy to reverse the discrete logarithm problem.
+            </p>
+            <p>
+                For example, if \(n=15\) and \(g=2\), then 
+                \(g^{a b} \bmod{n}\) only falls within the set of \(\{1,2,4,8\}\) instead of
+                the ideally large set of \(\{1,2,...,n-1\}\). The solution to protect against
+                such vulnerability is to use a large prime number for \(n\). 
             </p>
         </section>
         <section class="content">
             <h2>Inventing RSA</h2>
             <p>
-                In order to enable asymmetric cryptography one needs a function
-                that is easy to calculate but cannot be reversed. Rivest, Shamir
+                With asymmetric cryptography each person has a public key and a
+                private key. Anyone can see the public key but only the owner
+                ever knows the private key. The sender can encrypt a message
+                with the recipient's public key and only the recipient can
+                decrypt the message with the matching private key. Encryption is
+                established without exchanging any secret keys. Rivest, Shamir
                 and Adleman published RSA in 1977 that uses primes for such a
                 function. It relies on the mathematical property that
                 multiplying two large primes is easy but factoring their product
-                back into the original primes is hard. RSA is one of the oldest
-                public key cryptosystems and is the cornerstone of security
-                today.
+                back into the original primes is hard.
             </p>
             <span class="keyidea">
                 <h3>Key Idea 1)</h3>

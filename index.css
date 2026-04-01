@@ -1,6 +1,7 @@
 :root {
     --bg-color: #ffffff;
     --text-color: #0d0e10;
+    /* hues #2f00ff and #ff3200 */
     --muted: #475569;
     --accent: #cad0eb;
     --keyidea: #a54b1e;
@@ -50,8 +51,8 @@ body.sumner {
   --neutral: #616575;
   --greenlight: #96F53E;
   --redlight: #F57751;
-  --breakout: #a54b1e;
-  --callouts: #57cc99;
+  --breakout: #ae9eff60;
+  --callouts: #cdc8e6;
   --structin: #7aaac9;
 }
 
@@ -148,18 +149,35 @@ article > section {
     height: 100%;
 }
 
-.keyidea {
-    color: var(--breakout);
+div.block {
+    border: 1px solid var(--border);
+    padding: var(--step-4);
+}
+
+.warning {
+    background: #ff6f0086;
     margin-bottom: var(--step--4);
 }
 
-.keyidea>h3 {
+.warning>h3 {
     margin: 0;
 }
 
-.keyidea>p {
+.warning>p {
     margin: 0;
+}
+
+.insight {
+    background: var(--breakout);
     margin-bottom: var(--step--4);
+}
+
+.insight>h3 {
+    margin: 0;
+}
+
+.insight>p {
+    margin: 0;
 }
 
 .interactions input {

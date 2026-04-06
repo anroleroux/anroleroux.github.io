@@ -112,11 +112,12 @@ article > section {
 }
 
 .hero {
+    width: 100%;
     display: flex;
     flex-direction: column;
     gap: 2rem;
     padding: 4rem var(--step-8);
-    margin-bottom: var(--step-6);
+    margin-bottom: var(--step-4);
     background: var(--callouts);
 }
 
@@ -131,6 +132,33 @@ article > section {
     flex: 1;
     margin: 0;
     font-size: 1.2rem;
+}
+
+.article-info {
+    width: 100%;
+    max-width: var(--step-17);
+    margin: 0 auto var(--step-4);
+    display: grid;
+    grid-template-columns: max-content max-content;
+    column-gap: var(--step-0);
+    row-gap: 0;
+    justify-content: end;
+    padding: 0 var(--step-1);
+    font-size: var(--step-0);
+}
+
+.article-info label {
+    justify-self: end;
+    font-weight: 500;
+}
+
+.article-info select {
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    cursor: pointer;
 }
 
 .material {

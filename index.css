@@ -92,23 +92,11 @@ header {
     letter-spacing: .2px;
 }
 
-
-
-section {
-    padding: 0 1.5rem;
-}
-
-article {
+article, main {
     padding: 0;
     display: flex;
     align-items: center;
     flex-direction: column;
-}
-
-article > section {
-    padding: 0 var(--step-1);
-    margin-bottom: var(--step-6);
-    width: unset;
 }
 
 .hero {
@@ -132,6 +120,38 @@ article > section {
     flex: 1;
     margin: 0;
     font-size: 1.2rem;
+}
+
+.material {
+    display: grid;
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+    gap: 16px;
+    margin-bottom: var(--step-6);
+}
+
+.card {
+    background: var(--structin);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 22px;
+    box-shadow: var(--shadow);
+    height: 100%;
+}
+
+section.content {
+
+}
+
+section {
+    padding: 0 1.5rem;
+}
+
+
+
+article > section {
+    padding: 0 var(--step-1);
+    margin-bottom: var(--step-6);
+    width: unset;
 }
 
 .article-info {
@@ -159,22 +179,6 @@ article > section {
     background-color: var(--bg-color);
     color: var(--text-color);
     cursor: pointer;
-}
-
-.material {
-    display: grid;
-    grid-template-columns: repeat(1, minmax(0, 1fr));
-    gap: 16px;
-    margin-bottom: var(--step-6);
-}
-
-.card {
-    background: var(--structin);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 22px;
-    box-shadow: var(--shadow);
-    height: 100%;
 }
 
 div.block {
@@ -277,7 +281,7 @@ footer > div {
     .material {
         grid-template-columns: repeat(3, minmax(0, 1fr));
     }
-    article > section {
+    article > section, main>section.content {
         width: var(--step-17);
     }
 }

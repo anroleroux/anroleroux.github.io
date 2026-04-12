@@ -27,16 +27,17 @@
         </div>
         <div class="article-info">
             <label for="publish-dates">Date Published:</label>
-            <span id="publish-date">2026-04-11</span>
+            <span id="publish-date">2026-04-12</span>
             <label for="version-select">Version:</label>
             <select id="version-select" onchange="if(this.value) window.location.href = this.value;">
                 <option value="pic.html" selected>latest</option>
+                <option value="pic_v0.1.3.html">v0.1.3</option>
                 <option value="pic_v0.1.2.html">v0.1.2</option>
                 <option value="pic_v0.1.1.html">v0.1.1</option>
                 <option value="pic_v0.1.0.html">v0.1.0</option>
             </select>
         </div>
-        <section class="content">
+        <section>
             <p>
                 Why are prime numbers such a big deal in mathematics? It's
                 quirky, but of what use is it really? This article will go into
@@ -74,7 +75,7 @@
                 network.
             </p>
         </section>
-        <section class="content">
+        <section>
             <h2>Key Exchange</h2>
             <p>
                 Diffie-Hellman (DH) key exchange was published in 1967 as a
@@ -146,15 +147,15 @@
                 be to start from the lowest numbers and see what can divide
                 5040.
                 \[\begin{align}
-                    5040/1 &= 5040 && \text{(1 has no effect so continue with 2)} \\
-                    5040/2 &= 2520 && \text{(2520 is still divisible by 2 so continue with 2)} \\
+                    5040/1 &= 5040 && \text{(no effect, use 2)} \\
+                    5040/2 &= 2520 && \text{(continue with 2)} \\
                     2520/2 &= 1260 && \text{(continue with 2)} \\
                     1260/2 &= 630 && \text{(continue with 2)} \\
                     630/2 &= 315 && \text{(try to divide by 3)} \\
                     315/3 &= 105 && \text{(try again with 3)} \\
-                    105/3 &= 35 && \text{(not divisible by 2 or 3 anymore, continue with 5)} \\
+                    105/3 &= 35 && \text{(continue with 5)} \\
                     35/5 &= 7 && \text{(only divisible by 7)} \\
-                    7/7 &= 1 && \text{(finished finding all factors)} \\
+                    7/7 &= 1 && \text{(found all factors)} \\
                 \end{align}\]
             </p>
             <p>
@@ -202,67 +203,63 @@
         <section>
             <h2>Inventing RSA</h2>
             <p>
-                With asymmetric cryptography each person has a public key and a
-                private key. Anyone can see the public key but only the owner
-                ever knows the private key. The sender can encrypt a message
-                with the recipient's public key and only the recipient can
-                decrypt the message with the matching private key. Encryption is
+                With asymmetric cryptography each person has a public key (\(S\), \(R\)) and a
+                private key (\(s\), \(r\)). Anyone can see the public keys but only the owners
+                ever know the private keys. The sender can encrypt a message
+                with the recipient's public key (\(R\)) and only the recipient can
+                decrypt the message with the matching private key (\(r\)). Encryption is
                 established without exchanging any secret keys.
             </p>
             <p>
-                In 1977 Rivest, Shamir and Adleman published RSA. It starts by
-                generating two large prime numbers, \(p\) and \(q\).
+                The method in Insight 1 can also be used to encrypt messages.
+                The message \(m\) is used instead of the base \(g\) and raised to the
+                power of an encryption key \(e\). The encrypted message \(M\) is thus
+                \[M=m^e \bmod{n}\]
+                However, it will be convenient to also be able to decrypt \(M\) in the
+                same way by applying a decryption key as another power to get back to \(m\)
+                \[m=M^d \bmod{n}\]
+                which is equivalent to
+                \[\begin{equation}
+                    m \equiv m^{e d} \pmod{n} \tag{eq 1}
+                \end{equation}\]
             </p>
             <p>
-                \[n = p q\]
-            </p>
-            <p>
-                \(n\) is a new prime number that can be publicly shared while
-                \(p\) and \(q\) remain secret because of the irreversibility pointed
-                out in Insight 2. Thus, \(p\) and \(q\) can still be used to calculate
-                additional cryptographic elements.
-            </p>
-            <p>
-                The RSA authors, however, will build on math discovered three
-                centuries earlier. The initial version of Euler's theorem was
-                first published in 1736 as a proof of Fermat's little theorem
-                (published without 1640).
+                Rivest, Shamir and Adleman published RSA in 1977 in which they
+                derived \(e\) and \(d\) to encrypt and decrypt messages. The RSA
+                authors build on math discovered three centuries earlier. The
+                initial version of Euler's theorem was first published in 1736
+                as a proof of Fermat's little theorem (published without proof
+                in 1640).
             </p>
             <p>
                 Refer back to how modulo sequences went though the numbers in
-                the Key Exchange section. It's clear in the short vulnerable
+                section 1. It's clear in the short vulnerable
                 sets that the sequences always end with one
                 \(\{1,2,4,8,1,2,4,8,1,...\}\). The same is true when a large
                 prime modulus is used. This property can be taken advantage
                 of to decrypt by moving an encrypted value forward to the
-                next end of the sequence. Euler did just that, his theorem:
+                next end of the sequence.
             </p>
             <p>
+                Euler's theorem:
                 \[m^{\varphi(n)} \equiv 1 \pmod{n}\]
-            </p>
-            <p>
                 shows that there is a power (Euler's Totient) one can raise a
                 base to, that results in a remainder of 1. So if one power (in
                 an exponent) is used to encrypt a value, a second power can be
                 calculated that decrypts it again.
             </p>
             <p>
-                Note that in order to do some modulo arithmetic, the stricter
-                congruence notation is used. This article also uses
-                capitals to signify public values (e.g. \(M\) as the encrypted
-                message) accompanying private values (\(m\) as the private
-                unencrypted/decrypted message).
+                It starts by generating two large prime numbers, \(p\) and \(q\):
+                \[n = p q\]
+                \(n\) is a new prime number that can be publicly shared while
+                \(p\) and \(q\) remain secret because of the irreversibility pointed
+                out by Insight 2. Thus, \(p\) and \(q\) can still be used to
+                calculate Euler's Totient:
+                \[\varphi(n) = (p-1)(q-1)\]
             </p>
             <p>
-                If the encrypted number, \(M\), is
-            </p>
-            <p>\[M=m^e \pmod{n}\]</p>
-            <p>and</p>
-            <p>\[m=M^d \pmod{n}=m^{ed} \pmod{n}\]</p>
-            <p>
-                where \(e\) and \(d\) are encryption and decryption exponents.
                 \(e\) and \(d\) need to be calculated using \(\varphi(n)\).
-                First, \(1 \pmod{n}\) is isolated in the last equation.
+                First, \(1 \pmod{n}\) is isolated in equation 1.
             </p>
             <p>\[m^{ed} \equiv m \pmod{n} \iff m^{ed-1} \equiv 1 \pmod{n}\]</p>
 

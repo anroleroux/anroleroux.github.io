@@ -27,10 +27,11 @@
         </div>
         <div class="article-info">
             <label for="publish-dates">Date Published:</label>
-            <span id="publish-date">2026-04-12</span>
+            <span id="publish-date">2026-04-15</span>
             <label for="version-select">Version:</label>
             <select id="version-select" onchange="if(this.value) window.location.href = this.value;">
                 <option value="pic.html" selected>latest</option>
+                <option value="pic_v0.1.4.html">v0.1.4</option>
                 <option value="pic_v0.1.3.html">v0.1.3</option>
                 <option value="pic_v0.1.2.html">v0.1.2</option>
                 <option value="pic_v0.1.1.html">v0.1.1</option>
@@ -108,17 +109,17 @@
                 Person B does the same and sends \(B\) to person A to compute:
             </p>
             <p>
-                \[B^a \bmod{n} = g^{b a} \bmod{n} = g^{a b} \bmod{n} = s\]
+                \[B^a \bmod{n} = g^{b a} \bmod{n} = g^{a b} \bmod{n} = z\]
             </p>
             <p>
                 Person B can also get to the same shared key by using \(A\) and \(b\).
             </p>
             <p>
-                \[A^b \bmod{n} = g^{a b} \bmod{n} = s\]
+                \[A^b \bmod{n} = g^{a b} \bmod{n} = z\]
             </p>
             <p>
-                Note that \(s\) was established without ever exposing secret keys
-                \(a\) and \(b\) to anyone and no one else can calculate \(s\) with only \(g\),
+                Note that \(z\) was established without ever exposing secret keys
+                \(a\) and \(b\) to anyone and no one else can calculate \(z\) with only \(g\),
                 \(n\), \(A\) and \(B\). However, there is one very important piece
                 neglected, and that is \(n\).
             </p>
@@ -236,9 +237,8 @@
                 section 1. It's clear in the short vulnerable
                 sets that the sequences always end with one
                 \(\{1,2,4,8,1,2,4,8,1,...\}\). The same is true when a large
-                prime modulus is used. This property can be taken advantage
-                of to decrypt by moving an encrypted value forward to the
-                next end of the sequence.
+                prime modulus is used. This phenomenon can be used to decrypt
+                an encrypted value by moving it forward to the end of the sequence.
             </p>
             <p>
                 Euler's theorem:
@@ -249,7 +249,8 @@
                 calculated that decrypts it again.
             </p>
             <p>
-                It starts by generating two large prime numbers, \(p\) and \(q\):
+                It starts by generating two large prime numbers, \(p\) and \(q\),
+                and calculating the product.
                 \[n = p q\]
                 \(n\) is a new prime number that can be publicly shared while
                 \(p\) and \(q\) remain secret because of the irreversibility pointed
@@ -281,10 +282,9 @@
             </p>
         </section>
         <section>
-            <h2>Encryption</h2>
+            <h2>Encryption and Decryption</h2>
             <p>
-                The required encryption values are the two primes that are used
-                to produce the modulus \(n\) and Euler's Totient \(\varphi(n)\).
+                Two primes are required to produce the modulus \(n\) and Euler's Totient \(\varphi(n)\).
             </p>
             <p>
                 \[n = p q\]
@@ -297,9 +297,9 @@
                 <p>\(\varphi(n)\):<span id="out_phi"></span></p>
             </div>
             <p>
-                \(e\) must be smaller than \(\varphi(n)\) and share no factors
-                with it. 65537 is a preferred choice for \(e\) if it adheres
-                to the rules. \(d\) is then obtained by finding \(d\) where
+                \(e\) must be smaller than \(\varphi(n)\) and be coprime with it.
+                A number that, in its binary form, has zeros and starts and ends
+                with 1 is a preferred for \(e\). \(d\) is then obtained by finding \(d\) where
                 \(e d \bmod{\varphi(n)} = 1\).
 
             </p>
@@ -307,6 +307,7 @@
                 <p>\(e\):<span id="out_e"></span></p>
                 <p>\(d\):<span id="out_d"></span></p>
             </div>
+            <h4>Encryption on a Single Number</h4>
             <p>
                 The public key consists of \(e\) and \(n\). Anyone can use a recipient's public key to encrypt a number \(x\) with \(c = x^e \bmod{n}\).
             </p>
@@ -320,6 +321,7 @@
             <div class="interactions">
                 <p>\(x\):<span id="out_x"></span></p>
             </div>
+            <h4>Encryption on a String</h4>
             <p>
                 The number \(x\) is probably only 4 bytes. To encrypt strings of
                 bytes a padding scheme is used that first converts the string
@@ -370,23 +372,23 @@
         <section>
             <h2>Conclusion</h2>
             <p>
-                People often fall ignorant of the role that mathematics, even a
-                seemingly child-counting math property like prime numbers, hold
-                in our society. Euler and Fermat probably did not realise how
-                important their theories would become centuries later.
-                Mathematics is a deep, slow form of knowledge that should not be
-                discarded if its value cannot immediately be realised.
+                This article shows how prime numbers are used to secure DH key
+                exchange and RSA. Even SHA-256 hash algorithms used in
+                authentication rely on prime numbers for randomization. This
+                junction in math and cryptography is such a contested topic that
+                there are two Millennium Prize Problems, the P vs NP Problem and
+                the Riemann Hypothesis, that relates to it. Proving them is
+                important because if any two of these prove different than what
+                is assumed, current cryptography standards are in trouble.
             </p>
             <p>
-                This article showed how prime numbers are used to secure DH key
-                exchange and RSA. Even SHA-256 hash algorithms use prime numbers
-                to generate random numbers. This junction in math and
-                cryptography is such a contested topic that there are two
-                Millennium Prize Problems that relate to it. The P vs NP Problem
-                asks whether every problem whose solution can be quickly
-                verified can also be quickly solved. The Riemann Hypothesis
-                relates to the distribution of prime numbers and the zeros of
-                the Riemann zeta function.
+                People often fall ignorant of the role of mathematics. Prime
+                numbers get far less attention than they should be since they
+                are the atoms of the numbers we use everyday. Euler and Fermat
+                probably did not realise how important their theories would
+                become centuries later. Mathematics is a deep, slow form of
+                knowledge that should not be discarded if its value cannot
+                immediately be realised.
             </p>
             <p>
                 The beauty and genius with which the key-exchange, encryption
@@ -541,11 +543,18 @@
             nSpan.textContent = n;
             phiSpan.textContent = phi;
 
-            // Find a suitable e (starting with 65537)
-            let e = 65537;
+            let e = 5;
+            if (gcd(e, phi) !== 1) {
+                while (gcd(e, phi) !== 1 && e < phi) {
+                    e--;
+                    e = e<<1;
+                    e++;
+                }
+            }
+
             if (gcd(e, phi) !== 1) {
                 e = 3;
-                while (gcd(e, phi) !== 1) {
+                while (gcd(e, phi) !== 1 && e < phi) {
                     e += 2;
                 }
             }

@@ -68,7 +68,7 @@ body {
     background-color: var(--bg-color);
     color: var(--text-color);
     line-height: 1.4;
-    font-size: 14px;
+    font-size: 12px;
     /* transition: background-color 0.3s, color 0.3s; */
 }
 
@@ -104,7 +104,7 @@ article, main {
     display: flex;
     flex-direction: column;
     gap: 2rem;
-    padding: 4rem var(--step-8);
+    padding: 4rem var(--step-4);
     margin-bottom: var(--step-4);
     background: var(--callouts);
 }
@@ -265,12 +265,16 @@ footer > div {
     article > section {
         width: unset;
     }
+    .hero {
+        padding: 4rem var(--step-5);
+    }
 }
 
 @media (min-width: 768px) {
     .hero {
         flex-direction: row;
         align-items: flex-start;
+        padding: 4rem var(--step-6);
     }
 }
 
@@ -283,5 +287,8 @@ footer > div {
     }
     article > section, main>section.content {
         width: var(--step-17);
+    }
+    .hero {
+        padding: 4rem var(--step-8);
     }
 }

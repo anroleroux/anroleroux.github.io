@@ -26,17 +26,22 @@
             </p>
         </div>
         <div class="article-info">
-            <label for="publish-dates">Date Published:</label>
-            <span id="publish-date">2026-04-15</span>
-            <label for="version-select">Version:</label>
-            <select id="version-select" onchange="if(this.value) window.location.href = this.value;">
-                <option value="pic.html" selected>latest</option>
-                <option value="pic_v0.1.4.html">v0.1.4</option>
-                <option value="pic_v0.1.3.html">v0.1.3</option>
-                <option value="pic_v0.1.2.html">v0.1.2</option>
-                <option value="pic_v0.1.1.html">v0.1.1</option>
-                <option value="pic_v0.1.0.html">v0.1.0</option>
-            </select>
+            <div class="index" id="article-index">
+                <ul></ul>
+            </div>
+            <div class="versions">
+                <label for="publish-dates">Date Published:</label>
+                <span id="publish-date">2026-04-15</span>
+                <label for="version-select">Version:</label>
+                <select id="version-select" onchange="if(this.value) window.location.href = this.value;">
+                    <option value="pic.html" selected>latest</option>
+                    <option value="pic_v0.1.4.html">v0.1.4</option>
+                    <option value="pic_v0.1.3.html">v0.1.3</option>
+                    <option value="pic_v0.1.2.html">v0.1.2</option>
+                    <option value="pic_v0.1.1.html">v0.1.1</option>
+                    <option value="pic_v0.1.0.html">v0.1.0</option>
+                </select>
+            </div>
         </div>
         <section>
             <p>
@@ -58,7 +63,7 @@
                 </ul>
             </p>
             <div class="warning block">
-                <h3>Warning</h3>
+                <h4>Warning</h4>
                 <p>
                     This article is intended to take the reader on a discovery journey of
                     interesting cryptography handshaking concepts and
@@ -97,7 +102,7 @@
                 and get back to \(a\) from \(A\).
             </p>
             <div class="insight block">
-                <h3>Insight 1</h3>
+                <h3>Insight</h3>
                 <p>
                     It is easy to calculate the modulo of an exponential function
                     \[X = g^x \bmod{n}\]
@@ -191,7 +196,7 @@
                 that factoring products of two large primes is difficult.
             </p>
             <div class="insight block">
-                <h3>Insight 2</h3>
+                <h3>Insight</h3>
                 <p>
                     Multiplying two large prime numbers results in a new prime
                     number with only the two prime factors. The
@@ -307,7 +312,7 @@
                 <p>\(e\):<span id="out_e"></span></p>
                 <p>\(d\):<span id="out_d"></span></p>
             </div>
-            <h4>Encryption on a Single Number</h4>
+            <h3>Encryption on a Single Number</h3>
             <p>
                 The public key consists of \(e\) and \(n\). Anyone can use a recipient's public key to encrypt a number \(x\) with \(c = x^e \bmod{n}\).
             </p>
@@ -321,7 +326,7 @@
             <div class="interactions">
                 <p>\(x\):<span id="out_x"></span></p>
             </div>
-            <h4>Encryption on a String</h4>
+            <h3>Encryption on a String</h3>
             <p>
                 The number \(x\) is probably only 4 bytes. To encrypt strings of
                 bytes a padding scheme is used that first converts the string
@@ -411,6 +416,71 @@
 
     <script>
         document.getElementById('year').textContent = new Date().getFullYear();
+
+        function index() {
+            const article = document.querySelector('article');
+            const elements = article.querySelectorAll('h2, h3, .insight.block');
+            const indexUl = document.querySelector('#article-index ul');
+            
+            let h2Count = 0;
+            let h3Count = 0;
+            let insightCount = 0;
+
+            const toLowerSnakeCase = (str) => {
+                return str
+                    .toLowerCase()
+                    .replace(/[^a-z0-9 ]/g, '')
+                    .split(' ')
+                    .filter(word => word.length > 0)
+                    .join('-');
+            };
+
+            elements.forEach((el) => {
+                if (el.tagName === 'H2') {
+                    h2Count++;
+                    h3Count = 0;
+                    const h2Text = el.textContent;
+                    const h2Id = toLowerSnakeCase(h2Text);
+                    el.id = h2Id;
+                    el.innerHTML = `<span class="numbering">${h2Count}.</span>${h2Text}`;
+
+                    // Add to index
+                    const li = document.createElement('li');
+                    li.innerHTML = `<a href="#${h2Id}">${h2Count}. ${h2Text}</a>`;
+                    indexUl.appendChild(li);
+                } else if (el.tagName === 'H3') {
+                    // Check if it's NOT an insight block's h3
+                    if (!el.closest('.insight.block')) {
+                        h3Count++;
+                        const h3Text = el.textContent;
+                        const h3Id = toLowerSnakeCase(h3Text);
+                        const h3Num = h2Count > 0 ? `${h2Count}.${h3Count}` : `${h3Count}`;
+                        el.id = h3Id;
+                        el.innerHTML = `<span class="numbering">${h3Num}</span>${h3Text}`;
+                        
+                        // Optionally add h3 to index if h2Count > 0
+                        if (h2Count > 0) {
+                            const li = document.createElement('li');
+                            li.style.marginLeft = '1rem';
+                            li.style.fontSize = '0.9em';
+                            li.innerHTML = `<a href="#${h3Id}">${h3Num} ${h3Text}</a>`;
+                            indexUl.appendChild(li);
+                        }
+                    }
+                } else if (el.classList.contains('insight') && el.classList.contains('block')) {
+                    insightCount++;
+                    const insightH3 = el.querySelector('h3');
+                    if (insightH3) {
+                        const originalText = insightH3.textContent.replace(/^Insight\s*\d*\s*:?\s*/i, '').trim();
+                        const insightId = toLowerSnakeCase(originalText || `insight_${insightCount}`);
+                        el.id = insightId;
+                        const separator = originalText ? ': ' : '';
+                        insightH3.innerHTML = `<span class="numbering">Insight ${insightCount}</span>${separator}${originalText}`;
+                    }
+                }
+            });
+        }
+        index();
 
         const pInput = document.getElementById('in_p');
         const qInput = document.getElementById('in_q');

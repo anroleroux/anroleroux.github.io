@@ -144,14 +144,18 @@ section {
 
 article > section {
     padding: 0 var(--step-1);
-    /* margin-bottom: var(--step-6); */
+    margin-bottom: var(--step-6);
     width: unset;
 }
 
 article > section > h2 {
     margin-top: 0;
-    padding-top: var(--step-7);
+    /* padding-top: var(--step-7); */
     
+}
+
+h2, h3, .insight.block {
+    scroll-margin-top: var(--step-7);
 }
 
 article .numbering {
@@ -262,6 +266,39 @@ div.block {
     /* border-radius: 10px; */
     font: inherit;
     background: #fff;
+}
+
+.figure-numbering {
+    display: flex;
+    justify-content: center;
+}
+
+.figure-numbering p {
+    font-size: var(--step-0);
+    margin:0;
+    margin-bottom:var(--step-1);
+    width:60%;
+    text-align: center;
+}
+
+.charta .legend-item {
+    cursor: pointer;
+}
+.charta .legend-item text {
+    user-select: none;
+}
+.gamman.tooltip {
+    position: absolute;
+    pointer-events: none;
+    background: rgba(255, 255, 255, 0.96);
+    border: 1px solid #bbb;
+    border-radius: 6px;
+    padding: 8px 10px;
+    font-size: 12px;
+    color: #222;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+    display: none;
+    white-space: nowrap;
 }
 
 footer {

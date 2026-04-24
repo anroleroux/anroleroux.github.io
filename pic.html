@@ -32,16 +32,11 @@
             </div>
             <div class="versions">
                 <label for="publish-dates">Date Published:</label>
-                <span id="publish-date">2026-04-21</span>
+                <span id="publish-date">2026-04-24</span>
                 <label for="version-select">Version:</label>
                 <select id="version-select" onchange="if(this.value) window.location.href = this.value;">
                     <option value="pic.html" selected>latest</option>
-                    <option value="pic_v0.1.5.html">v0.1.5</option>
-                    <option value="pic_v0.1.4.html">v0.1.4</option>
-                    <option value="pic_v0.1.3.html">v0.1.3</option>
-                    <option value="pic_v0.1.2.html">v0.1.2</option>
-                    <option value="pic_v0.1.1.html">v0.1.1</option>
-                    <option value="pic_v0.1.0.html">v0.1.0</option>
+                    <option value="pic_v0.1.6.html">v0.1.6</option>
                 </select>
             </div>
         </div>
@@ -141,29 +136,46 @@
                 \[\gamma = \frac{|\zeta|}{n-1}=\frac{4}{14}\]
                 is approximately 0.286. In this case \(A\), \(B\) and \(z\) only cycle
                 through 28.6% of the numbers making it easier to guess the shared key \(z\).
-                The following modular clock diagram shows how much numbers are utilised.
-            </p>
-            <div class="interactions">
-                <p>\(n\):<input id="in_n" value="19" type="number" /><span class="primality"></span></p>
-                <p>\(g\):<input id="in_g" value="2" type="number" /></p>
-                <svg id="clock_svg" width="400" height="400" style="display: block; margin: 20px auto; max-width: 100%; height: auto; border: 1px solid #ccc;"></svg>
-                <div id="mod-clock" class="figure-numbering"><p>Modular clock diagram.</p></div>
-                <p>Sequence: <span id="out_sequence" style="word-break: keep-all; font-family: monospace;"></span></p>
-            </div>
-            <p>
-                The modular clock diagram shows how \(n=19\) and \(g=2\) cycles through
-                all the numbers in the set \(\{1,...,n-1\}\). Thus \(\gamma = 1\) which is
+                Figure <span class="figure-number" data-fid="mod-clock"></span>
+                shows how much numbers are utilised. With \(n=19\) and \(g=2\) it cycles through
+                all the numbers \(\{1,...,n-1\}\). Thus \(\gamma = 1\), which is
                 usually the case when \(n\) is prime.
             </p>
-            <p>
-                Figure shows a graph of \(\gamma\) over a range of \(n\) values. Even numbers
-                of \(n\) are ommited and prime \(n\) numbers are highlighted with green
-                vertical lines. Click on the points to set \(n\) and \(g\) above and see
-                how each pattern look in the modular clock diagram.
-            </p>
+            <div class="interactions">
+                <p>\(n\):
+                    <span class="number-input-wrapper">
+                        <input id="in_n" value="19" type="number" />
+                        <span class="number-controls">
+                            <button type="button" class="num-up">▲</button>
+                            <button type="button" class="num-down">▼</button>
+                        </span>
+                    </span>
+                    <span class="primality"></span>
+                </p>
+                <p>\(g\):
+                    <span class="number-input-wrapper">
+                        <input id="in_g" value="2" type="number" />
+                        <span class="number-controls">
+                            <button type="button" class="num-up">▲</button>
+                            <button type="button" class="num-down">▼</button>
+                        </span>
+                    </span>
+                </p>
+                <svg id="clock_svg" width="400" height="400" style="display: block; margin: 20px auto; max-width: 100%; height: auto; border: 1px solid #ccc;"></svg>
+                <div id="mod-clock" class="figure-numbering"><p>Modular clock diagram.</p></div>
+                <p class="mod-seq">Sequence:</p>
+                <div id="out_sequence" class="mod-seq"></div>
+            </div>
             <div id="gammanplot" class="charta"></div>
             <div id="tooltip" class="gamman tooltip"></div>
             <div id="gamma-n-plot" class="figure-numbering"><p>Plot of \(\gamma\) against \(n\) with prime \(n\) values highlighted with green lines.</p></div>
+            <p>
+                Figure <span class="figure-number" data-fid="gamma-n-plot"></span>
+                shows a graph of \(\gamma\) over a range of \(n\) values. Even numbers
+                of \(n\) are omitted and prime \(n\) numbers are highlighted with green
+                vertical lines. Click on the points to set \(n\) and \(g\) above and see
+                how each pattern look in the modular clock diagram.
+            </p>
         </section>
         <section>
             <h2>The Atoms of Math</h2>
@@ -315,8 +327,26 @@
                 \[\varphi(n) = (p-1)(q-1)\]
             </p>
             <div class="interactions">
-                <p>\(p\):<input id="in_p" value="1777" type="number" /><span class="primality"></span></p>
-                <p>\(q\):<input id="in_q" value="937" type="number" /><span class="primality"></span></p>
+                <p>\(p\):
+                    <span class="number-input-wrapper">
+                        <input id="in_p" value="1777" type="number" />
+                        <span class="number-controls">
+                            <button type="button" class="num-up">▲</button>
+                            <button type="button" class="num-down">▼</button>
+                        </span>
+                    </span>
+                    <span class="primality"></span>
+                </p>
+                <p>\(q\):
+                    <span class="number-input-wrapper">
+                        <input id="in_q" value="937" type="number" />
+                        <span class="number-controls">
+                            <button type="button" class="num-up">▲</button>
+                            <button type="button" class="num-down">▼</button>
+                        </span>
+                    </span>
+                    <span class="primality"></span>
+                </p>
                 <p>\(n\):<span id="out_n"></span></p>
                 <p>\(\varphi(n)\):<span id="out_phi"></span></p>
             </div>
@@ -336,7 +366,15 @@
                 The public key consists of \(e\) and \(n\). Anyone can use a recipient's public key to encrypt a number \(x\) with \(c = x^e \bmod{n}\).
             </p>
             <div class="interactions">
-                <p>\(x\):<input id="in_x" value="1234" type="number" /></p>
+                <p>\(x\):
+                    <span class="number-input-wrapper">
+                        <input id="in_x" value="1234" type="number" />
+                        <span class="number-controls">
+                            <button type="button" class="num-up">▲</button>
+                            <button type="button" class="num-down">▼</button>
+                        </span>
+                    </span>
+                </p>
                 <p>\(c\):<span id="out_c"></span></p>
             </div>
             <p>
@@ -437,6 +475,8 @@
     <script>
         document.getElementById('year').textContent = new Date().getFullYear();
 
+        let refs = {};
+
         function index() {
             const article = document.querySelector('article');
             const elements = article.querySelectorAll('h2, h3, .insight.block, .figure-numbering');
@@ -503,8 +543,17 @@
                     const pElm = el.querySelector('p');
                     const pText = pElm.textContent;
                     pElm.innerHTML = `<span class="numbering">Figure ${figureCount}.</span>${pText}`;
+                    refs[el.id] = `${figureCount}`;
                 }
             });
+
+            const rf = article.querySelectorAll('.figure-number');
+            rf.forEach((el) => {
+                if (el.tagName === 'SPAN' && el.classList.contains('figure-number')) {
+                    el.innerHTML = refs[el.dataset.fid]
+                }
+            })
+
         }
         index();
 
@@ -527,6 +576,19 @@
 
         const nDHInput = document.getElementById('in_n');
         const gDHInput = document.getElementById('in_g');
+
+        document.querySelectorAll('.number-controls button').forEach(button => {
+            button.addEventListener('click', () => {
+                const input = button.closest('.number-input-wrapper').querySelector('input');
+                if (button.classList.contains('num-up')) {
+                    input.stepUp();
+                } else {
+                    input.stepDown();
+                }
+                input.dispatchEvent(new Event('input'));
+            });
+        });
+
         const clockSvg = document.getElementById('clock_svg');
         const sequenceSpan = document.getElementById('out_sequence');
 

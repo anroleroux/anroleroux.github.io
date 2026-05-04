@@ -107,7 +107,7 @@
             © <span id="year"></span> Anro le Roux. All rights reserved.
             <div class="social-links">
                 <a href="https://linkedin.com/in/anroleroux" target="_blank" aria-label="LinkedIn">LinkedIn</a>
-                <a href="https://github.com/aleroux85" target="_blank" aria-label="GitHub">GitHub</a>
+                <a href="https://github.com/anroleroux" target="_blank" aria-label="GitHub">GitHub</a>
             </div>
         </div>
     </footer>
@@ -115,69 +115,149 @@
     <script>
         document.getElementById('year').textContent = new Date().getFullYear();
 
-        const nodesA = [
-            { id: 1, label: "1 Small\nprograms", group: "arch", paragraphs: ["Compose-ability over complexity. Do one thing well.", "By keeping programs small, you ensure they remain understandable and maintainable. Each component should have a single responsibility, making it easier to test and debug in isolation.", "This philosophy aligns with the Unix principle of building simple, modular tools that can be combined to solve complex problems through pipes and scripting."] },
-            { id: 2, label: "2 Open\ninterfaces", group: "arch", paragraphs: ["APIs, CLIs, standard formats. Contract-first design.", "Open interfaces allow different systems to communicate seamlessly. By defining clear contracts, you enable interoperability and allow components to be swapped or upgraded without breaking the entire system.", "Standard formats like JSON or plain text ensure that data remains accessible and usable across different platforms and programming languages."] },
-            { id: 3, label: "3 Interface /\nimpl sep.", group: "arch", paragraphs: ["What vs how. Decouple contract from mechanism.", "Separating the interface from the implementation allows you to change how a feature works without affecting the code that uses it. This decoupling is essential for long-term project flexibility.", "This practice encourages thinking about the 'what' before the 'how', leading to cleaner architectural designs and more robust software systems."] },
-            { id: 6, label: "6 CLI\nfirst", group: "arch", paragraphs: ["Fully operable without a human in the loop.", "Designing with a CLI-first approach ensures that every function of your software can be automated. This is a prerequisite for modern DevOps practices and continuous integration pipelines.", "A command-line interface provides a powerful way for power users and scripts to interact with your application, often proving more efficient than a graphical user interface for repetitive tasks."] },
-            { id: 7, label: "7 Open\naccess", group: "oss", paragraphs: ["No licenses needed. Better automation.", "Open access to tools and libraries removes legal and financial friction from the development process. It allows teams to experiment and scale without worrying about seat counts or license renewals.", "The availability of open source software has democratized technology, allowing small teams to build world-class products using the same tools as industry giants."] },
-            { id: 11, label: "11 Security", group: "oss", paragraphs: ["Open source prevents backdoors. Secrets management.", "Transparency in open source allows for public auditing of code, making it much harder for malicious backdoors to remain hidden. 'Security through obscurity' is a known anti-pattern.", "Robust security also involves modern practices like proper secrets management, ensuring that API keys and passwords are never hardcoded or committed to version control."] },
-            { id: 12, label: "12 Larger\ndev teams", group: "oss", paragraphs: ["Open source expands the talent pool globally.", "By adopting open source practices, projects can benefit from contributions from developers all over the world. This diversity of perspective often leads to more robust and feature-rich software.", "Managing larger, distributed teams requires clear documentation and well-defined contribution guidelines, which are hallmarks of successful open source projects."] },
-            { id: 13, label: "13 Community\nsupport", group: "oss", paragraphs: ["More people to answer questions and review code.", "The community surrounding a piece of technology is often as important as the code itself. A vibrant community provides a wealth of shared knowledge, tutorials, and third-party extensions.", "Peer review within the community helps maintain high code quality standards and ensures that security vulnerabilities are identified and patched quickly."] },
-            { id: 8, label: "8 Multi-lang\ncomfort", group: "cult", paragraphs: ["Work fluently across languages, formats, standards.", "Modern software development often requires working with multiple languages—perhaps Python for data, JavaScript for the UI, and SQL for the database. Being comfortable across stacks is a major advantage.", "Understanding different programming paradigms (functional, object-oriented, etc.) makes you a more versatile problem solver, regardless of the specific language you are using."] },
-            { id: 9, label: "9 Non-sentimental\ncode", group: "cult", paragraphs: ["Rewrite freely. It's about performance, not attachment.", "Code is a means to an end, not an end in itself. Being willing to throw away old code and rewrite it when a better approach is found is key to maintaining a healthy codebase.", "Non-sentimentality prevents 'sunk cost' thinking, where teams stick with bad architectural decisions just because they've already invested time in them."] },
-            { id: 14, label: "14 Iterative\ndev", group: "cult", paragraphs: ["Agile, lean, smallest deliverable tasks.", "Iterative development focuses on delivering small, functional increments of software frequently. This allows for rapid feedback and ensures that the project remains aligned with user needs.", "By breaking large projects into smaller, manageable tasks, teams can reduce risk and maintain a steady, predictable pace of delivery."] },
-            { id: 15, label: "15 Products\nnot projects", group: "cult", paragraphs: ["Software grows and adapts continuously.", "Viewing software as a product means recognizing that its lifecycle doesn't end at 'launch'. It requires ongoing maintenance, updates, and adaptation to changing requirements.", "A product mindset focuses on long-term value and user experience, rather than just checking off a list of requirements for a one-time delivery."] },
-            { id: 16, label: "16 Work as\na team", group: "cult", paragraphs: ["Transparency, overlap, pair programming.", "Effective software development is a team sport. Practices like pair programming and code reviews foster knowledge sharing and ensure that no single person is a point of failure.", "Transparency in communication and decision-making builds trust within the team and allows everyone to contribute to the project's success."] },
-            { id: 4, label: "4 Automation &\nvirt.", group: "prag", paragraphs: ["CI/CD, observability: metrics, alerts, logs.", "Automation is the key to scaling modern software. Continuous Integration and Deployment (CI/CD) pipelines ensure that code is tested and deployed reliably and frequently.", "Observability through metrics and logging allows teams to understand how their software behaves in production, enabling them to identify and fix issues before they impact users."] },
-            { id: 5, label: "5 Testing", group: "prag", paragraphs: ["Unit to integration, security, load testing.", "A comprehensive testing strategy is essential for building reliable software. This includes unit tests for individual functions, integration tests for systems, and performance testing for scale.", "Automated tests act as a safety net, allowing developers to refactor code with confidence, knowing that regressions will be caught immediately."] },
-            { id: 10, label: "10 Use existing\ntech", group: "prag", paragraphs: ["Don't build your own DB, regex, config. Learn first.", "One of the most important skills in software development is knowing when not to write code. Using proven, existing technologies for common tasks saves time and reduces bugs.", "Leveraging mature libraries and platforms allows you to focus your energy on the unique problems your software is actually trying to solve."] },
+        const nodes = [
+            { id: 1, label: "1 Small\nprograms", group: "arch", paragraphs: [
+                "Compose-ability over complexity. Do one thing well.",
+                "The best software does one thing well. This is not a guideline to consider when convenient — it is a foundational principle that shapes every architectural decision. A program that does one thing well is easier to test, easier to replace, easier to understand, and easier to compose with other programs. Complexity is not a sign of capability; it is usually a sign of unclear thinking.",
+                "Composability is the payoff. When a mesher, an analyser, and a visual editor of a finite element analysis suite are separate programs, any one of them can be swapped out, reused in a different context, or improved in isolation. The whole becomes greater than the sum of its parts precisely because the parts are honest about what they are.",
+                "This philosophy aligns with the Unix principle of building simple, modular tools that can be combined to solve complex problems through pipes and scripting."
+            ]},
+            { id: 2, label: "2 Open\ninterfaces", group: "arch", paragraphs: [
+                "APIs, CLIs, standard formats. Contract-first design.",
+                "A program that cannot be spoken to is a dead end. Open interfaces — APIs, CLIs, standard formats like JSON, SVG, and Markdown — are the grammar that allows programs to talk to each other and to the humans and systems that depend on them. Contract-first design means agreeing on the language before writing the implementation, which forces clarity and prevents the interface from becoming an afterthought.",
+                "Semantic versioning and backward compatibility are acts of respect toward everyone downstream. When no standard exists, the right move is to create one and publish it. Contributing, for example, a mesh data format to the public domain is worth more in the long run than a proprietary format that locks users in and limits adoption.",
+                "Open interfaces allow different systems to communicate seamlessly. By defining clear contracts, you enable interoperability and allow components to be swapped or upgraded without breaking the entire system."
+            ]},
+            { id: 3, label: "3 Interface /\nimpl sep.", group: "arch", paragraphs: [
+                "What vs how. Decouple contract from mechanism.",
+                "What a system does must be defined independently of how it does it. This separation is what makes it possible to improve, replace, or swap an implementation without affecting the code that uses it. It is also what makes parallel development possible — one person can build against a contract while another fulfils it.",
+                "This principle runs deeper than API design. It is a habit of mind: always ask what the contract is before asking how to honour it. When interface and implementation are tangled together, change becomes expensive and risk accumulates quietly.",
+                "This decoupling is essential for long-term flexibility, leading to cleaner architectural designs and more robust software systems."
+            ]},
+            { id: 4, label: "4 Automation &\nvirt.", group: "prag", paragraphs: [
+                "CI/CD, observability: metrics, alerts, logs.",
+                "Manual deployment is a liability. Every step that requires a human to intervene is a step that can be skipped, forgotten, or done differently by a different person on a different day. CI/CD pipelines are not a luxury — they are the backbone of a system that can be trusted to behave consistently across environments and over time.",
+                "Observability is the other side of that coin. Metrics, alerts, and logs must not be hidden in dashboards that nobody opens. They must be visible, actionable, and tied to the behaviour of the system in production. A system you cannot observe is a system you cannot understand, and a system you cannot understand is a system you cannot improve."
+            ]},
+            { id: 5, label: "5 Testing", group: "prag", paragraphs: [
+                "Unit to integration, security, load testing.",
+                "A comprehensive testing strategy is essential for building reliable software. This includes unit tests for individual functions, integration tests for systems, and performance testing for scale.",
+                "Testing is not a phase that happens before release. It is a continuous activity that is woven into development. A feature that works but has no tests is unfinished work that leaves a debt for whoever touches it next.",
+                "Automated tests act as a safety net, allowing developers to refactor code with confidence, knowing that regressions will be caught immediately."
+            ]},
+            { id: 6, label: "6 CLI\nfirst", group: "arch", paragraphs: [
+                "Fully operable without a human in the loop.",
+                "Designing with a CLI-first approach ensures that every function of your software can be automated. This is a prerequisite for modern DevOps practices and continuous integration pipelines.",
+                "The CLI is the most honest interface a system can have — it exposes exactly what the system can do, without ceremony, and it can be scripted, piped, and automated by anything. Building CLI-first means building a system that can participate in larger workflows without requiring human supervision.",
+                "Configuration files, structured logs, and observability systems replace the human in the loop. The UI, when it exists, should be a layer on top of a fully functional headless system — not the only way in.",
+                "A command-line interface provides a powerful way for power users and scripts to interact with your application, often proving more efficient than a graphical user interface for repetitive tasks."
+            ]},
+            { id: 7, label: "7 Open\naccess", group: "oss", paragraphs: [
+                "No licenses needed. Better automation.",
+                "Open access to tools and libraries removes legal and financial friction from the development process. It allows teams to experiment and scale without worrying about seat counts or license renewals.",
+                "This freedom is not just about cost — it is about the ability to move quickly, to fork when necessary, and to build on a foundation that the whole community can inspect and improve.",
+                "Open access also aligns naturally with the other paradigms. Open interfaces, composability, and automation all benefit from a culture that defaults to openness rather than restriction."
+            ]},
+            { id: 8, label: "8 Multi-lang\ncomfort", group: "cult", paragraphs: [
+                "Work fluently across languages, formats, standards.",
+                "Modern software development often requires working with multiple languages—perhaps Python for data, JavaScript for the UI, and SQL for the database. Being comfortable across stacks is a major advantage.",
+                "A developer who is loyal to a single language is limited by that language's strengths and blind to its weaknesses. Multi-language comfort is not about knowing every language superficially; it is about being genuinely at ease moving between paradigms, idioms, and ecosystems.",
+                "This requires managing the real risk of distraction. New languages and frameworks are worth exploring, but curiosity must be disciplined. The goal is to expand the palette without losing focus on the work."
+            ]},
+            { id: 9, label: "9 Non-sentimental\ncode", group: "cult", paragraphs: [
+                "Rewrite freely. It's about performance, not attachment.",
+                "Code is not an achievement to be preserved — it is a means to an end. The willingness to rewrite, replace, or discard code is a sign of maturity, not carelessness. Software that cannot be replaced becomes a trap: it accumulates complexity, resists improvement, and eventually becomes the thing that holds the whole system hostage.",
+                "Products should move from prototype to pilot to powerhouse. Each stage demands different code, different tradeoffs, and different priorities. Lessons learned in the prototype should be applied ruthlessly in the rewrite. What matters is how the system performs, how maintainable it is, and how secure it is — not how long it took to write or how clever it is.",
+                "Non-sentimentality prevents 'sunk cost' thinking, where teams stick with bad architectural decisions just because they've already invested time in them."
+            ] },
+            { id: 10, label: "10 Use existing\ntech", group: "prag", paragraphs: [
+                "Don't build your own DB, regex, config. Learn first.",
+                "One of the most important skills in software development is knowing when not to write code. Using proven, existing technologies for common tasks saves time and reduces bugs.",
+                "Building something that already exists is usually a mistake. Databases, visualisation libraries, regular expression engines, configuration formats — these are solved problems, and solving them again consumes time that could be spent on the actual problem. The engineering instinct to build from scratch must be balanced against the cost of reinventing infrastructure that others have already hardened over years.",
+                "The discipline here is breadth of knowledge. Spinning up an unfamiliar technology in Docker to understand what it does is a small investment with a large return. The developer who knows what exists can reach for the right tool; the developer who only knows what they have built is always starting from scratch.",
+                "Leveraging mature libraries and platforms allows you to focus your energy on the unique problems your software is actually trying to solve."
+            ] },
+            { id: 11, label: "11 Security", group: "oss", paragraphs: [
+                "Open source prevents backdoors. Secrets management.",
+                "Security is not a feature to be added at the end — it is a cross-cutting concern that touches every layer of a system. Open source is a natural ally here: transparent code is harder to hide backdoors in, and more eyes on a codebase means more chances to catch vulnerabilities before they are exploited. 'Security through obscurity' is a known anti-pattern.",
+                "Beyond openness, security requires active practice: secrets management so that credentials never live in source code, dependency auditing so that the supply chain is understood and monitored, and threat modelling so that risks are identified before they are realised. Security is a habit, not a checklist."
+            ] },
+            { id: 12, label: "12 Larger\ndev teams", group: "oss", paragraphs: [
+                "Open source expands the talent pool globally.",
+                "Open source changes the economics of talent. A codebase that is public can attract contributors from anywhere in the world, across time zones and institutions, each bringing different experience and perspective. The talent pool is no longer bounded by geography or headcount.",
+                "Such diversity of perspective often leads to more robust and feature-rich software but requires strong leadership and well-defined contribution guidelines.",
+                "This scale also distributes knowledge. When many people understand a system, the risk of a single point of failure in the team is reduced. The codebase becomes a shared asset rather than the private domain of a small group."
+            ]},
+            { id: 13, label: "13 Community\nsupport", group: "oss", paragraphs: [
+                "More people to answer questions and review code.",
+                "The community surrounding a piece of technology is often as important as the code itself. A vibrant community provides a wealth of shared knowledge, tutorials, and third-party extensions.",
+                "A healthy open source community is a support system that no internal team can replicate. Questions get answered by people who have faced the same problems. Bugs get reported by users who encounter edge cases the original developers never imagined. The collective knowledge of a community compounds over time in a way that isolated teams cannot match.",
+                "Support and peer reviews within the community creates accountability, helping to maintain high code quality standards. Code that is visible to the public tends to be written with more care. The knowledge that others will read, use, and critique the work raises the standard naturally."
+            ] },
+            { id: 14, label: "14 Iterative\ndev", group: "cult", paragraphs: [
+                "Agile, lean, smallest deliverable tasks.",
+                "Iterative development focuses on delivering small, functional increments of software frequently. This allows for rapid feedback and ensures that the project remains aligned with user needs.",
+                "Large batches of work are the enemy of predictability. Breaking work into the smallest possible tasks that still deliver presentable value makes it possible to measure progress in a way that supports honest forecasting.",
+                "By breaking large projects into smaller, manageable tasks, teams can reduce risk and maintain a steady, predictable pace of delivery."
+            ]},
+            { id: 15, label: "15 Products\nnot projects", group: "cult", paragraphs: [
+                "Software grows and adapts continuously.",
+                "A project has an end date. A product does not. Software that is treated as a project gets built, delivered, and abandoned — left running in a corner, untouched and unmaintained, until it becomes a liability. Software that is treated as a product is expected to adapt, grow, and respond to the changing needs of its users.",
+                "This distinction shapes everything: how work is prioritised, how teams are structured, how success is measured. Products invite continuous improvement. Projects invite avoidance. The goal is software that people want to keep working on — not software that everyone is afraid to touch.",
+                "A product mindset focuses on long-term value and user experience, rather than just checking off a list of requirements for a one-time delivery."
+            ]},
+            { id: 16, label: "16 Work as\na team", group: "cult", paragraphs: [
+                "Transparency, overlap, pair programming.",
+                "Software is a team sport. Individual brilliance is worth far less than a team where knowledge is shared, work is visible, and any member can pick up where another left off. Pair programming, transparent task management, and deliberate overlap between focus areas are the practices that make this real. The hidden cost of isolated developers is enormous — duplicated work, knowledge silos, and the catastrophic risk of a single person being the only one who understands a critical system.",
+                "Documentation should serve the team, not satisfy an audit. Dependency diagrams, flow diagrams, and system diagrams are functional tools that help new and existing members understand how things fit together. The code itself should be the primary explanation of what it does — clear naming, small functions, and honest structure — with comments reserved for the rare cases where intent cannot be made obvious from the code alone.",
+                "Transparency in communication and decision-making builds trust within the team and allows everyone to contribute to the project's success."
+            ] },
         ];
 
-        const linksA = [
-            { source: 1, target: 2, desc: "Small programs demand open interfaces to compose with other programs — composability requires a contract." },
-            { source: 1, target: 3, desc: "Keeping programs small is only possible when interface and implementation are cleanly separated." },
-            { source: 1, target: 6, desc: "Small, single-purpose programs are naturally operable from the CLI without a GUI." },
-            { source: 2, target: 3, desc: "An open interface is the published contract; implementation separation is what makes that contract stable." },
-            { source: 2, target: 6, desc: "Open interfaces (APIs, CLIs, pipes) are the mechanism that makes CLI-first operability possible." },
-            { source: 3, target: 6, desc: "A system that separates interface from implementation can be driven entirely through its CLI without change." },
-            { source: 7, target: 11, desc: "Open source exposes code to public scrutiny, making backdoors harder to hide and vulnerabilities easier to find." },
-            { source: 7, target: 12, desc: "Open source removes licensing barriers, inviting contributors from a global talent pool." },
-            { source: 7, target: 13, desc: "Open source naturally forms communities — shared codebases create shared knowledge and support networks." },
-            { source: 11, target: 12, desc: "Larger teams mean more reviewers, which directly strengthens security through broader code scrutiny." },
-            { source: 12, target: 13, desc: "Larger teams generate richer community knowledge, more varied questions, and more diverse answers." },
-            { source: 8, target: 9, desc: "Non-sentimentality about code requires comfort with multiple languages — you can't freely rewrite if you're attached to one stack." },
-            { source: 9, target: 14, desc: "Iterative development depends on willingness to discard and redo — sentimental attachment to code blocks iteration." },
-            { source: 9, target: 15, desc: "Products that evolve continuously require teams that are unsentimental: old code must be replaced without grief." },
-            { source: 14, target: 15, desc: "Iterative delivery is the engine of product thinking — products are grown sprint by sprint, not launched once." },
-            { source: 14, target: 16, desc: "Iterative development requires constant team coordination: shared context, handoffs, and collective ownership." },
-            { source: 15, target: 16, desc: "A product mindset requires a team mindset — ongoing ownership, shared responsibility, no single gatekeepers." },
-            { source: 4, target: 5, desc: "Automation provides the infrastructure that makes continuous, reliable testing practical at every level." },
-            { source: 4, target: 10, desc: "Automation tooling (CI/CD, containers, monitoring) should be assembled from existing technology, not built from scratch." },
-            { source: 5, target: 10, desc: "Testing frameworks, assertion libraries, and load tools are existing technology — use them rather than inventing your own." },
-            { source: 1, target: 4, desc: "Small programs are individually automatable; CI/CD pipelines can build, test and deploy each component independently." },
-            { source: 2, target: 4, desc: "Open interfaces are the integration points that CI/CD pipelines and automation scripts target." },
-            { source: 3, target: 5, desc: "A stable, well-defined interface is the contract that automated tests verify — separation makes testing precise." },
-            { source: 6, target: 4, desc: "CLI-first design is a prerequisite for automation — you cannot script what requires a human clicking a GUI." },
-            { source: 6, target: 5, desc: "CLI operability means tests can invoke the system directly, enabling fast, scriptable automated test runs." },
-            { source: 2, target: 7, desc: "Publishing open interfaces is an act of openness that aligns with and enables open-source collaboration." },
-            { source: 2, target: 11, desc: "Open interfaces expose the attack surface clearly, making it easier to reason about and audit security boundaries." },
-            { source: 1, target: 7, desc: "Small, focused programs are easier to open-source — their scope is bounded and their reuse value is obvious." },
-            { source: 1, target: 14, desc: "Small programs map naturally to small, iterative tasks — each program is a deliverable unit of incremental work." },
-            { source: 3, target: 9, desc: "When interface and implementation are separated, you can rewrite the implementation without ceremony — non-sentimentality is easy." },
-            { source: 6, target: 8, desc: "CLI-first development requires comfort with shell languages, config formats, and scripting — multi-language fluency in practice." },
-            { source: 7, target: 4, desc: "Open-source tools (Docker, GitHub Actions, Prometheus) are the building blocks of modern automation — open access enables the ecosystem." },
-            { source: 7, target: 10, desc: "Open access to mature open-source libraries and tools is the practical foundation of 'use existing technology'." },
-            { source: 11, target: 5, desc: "Security testing — dependency auditing, SAST, threat modelling — is a required category of automated testing." },
-            { source: 14, target: 5, desc: "Testing and documentation updates are part of the definition of done in iterative development." },
-            { source: 15, target: 4, desc: "A product that never stops evolving requires permanent automation: delivery pipelines must run continuously, not once." },
-            { source: 9, target: 10, desc: "Non-sentimentality about code means reaching for an existing library rather than rebuilding what already exists." },
-            { source: 12, target: 16, desc: "Larger teams only function well with strong team practices — transparency, overlap, and documentation become essential at scale." },
-            { source: 13, target: 16, desc: "Community support outside the team informs team practices — how others solve coordination problems is a source of learning." },
-            { source: 7, target: 15, desc: "Open-source products are inherently products, not projects — they have ongoing users, continuous maintenance, and community roadmaps." },
+        const links = [
+            { source: 1, target: 2, desc: "Small programs and open interfaces are two sides of the same coin. A program that does one thing well is only useful if other programs can talk to it, and that conversation requires a well-defined, published interface. Composability — the whole point of keeping programs small — is impossible without the contracts that open interfaces provide. You cannot compose what you cannot address." },
+            { source: 1, target: 3, desc: "Keeping a program small is only sustainably possible when its interface is decoupled from its internals. Without that separation, the temptation to grow the program's surface area alongside its implementation is irresistible. Separation of concerns is what gives smallness its structural integrity — it defines the boundary at which the program stops." },
+            { source: 1, target: 6, desc: "A small, single-purpose program is a natural fit for the command line. It takes inputs, does one thing, and produces outputs — exactly the model that shells, pipes, and scripts are built around. The more a program does, the more it tends to grow a GUI to manage that complexity. Keeping programs small keeps them scriptable." },
+            { source: 2, target: 3, desc: "An open interface is the published contract; implementation separation is the discipline that keeps that contract stable. If implementation details leak into the interface, the contract becomes brittle — callers depend on internals that were never meant to be visible. The two paradigms enforce each other: you cannot have a trustworthy open interface without the separation that insulates it from change." },
+            { source: 2, target: 6, desc: "Open interfaces and CLI-first design are almost synonymous in practice. A CLI is an interface — a contract between a program and its callers, expressed in commands, flags, and exit codes rather than HTTP verbs. Designing a system to be CLI-operable is, in effect, designing it to have an open, scriptable interface that any tool or person can drive without special knowledge of its internals." },
+            { source: 3, target: 6, desc: "When a system cleanly separates what it does from how it does it, driving it from a CLI becomes straightforward — the CLI targets the interface, not the implementation. This means the system can be scripted, automated, and tested without any change to its internals. CLI-first operability is, in this sense, a practical test of whether the separation is real." },
+            { source: 7, target: 11, desc: "Open source and security reinforce each other in a way that is often underappreciated. When code is publicly visible, backdoors are hard to hide and vulnerabilities attract scrutiny from people with no stake in concealing them. Closed systems rely on secrecy as a security mechanism, which is fragile. Open systems rely on transparency, which scales. More eyes on the code means more chances to catch what a single team might miss." },
+            { source: 7, target: 12, desc: "Open access removes the licensing and access barriers that limit who can contribute to a codebase. A project that anyone can clone, run, and submit a pull request to has a potential contributor pool that is, in principle, the entire global developer community. This does not mean all contributors are equal, but it does mean that talent is not artificially constrained by geography, employer, or procurement process." },
+            { source: 7, target: 13, desc: "Open-source projects naturally accumulate communities around them. When the code is public and the issues are public, knowledge about the system diffuses broadly — people ask questions in forums, write blog posts, record walkthroughs, and answer each other's questions without being paid to do so. This community knowledge base is a form of distributed documentation and support that no internal team could replicate alone." },
+            { source: 11, target: 12, desc: "Security is fundamentally a numbers game at the review stage. A larger team means more people reading code, more varied threat models applied, and a greater likelihood that someone will notice the subtle mistake that a smaller group would skip past. This is not about redundancy — it is about cognitive diversity applied to a problem where the attacker only needs to find one gap." },
+            { source: 12, target: 13, desc: "Larger teams and strong communities are mutually reinforcing. A bigger contributor base generates more questions, more edge cases encountered in production, and more people motivated to write answers. That body of shared knowledge then attracts more contributors, because the onboarding cost drops when good documentation and support already exist. The two grow together." },
+            { source: 8, target: 9, desc: "You cannot be non-sentimental about code if you are emotionally attached to the language it is written in. A developer who has invested years in mastering only one language and one ecosystem will find it genuinely difficult to recommend that a service be rewritten in something better suited to the task. Multi-language comfort removes that resistance — if you are fluent across several stacks, the choice of language becomes a technical decision rather than an identity one." },
+            { source: 9, target: 14, desc: "Iterative development produces code that was right for its moment but is not right for the next one. Prototypes become pilots, pilots become powerhouses, and at each stage the previous version must be let go of without grief. A team that is sentimental about code will find iteration painful — every rewrite feels like a loss. A team that sees code as a means rather than an end finds iteration natural." },
+            { source: 9, target: 15, desc: "A product that is expected to evolve continuously will periodically need to shed its own history. Core services get replaced, data models get redesigned, entire subsystems get retired. If the team is attached to the code that built the first version of the product, the product will calcify around it. Non-sentimentality is what allows a product to keep growing into something its original authors would not recognise — and that is a measure of success, not failure." },
+            { source: 14, target: 15, desc: "Iterative development is the operational expression of a product mindset. A project has a delivery date and a done state; a product has a roadmap and a next sprint. Breaking work into the smallest possible deliverable tasks only makes sense if there is always a next task — and there is always a next task only if the software is understood to be a product. The two paradigms together define how living software actually gets built." },
+            { source: 14, target: 16, desc: "Short iterations only work if the team is genuinely shared. When work is broken into small tasks that complete in days, the handoffs between team members become frequent and the need for shared context becomes acute. A developer who disappears into a task for three weeks and surfaces with a finished module is running a project. A developer who completes a small slice, hands it off, and picks up another is working on a product — and that requires a team that communicates constantly." },
+            { source: 15, target: 16, desc: "A product that runs indefinitely cannot be owned by one person. People change roles, leave, go on leave. If the product's continuity depends on any individual's presence, it is a project masquerading as a product. Genuine product thinking requires that knowledge, ownership, and context are distributed across the team — not hoarded in any single person's head. The team is the guarantor of the product's continuity." },
+            { source: 4, target: 5, desc: "Automation provides the infrastructure without which continuous testing is impractical. Running a full suite of unit, integration, security, and load tests by hand after every change is not feasible; running it automatically on every commit is. CI/CD pipelines are what turn testing from a periodic ceremony into a permanent feedback loop. Automation does not make testing better in isolation — it makes testing actually happen." },
+            { source: 4, target: 10, desc: "The tooling that powers modern automation — container runtimes, pipeline orchestrators, monitoring stacks, secret managers — is almost entirely open-source and mature. Building your own CI system, your own metrics pipeline, or your own deployment tooling is an enormous investment in something that is not your core product. Automation and existing technology belong together: the whole point of the automation ecosystem is that it is already built and you should use it." },
+            { source: 5, target: 10, desc: "Every major language ecosystem has mature testing frameworks, assertion libraries, mocking tools, fuzzing harnesses, and load testing rigs. Writing your own is a waste of effort that will produce something inferior. Using existing testing technology means the team spends its energy writing tests, not building the infrastructure to run them. The leverage is enormous — a good testing framework represents years of thought about how to make test failures legible and actionable." },
+            { source: 1, target: 4, desc: "Small, independently deployable programs are the unit that CI/CD pipelines are designed around. A pipeline that builds, tests, and deploys a single focused service is tractable. A pipeline that must coordinate a monolith — where a change to one part requires rebuilding and retesting everything — is expensive and slow. Keeping programs small makes automation faster, cheaper, and more reliable." },
+            { source: 2, target: 4, desc: "Automation scripts and CI/CD pipelines need something to target. Open, well-defined interfaces are that target — they give pipelines a stable, versioned surface to call, monitor, and verify without knowledge of internal implementation. An interface that changes unpredictably breaks automation silently; a stable, semantically versioned one makes automation trustworthy over time." },
+            { source: 3, target: 5, desc: "A well-defined interface is the contract that tests verify. When the interface is clearly separated from the implementation, tests can be written against that contract without any knowledge of how the implementation works — which is exactly the right level of abstraction. Tests that depend on implementation details are unecessary noise and brittle; tests that depend on the interface are stable and survive refactoring." },
+            { source: 6, target: 4, desc: "A system that requires a human to click through a GUI cannot be automated. CLI-first design is not just a convenience — it is a prerequisite for automation. Every step in a CI/CD pipeline, every health check, every deployment script, every scheduled job assumes it can invoke the system programmatically. CLI-first means the system is, by design, automation-ready." },
+            { source: 6, target: 5, desc: "CLI operability means test runners can invoke the system directly, pass it inputs, and inspect its outputs without standing up a browser, a GUI driver, or a human operator. This makes tests fast, deterministic, and easy to run in isolation. A system that is only operable through a GUI is a system that is, at best, expensive to test and, at worst, effectively untestable in an automated pipeline." },
+            { source: 2, target: 7, desc: "Publishing an open interface is itself an act of openness — it invites others to build on, integrate with, and improve a system without needing access to its internals. In the FEA example from paradigm 1, publishing the mesh data format as an open standard is simultaneously an open interface decision and an open-source contribution. The two reinforce each other: open interfaces make open source more useful, and open source makes open interfaces more widely adopted." },
+            { source: 2, target: 11, desc: "Open interfaces make the attack surface explicit. When a system's boundaries are clearly defined and publicly documented, it becomes possible to reason precisely about what is exposed, what is not, and what the threat model is. Hidden, undocumented interfaces are where security assumptions go unexamined. A clear contract forces the team to think about what they are committing to protect." },
+            { source: 1, target: 7, desc: "Small, focused programs are easier to open-source than large, sprawling ones. Their scope is bounded, their dependencies are limited, and their reuse value is immediately legible to someone encountering them for the first time. A program that does one thing well is a gift to the ecosystem — it can be understood, trusted, and adopted without reading thousands of lines of tangled code." },
+            { source: 1, target: 14, desc: "Small programs map naturally onto small, iterative development tasks. A service that does one thing can be specified, built, tested, and shipped within a single sprint. This creates a tight feedback loop between development and delivery that is hard to achieve when the unit of work is a sprawling system. Keeping programs small keeps the iteration cycle short." },
+            { source: 3, target: 9, desc: "When the interface is stable and cleanly separated from the implementation, rewriting the implementation becomes a low-risk, low-drama operation. The contract with the outside world does not change; only the internals do. This is what makes non-sentimentality practical rather than reckless — you can swap out an implementation precisely because the interface shields callers from the change. Without separation, every rewrite is a breaking change." },
+            { source: 6, target: 8, desc: "Building a CLI-first system requires comfort with shell scripting, configuration file formats, environment variables, piping, and the idiosyncrasies of terminal environments across operating systems. These are not the concerns of a single language — they span bash, Python, TOML, YAML, JSON, and more. CLI-first development is, in practice, a daily exercise in multi-language fluency." },
+            { source: 7, target: 4, desc: "Open-source tools (Docker, GitHub Actions, Prometheus) are the building blocks of modern automation — open access enabled the development and maturity of the ecosystem." },
+            { source: 7, target: 10, desc: "The entire premise of \"use existing technology\" depends on that technology being accessible. Open access — to libraries, frameworks, databases, and infrastructure tools — is what makes it possible to spin up a mature, battle-tested solution in an afternoon rather than building one over months. Open source is the library from which the \"use existing technology\" principle draws." },
+            { source: 11, target: 5, desc: "Security is not a property that emerges from functional correctness alone — it requires its own testing discipline. Dependency auditing, static analysis, fuzz testing, and penetration testing are all forms of automated security testing that belong in the same pipeline as unit and integration tests. Treating security as a testing concern means it gets the same continuous feedback loop rather than being a one-time audit." },
+            { source: 14, target: 5, desc: "In iterative development, testing is not a phase that happens after development — it is part of the definition of done. Every task that is completed must include updated tests; a feature without tests is not finished. This keeps the test suite aligned with the codebase at every point in the iteration, and it distributes the testing burden evenly rather than accumulating it as a debt that is paid at the end." },
+            { source: 15, target: 4, desc: "A product that is expected to evolve and be maintained indefinitely cannot rely on manual deployment and manual monitoring. The operational burden of a living product — releases, rollbacks, health checks, alerting — must be automated, because it never ends. Automation is what makes continuous product maintenance sustainable for a team that is simultaneously building the next version." },
+            { source: 9, target: 10, desc: "Being unsentimental about code includes being unsentimental about the code you wrote when a better alternative already exists. The temptation to build your own implementation of something — a configuration parser, a job queue, a metrics library — is often rooted in attachment to the craft of building rather than a genuine need. Non-sentimentality clears that attachment: if something good enough already exists, use it." },
+            { source: 12, target: 16, desc: "Larger teams make the team practices described in paradigm 16 non-optional. Transparency, communication, overlap of knowledge, and pair programming are nice-to-haves in a team of 2 to 3; they are vital requirements in a team of 5 or more. At scale, the hidden costs of isolation — duplicated work, lost context, single points of failure — become too large to ignore. Good team practices are what allow a large team to function as a team rather than a collection of individuals." },
+            { source: 13, target: 16, desc: "A strong external community models good internal team practices. Open-source communities have developed, through necessity, sophisticated norms around communication, code review, issue triage, and knowledge transfer — because contributors are distributed, asynchronous, and transient. Internal teams that engage with these communities absorb those norms and bring them back into their day-to-day work." },
+            { source: 7, target: 15, desc: "An open-source project is, almost by definition, a product. It has users with expectations, a version history with commitments, and a community that depends on its continued existence. Treating open-source work as a project — a one-time effort with a completion date — is how open-source projects become abandoned repositories. Open access creates the conditions for product thinking by making the software public and its users real." },
         ];
 
-        const COLORS = { arch: "#534AB7", oss: "#0F6E56", cult: "#993C1D", prag: "#185FA5" };
+        const colors = { arch: "#534AB7", oss: "#0F6E56", cult: "#993C1D", prag: "#185FA5" };
 
         const width = 800, height = 500;
 
@@ -185,20 +265,20 @@
             .attr("viewBox", `0 0 ${width} ${height}`);
 
         // Simulation
-        const simulationA = d3.forceSimulation(nodesA)
-            .force("link", d3.forceLink(linksA).id(d => d.id).distance(120))
+        const simulation = d3.forceSimulation(nodes)
+            .force("link", d3.forceLink(links).id(d => d.id).distance(120))
             .force("charge", d3.forceManyBody().strength(-400))
             .force("center", d3.forceCenter(width / 2, height / 2));
 
         // Draw links
-        const linkA = svg.append("g")
+        const link = svg.append("g")
             .selectAll("line")
-            .data(linksA)
+            .data(links)
             .enter().append("line")
             .attr("stroke", "#999")
             .attr("stroke-width", 2);
 
-        const groupsA = [
+        const groups = [
             { id: "arch", label: "Architecture" },
             { id: "oss",  label: "Open Source" },
             { id: "cult", label: "Culture" },
@@ -206,9 +286,9 @@
         ];
 
         // Draw nodes
-        const nodeA = svg.append("g")
+        const node = svg.append("g")
             .selectAll("g")
-            .data(nodesA)
+            .data(nodes)
             .enter().append("g")
             .attr("cursor", "pointer")
             .on("click", (event, d) => {
@@ -216,11 +296,11 @@
                 details.style("display", "block");
                 d3.select("#detail-title").text(d.label.replace('\n', ' '));
                 
-                const groupObj = groupsA.find(g => g.id === d.group);
+                const groupObj = groups.find(g => g.id === d.group);
                 d3.select("#detail-group").text(groupObj ? groupObj.label : "");
 
                 // Find connections
-                const connectedNodeIds = linksA
+                const connectedNodeIds = links
                     .filter(l => l.source === d.id || l.target === d.id || l.source.id === d.id || l.target.id === d.id)
                     .map(l => {
                         const sourceId = l.source.id || l.source;
@@ -228,7 +308,7 @@
                         return sourceId === d.id ? targetId : sourceId;
                     });
                 
-                const connectedNodes = nodesA.filter(n => connectedNodeIds.includes(n.id));
+                const connectedNodes = nodes.filter(n => connectedNodeIds.includes(n.id));
                 
                 const connectionsLabel = d3.select("#connections-label");
                 const connectionsList = d3.select("#connections-list");
@@ -254,13 +334,13 @@
                 // Scroll to details
                 details.node().scrollIntoView({ behavior: 'smooth' });
             })
-            .call(drag(simulationA));
+            .call(drag(simulation));
 
-        nodeA.append("circle")
+        node.append("circle")
             .attr("r", 25)
-            .attr("fill", d => COLORS[d.group] || "steelblue");
+            .attr("fill", d => colors[d.group] || "steelblue");
 
-        nodeA.append("text")
+        node.append("text")
             .attr("text-anchor", "middle")
             .attr("fill", "#fff")
             .style("font-size", "8px")
@@ -293,14 +373,14 @@
         }
 
         // Update positions on tick
-        simulationA.on("tick", () => {
-        linkA
+        simulation.on("tick", () => {
+        link
             .attr("x1", d => d.source.x)
             .attr("y1", d => d.source.y)
             .attr("x2", d => d.target.x)
             .attr("y2", d => d.target.y);
 
-        nodeA
+        node
             .attr("transform", d => `translate(${d.x},${d.y})`);
         });
     </script>

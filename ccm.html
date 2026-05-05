@@ -296,54 +296,14 @@
             .data(nodes)
             .enter().append("g")
             .attr("cursor", "pointer")
-            .on("click", (event, d) => {
-                const details = d3.select("#node-details");
-                details.style("display", "block");
-                d3.select("#detail-title").text(d.label.replace('\n', ' '));
-                
-                const groupObj = groups.find(g => g.id === d.group);
-                d3.select("#detail-group").text(groupObj ? groupObj.label : "");
-
-                // Find connections
-                const connectedNodeIds = links
-                    .filter(l => l.source === d.id || l.target === d.id || l.source.id === d.id || l.target.id === d.id)
-                    .map(l => {
-                        const sourceId = l.source.id || l.source;
-                        const targetId = l.target.id || l.target;
-                        return sourceId === d.id ? targetId : sourceId;
-                    });
-                
-                const connectedNodes = nodes.filter(n => connectedNodeIds.includes(n.id));
-                
-                const connectionsLabel = d3.select("#connections-label");
-                const connectionsList = d3.select("#connections-list");
-                connectionsList.selectAll("li").remove();
-
-                if (connectedNodes.length > 0) {
-                    connectionsLabel.text("Connected Paradigms:");
-                    connectedNodes.forEach(n => {
-                        connectionsList.append("li")
-                            .text(n.label.replace('\n', ' '))
-                            .style("margin-bottom", "2px");
-                    });
-                } else {
-                    connectionsLabel.text("");
-                }
-
-                const content = d3.select("#detail-content");
-                content.selectAll("p").remove();
-                d.paragraphs.forEach(p => {
-                    content.append("p").text(p);
-                });
-                
-                // Scroll to details
-                details.node().scrollIntoView({ behavior: 'smooth' });
-            })
+            .on("click", (event, d) => selectNode(d, true))
             .call(drag(simulation));
 
         node.append("circle")
             .attr("r", 25)
-            .attr("fill", d => colors[d.group] || "steelblue");
+            .attr("fill", d => colors[d.group] || "steelblue")
+            .attr("stroke", "none")
+            .attr("stroke-width", 3);
 
         node.append("text")
             .attr("text-anchor", "middle")
@@ -357,7 +317,54 @@
             .attr("x", 0)
             .attr("dy", (d, i) => i === 0 ? "-0.1em" : "1.2em")
             .text(d => d);
-        
+
+        function selectNode(d, scroll = false) {
+            node.select("circle")
+                .attr("stroke", n => n.id === d.id ? "#fff" : "none");
+
+            const details = d3.select("#node-details");
+            details.style("display", "block");
+            d3.select("#detail-title").text(d.label.replace('\n', ' '));
+
+            const groupObj = groups.find(g => g.id === d.group);
+            d3.select("#detail-group").text(groupObj ? groupObj.label : "");
+
+            const connectedNodeIds = links
+                .filter(l => l.source === d.id || l.target === d.id || l.source.id === d.id || l.target.id === d.id)
+                .map(l => {
+                    const sourceId = l.source.id || l.source;
+                    const targetId = l.target.id || l.target;
+                    return sourceId === d.id ? targetId : sourceId;
+                });
+
+            const connectedNodes = nodes.filter(n => connectedNodeIds.includes(n.id));
+
+            const connectionsLabel = d3.select("#connections-label");
+            const connectionsList = d3.select("#connections-list");
+            connectionsList.selectAll("li").remove();
+
+            if (connectedNodes.length > 0) {
+                connectionsLabel.text("Connected Paradigms:");
+                connectedNodes.forEach(n => {
+                    connectionsList.append("li")
+                        .text(n.label.replace('\n', ' '))
+                        .style("margin-bottom", "2px");
+                });
+            } else {
+                connectionsLabel.text("");
+            }
+
+            const content = d3.select("#detail-content");
+            content.selectAll("p").remove();
+            d.paragraphs.forEach(p => {
+                content.append("p").text(p);
+            });
+
+            if (scroll) details.node().scrollIntoView({ behavior: 'smooth' });
+        }
+
+        selectNode(nodes[0]);
+
         // Add drag behavior
         function drag(simulation) {
         return d3.drag()

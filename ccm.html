@@ -283,6 +283,16 @@
             .attr("stroke", "#999")
             .attr("stroke-width", 2);
 
+        // Transparent wider lines for easier edge clicking (below nodes in z-order)
+        const linkHit = svg.append("g")
+            .selectAll("line")
+            .data(links)
+            .enter().append("line")
+            .attr("stroke", "transparent")
+            .attr("stroke-width", 12)
+            .attr("cursor", "pointer")
+            .on("click", (event, d) => selectLink(d, true));
+
         const groups = [
             { id: "arch", label: "Architecture" },
             { id: "oss",  label: "Open Source" },
@@ -318,7 +328,34 @@
             .attr("dy", (d, i) => i === 0 ? "-0.1em" : "1.2em")
             .text(d => d);
 
+        function selectLink(d, scroll = false) {
+            node.select("circle").attr("stroke", "none");
+
+            link.attr("stroke", l => l === d ? "#333" : "#999")
+                .attr("stroke-width", l => l === d ? 3.5 : 2);
+
+            const sourceNode = nodes.find(n => n.id === (d.source.id ?? d.source));
+            const targetNode = nodes.find(n => n.id === (d.target.id ?? d.target));
+
+            const details = d3.select("#node-details");
+            details.style("display", "block");
+            d3.select("#detail-title").text(
+                `${sourceNode.label.replace('\n', ' ')} → ${targetNode.label.replace('\n', ' ')}`
+            );
+            d3.select("#detail-group").text("Connection");
+            d3.select("#connections-label").text("");
+            d3.select("#connections-list").selectAll("li").remove();
+
+            const content = d3.select("#detail-content");
+            content.selectAll("p").remove();
+            content.append("p").text(d.desc);
+
+            if (scroll) details.node().scrollIntoView({ behavior: 'smooth' });
+        }
+
         function selectNode(d, scroll = false) {
+            link.attr("stroke", "#999").attr("stroke-width", 2);
+
             node.select("circle")
                 .attr("stroke", n => n.id === d.id ? "#fff" : "none");
 
@@ -387,6 +424,12 @@
         // Update positions on tick
         simulation.on("tick", () => {
         link
+            .attr("x1", d => d.source.x)
+            .attr("y1", d => d.source.y)
+            .attr("x2", d => d.target.x)
+            .attr("y2", d => d.target.y);
+
+        linkHit
             .attr("x1", d => d.source.x)
             .attr("y1", d => d.source.y)
             .attr("x2", d => d.target.x)

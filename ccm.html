@@ -357,7 +357,7 @@
             link.attr("stroke", "#999").attr("stroke-width", 2);
 
             node.select("circle")
-                .attr("stroke", n => n.id === d.id ? "#fff" : "none");
+                .attr("stroke", n => n.id === d.id ? "#000" : "none");
 
             const details = d3.select("#node-details");
             details.style("display", "block");

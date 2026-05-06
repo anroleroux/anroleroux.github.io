@@ -291,7 +291,8 @@
             .attr("stroke", "transparent")
             .attr("stroke-width", 12)
             .attr("cursor", "pointer")
-            .on("click", (event, d) => selectLink(d, true));
+            .on("click", (event, d) => selectLink(d, true))
+            .on("touchend", (event, d) => { event.preventDefault(); selectLink(d, true); });
 
         const groups = [
             { id: "arch", label: "Architecture" },

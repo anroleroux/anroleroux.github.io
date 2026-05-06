@@ -77,6 +77,17 @@ a {
     text-decoration: none;
 }
 
+a.standout {
+    color: var(--keyidea);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    font-weight: 600;
+}
+
+a.standout:hover {
+    opacity: 0.75;
+}
+
 header {
     position: sticky;
     top: 0;

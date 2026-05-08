@@ -441,8 +441,13 @@
                 connectionsLabel.text("Connected Paradigms:");
                 connectedNodes.forEach(n => {
                     connectionsList.append("li")
+                        .style("margin-bottom", "2px")
+                        .append("a")
                         .text(n.label.replace('\n', ' '))
-                        .style("margin-bottom", "2px");
+                        .attr("href", "#")
+                        .style("cursor", "pointer")
+                        .on("click", (event) => { event.preventDefault(); selectNode(n, false); })
+                        .on("touchend", (event) => { event.preventDefault(); selectNode(n, false); });
                 });
             } else {
                 connectionsLabel.text("");

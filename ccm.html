@@ -400,8 +400,19 @@
                 `${sourceNode.label.replace('\n', ' ')} → ${targetNode.label.replace('\n', ' ')}`
             );
             d3.select("#detail-group").text("Connection");
-            d3.select("#connections-label").text("");
-            d3.select("#connections-list").selectAll("li").remove();
+            d3.select("#connections-label").text("Connects:");
+            const connectionsList = d3.select("#connections-list");
+            connectionsList.selectAll("li").remove();
+            [sourceNode, targetNode].forEach(n => {
+                connectionsList.append("li")
+                    .style("margin-bottom", "2px")
+                    .append("a")
+                    .text(n.label.replace('\n', ' '))
+                    .attr("href", "#")
+                    .style("cursor", "pointer")
+                    .on("click", (event) => { event.preventDefault(); selectNode(n, false); })
+                    .on("touchend", (event) => { event.preventDefault(); selectNode(n, false); });
+            });
 
             const content = d3.select("#detail-content");
             content.selectAll("p").remove();

@@ -440,14 +440,31 @@
             if (connectedNodes.length > 0) {
                 connectionsLabel.text("Connected Paradigms:");
                 connectedNodes.forEach(n => {
-                    connectionsList.append("li")
-                        .style("margin-bottom", "2px")
-                        .append("a")
+                    const edgeLink = links.find(l => {
+                        const s = l.source.id ?? l.source;
+                        const t = l.target.id ?? l.target;
+                        return (s === d.id && t === n.id) || (s === n.id && t === d.id);
+                    });
+
+                    const li = connectionsList.append("li")
+                        .style("margin-bottom", "2px");
+
+                    li.append("a")
                         .text(n.label.replace('\n', ' '))
                         .attr("href", "#")
                         .style("cursor", "pointer")
                         .on("click", (event) => { event.preventDefault(); selectNode(n, false); })
                         .on("touchend", (event) => { event.preventDefault(); selectNode(n, false); });
+
+                    if (edgeLink) {
+                        li.append("span").text(" · ");
+                        li.append("a")
+                            .text("connection")
+                            .attr("href", "#")
+                            .style("cursor", "pointer")
+                            .on("click", (event) => { event.preventDefault(); selectLink(edgeLink, false); })
+                            .on("touchend", (event) => { event.preventDefault(); selectLink(edgeLink, false); });
+                    }
                 });
             } else {
                 connectionsLabel.text("");

@@ -72,6 +72,7 @@
                     necessary.
                 </p>
             </div>
+            <h2>Paradigms</h2>
             <p>
                 Below is a graph that maps out 16 ways of thinking that will
                 further be referred to as paradigms. Clicking on each node will
@@ -93,8 +94,6 @@
                 It's impossible to master them all, but fortunately not
                 necessary.
             </p>
-        </section>
-        <section>
             <svg id="graph" style="width: 100%; height: auto;"></svg>
             <div id="node-details" style="margin-top: 20px; display: none;">
                 <h3 id="detail-title"></h3>
@@ -105,6 +104,63 @@
                 </div>
                 <div id="detail-content"></div>
             </div>
+        </section>
+        <section>
+            <h2>Important Tools and Technologies</h2>
+            <p>
+                There is a side of development that is seldom officially taught. It's not
+                programming, algorithms or databases. It is tools, small practices and
+                technologies that make development smoother, more reliable and more efficient.
+                It spreads informally by word of mouth between colleagues, friends or developer
+                influencers. It can therefore be difficult to prioritise such adoption if there
+                is little urgency. Worst case, the newcomer may not learn about an important
+                tool for years.
+            </p>
+            <p>
+                The <a href="https://missing.csail.mit.edu/" class="standout">MIT Missing Semester</a> course
+                is a recommended resource to remedy this.
+            </p>
+        </section>
+        <section>
+            <h2>Programming Languages</h2>
+            <p>
+                Regarding programming languages, it is important to understand the difference
+                between interpreted and compiled languages as well as dynamic and static typed
+                languages. Each language have their domain of focus and knowing this helps to
+                gauge how far one is operating from the language limitations.
+            </p>
+            <p>
+                A very useful resource for learning about the domains of different languages is
+                <a href="https://www.youtube.com/watch?v=Sg4U4r_AgJU&pp=ygUPYnJpYW4ga2VybmlnaGFu" class="standout">this presentation by Brian Kernighan</a>.
+            </p>
+        </section>
+        <section>
+            <h2>Methodologies and Disciplines</h2>
+            <p>
+                Breaking work down is always difficult but generally a very important skill to
+                master. In software development it is the key that small batches of work enable
+                regular value delivery, feedback and corrections to the delivery plan. The goal
+                is, what many call agility, but simply the ability to constantly correct the
+                trajectory and easily adapt to change.
+            </p>
+            <p>
+                The <a href="https://agilemanifesto.org/" class="standout">Agile Manifesto</a>
+                is a good methodology starting point.
+            </p>
+            <p>
+                Lean software development advocates for reducing waste and increasing value
+                delivery. The way software is developed should be constantly evaluated for
+                processes and practices that are not delivering as much value as was originally
+                expected. Be wary of becoming too dependent on methodologies that claim to be
+                agile but are excessively rigid.
+            </p>
+            <p>
+                There is more than just programming when looking at the entire software
+                development landscape. Some people manage infrastructure, some do quality
+                assurance. <a href="https://roadmap.sh/" class="standout">roadmap.sh</a> is a
+                good resource to get an overview of disciplines and the skills and technologies
+                that need to be mastered.
+            </p>
         </section>
     </article>
     <footer>
@@ -291,7 +347,8 @@
             .attr("stroke", "transparent")
             .attr("stroke-width", 12)
             .attr("cursor", "pointer")
-            .on("click", (event, d) => selectLink(d, true));
+            .on("click", (event, d) => selectLink(d, true))
+            .on("touchend", (event, d) => { event.preventDefault(); selectLink(d, true); });
 
         const groups = [
             { id: "arch", label: "Architecture" },
@@ -343,8 +400,19 @@
                 `${sourceNode.label.replace('\n', ' ')} → ${targetNode.label.replace('\n', ' ')}`
             );
             d3.select("#detail-group").text("Connection");
-            d3.select("#connections-label").text("");
-            d3.select("#connections-list").selectAll("li").remove();
+            d3.select("#connections-label").text("Connects:");
+            const connectionsList = d3.select("#connections-list");
+            connectionsList.selectAll("li").remove();
+            [sourceNode, targetNode].forEach(n => {
+                connectionsList.append("li")
+                    .style("margin-bottom", "2px")
+                    .append("a")
+                    .text(n.label.replace('\n', ' '))
+                    .attr("href", "#")
+                    .style("cursor", "pointer")
+                    .on("click", (event) => { event.preventDefault(); selectNode(n, false); })
+                    .on("touchend", (event) => { event.preventDefault(); selectNode(n, false); });
+            });
 
             const content = d3.select("#detail-content");
             content.selectAll("p").remove();
@@ -357,7 +425,7 @@
             link.attr("stroke", "#999").attr("stroke-width", 2);
 
             node.select("circle")
-                .attr("stroke", n => n.id === d.id ? "#fff" : "none");
+                .attr("stroke", n => n.id === d.id ? "#000" : "none");
 
             const details = d3.select("#node-details");
             details.style("display", "block");
@@ -383,9 +451,31 @@
             if (connectedNodes.length > 0) {
                 connectionsLabel.text("Connected Paradigms:");
                 connectedNodes.forEach(n => {
-                    connectionsList.append("li")
-                        .text(n.label.replace('\n', ' '))
+                    const edgeLink = links.find(l => {
+                        const s = l.source.id ?? l.source;
+                        const t = l.target.id ?? l.target;
+                        return (s === d.id && t === n.id) || (s === n.id && t === d.id);
+                    });
+
+                    const li = connectionsList.append("li")
                         .style("margin-bottom", "2px");
+
+                    li.append("a")
+                        .text(n.label.replace('\n', ' '))
+                        .attr("href", "#")
+                        .style("cursor", "pointer")
+                        .on("click", (event) => { event.preventDefault(); selectNode(n, false); })
+                        .on("touchend", (event) => { event.preventDefault(); selectNode(n, false); });
+
+                    if (edgeLink) {
+                        li.append("span").text(" · ");
+                        li.append("a")
+                            .text("connection")
+                            .attr("href", "#")
+                            .style("cursor", "pointer")
+                            .on("click", (event) => { event.preventDefault(); selectLink(edgeLink, false); })
+                            .on("touchend", (event) => { event.preventDefault(); selectLink(edgeLink, false); });
+                    }
                 });
             } else {
                 connectionsLabel.text("");

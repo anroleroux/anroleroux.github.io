@@ -450,9 +450,13 @@ footer > div {
 
 /* ── Time theme (landing page only) ──────────────────────────── */
 body.time-theme {
-    --callouts: #e8d4a0;
-    --structin: #c4a060;
+    --callouts: #f4edde;   /* pale warm cream — hero */
+    --structin: #c8b08a;   /* muted sandy tan — cards */
     --bg-color: #fdf9f3;
+}
+
+.time-theme .card {
+    border-color: #d4a81a;  /* bright goldenrod edge */
 }
 
 .hero { position: relative; }

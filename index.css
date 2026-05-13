@@ -447,3 +447,36 @@ footer > div {
         padding: 4rem var(--step-8);
     }
 }
+
+/* ── Time theme (landing page only) ──────────────────────────── */
+body.time-theme {
+    --callouts: #e8d4a0;
+    --structin: #c4a060;
+    --bg-color: #fdf9f3;
+}
+
+.hero { position: relative; }
+
+#time-widget {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    width: 90px;
+    pointer-events: none;
+}
+#time-widget svg { width: 90px; height: 90px; }
+#time-widget .tw-label {
+    font-size: 9px;
+    text-align: center;
+    color: var(--muted);
+    line-height: 1.3;
+    white-space: pre-line;
+}
+@media (max-width: 600px) {
+    #time-widget { width: 65px; top: 1rem; right: 1rem; }
+    #time-widget svg { width: 65px; height: 65px; }
+}

@@ -18,6 +18,7 @@
     </header>
     <main>
         <section class="hero">
+            <svg id="solar-bg" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"></svg>
             <h1>Engineering Programming Mathematics Leadership</h1>
             <p>
                 Aiming to inspire and assist professionals interested in
@@ -162,8 +163,112 @@
     <script>
         document.getElementById('year').textContent = new Date().getFullYear();
 
+        function renderSolarBg(lat, lon) {
+            const now  = new Date();
+            const svg  = document.getElementById('solar-bg');
+            if (!svg) return;
+
+            const hero = svg.parentElement;
+            const rect = hero.getBoundingClientRect();
+            const W    = rect.width  || window.innerWidth;
+            const H    = rect.height || 280;
+
+            svg.setAttribute('viewBox', `0 0 ${W.toFixed(0)} ${H.toFixed(0)}`);
+            svg.setAttribute('preserveAspectRatio', 'none');
+
+            const NS = 'http://www.w3.org/2000/svg';
+            const m  = (tag, attrs) => {
+                const el = document.createElementNS(NS, tag);
+                Object.entries(attrs).forEach(([k, v]) => el.setAttribute(k, v));
+                return el;
+            };
+
+            const LAT  = lat * Math.PI / 180;
+            const jan1 = Date.UTC(now.getUTCFullYear(), 0, 1);
+            const N    = Math.floor((now - jan1) / 86400000) + 1;
+            const G    = 2 * Math.PI / 365 * (N - 1);
+
+            const decl = 0.006918 - 0.399912*Math.cos(G) + 0.070257*Math.sin(G)
+                       - 0.006758*Math.cos(2*G) + 0.000907*Math.sin(2*G)
+                       - 0.002697*Math.cos(3*G) - 0.00148 *Math.sin(3*G);
+            const eot  = (229.18*(0.000075 + 0.001868*Math.cos(G) - 0.032077*Math.sin(G)
+                       - 0.014615*Math.cos(2*G) - 0.04089 *Math.sin(2*G))) / 60;
+
+            const hpd  = 15 * Math.PI / 180;
+            const ha_s = Math.acos(Math.max(-1, Math.min(1, -Math.tan(LAT)*Math.tan(decl))));
+            const rise = 12 - ha_s/hpd - lon/15 - eot;
+            const set_ = 12 + ha_s/hpd - lon/15 - eot;
+            const utcH = now.getUTCHours() + now.getUTCMinutes()/60 + now.getUTCSeconds()/3600;
+            const maxAlt = Math.asin(Math.max(-1, Math.min(1,
+                Math.sin(LAT)*Math.sin(decl) + Math.cos(LAT)*Math.cos(decl))));
+            const isDay = utcH >= rise && utcH <= set_;
+
+            const HY   = H * 0.72;
+            const LX   = W * 0.08, RX = W * 0.92, MX = W / 2;
+            const noonY = Math.max(8, HY - (maxAlt / (Math.PI / 2)) * HY * 0.85);
+            const cpY   = 2 * noonY - HY;
+
+            // Ground band
+            svg.appendChild(m('rect', {
+                x: 0, y: HY.toFixed(0), width: W.toFixed(0), height: (H - HY).toFixed(0),
+                fill: '#7a5030', opacity: 0.18
+            }));
+
+            // Horizon line
+            svg.appendChild(m('line', {
+                x1: 0, y1: HY.toFixed(1), x2: W.toFixed(0), y2: HY.toFixed(1),
+                stroke: '#a07848', 'stroke-width': 1, opacity: 0.4
+            }));
+
+            // Solar arc
+            const arcEl = m('path', {
+                d: `M ${LX.toFixed(1)} ${HY.toFixed(1)} Q ${MX.toFixed(1)} ${cpY.toFixed(1)} ${RX.toFixed(1)} ${HY.toFixed(1)}`,
+                fill: 'none', stroke: '#c89a3a', 'stroke-width': 2, opacity: 0.3
+            });
+            if (!isDay) arcEl.setAttribute('stroke-dasharray', '10 7');
+            svg.appendChild(arcEl);
+
+            // Sun position along Bézier
+            const t  = Math.max(0, Math.min(1, (utcH - rise) / (set_ - rise)));
+            const mt = 1 - t;
+            const sx = mt*mt*LX + 2*t*mt*MX + t*t*RX;
+            const sy = mt*mt*HY + 2*t*mt*cpY + t*t*HY;
+
+            if (isDay) {
+                svg.appendChild(m('circle', {cx: sx.toFixed(1), cy: sy.toFixed(1), r: 28, fill: '#f5a020', opacity: 0.05}));
+                svg.appendChild(m('circle', {cx: sx.toFixed(1), cy: sy.toFixed(1), r: 16, fill: '#f5a020', opacity: 0.10}));
+            }
+            svg.appendChild(m('circle', {
+                cx: sx.toFixed(1), cy: sy.toFixed(1), r: isDay ? 9 : 6,
+                fill: isDay ? '#f5a020' : '#404070',
+                opacity: isDay ? 0.55 : 0.40
+            }));
+
+            // Sunrise / sunset labels
+            const fmt = h => {
+                const norm = ((h % 24) + 24) % 24;
+                const mins = Math.round(norm * 60);
+                return `${String(Math.floor(mins / 60)).padStart(2, '0')}:${String(mins % 60).padStart(2, '0')}`;
+            };
+            const fs = Math.max(9, Math.min(13, W / 80)).toFixed(0);
+            const addTxt = (x, y, text, anchor) => {
+                const el = document.createElementNS(NS, 'text');
+                el.setAttribute('x', x.toFixed(0));
+                el.setAttribute('y', y.toFixed(0));
+                el.setAttribute('text-anchor', anchor);
+                el.setAttribute('font-size', fs);
+                el.setAttribute('fill', '#8b6a3a');
+                el.setAttribute('opacity', '0.5');
+                el.setAttribute('font-family', 'inherit');
+                el.textContent = text;
+                svg.appendChild(el);
+            };
+            addTxt(LX + 6, HY + 16, '↑ ' + fmt(rise), 'start');
+            addTxt(RX - 6, HY + 16, fmt(set_) + ' ↓', 'end');
+        }
+
         (function () {
-            const WIDGETS = ['moon', 'solar', 'season', 'impact'];
+            const WIDGETS = ['moon', 'season', 'impact'];
             const chosen  = WIDGETS[Math.floor(Math.random() * WIDGETS.length)];
             const tw      = document.getElementById('time-widget');
             const NS      = 'http://www.w3.org/2000/svg';
@@ -223,57 +328,6 @@
 
                 tw.appendChild(svg);
                 tw.appendChild(wLabel(phase + '\nDay ' + age));
-            }
-
-            // ── Solar arc (Greenwich UTC, lat 51.5°N) ─────────────────────
-            function renderSolar() {
-                const LAT  = 51.5 * Math.PI / 180;
-                const jan1 = Date.UTC(now.getUTCFullYear(), 0, 1);
-                const N    = Math.floor((now - jan1) / 86400000) + 1;
-                const G    = 2 * Math.PI / 365 * (N - 1);
-
-                const decl = 0.006918 - 0.399912*Math.cos(G) + 0.070257*Math.sin(G)
-                           - 0.006758*Math.cos(2*G) + 0.000907*Math.sin(2*G)
-                           - 0.002697*Math.cos(3*G) - 0.00148 *Math.sin(3*G);
-                const eot  = (229.18*(0.000075 + 0.001868*Math.cos(G) - 0.032077*Math.sin(G)
-                           - 0.014615*Math.cos(2*G) - 0.04089*Math.sin(2*G))) / 60;
-
-                const hpd  = 15 * Math.PI / 180;
-                const ha_s = Math.acos(Math.max(-1, Math.min(1, -Math.tan(LAT)*Math.tan(decl))));
-                const rise = 12 - ha_s/hpd - eot;
-                const set_ = 12 + ha_s/hpd - eot;
-                const utcH = now.getUTCHours() + now.getUTCMinutes()/60 + now.getUTCSeconds()/3600;
-                const maxAlt = Math.asin(Math.max(-1, Math.min(1,
-                    Math.sin(LAT)*Math.sin(decl) + Math.cos(LAT)*Math.cos(decl))));
-                const isDay = utcH >= rise && utcH <= set_;
-
-                const svg = svgEl();
-                const HY=65, LX=8, RX=82, MX=45;
-                const noonY = HY - (maxAlt / (Math.PI/2)) * 55;
-                const cpY   = 2 * noonY - HY;
-
-                svg.appendChild(mk('rect', {x:0, y:0, width:90, height:HY, fill: isDay?'#dce8f5':'#0e1020'}));
-                svg.appendChild(mk('rect', {x:0, y:HY, width:90, height:25, fill:'#7a6040'}));
-                svg.appendChild(mk('line', {x1:0, y1:HY, x2:90, y2:HY, stroke:'#5a4030', 'stroke-width':1}));
-                svg.appendChild(mk('path', {
-                    d: `M ${LX} ${HY} Q ${MX} ${cpY} ${RX} ${HY}`,
-                    fill: 'none', stroke: '#c89a3a', 'stroke-width': 1.5,
-                    'stroke-dasharray': isDay ? 'none' : '4 3'
-                }));
-
-                const t  = Math.max(0, Math.min(1, (utcH - rise) / (set_ - rise)));
-                const mt = 1 - t;
-                const sx = mt*mt*LX + 2*t*mt*MX + t*t*RX;
-                const sy = mt*mt*HY + 2*t*mt*cpY + t*t*HY;
-
-                if (isDay) svg.appendChild(mk('circle', {cx:sx.toFixed(2), cy:sy.toFixed(2), r:8,
-                    fill:'none', stroke:'#f5a020', 'stroke-width':1, opacity:0.4}));
-                svg.appendChild(mk('circle', {cx:sx.toFixed(2), cy:sy.toFixed(2), r:5,
-                    fill: isDay ? '#f5a020' : '#404070'}));
-
-                const fmt = h => { const m = Math.round(h*60); return `${String(Math.floor(m/60)%24).padStart(2,'0')}:${String(m%60).padStart(2,'0')}`; };
-                tw.appendChild(svg);
-                tw.appendChild(wLabel(`Solar Arc (UTC)\n☀ ${fmt(rise)}–${fmt(set_)}`));
             }
 
             // ── Seasonal wheel ────────────────────────────────────────────
@@ -364,27 +418,33 @@
             }
 
             if      (chosen === 'moon')   renderMoon();
-            else if (chosen === 'solar')  renderSolar();
             else if (chosen === 'season') renderSeason();
             else                          renderImpact();
         })();
 
-        // Geo info
+        // Geo info + solar background
         fetch('https://ipapi.co/json/')
             .then(r => r.json())
             .then(d => {
-                const el = document.getElementById('geo-info');
-                if (!el || d.error) return;
-                const lat = d.latitude  != null ? (Math.abs(d.latitude).toFixed(2)  + '°' + (d.latitude  >= 0 ? 'N' : 'S')) : '';
-                const lon = d.longitude != null ? (Math.abs(d.longitude).toFixed(2) + '°' + (d.longitude >= 0 ? 'E' : 'W')) : '';
-                const parts = [
-                    [d.city, d.country_name].filter(Boolean).join(', '),
-                    lat && lon ? lat + ', ' + lon : '',
-                    d.timezone || ''
-                ].filter(Boolean);
-                el.textContent = parts.join(' · ');
+                if (!d.error) {
+                    const el = document.getElementById('geo-info');
+                    if (el) {
+                        const latStr = d.latitude  != null ? (Math.abs(d.latitude).toFixed(2)  + '°' + (d.latitude  >= 0 ? 'N' : 'S')) : '';
+                        const lonStr = d.longitude != null ? (Math.abs(d.longitude).toFixed(2) + '°' + (d.longitude >= 0 ? 'E' : 'W')) : '';
+                        const parts = [
+                            [d.city, d.country_name].filter(Boolean).join(', '),
+                            latStr && lonStr ? latStr + ', ' + lonStr : '',
+                            d.timezone || ''
+                        ].filter(Boolean);
+                        el.textContent = parts.join(' · ');
+                    }
+                }
+                renderSolarBg(
+                    (!d.error && d.latitude  != null) ? d.latitude  : 51.5,
+                    (!d.error && d.longitude != null) ? d.longitude : 0
+                );
             })
-            .catch(() => {});
+            .catch(() => renderSolarBg(51.5, 0));
     </script>
 </body>
 </html>

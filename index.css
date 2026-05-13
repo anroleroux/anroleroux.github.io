@@ -478,6 +478,7 @@ body.time-theme {
 
 #geo-info {
     position: absolute;
+    z-index: 1;
     bottom: 0.75rem;
     left: var(--step-4);
     margin: 0;
@@ -493,6 +494,7 @@ body.time-theme {
 
 #time-widget {
     position: absolute;
+    z-index: 1;
     top: 1.5rem;
     right: 1.5rem;
     display: flex;
@@ -513,4 +515,20 @@ body.time-theme {
 @media (max-width: 600px) {
     #time-widget { width: 65px; top: 1rem; right: 1rem; }
     #time-widget svg { width: 65px; height: 65px; }
+}
+
+#solar-bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
+    overflow: visible;
+}
+
+.time-theme .hero > h1,
+.time-theme .hero > p {
+    position: relative;
+    z-index: 1;
 }

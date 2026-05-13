@@ -459,8 +459,9 @@ footer > div {
     border-radius: 999px;
     margin-top: var(--step-0);
 }
-.pill--app  { background: #2a6bcc; color: #fff; }
-.pill--code { background: #2a7a48; color: #fff; }
+.pill--app     { background: #2a6bcc; color: #fff; }
+.pill--code    { background: #2a7a48; color: #fff; }
+.pill--article { background: #6a3a9a; color: #fff; }
 
 /* ── Time theme (landing page only) ──────────────────────────── */
 body.time-theme {

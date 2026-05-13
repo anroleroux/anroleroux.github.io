@@ -87,6 +87,7 @@ Cards on the landing page can carry a `.pill` badge to classify content:
 
 - `.pill--app` (blue `#2a6bcc`) — deployed web application
 - `.pill--code` (green `#2a7a48`) — open-source code repository
+- `.pill--article` (purple `#6a3a9a`) — written article
 
 ### Interactive articles (ccm.html)
 

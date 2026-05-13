@@ -61,6 +61,33 @@ The `index()` function in the inline `<script>` auto-numbers headings, insight b
 
 The `pic-mod.js` module provides the cryptographic math primitives (`modPow` uses `BigInt` for large-number safety) and `plotGammaN()` which draws the D3 chart. `drawClock()` and `updateCalculations()` live inline in `pic.html` and call into `pic-mod.js`.
 
+### Landing page theme
+
+`index.html` carries a `time-theme` body class (alongside `sumner`) that layers a **Golden Hour** warm palette over the base theme:
+
+- `--callouts` (hero background): pale warm cream `#f4edde`
+- `--structin` (card background): muted sandy tan `#c8b08a`
+- `--bg-color`: barely-warm off-white `#fdf9f3`
+- Card border override: bright goldenrod `#d4a81a`
+
+The **"Time" concept** is the design motivation: the site covers engineering, mathematics, and leadership — disciplines measured in human, natural, and cosmic timescales. A small SVG widget in the hero rotates through four temporal visualisations on each page load:
+
+| Widget | What it shows | Key math |
+|--------|---------------|----------|
+| Moon phase | Illuminated fraction of the lunar disk | Julian date modulo synodic period (29.53 days) |
+| Solar arc | Sun's path above/below the horizon today | Declination + equation of time; fixed at Greenwich (51.5°N, 0°) |
+| Seasonal wheel | Earth's position between solstices/equinoxes | Day-of-year angle on a colour-coded ring |
+| Impact clock | Cumulative probability of a >1 km impactor since 2000 | Annual P ≈ 1/100,000; gauge fills to 0.1% max |
+
+All widget math is inline JavaScript — no CDN dependency. The widget is `position: absolute` in the hero's top-right corner (90 × 90 px, shrinks to 65 × 65 px on mobile).
+
+### Card pills
+
+Cards on the landing page can carry a `.pill` badge to classify content:
+
+- `.pill--app` (blue `#2a6bcc`) — deployed web application
+- `.pill--code` (green `#2a7a48`) — open-source code repository
+
 ### Interactive articles (ccm.html)
 
 `ccm.html` uses **D3 v7** only. The paradigm graph is a force-directed layout (`d3.forceSimulation`) with 16 nodes and ~40 edges defined as inline JS arrays. Clicking nodes/edges populates a detail panel below the SVG. Touch events are handled alongside click events for mobile.

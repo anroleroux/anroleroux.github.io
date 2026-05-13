@@ -448,6 +448,20 @@ footer > div {
     }
 }
 
+/* ── Card pills ──────────────────────────────────────────────── */
+.pill {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    padding: 2px 10px;
+    border-radius: 999px;
+    margin-top: var(--step-0);
+}
+.pill--app  { background: #2a6bcc; color: #fff; }
+.pill--code { background: #2a7a48; color: #fff; }
+
 /* ── Time theme (landing page only) ──────────────────────────── */
 body.time-theme {
     --callouts: #f4edde;   /* pale warm cream — hero */

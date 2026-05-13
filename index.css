@@ -476,6 +476,21 @@ body.time-theme {
 
 .hero { position: relative; }
 
+#geo-info {
+    position: absolute;
+    bottom: 0.75rem;
+    left: var(--step-4);
+    margin: 0;
+    font-size: var(--step--3);
+    color: var(--muted);
+    opacity: 0.75;
+    line-height: 1;
+    letter-spacing: 0.2px;
+}
+@media (min-width: 600px) { #geo-info { left: var(--step-5); } }
+@media (min-width: 768px) { #geo-info { left: var(--step-6); } }
+@media (min-width: 900px) { #geo-info { left: var(--step-8); } }
+
 #time-widget {
     position: absolute;
     top: 1.5rem;

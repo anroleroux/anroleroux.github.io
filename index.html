@@ -25,6 +25,7 @@
                 encouraging brave and trusting leadership driving success.
             </p>
             <div id="time-widget" aria-hidden="true"></div>
+            <p id="geo-info" aria-live="polite"></p>
         </section>
         <section class="material">
             <a class="card" href="https://github.com/aleroux85/twitcher" target="_blank">
@@ -367,6 +368,23 @@
             else if (chosen === 'season') renderSeason();
             else                          renderImpact();
         })();
+
+        // Geo info
+        fetch('https://ipapi.co/json/')
+            .then(r => r.json())
+            .then(d => {
+                const el = document.getElementById('geo-info');
+                if (!el || d.error) return;
+                const lat = d.latitude  != null ? (Math.abs(d.latitude).toFixed(2)  + '°' + (d.latitude  >= 0 ? 'N' : 'S')) : '';
+                const lon = d.longitude != null ? (Math.abs(d.longitude).toFixed(2) + '°' + (d.longitude >= 0 ? 'E' : 'W')) : '';
+                const parts = [
+                    [d.city, d.country_name].filter(Boolean).join(', '),
+                    lat && lon ? lat + ', ' + lon : '',
+                    d.timezone || ''
+                ].filter(Boolean);
+                el.textContent = parts.join(' · ');
+            })
+            .catch(() => {});
     </script>
 </body>
 </html>

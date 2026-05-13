@@ -3,10 +3,10 @@
     --text-color: #0d0e10;
     /* hues #2f00ff and #ff3200 */
     --muted: #475569;
-    --accent: #cad0eb;
+    --accent: #c8b08a;
     --keyidea: #a54b1e;
     --border: #e2e8f0;
-    --card: #cad0eb;
+    --card: #c8b08a;
     --radius: 16px;
     --shadow: 0 10px 25px rgba(0, 0, 0, .06);
 
@@ -51,7 +51,7 @@ body.sumner {
   --neutral: #616575;
   --greenlight: #96F53E;
   --redlight: #F57751;
-  --breakout: #ae9eff60;
+  --breakout: #c8b08a60;
   --callouts: #cdc8e6;
   --structin: #7aaac9;
 }
@@ -111,6 +111,7 @@ article, main {
 }
 
 .hero {
+    position: relative;
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -131,6 +132,19 @@ article, main {
     flex: 1;
     margin: 0;
     font-size: 1.2rem;
+}
+
+#geo-info {
+    position: absolute;
+    z-index: 1;
+    bottom: 0.75rem;
+    right: var(--step-4);
+    margin: 0;
+    font-size: var(--step--3);
+    color: var(--muted);
+    opacity: 0.75;
+    line-height: 1;
+    letter-spacing: 0.2px;
 }
 
 .material {
@@ -237,7 +251,7 @@ div.block {
 }
 
 .warning {
-    background: #ff6f0086;
+    background: #ff6f003e;
     margin-bottom: var(--step--4);
 }
 
@@ -268,7 +282,7 @@ div.block {
     border: 1px solid var(--border);
     border-radius: 10px;
     font: inherit;
-    background: #fff;
+    /* background: #fff; */
 }
 
 /* Hide default number spinners */
@@ -300,8 +314,8 @@ div.block {
 }
 
 .number-controls button {
-    background: #eee;
-    border: 1px solid var(--border);
+    background: none;
+    border: none;
     cursor: pointer;
     font-size: 8px;
     padding: 0 5px;
@@ -310,20 +324,19 @@ div.block {
     align-items: center;
     justify-content: center;
     height: 45%;
-    border-radius: 3px;
     color: var(--text-color);
 }
 
-.number-controls button:hover {
+/* .number-controls button:hover {
     background: #ddd;
-}
+} */
 
 .interactions span {
     margin-left: var(--step-1);
     /* border: 1px solid var(--border); */
     /* border-radius: 10px; */
     font: inherit;
-    background: #fff;
+    /* background: #fff; */
 }
 
 .figure-numbering {
@@ -352,7 +365,7 @@ div.mod-seq {
     border: 1px solid var(--border);
     border-radius: 10px;
     padding: var(--step-1);
-    background: #fff;
+    /* background: #fff; */
     margin-bottom: var(--step-2);
 }
 
@@ -467,30 +480,16 @@ footer > div {
 body.time-theme {
     --callouts: #f4edde;   /* pale warm cream — hero */
     --structin: #c8b08a;   /* muted sandy tan — cards */
-    --bg-color: #fdf9f3;
+    --bg-color: #fffdf9;
 }
 
 .time-theme .card {
     border-color: #d4a81a;  /* bright goldenrod edge */
 }
 
-.hero { position: relative; }
-
-#geo-info {
-    position: absolute;
-    z-index: 1;
-    bottom: 0.75rem;
-    left: var(--step-4);
-    margin: 0;
-    font-size: var(--step--3);
-    color: var(--muted);
-    opacity: 0.75;
-    line-height: 1;
-    letter-spacing: 0.2px;
-}
-@media (min-width: 600px) { #geo-info { left: var(--step-5); } }
-@media (min-width: 768px) { #geo-info { left: var(--step-6); } }
-@media (min-width: 900px) { #geo-info { left: var(--step-8); } }
+@media (min-width: 600px) { #geo-info { right: var(--step-5); } }
+@media (min-width: 768px) { #geo-info { right: var(--step-6); } }
+@media (min-width: 900px) { #geo-info { right: var(--step-8); } }
 
 #time-widget {
     position: absolute;

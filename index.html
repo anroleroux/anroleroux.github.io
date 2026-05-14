@@ -6,7 +6,7 @@
     <title>Anro</title>
     <link rel="stylesheet" href="/index.css"/>
 </head>
-<body class="sumner">
+<body class="sumner time-theme">
     <header>
         <div class="navbar">
             <div class="brand">Anro le Roux</div>
@@ -18,12 +18,15 @@
     </header>
     <main>
         <section class="hero">
+            <svg id="solar-bg" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"></svg>
             <h1>Engineering Programming Mathematics Leadership</h1>
             <p>
                 Aiming to inspire and assist professionals interested in
                 improving their proficiency in programming and mathematics while
                 encouraging brave and trusting leadership driving success.
             </p>
+            <div id="time-widget" aria-hidden="true"></div>
+            <p id="geo-info" aria-live="polite"></p>
         </section>
         <section class="material">
             <a class="card" href="https://github.com/aleroux85/twitcher" target="_blank">
@@ -33,6 +36,7 @@
                     micro-controller boards into a meshable
                     user friendly customizable contol system.
                 </p>
+                <span class="pill pill--code">Code</span>
             </a>
             <a class="card" href="/pic.html">
                 <h3>Primes and Cryptography</h3>
@@ -40,12 +44,30 @@
                     How the modern world is build on a
                     seeminly insignificant math peculiarity.
                 </p>
+                <span class="pill pill--article">Article</span>
             </a>
             <a class="card" href="/ccm.html">
                 <h3>Code as a Career Multiplier</h3>
                 <p>
                     Adding Programming to Your Professional Toolkit.
                 </p>
+                <span class="pill pill--article">Article</span>
+            </a>
+            <a class="card" href="https://anroleroux.github.io/dawnstack" target="_blank">
+                <h3>UnLog</h3>
+                <p>
+                    A focused daily logging webapp for tracking what matters
+                    without the noise.
+                </p>
+                <span class="pill pill--app">App</span>
+            </a>
+            <a class="card" href="https://github.com/anroleroux/dawnstack" target="_blank">
+                <h3>Dawnstack</h3>
+                <p>
+                    The open-source stack powering UnLog and future
+                    Dawnstack applications.
+                </p>
+                <span class="pill pill--code">Code</span>
             </a>
         </section>
         <section class="content">
@@ -140,6 +162,206 @@
 
     <script>
         document.getElementById('year').textContent = new Date().getFullYear();
+
+        function renderSolarBg(lat, lon) {
+            const now  = new Date(); //now.setHours(12, 0, 0, 0);
+            const svg  = document.getElementById('solar-bg');
+            if (!svg) return;
+
+            const hero = svg.parentElement;
+            const rect = hero.getBoundingClientRect();
+            const W    = rect.width  || window.innerWidth;
+            const H    = rect.height || 280;
+
+            svg.setAttribute('viewBox', `0 0 ${W.toFixed(0)} ${H.toFixed(0)}`);
+            svg.setAttribute('preserveAspectRatio', 'none');
+
+            const NS = 'http://www.w3.org/2000/svg';
+            const m  = (tag, attrs) => {
+                const el = document.createElementNS(NS, tag);
+                Object.entries(attrs).forEach(([k, v]) => el.setAttribute(k, v));
+                return el;
+            };
+
+            const LAT  = lat * Math.PI / 180;
+            const jan1 = Date.UTC(now.getUTCFullYear(), 0, 1);
+            const N    = Math.floor((now - jan1) / 86400000) + 1;
+            const G    = 2 * Math.PI / 365 * (N - 1);
+
+            const decl = 0.006918 - 0.399912*Math.cos(G) + 0.070257*Math.sin(G)
+                       - 0.006758*Math.cos(2*G) + 0.000907*Math.sin(2*G)
+                       - 0.002697*Math.cos(3*G) - 0.00148 *Math.sin(3*G);
+            const eot  = (229.18*(0.000075 + 0.001868*Math.cos(G) - 0.032077*Math.sin(G)
+                       - 0.014615*Math.cos(2*G) - 0.04089 *Math.sin(2*G))) / 60;
+
+            const hpd  = 15 * Math.PI / 180;
+            const ha_s = Math.acos(Math.max(-1, Math.min(1, -Math.tan(LAT)*Math.tan(decl))));
+            const rise = 12 - ha_s/hpd - lon/15 - eot;
+            const set_ = 12 + ha_s/hpd - lon/15 - eot;
+            const utcH = now.getUTCHours() + now.getUTCMinutes()/60 + now.getUTCSeconds()/3600;
+            const maxAlt = Math.asin(Math.max(-1, Math.min(1,
+                Math.sin(LAT)*Math.sin(decl) + Math.cos(LAT)*Math.cos(decl))));
+            const isDay = utcH >= rise && utcH <= set_;
+
+            const HY   = H * 0.85;
+            const LX   = W * 0.38, RX = W * 0.92, MX = (RX-LX) / 2 + LX;
+            const noonY = Math.max(8, HY - (maxAlt / (Math.PI / 2)) * HY * 1.95);
+            const cpY   = 2 * noonY - HY;
+
+            // Horizon line
+            const dXL = LX;
+            const dXM = RX-LX;
+            const dXR = W-RX;
+            const D = [
+                `M 0 ${HY}`,
+                `C ${0.2*dXL} ${HY-3} ${0.3*dXL} ${HY-3} ${0.4*dXL} ${HY+7}`,
+                `S ${0.6*dXL} ${HY-11} ${0.75*dXL} ${HY+1}`,
+                `S ${0.8*dXL} ${HY-3} ${LX.toFixed(1)} ${HY.toFixed(1)}`,
+                `S ${0.2*dXM+LX} ${HY-1} ${0.3*dXM+LX} ${HY+5}`,
+                `S ${0.4*dXM+LX} ${HY+3} ${0.6*dXM+LX} ${HY-2}`,
+                `S ${0.7*dXM+LX} ${HY-4} ${0.8*dXM+LX} ${HY-7}`,
+                `S ${0.9*dXM+LX} ${HY+1} ${RX.toFixed(1)} ${HY.toFixed(1)}`,
+                `S ${0.5*dXR+RX} ${HY-4} ${W.toFixed(1)} ${HY.toFixed(1)}`
+            ];
+            svg.appendChild(m('path', {
+                d: D.join(' '),
+                fill: 'none', stroke: '#222', 'stroke-width': 0.6, opacity: 0.9
+            }));
+
+            // Solar arc
+            const arcEl = m('path', {
+                d: `M ${LX.toFixed(1)} ${HY.toFixed(1)} Q ${MX.toFixed(1)} ${cpY.toFixed(1)} ${RX.toFixed(1)} ${HY.toFixed(1)}`,
+                fill: 'none', stroke: '#222', 'stroke-width': 0.2, opacity: 0.9
+            });
+            if (!isDay) arcEl.setAttribute('stroke-dasharray', '10 7');
+            svg.appendChild(arcEl);
+
+            // Sun position along Bézier
+            const t  = Math.max(0, Math.min(1, (utcH - rise) / (set_ - rise)));
+            const mt = 1 - t;
+            const sx = mt*mt*LX + 2*t*mt*MX + t*t*RX;
+            const sy = mt*mt*HY + 2*t*mt*cpY + t*t*HY;
+
+            if (isDay) {
+                svg.appendChild(m('circle', {cx: sx.toFixed(1), cy: sy.toFixed(1), r: 28, fill: '#f5a020', opacity: 0.05}));
+                svg.appendChild(m('circle', {cx: sx.toFixed(1), cy: sy.toFixed(1), r: 16, fill: '#f5a020', opacity: 0.10}));
+            }
+            svg.appendChild(m('circle', {
+                cx: sx.toFixed(1), cy: sy.toFixed(1), r: isDay ? 9 : 6,
+                fill: isDay ? '#f5a020' : '#404070',
+                opacity: isDay ? 0.55 : 0.40
+            }));
+
+            // Sunrise / sunset labels
+            const fmt = h => {
+                const norm = ((h % 24) + 24) % 24;
+                const mins = Math.round(norm * 60);
+                return `${String(Math.floor(mins / 60)).padStart(2, '0')}:${String(mins % 60).padStart(2, '0')}`;
+            };
+            const fs = Math.max(9, Math.min(13, W / 80)).toFixed(0);
+            const addTxt = (x, y, text, anchor) => {
+                const el = document.createElementNS(NS, 'text');
+                el.setAttribute('x', x.toFixed(0));
+                el.setAttribute('y', y.toFixed(0));
+                el.setAttribute('text-anchor', anchor);
+                el.setAttribute('font-size', fs);
+                el.setAttribute('fill', '#8b6a3a');
+                el.setAttribute('opacity', '0.5');
+                el.setAttribute('font-family', 'inherit');
+                el.textContent = text;
+                svg.appendChild(el);
+            };
+            const tzOffsetH = -now.getTimezoneOffset() / 60;
+            addTxt(LX + 6, HY + 16, fmt(rise + tzOffsetH), 'start');
+            addTxt(RX - 6, HY + 16, fmt(set_ + tzOffsetH), 'end');
+        }
+
+        // (function () {
+        //     const tw      = document.getElementById('time-widget');
+        //     const NS      = 'http://www.w3.org/2000/svg';
+        //     const now     = new Date();
+
+        //     function mk(tag, attrs) {
+        //         const el = document.createElementNS(NS, tag);
+        //         Object.entries(attrs).forEach(([k, v]) => el.setAttribute(k, v));
+        //         return el;
+        //     }
+        //     function wLabel(text) {
+        //         const d = document.createElement('div');
+        //         d.className = 'tw-label';
+        //         d.textContent = text;
+        //         return d;
+        //     }
+        //     function svgEl() {
+        //         const s = document.createElementNS(NS, 'svg');
+        //         s.setAttribute('viewBox', '0 0 90 90');
+        //         return s;
+        //     }
+
+        //     // ── Moon phase ────────────────────────────────────────────────
+        //     function renderMoon() {
+        //         const REF = Date.UTC(2000, 0, 6, 18, 14);
+        //         const SYN = 29.53058867 * 86400000;
+        //         const ratio = ((now - REF) % SYN + SYN) % SYN / SYN;
+        //         const angle = ratio * 2 * Math.PI;
+        //         const age   = (ratio * 29.53).toFixed(1);
+        //         const PHASES = [
+        //             [0.037,'New Moon'],[0.213,'Waxing Crescent'],[0.287,'First Quarter'],
+        //             [0.463,'Waxing Gibbous'],[0.537,'Full Moon'],[0.713,'Waning Gibbous'],
+        //             [0.787,'Last Quarter'],[0.963,'Waning Crescent'],[1.001,'New Moon']
+        //         ];
+        //         const phase = PHASES.find(([t]) => ratio <= t)[1];
+
+        //         const svg = svgEl();
+        //         const cx = 45, cy = 45, r = 38;
+        //         svg.appendChild(mk('circle', {cx, cy, r, fill:'#1a0e04', stroke:'#8b7355', 'stroke-width':1.5}));
+
+        //         const isNew  = ratio < 0.037 || ratio > 0.963;
+        //         const isFull = ratio > 0.463 && ratio < 0.537;
+
+        //         if (isFull) {
+        //             svg.appendChild(mk('circle', {cx, cy, r: r - 1, fill:'#f5e8c0'}));
+        //         } else if (!isNew) {
+        //             const wax = angle < Math.PI;
+        //             const k   = wax ? Math.cos(angle) : Math.cos(angle - Math.PI);
+        //             const rx  = Math.abs(k) * r;
+        //             const ls  = wax ? 1 : 0;   // lit-side sweep (right=1 waxing, left=0 waning)
+        //             const ts  = k >= 0 ? 1 : 0; // terminator sweep (crescent=1, gibbous=0)
+        //             svg.appendChild(mk('path', {
+        //                 d: `M ${cx} ${cy-r} A ${r} ${r} 0 0 ${ls} ${cx} ${cy+r} A ${rx} ${r} 0 0 ${ts} ${cx} ${cy-r} Z`,
+        //                 fill: '#f5e8c0'
+        //             }));
+        //         }
+
+        //         tw.appendChild(svg);
+        //         tw.appendChild(wLabel(phase + '\nDay ' + age));
+        //     }
+
+        //     renderMoon();
+        // })();
+
+        fetch('https://ipapi.co/json/')
+            .then(r => r.json())
+            .then(d => {
+                if (!d.error) {
+                    const el = document.getElementById('geo-info');
+                    if (el) {
+                        const latStr = d.latitude  != null ? (Math.abs(d.latitude).toFixed(2)  + '°' + (d.latitude  >= 0 ? 'N' : 'S')) : '';
+                        const lonStr = d.longitude != null ? (Math.abs(d.longitude).toFixed(2) + '°' + (d.longitude >= 0 ? 'E' : 'W')) : '';
+                        const parts = [
+                            [d.city, d.country_name].filter(Boolean).join(', '),
+                            latStr && lonStr ? latStr + ', ' + lonStr : '',
+                            d.utc_offset?'UTC'+d.utc_offset:''
+                        ].filter(Boolean);
+                        el.textContent = 'detected location '+parts.join(' · ');
+                    }
+                }
+                renderSolarBg(
+                    (!d.error && d.latitude  != null) ? d.latitude  : 51.5,
+                    (!d.error && d.longitude != null) ? d.longitude : 0
+                );
+            })
+            .catch(() => renderSolarBg(51.5, 0));
     </script>
 </body>
 </html>

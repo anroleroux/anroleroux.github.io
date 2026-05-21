@@ -1,367 +1,648 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Anro</title>
-    <link rel="stylesheet" href="/index.css"/>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Anro le Roux</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;1,9..144,300;1,9..144,400&family=Inter+Tight:wght@300;400;500;600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/home.css" />
 </head>
-<body class="sumner time-theme">
-    <header>
-        <div class="navbar">
-            <div class="brand">Anro le Roux</div>
-            <nav class="menu" aria-label="Primary">
-                
-                
-            </nav>
+<body>
+
+<!-- Fixed sun panel -->
+<div id="sun-panel" class="day">
+  <div class="sp-header">
+    <span class="sp-label">sun · live</span>
+    <span class="sp-phase" id="sp-phase">day</span>
+  </div>
+  <svg id="sp-horizon" viewBox="0 0 220 70" style="width:100%;height:70px;display:block;margin-bottom:10px">
+    <line id="sp-hline" x1="0" y1="50" x2="220" y2="50" stroke-width="0.5" />
+    <path id="sp-arc" d="M 30 50 Q 110 5 190 50" fill="none" stroke-width="0.5" opacity="0.4" stroke-dasharray="2 3" />
+    <circle id="sp-sun" cx="110" cy="30" r="6" />
+    <text id="sp-rise" x="30" y="64" font-size="8" text-anchor="middle" font-family="inherit">rise</text>
+    <text id="sp-set"  x="190" y="64" font-size="8" text-anchor="middle" font-family="inherit">set</text>
+  </svg>
+  <div class="sp-row"><span class="sp-row-label">elevation</span><span class="sp-row-val" id="sp-elev">0.0°</span></div>
+  <div class="sp-row"><span class="sp-row-label">local time</span><span class="sp-row-val" id="sp-time">00:00</span></div>
+  <div class="sp-row" style="align-items:baseline"><span class="sp-row-label">location</span><span class="sp-row-val" id="sp-loc" style="text-align:right;max-width:160px;font-size:10px">detecting…</span></div>
+  <div class="sp-row"><span class="sp-row-label">night mix</span><span class="sp-row-val" id="sp-mix">0%</span></div>
+  <div class="sp-scrub" id="sp-scrub-wrap">
+    <div class="sp-scrub-header">
+      <span class="sp-scrub-label">scrub 24h</span>
+      <button class="sp-scrub-btn" id="sp-live-btn">live</button>
+    </div>
+    <input type="range" min="0" max="24" step="0.05" id="sp-slider" />
+    <div class="sp-ticks"><span>00</span><span>06</span><span>12</span><span>18</span><span>24</span></div>
+  </div>
+</div>
+
+<div id="live-wrapper">
+
+  <!-- ── ALMANAC (day) ─────────────────────────────────────── -->
+  <div id="alm-layer" class="alm-root">
+
+    <nav class="alm-nav">
+      <div class="alm-brand">Anro le Roux <em>— almanac</em></div>
+      <div class="alm-edition">
+        <span id="alm-vol">Vol. 27</span>
+        <span id="alm-num">№ 3</span>
+        <span id="alm-date">May 21, 2026</span>
+      </div>
+    </nav>
+
+    <header class="alm-hero">
+      <div class="alm-hero-folio">i — the present moment</div>
+      <div>
+        <h1 class="alm-h1">
+          Engineering<br>
+          programming<span class="alm-h1-amp">,</span><br>
+          mathematics<br>
+          <em>&amp; leadership.</em>
+        </h1>
+        <p class="alm-lede">
+          Disciplines measured in every scale of time — from the millisecond
+          that switches a relay to the millennia a cipher must hold. A field
+          notebook on the slow craft of building things that last.
+        </p>
+        <div class="alm-meta">
+          <span>est. mmxxv</span>
+          <span>·</span>
+          <span>kept by anro le roux</span>
         </div>
+      </div>
+      <div class="alm-rings-wrap">
+        <div class="alm-rings-frame"></div>
+        <div id="alm-rings"></div>
+        <div class="alm-rings-caption">
+          fig. i — concentric clocks
+          <em>seven scales of the present</em>
+        </div>
+      </div>
     </header>
-    <main>
-        <section class="hero">
-            <svg id="solar-bg" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"></svg>
-            <h1>Engineering Programming Mathematics Leadership</h1>
-            <p>
-                Aiming to inspire and assist professionals interested in
-                improving their proficiency in programming and mathematics while
-                encouraging brave and trusting leadership driving success.
-            </p>
-            <div id="time-widget" aria-hidden="true"></div>
-            <p id="geo-info" aria-live="polite"></p>
-        </section>
-        <section class="material">
-            <a class="card" href="https://github.com/aleroux85/twitcher" target="_blank">
-                <h3>neoGraph Controller</h3>
-                <p>
-                    Drop-in software that turns affordable Wifi enabled
-                    micro-controller boards into a meshable
-                    user friendly customizable contol system.
-                </p>
-                <span class="pill pill--code">Code</span>
-            </a>
-            <a class="card" href="/pic.html">
-                <h3>Primes and Cryptography</h3>
-                <p>
-                    How the modern world is build on a
-                    seeminly insignificant math peculiarity.
-                </p>
-                <span class="pill pill--article">Article</span>
-            </a>
-            <a class="card" href="/ccm.html">
-                <h3>Code as a Career Multiplier</h3>
-                <p>
-                    Adding Programming to Your Professional Toolkit.
-                </p>
-                <span class="pill pill--article">Article</span>
-            </a>
-            <a class="card" href="https://anroleroux.github.io/dawnstack" target="_blank">
-                <h3>UnLog</h3>
-                <p>
-                    A focused daily logging webapp for tracking what matters
-                    without the noise.
-                </p>
-                <span class="pill pill--app">App</span>
-            </a>
-            <a class="card" href="https://github.com/anroleroux/dawnstack" target="_blank">
-                <h3>Dawnstack</h3>
-                <p>
-                    The open-source stack powering UnLog and future
-                    Dawnstack applications.
-                </p>
-                <span class="pill pill--code">Code</span>
-            </a>
-        </section>
-        <section class="content">
-            <h1>About This Site</h1>
-            <p>The scope of this website revolves around four parts:</p>
-            <ul>
-                <li>
-                    Engineering: traditional fields like civil, mechanical,
-                    electronic, process, computer, industrial, also referred to STEM engineering.
-                </li>
-                <li>
-                    Programming: actually the broader software development
-                    discipline together with its practices and technologies.
-                </li>
-                <li>
-                    Mathematics: applied maths and how it's used in engineering
-                    and programming.
-                </li>
-                <li>
-                    Leadership: how effective leadership looks like, the
-                    fathership sense of leadership and the importance of trust.
-                </li>
-            </ul>
-            <p>
-                There is thus the technical side where much of the content
-                focuses on the junction of engineering, programming and
-                mathematics. The motivation for this combination is that new
-                dual discipline career paths are emerging and early adopters
-                will have a major advantage. But there is also the human
-                relational topic that is deeply integrated in engineering and
-                software development.
-            </p>
-            <p>
-                Technical excellence can be, and is very often, stifled due to
-                detrimental suspicion or competition amongst colleagues
-                (horizontal) and distrust between employees and leadership
-                (vertical). Additionally, the growing lack of mentorship and
-                elder figures watering young potential is leaving a wake of
-                under-developed professionals. Technical abilities always go
-                hand-in-hand with human relationships.
-            </p>
-            <p>
-                The heart of this website (its jobs in terms of Clayton
-                Christensen's language) is to:
-            </p>
-            <ul>
-                <li>
-                    Inspire: To show what is possible and present a
-                    path-to-entry to anyone interested. Make the reader realise
-                    he or she can understand and implement something they did
-                    not think they could.
-                </li>
-                <li>
-                    Empower: To show how and where to start, by explaining
-                    complex topics in incremental and clear visual ways.
-                </li>
-                <li>
-                    Guide: To highlight the importance of leaders and encourage
-                    them to humbly draw and raise those coming after them, and
-                    be proud of that. Not by dominating but by interest,
-                    understanding and calling out raw potential that only they
-                    can see and lift up.
-                </li>
-            </ul>
-            <h2>Item Classes</h2>
-            <p>
-                The website presents articles and code bases. Items can only be
-                part of one class.
-            </p>
-            <h2>Categories</h2>
-            <p>
-                Items are categorized into engineering, programming, mathematics
-                and leadership. Items can fall in multiple categories.
-            </p>
-            <h2>Article Versions</h2>
-            <p>
-                Articles are considered works-in-progress and are therefore
-                versioned with major, minor and patch version numbers. If the
-                major version is 0 it still needs to be completed.
-            </p>
-        </section>
-    </main>
-    <footer>
+
+    <section class="alm-section">
+      <div class="alm-section-head">
+        <div class="alm-section-num">§ ii · the work</div>
         <div>
-            © <span id="year"></span> Anro le Roux. All rights reserved.
-            <div class="social-links">
-                <a href="https://linkedin.com/in/anroleroux" target="_blank" aria-label="LinkedIn">LinkedIn</a>
-                <a href="https://github.com/aleroux85" target="_blank" aria-label="GitHub">GitHub</a>
-            </div>
+          <h2 class="alm-section-title">Things made, <em>by their scale</em>.</h2>
+          <p class="alm-section-blurb">
+            Each entry is anchored to the time it operates on — the
+            characteristic duration of the problem it solves or the horizon
+            of the system it touches.
+          </p>
         </div>
+      </div>
+      <div class="alm-work">
+        <a class="alm-entry" href="https://github.com/aleroux85/twitcher" target="_blank" rel="noopener">
+          <div class="alm-entry-scale">milliseconds<strong>10⁻³ s</strong></div>
+          <div>
+            <h3 class="alm-entry-title"><em>neo</em>Graph Controller</h3>
+            <p class="alm-entry-desc">Drop-in software that turns affordable Wi-Fi micro-controllers into a meshable, user-friendly customisable control system.</p>
+          </div>
+          <div class="alm-entry-kind">code · repository</div>
+          <div class="alm-entry-arrow">→</div>
+        </a>
+        <a class="alm-entry" href="https://anroleroux.github.io/dawnstack" target="_blank" rel="noopener">
+          <div class="alm-entry-scale">one day<strong>10⁵ s</strong></div>
+          <div>
+            <h3 class="alm-entry-title">UnLog</h3>
+            <p class="alm-entry-desc">A focused daily logging webapp for tracking what matters without the noise.</p>
+          </div>
+          <div class="alm-entry-kind">app · live</div>
+          <div class="alm-entry-arrow">→</div>
+        </a>
+        <a class="alm-entry" href="https://github.com/anroleroux/dawnstack" target="_blank" rel="noopener">
+          <div class="alm-entry-scale">a few years<strong>10⁸ s</strong></div>
+          <div>
+            <h3 class="alm-entry-title">Dawnstack</h3>
+            <p class="alm-entry-desc">The open-source stack powering UnLog and future Dawnstack applications.</p>
+          </div>
+          <div class="alm-entry-kind">code · repository</div>
+          <div class="alm-entry-arrow">→</div>
+        </a>
+        <a class="alm-entry" href="/ccm.html">
+          <div class="alm-entry-scale">a career<strong>10⁹ s</strong></div>
+          <div>
+            <h3 class="alm-entry-title">Code as a Career Multiplier</h3>
+            <p class="alm-entry-desc">Adding programming to your professional toolkit — and why the compounding starts earlier than you think.</p>
+          </div>
+          <div class="alm-entry-kind">article</div>
+          <div class="alm-entry-arrow">→</div>
+        </a>
+        <a class="alm-entry" href="/pic.html">
+          <div class="alm-entry-scale">age of the universe<strong>10²⁰ s</strong></div>
+          <div>
+            <h3 class="alm-entry-title">Primes <em>&amp;</em> Cryptography</h3>
+            <p class="alm-entry-desc">How the modern world is built on a seemingly insignificant peculiarity of the integers — and the time it would take to undo.</p>
+          </div>
+          <div class="alm-entry-kind">article</div>
+          <div class="alm-entry-arrow">→</div>
+        </a>
+      </div>
+    </section>
+
+    <section class="alm-section">
+      <div class="alm-section-head">
+        <div class="alm-section-num">§ iii · the disciplines</div>
+        <div>
+          <h2 class="alm-section-title">Four crafts, <em>one horizon</em>.</h2>
+          <p class="alm-section-blurb">
+            Technical excellence and human relationship sit on the same
+            page. New dual-discipline paths are emerging; the earliest
+            adopters compound the longest.
+          </p>
+        </div>
+      </div>
+      <div class="alm-disciplines">
+        <div class="alm-disc">
+          <div class="alm-disc-scale">measured in decades</div>
+          <h3 class="alm-disc-name">Engineering</h3>
+          <p class="alm-disc-body">Civil, mechanical, electronic, process, computer, industrial — the slow disciplines that bend physical reality.</p>
+        </div>
+        <div class="alm-disc">
+          <div class="alm-disc-scale">measured in releases</div>
+          <h3 class="alm-disc-name">Programming</h3>
+          <p class="alm-disc-body">Software development together with its practices and technologies — the discipline of getting an idea out into the world.</p>
+        </div>
+        <div class="alm-disc">
+          <div class="alm-disc-scale">measured in proofs</div>
+          <h3 class="alm-disc-name">Mathematics</h3>
+          <p class="alm-disc-body">Applied maths and the way it threads through engineering and programming, often invisibly, always load-bearing.</p>
+        </div>
+        <div class="alm-disc">
+          <div class="alm-disc-scale">measured in lifetimes</div>
+          <h3 class="alm-disc-name"><em>Leadership</em></h3>
+          <p class="alm-disc-body">The fathership sense — humbly drawing up those coming after, calling out raw potential only you can see and lift.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="alm-section">
+      <div class="alm-section-head">
+        <div class="alm-section-num">§ iv · about this site</div>
+        <div>
+          <h2 class="alm-section-title">The scope, <em>in brief</em>.</h2>
+          <p class="alm-section-blurb">Four disciplines, two classes of work, one notebook.</p>
+        </div>
+      </div>
+      <div class="alm-about-body">
+        <p>The scope of this website revolves around four parts: Engineering (traditional fields like civil, mechanical, electronic, process, computer, industrial), Programming (the broader software development discipline together with its practices and technologies), Mathematics (applied maths and how it's used in engineering and programming), and Leadership (how effective leadership looks, the fathership sense, and the importance of trust).</p>
+        <p>There is the technical side where much of the content focuses on the junction of engineering, programming and mathematics. The motivation for this combination is that new dual-discipline career paths are emerging and early adopters will have a major advantage. But there is also the human relational topic that is deeply integrated in engineering and software development.</p>
+        <p>Technical excellence can be, and is very often, stifled due to detrimental suspicion or competition amongst colleagues and distrust between employees and leadership. Additionally, the growing lack of mentorship and elder figures watering young potential is leaving a wake of under-developed professionals. Technical abilities always go hand-in-hand with human relationships.</p>
+        <p>The heart of this website is to inspire — to show what is possible and present a path-to-entry to anyone interested; to empower — to show how and where to start by explaining complex topics in incremental and clear visual ways; and to guide — to highlight the importance of leaders and encourage them to humbly draw and raise those coming after them.</p>
+        <h2>Item classes</h2>
+        <p>The website presents articles and code bases. Items can only be part of one class.</p>
+        <h2>Categories</h2>
+        <p>Items are categorised into engineering, programming, mathematics and leadership. Items can fall in multiple categories.</p>
+        <h2>Article versions</h2>
+        <p>Articles are considered works-in-progress and are therefore versioned with major, minor and patch version numbers. If the major version is 0 it still needs to be completed.</p>
+      </div>
+    </section>
+
+    <footer class="alm-foot">
+      <div>© <span id="alm-year"></span> Anro le Roux. Kept by hand, in <em id="alm-month"></em>.</div>
+      <div class="alm-foot-mark">A·lR</div>
+      <div class="alm-foot-links">
+        <a href="https://linkedin.com/in/anroleroux" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="https://github.com/aleroux85" target="_blank" rel="noopener">GitHub</a>
+      </div>
     </footer>
 
-    <script>
-        document.getElementById('year').textContent = new Date().getFullYear();
+  </div><!-- /alm-layer -->
 
-        function renderSolarBg(lat, lon) {
-            const now  = new Date(); //now.setHours(12, 0, 0, 0);
-            const svg  = document.getElementById('solar-bg');
-            if (!svg) return;
+  <!-- ── COSMOS (night) ────────────────────────────────────── -->
+  <div id="cos-layer" class="cos-root">
 
-            const hero = svg.parentElement;
-            const rect = hero.getBoundingClientRect();
-            const W    = rect.width  || window.innerWidth;
-            const H    = rect.height || 280;
+    <svg class="cos-stars" viewBox="0 0 1440 2400" preserveAspectRatio="none" aria-hidden="true"></svg>
 
-            svg.setAttribute('viewBox', `0 0 ${W.toFixed(0)} ${H.toFixed(0)}`);
-            svg.setAttribute('preserveAspectRatio', 'none');
+    <nav class="cos-nav">
+      <div class="cos-brand">Anro le Roux</div>
+      <div class="cos-nav-right">
+        <span><span class="dot">●</span> now <span id="cos-time">00:00:00</span></span>
+        <span id="cos-date">Jan 1 2026</span>
+      </div>
+    </nav>
 
-            const NS = 'http://www.w3.org/2000/svg';
-            const m  = (tag, attrs) => {
-                const el = document.createElementNS(NS, tag);
-                Object.entries(attrs).forEach(([k, v]) => el.setAttribute(k, v));
-                return el;
-            };
+    <header class="cos-hero">
+      <div class="cos-eyebrow">— a working notebook on time, scale, and craft —</div>
+      <h1 class="cos-h1">
+        Built for <em>the long</em> <span class="slash">/</span> at the speed of <em>now.</em>
+      </h1>
+      <div class="cos-rings-stage">
+        <div class="cos-rings-glow"></div>
+        <div class="cos-rings-side left">
+          <div class="cos-side-h">outer rings</div>
+          <div class="cos-side-line">
+            <span class="cos-side-line-val" id="cos-mill">year — / 1000</span>
+            <span class="cos-side-line-name">millennium</span>
+          </div>
+          <div class="cos-side-line">
+            <span class="cos-side-line-val" id="cos-cent">year — / 100</span>
+            <span class="cos-side-line-name">century</span>
+          </div>
+          <div class="cos-side-line">
+            <span class="cos-side-line-val" id="cos-dec">year — / 10</span>
+            <span class="cos-side-line-name">decade</span>
+          </div>
+          <p class="cos-side-foot">The slow scales — what civilisations and careers are measured against.</p>
+        </div>
+        <div id="cos-rings"></div>
+        <div class="cos-rings-side right">
+          <div class="cos-side-h">inner rings</div>
+          <div class="cos-side-line">
+            <span class="cos-side-line-name">year</span>
+            <span class="cos-side-line-val" id="cos-yr">day —</span>
+          </div>
+          <div class="cos-side-line">
+            <span class="cos-side-line-name">month</span>
+            <span class="cos-side-line-val">lunar cycle</span>
+          </div>
+          <div class="cos-side-line">
+            <span class="cos-side-line-name">day</span>
+            <span class="cos-side-line-val" id="cos-day">00:00</span>
+          </div>
+          <div class="cos-side-line">
+            <span class="cos-side-line-name">heartbeat</span>
+            <span class="cos-side-line-val" id="cos-hb">00″</span>
+          </div>
+          <p class="cos-side-foot">The fast scales — what a craftsperson lives inside, day to day.</p>
+        </div>
+      </div>
+    </header>
 
-            const LAT  = lat * Math.PI / 180;
-            const jan1 = Date.UTC(now.getUTCFullYear(), 0, 1);
-            const N    = Math.floor((now - jan1) / 86400000) + 1;
-            const G    = 2 * Math.PI / 365 * (N - 1);
+    <section class="cos-section">
+      <div class="cos-section-eyebrow">§ work · placed on the time axis</div>
+      <h2 class="cos-section-h">Things made, <em>and the time each holds.</em></h2>
+      <div class="cos-timeline">
+        <div class="cos-tl-row">
+          <a class="cos-card" href="https://github.com/aleroux85/twitcher" target="_blank" rel="noopener">
+            <div class="cos-card-scale"><span>10⁻³ s</span><span class="cos-card-kind">code</span></div>
+            <h3 class="cos-card-title"><em>neo</em>Graph<br>Controller</h3>
+            <p class="cos-card-desc">Drop-in software turning affordable Wi-Fi micro-controllers into a meshable, customisable control system.</p>
+            <div class="cos-card-foot"><span>milliseconds</span><span class="arrow">→</span></div>
+          </a>
+          <a class="cos-card" href="https://anroleroux.github.io/dawnstack" target="_blank" rel="noopener">
+            <div class="cos-card-scale"><span>10⁵ s</span><span class="cos-card-kind">app</span></div>
+            <h3 class="cos-card-title">UnLog</h3>
+            <p class="cos-card-desc">A focused daily logging webapp for tracking what matters — without the noise.</p>
+            <div class="cos-card-foot"><span>a day</span><span class="arrow">→</span></div>
+          </a>
+          <a class="cos-card" href="https://github.com/anroleroux/dawnstack" target="_blank" rel="noopener">
+            <div class="cos-card-scale"><span>10⁸ s</span><span class="cos-card-kind">code</span></div>
+            <h3 class="cos-card-title">Dawnstack</h3>
+            <p class="cos-card-desc">The open-source stack powering UnLog and future Dawnstack applications.</p>
+            <div class="cos-card-foot"><span>a few years</span><span class="arrow">→</span></div>
+          </a>
+          <a class="cos-card" href="/ccm.html">
+            <div class="cos-card-scale"><span>10⁹ s</span><span class="cos-card-kind">article</span></div>
+            <h3 class="cos-card-title">Code as a Career Multiplier</h3>
+            <p class="cos-card-desc">Adding programming to a professional toolkit — and where the compounding actually starts.</p>
+            <div class="cos-card-foot"><span>a career</span><span class="arrow">→</span></div>
+          </a>
+          <a class="cos-card" href="/pic.html">
+            <div class="cos-card-scale"><span>10²⁰ s</span><span class="cos-card-kind">article</span></div>
+            <h3 class="cos-card-title">Primes <em>&amp;</em> Cryptography</h3>
+            <p class="cos-card-desc">How the modern world is built on a small peculiarity of the integers — and how long it would take to undo.</p>
+            <div class="cos-card-foot"><span>universal</span><span class="arrow">→</span></div>
+          </a>
+        </div>
+        <div class="cos-tl-axis"></div>
+        <div class="cos-tl-ticks">
+          <div class="cos-tl-tick">ms</div>
+          <div class="cos-tl-tick">day</div>
+          <div class="cos-tl-tick">decade</div>
+          <div class="cos-tl-tick">lifetime</div>
+          <div class="cos-tl-tick">aeons</div>
+        </div>
+      </div>
+    </section>
 
-            const decl = 0.006918 - 0.399912*Math.cos(G) + 0.070257*Math.sin(G)
-                       - 0.006758*Math.cos(2*G) + 0.000907*Math.sin(2*G)
-                       - 0.002697*Math.cos(3*G) - 0.00148 *Math.sin(3*G);
-            const eot  = (229.18*(0.000075 + 0.001868*Math.cos(G) - 0.032077*Math.sin(G)
-                       - 0.014615*Math.cos(2*G) - 0.04089 *Math.sin(2*G))) / 60;
+    <section class="cos-section">
+      <div class="cos-section-eyebrow">§ disciplines · four crafts, one horizon</div>
+      <h2 class="cos-section-h">Technical excellence rides <em>on human relation</em>.</h2>
+      <div class="cos-disc-grid">
+        <div class="cos-disc">
+          <div class="cos-disc-mark">E</div>
+          <div class="cos-disc-scale">decades</div>
+          <h3 class="cos-disc-name">Engineering</h3>
+          <p class="cos-disc-body">Civil, mechanical, electronic, process, computer, industrial — slow disciplines that bend physical reality.</p>
+        </div>
+        <div class="cos-disc">
+          <div class="cos-disc-mark">P</div>
+          <div class="cos-disc-scale">releases</div>
+          <h3 class="cos-disc-name">Programming</h3>
+          <p class="cos-disc-body">Software development and its practices — the craft of getting an idea out into the world repeatably.</p>
+        </div>
+        <div class="cos-disc">
+          <div class="cos-disc-mark">M</div>
+          <div class="cos-disc-scale">proofs</div>
+          <h3 class="cos-disc-name">Mathematics</h3>
+          <p class="cos-disc-body">Applied maths threaded through engineering and programming — often invisible, always load-bearing.</p>
+        </div>
+        <div class="cos-disc">
+          <div class="cos-disc-mark">L</div>
+          <div class="cos-disc-scale">lifetimes</div>
+          <h3 class="cos-disc-name">Leadership</h3>
+          <p class="cos-disc-body">The fathership sense — humbly drawing up those coming after, calling out raw potential only you can see.</p>
+        </div>
+      </div>
+    </section>
 
-            const hpd  = 15 * Math.PI / 180;
-            const ha_s = Math.acos(Math.max(-1, Math.min(1, -Math.tan(LAT)*Math.tan(decl))));
-            const rise = 12 - ha_s/hpd - lon/15 - eot;
-            const set_ = 12 + ha_s/hpd - lon/15 - eot;
-            const utcH = now.getUTCHours() + now.getUTCMinutes()/60 + now.getUTCSeconds()/3600;
-            const maxAlt = Math.asin(Math.max(-1, Math.min(1,
-                Math.sin(LAT)*Math.sin(decl) + Math.cos(LAT)*Math.cos(decl))));
-            const isDay = utcH >= rise && utcH <= set_;
+    <footer class="cos-foot">
+      <div>© <span id="cos-year"></span> Anro le Roux</div>
+      <div class="cos-foot-mark">A · lR</div>
+      <div class="cos-foot-links">
+        <a href="https://linkedin.com/in/anroleroux" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="https://github.com/aleroux85" target="_blank" rel="noopener">GitHub</a>
+      </div>
+    </footer>
 
-            const HY   = H * 0.85;
-            const LX   = W * 0.38, RX = W * 0.92, MX = (RX-LX) / 2 + LX;
-            const noonY = Math.max(8, HY - (maxAlt / (Math.PI / 2)) * HY * 1.95);
-            const cpY   = 2 * noonY - HY;
+  </div><!-- /cos-layer -->
 
-            // Horizon line
-            const dXL = LX;
-            const dXM = RX-LX;
-            const dXR = W-RX;
-            const D = [
-                `M 0 ${HY}`,
-                `C ${0.2*dXL} ${HY-3} ${0.3*dXL} ${HY-3} ${0.4*dXL} ${HY+7}`,
-                `S ${0.6*dXL} ${HY-11} ${0.75*dXL} ${HY+1}`,
-                `S ${0.8*dXL} ${HY-3} ${LX.toFixed(1)} ${HY.toFixed(1)}`,
-                `S ${0.2*dXM+LX} ${HY-1} ${0.3*dXM+LX} ${HY+5}`,
-                `S ${0.4*dXM+LX} ${HY+3} ${0.6*dXM+LX} ${HY-2}`,
-                `S ${0.7*dXM+LX} ${HY-4} ${0.8*dXM+LX} ${HY-7}`,
-                `S ${0.9*dXM+LX} ${HY+1} ${RX.toFixed(1)} ${HY.toFixed(1)}`,
-                `S ${0.5*dXR+RX} ${HY-4} ${W.toFixed(1)} ${HY.toFixed(1)}`
-            ];
-            svg.appendChild(m('path', {
-                d: D.join(' '),
-                fill: 'none', stroke: '#222', 'stroke-width': 0.6, opacity: 0.9
-            }));
+</div><!-- /live-wrapper -->
 
-            // Solar arc
-            const arcEl = m('path', {
-                d: `M ${LX.toFixed(1)} ${HY.toFixed(1)} Q ${MX.toFixed(1)} ${cpY.toFixed(1)} ${RX.toFixed(1)} ${HY.toFixed(1)}`,
-                fill: 'none', stroke: '#222', 'stroke-width': 0.2, opacity: 0.9
-            });
-            if (!isDay) arcEl.setAttribute('stroke-dasharray', '10 7');
-            svg.appendChild(arcEl);
+<script>
+// ── Solar math ────────────────────────────────────────────────
+function solarElevationDeg(lat, lon, now) {
+  var LAT = lat * Math.PI / 180;
+  var jan1 = Date.UTC(now.getUTCFullYear(), 0, 1);
+  var N = Math.floor((now - jan1) / 86400000) + 1;
+  var G = (2 * Math.PI / 365) * (N - 1);
+  var decl = 0.006918 - 0.399912 * Math.cos(G) + 0.070257 * Math.sin(G)
+           - 0.006758 * Math.cos(2*G) + 0.000907 * Math.sin(2*G)
+           - 0.002697 * Math.cos(3*G) - 0.00148  * Math.sin(3*G);
+  var eot  = (229.18 * (0.000075 + 0.001868 * Math.cos(G) - 0.032077 * Math.sin(G)
+           - 0.014615 * Math.cos(2*G) - 0.04089 * Math.sin(2*G))) / 60;
+  var utcH = now.getUTCHours() + now.getUTCMinutes() / 60 + now.getUTCSeconds() / 3600;
+  var solarTime = utcH + lon / 15 + eot;
+  var ha  = ((solarTime - 12) * 15) * Math.PI / 180;
+  var el  = Math.asin(Math.sin(LAT) * Math.sin(decl) + Math.cos(LAT) * Math.cos(decl) * Math.cos(ha));
+  return el * 180 / Math.PI;
+}
+function smoothstep(a, b, x) {
+  var t = Math.max(0, Math.min(1, (x - a) / (b - a)));
+  return t * t * (3 - 2 * t);
+}
 
-            // Sun position along Bézier
-            const t  = Math.max(0, Math.min(1, (utcH - rise) / (set_ - rise)));
-            const mt = 1 - t;
-            const sx = mt*mt*LX + 2*t*mt*MX + t*t*RX;
-            const sy = mt*mt*HY + 2*t*mt*cpY + t*t*HY;
+// ── Rings ─────────────────────────────────────────────────────
+var MOON_REF = Date.UTC(2000, 0, 6, 18, 14);
+var MOON_SYN_MS = 29.53058867 * 86400000;
+var SVG_NS = 'http://www.w3.org/2000/svg';
+var RADII = [240, 204, 168, 134, 102, 72, 44];
 
-            if (isDay) {
-                svg.appendChild(m('circle', {cx: sx.toFixed(1), cy: sy.toFixed(1), r: 28, fill: '#f5a020', opacity: 0.05}));
-                svg.appendChild(m('circle', {cx: sx.toFixed(1), cy: sy.toFixed(1), r: 16, fill: '#f5a020', opacity: 0.10}));
-            }
-            svg.appendChild(m('circle', {
-                cx: sx.toFixed(1), cy: sy.toFixed(1), r: isDay ? 9 : 6,
-                fill: isDay ? '#f5a020' : '#404070',
-                opacity: isDay ? 0.55 : 0.40
-            }));
+function moonPhaseName(frac) {
+  var P = [[0.037,'New'],[0.213,'Waxing crescent'],[0.287,'First quarter'],
+    [0.463,'Waxing gibbous'],[0.537,'Full'],[0.713,'Waning gibbous'],
+    [0.787,'Last quarter'],[0.963,'Waning crescent'],[1.001,'New']];
+  return P.find(function(x){ return frac <= x[0]; })[1];
+}
 
-            // Sunrise / sunset labels
-            const fmt = h => {
-                const norm = ((h % 24) + 24) % 24;
-                const mins = Math.round(norm * 60);
-                return `${String(Math.floor(mins / 60)).padStart(2, '0')}:${String(mins % 60).padStart(2, '0')}`;
-            };
-            const fs = Math.max(9, Math.min(13, W / 80)).toFixed(0);
-            const addTxt = (x, y, text, anchor) => {
-                const el = document.createElementNS(NS, 'text');
-                el.setAttribute('x', x.toFixed(0));
-                el.setAttribute('y', y.toFixed(0));
-                el.setAttribute('text-anchor', anchor);
-                el.setAttribute('font-size', fs);
-                el.setAttribute('fill', '#8b6a3a');
-                el.setAttribute('opacity', '0.5');
-                el.setAttribute('font-family', 'inherit');
-                el.textContent = text;
-                svg.appendChild(el);
-            };
-            const tzOffsetH = -now.getTimezoneOffset() / 60;
-            addTxt(LX + 6, HY + 16, fmt(rise + tzOffsetH), 'start');
-            addTxt(RX - 6, HY + 16, fmt(set_ + tzOffsetH), 'end');
-        }
+function getRingData(now) {
+  var sec = now.getSeconds() + now.getMilliseconds() / 1000;
+  var dayFrac = (now.getHours() + now.getMinutes() / 60 + sec / 3600) / 24;
+  var moonFrac = (((now - MOON_REF) % MOON_SYN_MS) + MOON_SYN_MS) % MOON_SYN_MS / MOON_SYN_MS;
+  var y0 = new Date(now.getFullYear(), 0, 1);
+  var y1 = new Date(now.getFullYear() + 1, 0, 1);
+  var yearFrac = (now - y0) / (y1 - y0);
+  var yr = now.getFullYear() + yearFrac;
+  return [
+    { frac: ((yr % 1000) + 1000) % 1000 / 1000 },
+    { frac: ((yr % 100)  + 100)  % 100  / 100  },
+    { frac: ((yr % 10)   + 10)   % 10   / 10   },
+    { frac: yearFrac },
+    { frac: moonFrac },
+    { frac: dayFrac  },
+    { frac: sec / 60 },
+  ];
+}
 
-        // (function () {
-        //     const tw      = document.getElementById('time-widget');
-        //     const NS      = 'http://www.w3.org/2000/svg';
-        //     const now     = new Date();
+function makeRings(containerId, palette, size) {
+  var isCosmos = palette === 'cosmos';
+  var stroke     = isCosmos ? '#c8a35d' : '#1c1610';
+  var markerFill = isCosmos ? '#f5d78f' : '#1c1610';
+  var ringOpacity  = isCosmos ? 0.32 : 0.22;
+  var trailOpacity = isCosmos ? 0.7  : 0.55;
 
-        //     function mk(tag, attrs) {
-        //         const el = document.createElementNS(NS, tag);
-        //         Object.entries(attrs).forEach(([k, v]) => el.setAttribute(k, v));
-        //         return el;
-        //     }
-        //     function wLabel(text) {
-        //         const d = document.createElement('div');
-        //         d.className = 'tw-label';
-        //         d.textContent = text;
-        //         return d;
-        //     }
-        //     function svgEl() {
-        //         const s = document.createElementNS(NS, 'svg');
-        //         s.setAttribute('viewBox', '0 0 90 90');
-        //         return s;
-        //     }
+  var svg = document.createElementNS(SVG_NS, 'svg');
+  svg.setAttribute('viewBox', '-270 -270 540 540');
+  svg.setAttribute('width',  size);
+  svg.setAttribute('height', size);
+  svg.style.display = 'block';
 
-        //     // ── Moon phase ────────────────────────────────────────────────
-        //     function renderMoon() {
-        //         const REF = Date.UTC(2000, 0, 6, 18, 14);
-        //         const SYN = 29.53058867 * 86400000;
-        //         const ratio = ((now - REF) % SYN + SYN) % SYN / SYN;
-        //         const angle = ratio * 2 * Math.PI;
-        //         const age   = (ratio * 29.53).toFixed(1);
-        //         const PHASES = [
-        //             [0.037,'New Moon'],[0.213,'Waxing Crescent'],[0.287,'First Quarter'],
-        //             [0.463,'Waxing Gibbous'],[0.537,'Full Moon'],[0.713,'Waning Gibbous'],
-        //             [0.787,'Last Quarter'],[0.963,'Waning Crescent'],[1.001,'New Moon']
-        //         ];
-        //         const phase = PHASES.find(([t]) => ratio <= t)[1];
+  var rings = RADII.map(function(r) {
+    var g = document.createElementNS(SVG_NS, 'g');
 
-        //         const svg = svgEl();
-        //         const cx = 45, cy = 45, r = 38;
-        //         svg.appendChild(mk('circle', {cx, cy, r, fill:'#1a0e04', stroke:'#8b7355', 'stroke-width':1.5}));
+    var circle = document.createElementNS(SVG_NS, 'circle');
+    circle.setAttribute('cx', 0); circle.setAttribute('cy', 0); circle.setAttribute('r', r);
+    circle.setAttribute('fill', 'none'); circle.setAttribute('stroke', stroke);
+    circle.setAttribute('stroke-width', '0.75'); circle.setAttribute('opacity', ringOpacity);
 
-        //         const isNew  = ratio < 0.037 || ratio > 0.963;
-        //         const isFull = ratio > 0.463 && ratio < 0.537;
+    var tick = document.createElementNS(SVG_NS, 'line');
+    tick.setAttribute('x1', 0); tick.setAttribute('y1', -(r+2));
+    tick.setAttribute('x2', 0); tick.setAttribute('y2', -(r-2));
+    tick.setAttribute('stroke', stroke); tick.setAttribute('stroke-width', '0.75');
+    tick.setAttribute('opacity', ringOpacity * 1.8);
 
-        //         if (isFull) {
-        //             svg.appendChild(mk('circle', {cx, cy, r: r - 1, fill:'#f5e8c0'}));
-        //         } else if (!isNew) {
-        //             const wax = angle < Math.PI;
-        //             const k   = wax ? Math.cos(angle) : Math.cos(angle - Math.PI);
-        //             const rx  = Math.abs(k) * r;
-        //             const ls  = wax ? 1 : 0;   // lit-side sweep (right=1 waxing, left=0 waning)
-        //             const ts  = k >= 0 ? 1 : 0; // terminator sweep (crescent=1, gibbous=0)
-        //             svg.appendChild(mk('path', {
-        //                 d: `M ${cx} ${cy-r} A ${r} ${r} 0 0 ${ls} ${cx} ${cy+r} A ${rx} ${r} 0 0 ${ts} ${cx} ${cy-r} Z`,
-        //                 fill: '#f5e8c0'
-        //             }));
-        //         }
+    var trail = document.createElementNS(SVG_NS, 'path');
+    trail.setAttribute('fill', 'none'); trail.setAttribute('stroke', stroke);
+    trail.setAttribute('stroke-width', (0.75 * 1.6).toFixed(2));
+    trail.setAttribute('stroke-linecap', 'round'); trail.setAttribute('opacity', trailOpacity);
+    if (isCosmos) trail.style.filter = 'drop-shadow(0 0 3px ' + markerFill + ')';
 
-        //         tw.appendChild(svg);
-        //         tw.appendChild(wLabel(phase + '\nDay ' + age));
-        //     }
+    var marker = document.createElementNS(SVG_NS, 'circle');
+    marker.setAttribute('r', 4); marker.setAttribute('fill', markerFill);
+    if (isCosmos) marker.style.filter = 'drop-shadow(0 0 5px ' + markerFill + ')';
 
-        //     renderMoon();
-        // })();
+    g.appendChild(circle); g.appendChild(tick); g.appendChild(trail); g.appendChild(marker);
+    svg.appendChild(g);
+    return { trail: trail, marker: marker, r: r };
+  });
 
-        fetch('https://ipapi.co/json/')
-            .then(r => r.json())
-            .then(d => {
-                if (!d.error) {
-                    const el = document.getElementById('geo-info');
-                    if (el) {
-                        const latStr = d.latitude  != null ? (Math.abs(d.latitude).toFixed(2)  + '°' + (d.latitude  >= 0 ? 'N' : 'S')) : '';
-                        const lonStr = d.longitude != null ? (Math.abs(d.longitude).toFixed(2) + '°' + (d.longitude >= 0 ? 'E' : 'W')) : '';
-                        const parts = [
-                            [d.city, d.country_name].filter(Boolean).join(', '),
-                            latStr && lonStr ? latStr + ', ' + lonStr : '',
-                            d.utc_offset?'UTC'+d.utc_offset:''
-                        ].filter(Boolean);
-                        el.textContent = 'detected location '+parts.join(' · ');
-                    }
-                }
-                renderSolarBg(
-                    (!d.error && d.latitude  != null) ? d.latitude  : 51.5,
-                    (!d.error && d.longitude != null) ? d.longitude : 0
-                );
-            })
-            .catch(() => renderSolarBg(51.5, 0));
-    </script>
+  var center = document.createElementNS(SVG_NS, 'circle');
+  center.setAttribute('cx', 0); center.setAttribute('cy', 0);
+  center.setAttribute('r', 1.6); center.setAttribute('fill', markerFill); center.setAttribute('opacity', 0.9);
+  var anim = document.createElementNS(SVG_NS, 'animate');
+  anim.setAttribute('attributeName', 'r'); anim.setAttribute('values', '1.6;2.6;1.6');
+  anim.setAttribute('dur', '1.6s'); anim.setAttribute('repeatCount', 'indefinite');
+  center.appendChild(anim); svg.appendChild(center);
+
+  document.getElementById(containerId).appendChild(svg);
+
+  return function update(now) {
+    var data = getRingData(now);
+    rings.forEach(function(ring, i) {
+      var frac = data[i].frac;
+      var angle = frac * Math.PI * 2 - Math.PI / 2;
+      var mx = ring.r * Math.cos(angle);
+      var my = ring.r * Math.sin(angle);
+      ring.marker.setAttribute('cx', mx.toFixed(2));
+      ring.marker.setAttribute('cy', my.toFixed(2));
+      if (frac < 0.001) {
+        ring.trail.setAttribute('d', '');
+      } else {
+        var large = frac > 0.5 ? 1 : 0;
+        ring.trail.setAttribute('d',
+          'M 0 ' + (-ring.r) + ' A ' + ring.r + ' ' + ring.r + ' 0 ' + large + ' 1 ' +
+          mx.toFixed(2) + ' ' + my.toFixed(2));
+      }
+    });
+  };
+}
+
+// ── Build starfield ───────────────────────────────────────────
+(function() {
+  var svg = document.querySelector('.cos-stars');
+  svg.innerHTML = '';
+  for (var i = 0; i < 90; i++) {
+    var x = (i * 137.508) % 1440;
+    var y = ((i * 73.21) + 47) % 2400;
+    var r = 0.4 + ((i * 31) % 11) / 18;
+    var o = 0.25 + ((i * 19) % 7) / 12;
+    var c = document.createElementNS(SVG_NS, 'circle');
+    c.setAttribute('cx', x.toFixed(1)); c.setAttribute('cy', y.toFixed(1));
+    c.setAttribute('r',  r.toFixed(2)); c.setAttribute('fill', '#ece2c8');
+    c.setAttribute('opacity', o.toFixed(2));
+    svg.appendChild(c);
+  }
+})();
+
+// ── State ─────────────────────────────────────────────────────
+var loc = { lat: 51.5, lon: 0, label: 'Greenwich · UK' };
+var timeOverride = null;
+
+var updateAlmRings = makeRings('alm-rings', 'almanac', 520);
+var updateCosRings = makeRings('cos-rings',  'cosmos',  640);
+
+fetch('https://ipapi.co/json/')
+  .then(function(r){ return r.json(); })
+  .then(function(d){
+    if (!d || d.error || d.latitude == null) return;
+    var parts = [d.city, d.country_name].filter(Boolean).join(', ');
+    loc = { lat: d.latitude, lon: d.longitude, label: parts || 'detected' };
+  })
+  .catch(function(){});
+
+var spPhase    = document.getElementById('sp-phase');
+var spElev     = document.getElementById('sp-elev');
+var spTime     = document.getElementById('sp-time');
+var spLoc      = document.getElementById('sp-loc');
+var spMix      = document.getElementById('sp-mix');
+var spSlider   = document.getElementById('sp-slider');
+var spLiveBtn  = document.getElementById('sp-live-btn');
+var spHline    = document.getElementById('sp-hline');
+var spArc      = document.getElementById('sp-arc');
+var spSun      = document.getElementById('sp-sun');
+var spRise     = document.getElementById('sp-rise');
+var spSet      = document.getElementById('sp-set');
+var spPanel    = document.getElementById('sun-panel');
+var spScrubWrap = document.getElementById('sp-scrub-wrap');
+
+spSlider.addEventListener('input', function(e){ timeOverride = parseFloat(e.target.value); });
+spLiveBtn.addEventListener('click', function(){ timeOverride = null; });
+
+function pad2(n){ return String(n).padStart(2, '0'); }
+
+function tick() {
+  var real = new Date();
+  var now;
+  if (timeOverride == null) {
+    now = real;
+    spSlider.value = real.getHours() + real.getMinutes() / 60;
+  } else {
+    now = new Date(real);
+    var h = Math.floor(timeOverride);
+    var m = Math.floor((timeOverride - h) * 60);
+    var s = Math.floor(((timeOverride - h) * 60 - m) * 60);
+    now.setHours(h, m, s, 0);
+  }
+
+  var yr   = now.getFullYear();
+  var mo   = now.toLocaleString('en', { month: 'long' });
+  var moS  = now.toLocaleString('en', { month: 'short' });
+  var d    = now.getDate();
+  var hh   = pad2(now.getHours());
+  var mm   = pad2(now.getMinutes());
+  var ss   = pad2(now.getSeconds());
+  var y0   = new Date(yr, 0, 1);
+  var doy  = Math.floor((now - y0) / 86400000) + 1;
+
+  var elev     = solarElevationDeg(loc.lat, loc.lon, now);
+  var nightMix = 1 - smoothstep(-6, 10, elev);
+
+  var phase = elev > 10 ? 'day'
+    : elev > 0  ? 'golden hour'
+    : elev > -6 ? 'civil twilight'
+    : elev > -12 ? 'nautical twilight'
+    : 'night';
+
+  // Crossfade layers
+  var almLayer = document.getElementById('alm-layer');
+  var cosLayer = document.getElementById('cos-layer');
+  almLayer.style.opacity = (1 - nightMix);
+  cosLayer.style.opacity = nightMix;
+  cosLayer.style.pointerEvents = nightMix >= 0.5 ? 'auto' : 'none';
+
+  // Almanac nav
+  document.getElementById('alm-vol').textContent  = 'Vol. ' + (yr - 1999);
+  document.getElementById('alm-num').textContent  = '№ ' + Math.ceil(d / 7);
+  document.getElementById('alm-date').textContent = mo + ' ' + d + ', ' + yr;
+  document.getElementById('alm-year').textContent = yr;
+  document.getElementById('alm-month').textContent = mo.toLowerCase();
+
+  // Cosmos nav
+  document.getElementById('cos-time').textContent = hh + ':' + mm + ':' + ss;
+  document.getElementById('cos-date').textContent = moS + ' ' + d + ' ' + yr;
+  document.getElementById('cos-year').textContent = yr;
+
+  // Cosmos side panels
+  document.getElementById('cos-mill').textContent = 'year ' + Math.floor(yr % 1000) + ' / 1000';
+  document.getElementById('cos-cent').textContent = 'year ' + Math.floor(yr % 100)  + ' / 100';
+  document.getElementById('cos-dec').textContent  = 'year ' + Math.floor(yr % 10)   + ' / 10';
+  document.getElementById('cos-yr').textContent   = 'day '  + doy;
+  document.getElementById('cos-day').textContent  = hh + ':' + mm;
+  document.getElementById('cos-hb').textContent   = ss + '″';
+
+  // Update rings
+  updateAlmRings(now);
+  updateCosRings(now);
+
+  // Sun panel
+  var dark   = nightMix > 0.5;
+  var fg     = dark ? 'rgba(236,226,200,0.92)' : 'rgba(28,22,16,0.92)';
+  var fgMute = dark ? 'rgba(236,226,200,0.55)' : 'rgba(28,22,16,0.55)';
+  var accent = dark ? '#d6ab5e' : '#8a3a13';
+  var border = dark ? 'rgba(214,171,94,0.28)' : 'rgba(28,22,16,0.18)';
+
+  spPanel.className = dark ? 'night' : 'day';
+  spPhase.textContent = phase;
+  spPhase.style.color = accent;
+  spElev.textContent  = elev.toFixed(1) + '°';
+  spTime.textContent  = hh + ':' + mm;
+  spLoc.textContent   = loc.label;
+  spMix.textContent   = Math.round(nightMix * 100) + '%';
+
+  var elevC = Math.max(-30, Math.min(60, elev));
+  var sunY  = 50 - (elevC / 60) * 35;
+  spSun.setAttribute('cy', sunY.toFixed(1));
+  spSun.setAttribute('fill', dark ? '#f5d78f' : '#e0a330');
+  spSun.style.filter = dark ? 'drop-shadow(0 0 6px #f5d78f)' : 'none';
+  spHline.setAttribute('stroke', fgMute);
+  spArc.setAttribute('stroke', fgMute);
+  spRise.setAttribute('fill', fgMute);
+  spSet.setAttribute('fill', fgMute);
+
+  document.querySelectorAll('.sp-row-label, .sp-scrub-label').forEach(function(el){ el.style.color = fgMute; });
+  document.querySelectorAll('.sp-row-val, .sp-ticks span').forEach(function(el){ el.style.color = fg; });
+  spScrubWrap.style.borderTopColor = border;
+  spLiveBtn.style.borderColor = border;
+  spLiveBtn.style.color = timeOverride == null ? accent : fgMute;
+  spLiveBtn.textContent = timeOverride == null ? 'live' : 'snap to live';
+}
+
+tick();
+setInterval(tick, 1000);
+</script>
 </body>
 </html>

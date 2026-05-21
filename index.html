@@ -11,11 +11,15 @@
 </head>
 <body>
 
+<!-- Sun panel restore button (visible only when panel is hidden) -->
+<button id="sp-restore" class="day" title="Show sun panel">☀</button>
+
 <!-- Fixed sun panel -->
 <div id="sun-panel" class="day">
   <div class="sp-header">
     <span class="sp-label">sun · live</span>
     <span class="sp-phase" id="sp-phase">day</span>
+    <button id="sp-hide-btn" title="Hide sun panel">×</button>
   </div>
   <svg id="sp-horizon" viewBox="0 0 220 70" style="width:100%;height:70px;display:block;margin-bottom:10px">
     <line id="sp-hline" x1="0" y1="50" x2="220" y2="50" stroke-width="0.5" />
@@ -44,7 +48,8 @@
   <div id="alm-layer" class="alm-root">
 
     <nav class="alm-nav">
-      <div class="alm-brand">Anro le Roux <em>— almanac</em></div>
+      <!-- <div class="alm-brand">Anro le Roux <em>— home</em></div> -->
+      <div class="alm-brand">Anro le Roux</div>
       <div class="alm-edition">
         <span id="alm-vol">Vol. 27</span>
         <span id="alm-num">№ 3</span>
@@ -226,9 +231,9 @@
     </nav>
 
     <header class="cos-hero">
-      <div class="cos-eyebrow">— a working notebook on time, scale, and craft —</div>
+      <div class="cos-eyebrow">— a working notebook on mathematics, technology, and presence —</div>
       <h1 class="cos-h1">
-        Built for <em>the long</em> <span class="slash">/</span> at the speed of <em>now.</em>
+        What the <em>mind</em> once doubted <span class="slash">/</span> <em>time</em> now proves.
       </h1>
       <div class="cos-rings-stage">
         <div class="cos-rings-glow"></div>
@@ -347,6 +352,23 @@
           <h3 class="cos-disc-name">Leadership</h3>
           <p class="cos-disc-body">The fathership sense — humbly drawing up those coming after, calling out raw potential only you can see.</p>
         </div>
+      </div>
+    </section>
+
+    <section class="cos-section">
+      <div class="cos-section-eyebrow">§ iv · about this site</div>
+      <h2 class="cos-section-h">The scope, <em>in brief.</em></h2>
+      <div class="cos-about-body">
+        <p>The scope of this website revolves around four parts: Engineering (traditional fields like civil, mechanical, electronic, process, computer, industrial), Programming (the broader software development discipline together with its practices and technologies), Mathematics (applied maths and how it's used in engineering and programming), and Leadership (how effective leadership looks, the fathership sense, and the importance of trust).</p>
+        <p>There is the technical side where much of the content focuses on the junction of engineering, programming and mathematics. The motivation for this combination is that new dual-discipline career paths are emerging and early adopters will have a major advantage. But there is also the human relational topic that is deeply integrated in engineering and software development.</p>
+        <p>Technical excellence can be, and is very often, stifled due to detrimental suspicion or competition amongst colleagues and distrust between employees and leadership. Additionally, the growing lack of mentorship and elder figures watering young potential is leaving a wake of under-developed professionals. Technical abilities always go hand-in-hand with human relationships.</p>
+        <p>The heart of this website is to inspire — to show what is possible and present a path-to-entry to anyone interested; to empower — to show how and where to start by explaining complex topics in incremental and clear visual ways; and to guide — to highlight the importance of leaders and encourage them to humbly draw and raise those coming after them.</p>
+        <h2>Item <em>classes</em></h2>
+        <p>The website presents articles and code bases. Items can only be part of one class.</p>
+        <h2><em>Categories</em></h2>
+        <p>Items are categorised into engineering, programming, mathematics and leadership. Items can fall in multiple categories.</p>
+        <h2>Article <em>versions</em></h2>
+        <p>Articles are considered works-in-progress and are therefore versioned with major, minor and patch version numbers. If the major version is 0 it still needs to be completed.</p>
       </div>
     </section>
 
@@ -542,6 +564,16 @@ var spScrubWrap = document.getElementById('sp-scrub-wrap');
 spSlider.addEventListener('input', function(e){ timeOverride = parseFloat(e.target.value); });
 spLiveBtn.addEventListener('click', function(){ timeOverride = null; });
 
+var spRestore = document.getElementById('sp-restore');
+document.getElementById('sp-hide-btn').addEventListener('click', function(){
+  spPanel.style.display = 'none';
+  spRestore.style.display = 'flex';
+});
+spRestore.addEventListener('click', function(){
+  spPanel.style.display = 'block';
+  spRestore.style.display = 'none';
+});
+
 function pad2(n){ return String(n).padStart(2, '0'); }
 
 function tick() {
@@ -615,7 +647,8 @@ function tick() {
   var accent = dark ? '#d6ab5e' : '#8a3a13';
   var border = dark ? 'rgba(214,171,94,0.28)' : 'rgba(28,22,16,0.18)';
 
-  spPanel.className = dark ? 'night' : 'day';
+  spPanel.className   = dark ? 'night' : 'day';
+  spRestore.className = dark ? 'night' : 'day';
   spPhase.textContent = phase;
   spPhase.style.color = accent;
   spElev.textContent  = elev.toFixed(1) + '°';

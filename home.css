@@ -320,6 +320,7 @@ body { font-family: 'Inter', system-ui, sans-serif; background: #f0eee9; }
 .sp-scrub-btn { background: transparent; border-radius: 6px; padding: 2px 8px; font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 9px; letter-spacing: 1.4px; text-transform: uppercase; cursor: pointer; }
 #sun-panel input[type=range] { width: 100%; cursor: pointer; }
 .sp-ticks { display: flex; justify-content: space-between; font-size: 9px; margin-top: 2px; }
+.sp-mode-row { display: flex; justify-content: space-between; align-items: baseline; margin-top: 10px; padding-top: 10px; border-top: 1px solid rgba(28,22,16,0.18); }
 
 /* ── Responsive ──────────────────────────────────────────────── */
 @media (max-width: 1100px) {

@@ -40,6 +40,10 @@
     <input type="range" min="0" max="24" step="0.05" id="sp-slider" />
     <div class="sp-ticks"><span>00</span><span>06</span><span>12</span><span>18</span><span>24</span></div>
   </div>
+  <div class="sp-mode-row" id="sp-mode-wrap">
+    <span class="sp-scrub-label">mode</span>
+    <button class="sp-scrub-btn" id="sp-mode-btn">auto</button>
+  </div>
 </div>
 
 <div id="live-wrapper">
@@ -49,7 +53,7 @@
 
     <nav class="alm-nav">
       <!-- <div class="alm-brand">Anro le Roux <em>— home</em></div> -->
-      <div class="alm-brand">Anro le Roux</div>
+      <div class="alm-brand">A·lR</div>
       <div class="alm-edition">
         <span id="alm-vol">Vol. 27</span>
         <span id="alm-num">№ 3</span>
@@ -223,7 +227,7 @@
     <svg class="cos-stars" viewBox="0 0 1440 2400" preserveAspectRatio="none" aria-hidden="true"></svg>
 
     <nav class="cos-nav">
-      <div class="cos-brand">Anro le Roux</div>
+      <div class="cos-brand">A · lR</div>
       <div class="cos-nav-right">
         <span><span class="dot">●</span> now <span id="cos-time">00:00:00</span></span>
         <span id="cos-date">Jan 1 2026</span>
@@ -231,7 +235,7 @@
     </nav>
 
     <header class="cos-hero">
-      <div class="cos-eyebrow">— a working notebook on mathematics, technology, and presence —</div>
+      <div class="cos-eyebrow">— a working notebook on mathematics, technology, and leadership —</div>
       <h1 class="cos-h1">
         What the <em>mind</em> once doubted <span class="slash">/</span> <em>time</em> now proves.
       </h1>
@@ -533,6 +537,7 @@ function makeRings(containerId, palette, size) {
 // ── State ─────────────────────────────────────────────────────
 var loc = { lat: 51.5, lon: 0, label: 'Greenwich · UK' };
 var timeOverride = null;
+var modeOverride = localStorage.getItem('sp-mode') || null; // null = auto, 'day' = forced light, 'night' = forced dark
 
 var updateAlmRings = makeRings('alm-rings', 'almanac', 520);
 var updateCosRings = makeRings('cos-rings',  'cosmos',  640);
@@ -563,6 +568,16 @@ var spScrubWrap = document.getElementById('sp-scrub-wrap');
 
 spSlider.addEventListener('input', function(e){ timeOverride = parseFloat(e.target.value); });
 spLiveBtn.addEventListener('click', function(){ timeOverride = null; });
+
+var spModeBtn = document.getElementById('sp-mode-btn');
+spModeBtn.addEventListener('click', function(){
+  if (modeOverride === null) modeOverride = 'day';
+  else if (modeOverride === 'day') modeOverride = 'night';
+  else modeOverride = null;
+  if (modeOverride) localStorage.setItem('sp-mode', modeOverride);
+  else localStorage.removeItem('sp-mode');
+  tick();
+});
 
 var spRestore = document.getElementById('sp-restore');
 document.getElementById('sp-hide-btn').addEventListener('click', function(){
@@ -612,9 +627,10 @@ function tick() {
   // Crossfade layers
   var almLayer = document.getElementById('alm-layer');
   var cosLayer = document.getElementById('cos-layer');
-  almLayer.style.opacity = (1 - nightMix);
-  cosLayer.style.opacity = nightMix;
-  cosLayer.style.pointerEvents = nightMix >= 0.5 ? 'auto' : 'none';
+  var effectiveMix = modeOverride === 'day' ? 0 : modeOverride === 'night' ? 1 : nightMix;
+  almLayer.style.opacity = (1 - effectiveMix);
+  cosLayer.style.opacity = effectiveMix;
+  cosLayer.style.pointerEvents = effectiveMix >= 0.5 ? 'auto' : 'none';
 
   // Almanac nav
   document.getElementById('alm-vol').textContent  = 'Vol. ' + (yr - 1999);
@@ -641,7 +657,7 @@ function tick() {
   updateCosRings(now);
 
   // Sun panel
-  var dark   = nightMix > 0.5;
+  var dark   = modeOverride === 'day' ? false : modeOverride === 'night' ? true : nightMix > 0.5;
   var fg     = dark ? 'rgba(236,226,200,0.92)' : 'rgba(28,22,16,0.92)';
   var fgMute = dark ? 'rgba(236,226,200,0.55)' : 'rgba(28,22,16,0.55)';
   var accent = dark ? '#d6ab5e' : '#8a3a13';
@@ -672,6 +688,11 @@ function tick() {
   spLiveBtn.style.borderColor = border;
   spLiveBtn.style.color = timeOverride == null ? accent : fgMute;
   spLiveBtn.textContent = timeOverride == null ? 'live' : 'snap to live';
+
+  spModeBtn.textContent = modeOverride === null ? 'auto' : modeOverride;
+  spModeBtn.style.color = modeOverride === null ? fgMute : accent;
+  spModeBtn.style.borderColor = border;
+  document.getElementById('sp-mode-wrap').style.borderTopColor = border;
 }
 
 tick();

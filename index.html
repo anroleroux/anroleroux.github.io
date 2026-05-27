@@ -82,7 +82,7 @@
         </div>
       </div>
       <div class="alm-rings-wrap">
-        <div class="alm-rings-frame"></div>
+        <!-- <div class="alm-rings-frame"></div> -->
         <div id="alm-rings"></div>
         <div class="alm-rings-caption">
           fig. i — concentric clocks
@@ -453,7 +453,8 @@ function makeRings(containerId, palette, size) {
 
   var svg = document.createElementNS(SVG_NS, 'svg');
   svg.setAttribute('viewBox', '-270 -270 540 540');
-  svg.setAttribute('width',  size);
+  // svg.setAttribute('width',  size);
+  svg.style.maxWidth = '100%';
   svg.setAttribute('height', size);
   svg.style.display = 'block';
 
@@ -542,14 +543,14 @@ var modeOverride = localStorage.getItem('sp-mode') || null; // null = auto, 'day
 var updateAlmRings = makeRings('alm-rings', 'almanac', 520);
 var updateCosRings = makeRings('cos-rings',  'cosmos',  640);
 
-fetch('https://ipapi.co/json/')
-  .then(function(r){ return r.json(); })
-  .then(function(d){
-    if (!d || d.error || d.latitude == null) return;
-    var parts = [d.city, d.country_name].filter(Boolean).join(', ');
-    loc = { lat: d.latitude, lon: d.longitude, label: parts || 'detected' };
-  })
-  .catch(function(){});
+// fetch('https://ipapi.co/json/')
+//   .then(function(r){ return r.json(); })
+//   .then(function(d){
+//     if (!d || d.error || d.latitude == null) return;
+//     var parts = [d.city, d.country_name].filter(Boolean).join(', ');
+//     loc = { lat: d.latitude, lon: d.longitude, label: parts || 'detected' };
+//   })
+//   .catch(function(){});
 
 var spPhase    = document.getElementById('sp-phase');
 var spElev     = document.getElementById('sp-elev');

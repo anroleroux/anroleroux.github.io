@@ -710,5 +710,37 @@ function tick() {
 tick();
 setInterval(tick, 1000);
 </script>
+
+<script>
+// ── Visit tracking ────────────────────────────────────────────
+(function () {
+  var SUPABASE_URL  = 'https://hbiyyreqmliesghdclpg.supabase.co';
+  var SUPABASE_ANON = 'sb_publishable_OsrWXMOvvDm0PluzQE6-6g_zb2yaaP7';
+  var SESSION_KEY   = 'alr_sid';
+
+  var token = localStorage.getItem(SESSION_KEY);
+  if (!token) {
+    token = crypto.randomUUID();
+    localStorage.setItem(SESSION_KEY, token);
+  }
+
+  var payload = JSON.stringify({
+    session_token: token,
+    page:          location.pathname,
+    referrer:      document.referrer || null,
+  });
+
+  // keepalive ensures the request completes even on navigation
+  fetch(SUPABASE_URL + '/functions/v1/track-visit', {
+    method:    'POST',
+    keepalive: true,
+    headers: {
+      'Content-Type':  'application/json',
+      'Authorization': 'Bearer ' + SUPABASE_ANON,
+    },
+    body: payload,
+  }).catch(function () { /* fire-and-forget */ });
+})();
+</script>
 </body>
 </html>

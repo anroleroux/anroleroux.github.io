@@ -103,9 +103,10 @@ body { margin: 0; padding: 0; width: 100%; font-family: 'Inter', system-ui, sans
 .alm-root > * { position: relative; z-index: 1; }
 
 .alm-nav {
-  display: flex; justify-content: space-between; align-items: baseline;
-  padding: var(--ms2) var(--ms4);
-  padding-right: var(--ms5);
+  display: flex; justify-content: space-between; align-items: center;
+  padding: var(--ms1) var(--ms4);
+  padding-right: var(--ms6);
+  height: var(--ms3);
   border-bottom: 1px solid var(--rule);
   font-family: var(--mono);
   font-size: var(--ts11);
@@ -177,7 +178,7 @@ body { margin: 0; padding: 0; width: 100%; font-family: 'Inter', system-ui, sans
 .alm-work { display: flex; flex-direction: column; }
 .alm-entry {
   display: grid; grid-template-columns: 200px 1fr 220px var(--ms6);
-  gap: var(--ms4); padding: var(--ms2) 0; border-top: 1px solid var(--rule);
+  gap: var(--ms4); padding: var(--ms2) var(--ms-2); border-top: 1px solid var(--rule);
   align-items: baseline; color: inherit; text-decoration: none; transition: background 0.4s;
 }
 .alm-entry:last-child { border-bottom: 1px solid var(--rule); }
@@ -245,8 +246,9 @@ body { margin: 0; padding: 0; width: 100%; font-family: 'Inter', system-ui, sans
 
 .cos-nav {
   display: flex; justify-content: space-between; align-items: center;
-  padding: var(--ms2) var(--ms4);
-  padding-right: var(--ms5);
+  padding: var(--ms1) var(--ms4);
+  height: var(--ms3);
+  padding-right: var(--ms7);
   font-family: var(--mono); font-size: var(--ts11); letter-spacing: 1.4px;
   text-transform: uppercase; color: var(--bone-faint);
 }
@@ -254,9 +256,13 @@ body { margin: 0; padding: 0; width: 100%; font-family: 'Inter', system-ui, sans
 .cos-nav-right { display: flex; gap: var(--ms2); font-variant-numeric: tabular-nums; }
 .cos-nav-right .dot { color: var(--gold); }
 
-.cos-hero { padding: var(--ms5) var(--ms6) var(--ms6); position: relative; text-align: center; }
+.cos-hero { padding: var(--ms5) var(--ms3) var(--ms6); position: relative; text-align: center; }
 .cos-eyebrow { font-family: var(--mono); font-size: var(--ts11); letter-spacing: 3px; text-transform: uppercase; color: var(--gold-soft); margin-bottom: var(--ms3); }
-.cos-h1 { font-family: var(--display); font-weight: 300; font-size: var(--ts96); line-height: 0.95; letter-spacing: -0.025em; margin: 0 auto; max-width: 18ch; text-wrap: balance; }
+.cos-h1 {
+  font-family: var(--display); font-weight: 300;
+  font-size: var(--ms5); line-height: 0.95; letter-spacing: -0.025em;
+  margin: 0 auto; max-width: 18ch; text-wrap: balance;
+}
 .cos-h1 em { font-style: italic; color: var(--gold); font-weight: 300; }
 .cos-h1 .slash { color: var(--gold-faint); margin: 0 0.15em; font-weight: 200; }
 
@@ -394,18 +400,21 @@ body { margin: 0; padding: 0; width: 100%; font-family: 'Inter', system-ui, sans
   .cos-h1 { font-size: var(--ts72); }
   .alm-hero { padding: var(--ms5) var(--ms4) var(--ms6); gap: var(--ms4); }
   .cos-rings-side { display: none; }
-  .alm-entry { grid-template-columns: 1var(--ms5) 1fr 1var(--ms5) var(--ms5); gap: var(--ms1); }
+  .alm-entry {
+    grid-template-columns: 1var(--ms5) 1fr 1var(--ms5) var(--ms5);
+    gap: var(--ms1);
+  }
 }
 @media (max-width: 800px) {
   html {font-size: 16px;}
-  .alm-nav, .cos-nav { padding: var(--ms1) var(--ms1); }
-  .alm-nav { flex-direction: column; gap: var(--ms-2); }
+  .alm-nav, .cos-nav { padding: var(--ms1) var(--ms1); padding-right: var(--ms6); }
+  .alm-nav { flex-direction: column; align-items: baseline; }
   .alm-hero { grid-template-columns: 1fr; padding: var(--ms3) var(--ms1) var(--ms6); }
   .alm-rings-wrap { margin-top: var(--ms3); }
   .alm-h1 { font-size: var(--ts48); }
   .alm-section { padding: var(--ms4) var(--ms1); }
   .alm-section-head { grid-template-columns: 1fr; gap: var(--ms0); }
-  .alm-entry { grid-template-columns: 1fr; gap: var(--ms-2); padding: var(--ms1) 0; }
+  .alm-entry { grid-template-columns: 1fr; gap: var(--ms-2); padding: var(--ms1) var(--ms-2); }
   .alm-entry-kind, .alm-entry-arrow { text-align: left; }
   .alm-disciplines { grid-template-columns: 1fr 1fr; }
   .alm-foot { padding: var(--ms2) var(--ms1) var(--ms4); }
@@ -420,5 +429,6 @@ body { margin: 0; padding: 0; width: 100%; font-family: 'Inter', system-ui, sans
 }
 
 @media (max-width: 500px) {
+  .cos-nav { flex-direction: column; align-items: baseline; }
   html {font-size: 14px;}
 }

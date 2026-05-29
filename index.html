@@ -55,14 +55,14 @@
       <!-- <div class="alm-brand">Anro le Roux <em>— home</em></div> -->
       <div class="alm-brand">A·lR</div>
       <div class="alm-edition">
-        <span id="alm-vol">Vol. 27</span>
-        <span id="alm-num">№ 3</span>
+        <!-- <span id="alm-vol">Vol. 27</span> -->
+        <!-- <span id="alm-num">№ 3</span> -->
         <span id="alm-date">May 21, 2026</span>
       </div>
     </nav>
 
     <header class="alm-hero">
-      <div class="alm-hero-folio">i — the present moment</div>
+      <div class="alm-hero-folio">i — introduction</div>
       <div>
         <h1 class="alm-h1">
           Engineering<br>
@@ -93,7 +93,7 @@
 
     <section class="alm-section">
       <div class="alm-section-head">
-        <div class="alm-section-num">§ ii · the work</div>
+        <div class="alm-section-num">§ ii · content</div>
         <div>
           <h2 class="alm-section-title">Things made, <em>by their scale</em>.</h2>
           <p class="alm-section-blurb">
@@ -154,7 +154,7 @@
 
     <section class="alm-section">
       <div class="alm-section-head">
-        <div class="alm-section-num">§ iii · the disciplines</div>
+        <div class="alm-section-num">§ iii · scope</div>
         <div>
           <h2 class="alm-section-title">Four crafts, <em>one horizon</em>.</h2>
           <p class="alm-section-blurb">
@@ -190,7 +190,7 @@
 
     <section class="alm-section">
       <div class="alm-section-head">
-        <div class="alm-section-num">§ iv · about this site</div>
+        <div class="alm-section-num">§ iv · about</div>
         <div>
           <h2 class="alm-section-title">The scope, <em>in brief</em>.</h2>
           <p class="alm-section-blurb">Four disciplines, two classes of work, one notebook.</p>
@@ -211,11 +211,11 @@
     </section>
 
     <footer class="alm-foot">
-      <div>© <span id="alm-year"></span> Anro le Roux. Kept by hand, in <em id="alm-month"></em>.</div>
+      <div>© <span id="alm-year"></span> Anro le Roux</div>
       <div class="alm-foot-mark">A·lR</div>
       <div class="alm-foot-links">
         <a href="https://linkedin.com/in/anroleroux" target="_blank" rel="noopener">LinkedIn</a>
-        <a href="https://github.com/aleroux85" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://github.com/anroleroux" target="_blank" rel="noopener">GitHub</a>
       </div>
     </footer>
 
@@ -360,7 +360,7 @@
     </section>
 
     <section class="cos-section">
-      <div class="cos-section-eyebrow">§ iv · about this site</div>
+      <div class="cos-section-eyebrow">§ about this site</div>
       <h2 class="cos-section-h">The scope, <em>in brief.</em></h2>
       <div class="cos-about-body">
         <p>The scope of this website revolves around four parts: Engineering (traditional fields like civil, mechanical, electronic, process, computer, industrial), Programming (the broader software development discipline together with its practices and technologies), Mathematics (applied maths and how it's used in engineering and programming), and Leadership (how effective leadership looks, the fathership sense, and the importance of trust).</p>
@@ -634,11 +634,11 @@ function tick() {
   cosLayer.style.pointerEvents = effectiveMix >= 0.5 ? 'auto' : 'none';
 
   // Almanac nav
-  document.getElementById('alm-vol').textContent  = 'Vol. ' + (yr - 1999);
-  document.getElementById('alm-num').textContent  = '№ ' + Math.ceil(d / 7);
+  // document.getElementById('alm-vol').textContent  = 'Vol. ' + (yr - 1999);
+  // document.getElementById('alm-num').textContent  = '№ ' + Math.ceil(d / 7);
   document.getElementById('alm-date').textContent = mo + ' ' + d + ', ' + yr;
   document.getElementById('alm-year').textContent = yr;
-  document.getElementById('alm-month').textContent = mo.toLowerCase();
+  // document.getElementById('alm-month').textContent = mo.toLowerCase();
 
   // Cosmos nav
   document.getElementById('cos-time').textContent = hh + ':' + mm + ':' + ss;

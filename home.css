@@ -156,7 +156,7 @@ body { margin: 0; padding: 0; width: 100%; font-family: 'Inter', system-ui, sans
 .alm-rings-frame { position: absolute; inset: -28px; border: 1px solid var(--rule); border-radius: 50%; opacity: 0.5; }
 .alm-rings-caption {
   position: absolute; left: 50%; bottom: -64px; transform: translateX(-50%);
-  font-family: var(--mono); font-size: var(--ts110); letter-spacing: var(--ms-7);
+  font-family: var(--mono); font-size: var(--ts11); letter-spacing: var(--ms-7);
   text-transform: uppercase; color: var(--ink-faint); white-space: nowrap; text-align: center;
 }
 .alm-rings-caption em {

@@ -15,6 +15,44 @@ const CORS = {
 
 const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
+// ── Geo lookup ───────────────────────────────────────────────────────────────
+// cf-ipcountry is handled separately (it passes through Supabase's infra).
+// The richer cf-ip* headers are Cloudflare Workers-only; ipapi.co fills the rest.
+// Free tier: 1000 req/day, no key needed. Returns nulls on any failure.
+
+interface GeoResult {
+  city: string | null;
+  continent: string | null;
+  latitude: number | null;
+  longitude: number | null;
+  timezone: string | null;
+  asorg: string | null;
+}
+
+async function fetchGeo(ip: string): Promise<GeoResult> {
+  const empty: GeoResult = { city: null, continent: null, latitude: null, longitude: null, timezone: null, asorg: null };
+  if (ip === 'unknown') return empty;
+  try {
+    const res = await fetch(`https://ipapi.co/${ip}/json/`, {
+      headers: { 'User-Agent': 'anroleroux.github.io/analytics' },
+      signal: AbortSignal.timeout(2000), // don't block the response more than 2s
+    });
+    if (!res.ok) return empty;
+    const d = await res.json();
+    if (d.error) return empty;
+    return {
+      city:      typeof d.city           === 'string' ? d.city           : null,
+      continent: typeof d.continent_code === 'string' ? d.continent_code : null,
+      latitude:  typeof d.latitude       === 'number' ? d.latitude       : null,
+      longitude: typeof d.longitude      === 'number' ? d.longitude      : null,
+      timezone:  typeof d.timezone       === 'string' ? d.timezone       : null,
+      asorg:     typeof d.org            === 'string' ? d.org            : null,
+    };
+  } catch {
+    return empty;
+  }
+}
+
 // ── Bot detection ─────────────────────────────────────────────────────────────
 
 // User-agent substrings that identify crawlers, headless browsers, and scrapers.
@@ -71,24 +109,20 @@ Deno.serve(async (req: Request): Promise<Response> => {
   const referrer     = typeof body.referrer === 'string' ? body.referrer.slice(0, 1000) : null;
   const userAgent    = req.headers.get('user-agent')?.slice(0, 500) ?? null;
 
-  // Cloudflare geo headers — read before hashing the IP (the only moment raw IP data is visible)
-  // All headers are injected by Cloudflare at no cost; GPS is city-level precision.
+  // Get raw IP before hashing — needed for geo lookup
+  const rawIp = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ?? 'unknown';
+
+  // cf-ipcountry passes through Supabase's infrastructure; the richer cf-ip* headers
+  // are Cloudflare Workers-only and are not available here — ipapi.co fills the gaps.
   const cfCountry = req.headers.get('cf-ipcountry');
   const country   = cfCountry && /^[A-Z]{2}$/.test(cfCountry) && cfCountry !== 'XX' && cfCountry !== 'T1'
     ? cfCountry
     : null;
-  const continent = req.headers.get('cf-ipcontinent') ?? null;
-  const city      = req.headers.get('cf-ipcity')      ?? null;
-  const timezone  = req.headers.get('cf-timezone')    ?? null;
-  const asorg     = req.headers.get('cf-asorganization') ?? null;
 
-  const rawLat = req.headers.get('cf-iplatitude');
-  const rawLon = req.headers.get('cf-iplongitude');
-  const latitude  = rawLat ? parseFloat(rawLat) : null;
-  const longitude = rawLon ? parseFloat(rawLon) : null;
+  const geo = await fetchGeo(rawIp);
 
   // Bot check — return 200 silently so bots get no signal they were filtered
-  if (isBot(userAgent, asorg)) {
+  if (isBot(userAgent, geo.asorg)) {
     return new Response(JSON.stringify({ ok: true }), {
       status: 200,
       headers: { ...CORS, 'Content-Type': 'application/json' },
@@ -96,7 +130,6 @@ Deno.serve(async (req: Request): Promise<Response> => {
   }
 
   // Hash IP (never stored in plain text)
-  const rawIp  = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ?? 'unknown';
   const ipHash = await hashValue(rawIp);
 
   const supabase = createClient(
@@ -147,12 +180,12 @@ Deno.serve(async (req: Request): Promise<Response> => {
       session_token: sessionToken,
       ip_hash:       ipHash,
       country,
-      continent,
-      city,
-      latitude,
-      longitude,
-      timezone,
-      asorg,
+      continent:  geo.continent,
+      city:       geo.city,
+      latitude:   geo.latitude,
+      longitude:  geo.longitude,
+      timezone:   geo.timezone,
+      asorg:      geo.asorg,
       user_agent:    userAgent,
       user_id:       userId,
       last_seen:     new Date().toISOString(),

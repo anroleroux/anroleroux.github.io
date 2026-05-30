@@ -1,533 +1,804 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Anro</title>
-    <link rel="stylesheet" href="/index.css"/>
-    <script src="https://d3js.org/d3.v7.min.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Code as a Career Multiplier — Anro le Roux</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;1,9..144,300;1,9..144,400&family=Inter+Tight:wght@300;400;500;600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/home.css" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <style>
+    /* ── Auth widget ──────────────────────────────────────────────── */
+    .site-auth { width: 100%; margin-top: 0.8rem; font-size: 0.7rem; letter-spacing: 0.05em; opacity: 0.6; }
+    .site-auth-link { background: none; border: none; padding: 0; cursor: pointer; color: inherit; font: inherit; font-size: inherit; letter-spacing: inherit; text-decoration: underline; text-underline-offset: 2px; }
+    .site-auth-link:hover { opacity: 0.8; }
+    .site-auth-form { display: flex; align-items: baseline; gap: 0.6rem; }
+    .site-auth-input { background: none; border: none; border-bottom: 1px solid currentColor; padding: 0 0 1px; color: inherit; font: inherit; font-size: inherit; letter-spacing: inherit; width: 13rem; outline: none; opacity: 0.8; }
+    .site-auth-input::placeholder { opacity: 0.5; }
+    .site-auth-input:focus { opacity: 1; }
+
+    /* ── Nav brand as link ────────────────────────────────────────── */
+    a.alm-brand, a.cos-brand { text-decoration: none; color: inherit; }
+
+    /* ── Article hero ─────────────────────────────────────────────── */
+    .art-hero {
+      padding: var(--ms6) var(--ms6) var(--ms5);
+      border-bottom: 1px solid var(--rule);
+    }
+    .art-eyebrow {
+      font-family: var(--mono); font-size: var(--ts11); letter-spacing: 1.4px;
+      text-transform: uppercase; color: var(--ink-faint); margin-bottom: var(--ms2);
+    }
+    .art-h1 {
+      font-family: var(--serif); font-weight: 400; font-size: var(--ts56);
+      line-height: 1.05; letter-spacing: -0.02em; margin: 0 0 var(--ms1); max-width: 20ch;
+    }
+    .art-h1 em { font-style: italic; color: var(--accent); }
+    .art-lede {
+      font-family: var(--serif); font-size: var(--ts22); line-height: 1.45;
+      color: var(--ink-muted); max-width: 44ch; margin: 0; font-weight: 400;
+    }
+
+    /* ── Article meta bar ─────────────────────────────────────────── */
+    .art-meta-bar {
+      display: flex; gap: var(--ms5); align-items: baseline;
+      padding: var(--ms1) var(--ms6); border-bottom: 1px solid var(--rule);
+      font-family: var(--mono); font-size: var(--ts11); letter-spacing: 0.8px;
+      color: var(--ink-faint); text-transform: uppercase;
+    }
+    .art-meta-item { display: flex; gap: var(--ms-2); align-items: baseline; }
+    .art-meta-val { color: var(--ink-muted); font-variant-numeric: tabular-nums; }
+    .art-version-select {
+      background: none; border: none; font-family: var(--mono); font-size: var(--ts11);
+      letter-spacing: 0.8px; text-transform: uppercase; color: var(--ink-muted);
+      cursor: pointer; padding: 0; appearance: none;
+    }
+    .art-version-select:focus { outline: none; }
+
+    /* ── Article body ─────────────────────────────────────────────── */
+    .art-body section { padding: var(--ms5) var(--ms6); border-top: 1px solid var(--rule); }
+    .art-body section:first-child { padding-top: var(--ms6); }
+    .art-body h2 {
+      font-family: var(--serif); font-weight: 400; font-size: var(--ts36);
+      line-height: 1.1; letter-spacing: -0.01em; margin: 0 0 var(--ms3); color: var(--ink);
+    }
+    .art-body p {
+      font-family: var(--sans); font-size: var(--ts15); line-height: 1.75;
+      color: var(--ink-muted); max-width: 66ch; margin: 0 0 var(--ms0);
+    }
+    .art-body a { color: var(--accent); text-decoration: none; border-bottom: 1px solid rgba(138,58,19,0.3); }
+    .art-body a:hover { border-bottom-color: var(--accent); }
+    .art-body ul {
+      font-family: var(--sans); font-size: var(--ts15); line-height: 1.75;
+      color: var(--ink-muted); max-width: 66ch; margin: 0 0 var(--ms0); padding-left: 1.6em;
+    }
+    .cos-root .art-body ul { color: var(--bone-muted); }
+
+    /* ── Note block ───────────────────────────────────────────────── */
+    .note.block {
+      border-left: 2px solid var(--accent); padding: var(--ms1) var(--ms3);
+      margin: var(--ms3) 0; background: rgba(28,22,16,0.03); max-width: 66ch;
+    }
+    .note.block h3 {
+      font-family: var(--mono); font-size: var(--ts11); letter-spacing: 1.4px;
+      text-transform: uppercase; color: var(--accent); margin: 0 0 var(--ms-1); font-weight: 500;
+    }
+    .note.block p { font-size: var(--ts14); margin: 0; }
+
+    /* ── Graph container ──────────────────────────────────────────── */
+    .art-graph-wrap {
+      border: 1px solid var(--rule); border-radius: 2px; overflow: hidden;
+      margin: var(--ms3) 0; background: rgba(28,22,16,0.015);
+    }
+    .art-graph { display: block; }
+
+    /* ── Node details panel ───────────────────────────────────────── */
+    .art-node-details { border-top: 1px solid var(--rule); padding-top: var(--ms2); margin-top: var(--ms2); }
+    .art-detail-title {
+      font-family: var(--serif); font-weight: 400; font-size: var(--ts24);
+      line-height: 1.2; margin: 0 0 var(--ms-2); color: var(--ink);
+    }
+    .art-detail-group {
+      font-family: var(--mono); font-size: var(--ts11); letter-spacing: 1.4px;
+      text-transform: uppercase; color: var(--ink-faint); margin: 0 0 var(--ms0);
+    }
+    .art-detail-connections {
+      font-family: var(--mono); font-size: var(--ts11); letter-spacing: 0.4px;
+      color: var(--ink-faint); margin-bottom: var(--ms2);
+    }
+    .art-connections-label { display: block; text-transform: uppercase; letter-spacing: 1.4px; margin-bottom: var(--ms-2); }
+    .art-connections-list { margin: 0; padding-left: 0; list-style: none; }
+    .art-connections-list li { padding: var(--ms-5) 0; }
+    .art-connections-list a { color: var(--accent); text-decoration: none; border-bottom: 1px solid rgba(138,58,19,0.3); }
+    .art-connections-list a:hover { border-bottom-color: var(--accent); }
+    .art-detail-content p {
+      font-family: var(--sans); font-size: var(--ts15); line-height: 1.75;
+      color: var(--ink-muted); margin: 0 0 var(--ms0); max-width: 66ch;
+    }
+
+    /* ── Cosmos overrides for art-* classes ───────────────────────── */
+    .cos-root .art-hero { border-bottom-color: var(--bone-fainter); }
+    .cos-root .art-eyebrow { color: var(--gold-soft); }
+    .cos-root .art-h1 { font-family: var(--display); font-weight: 300; color: var(--bone); }
+    .cos-root .art-h1 em { color: var(--gold); }
+    .cos-root .art-lede { color: var(--bone-muted); font-family: var(--display); }
+    .cos-root .art-meta-bar { border-bottom-color: var(--bone-fainter); color: var(--bone-faint); }
+    .cos-root .art-meta-val { color: var(--bone-muted); }
+    .cos-root .art-version-select { color: var(--bone-muted); }
+    .cos-root .art-body section { border-top-color: var(--bone-fainter); }
+    .cos-root .art-body h2 { font-family: var(--display); font-weight: 300; color: var(--bone); }
+    .cos-root .art-body p { color: var(--bone-muted); }
+    .cos-root .art-body a { color: var(--gold); border-bottom-color: rgba(214,171,94,0.3); }
+    .cos-root .art-body a:hover { border-bottom-color: var(--gold); }
+    .cos-root .note.block { border-left-color: var(--gold); background: rgba(214,171,94,0.04); }
+    .cos-root .note.block h3 { color: var(--gold); }
+    .cos-root .art-graph-wrap { border-color: var(--bone-fainter); background: rgba(236,226,200,0.02); }
+    .cos-root .art-node-details { border-top-color: var(--bone-fainter); }
+    .cos-root .art-detail-title { font-family: var(--display); font-weight: 300; color: var(--bone); }
+    .cos-root .art-detail-group { color: var(--bone-faint); }
+    .cos-root .art-detail-connections { color: var(--bone-faint); }
+    .cos-root .art-connections-list a { color: var(--gold); border-bottom-color: rgba(214,171,94,0.3); }
+    .cos-root .art-connections-list a:hover { border-bottom-color: var(--gold); }
+    .cos-root .art-detail-content p { color: var(--bone-muted); }
+
+    /* ── Responsive ───────────────────────────────────────────────── */
+    @media (max-width: 800px) {
+      .art-hero { padding: var(--ms4) var(--ms1) var(--ms3); }
+      .art-h1 { font-size: var(--ts36); }
+      .art-lede { font-size: var(--ts18); }
+      .art-meta-bar { padding: var(--ms1) var(--ms1); flex-wrap: wrap; gap: var(--ms2); }
+      .art-body section { padding: var(--ms3) var(--ms1); }
+      .note.block { padding: var(--ms0) var(--ms2); }
+    }
+  </style>
 </head>
-<body class="sumner time-theme">
-    <header>
-        <div class="navbar">
-            <a class="brand" href="/">Anro le Roux</a>
-            <nav class="menu" aria-label="Primary">
-                
-                
-            </nav>
-        </div>
+<body>
+
+<button id="sp-restore" class="day" title="Show sun panel">☀</button>
+
+<div id="sun-panel" class="day">
+  <div class="sp-header">
+    <span class="sp-label">sun · live</span>
+    <span class="sp-phase" id="sp-phase">day</span>
+    <button id="sp-hide-btn" title="Hide sun panel">×</button>
+  </div>
+  <svg id="sp-horizon" viewBox="0 0 220 70" style="width:100%;height:70px;display:block;margin-bottom:10px">
+    <line id="sp-hline" x1="0" y1="50" x2="220" y2="50" stroke-width="0.5" />
+    <path id="sp-arc" d="M 30 50 Q 110 5 190 50" fill="none" stroke-width="0.5" opacity="0.4" stroke-dasharray="2 3" />
+    <circle id="sp-sun" cx="110" cy="30" r="6" />
+    <text id="sp-rise" x="30" y="64" font-size="8" text-anchor="middle" font-family="inherit">rise</text>
+    <text id="sp-set"  x="190" y="64" font-size="8" text-anchor="middle" font-family="inherit">set</text>
+  </svg>
+  <div class="sp-row"><span class="sp-row-label">elevation</span><span class="sp-row-val" id="sp-elev">0.0°</span></div>
+  <div class="sp-row"><span class="sp-row-label">local time</span><span class="sp-row-val" id="sp-time">00:00</span></div>
+  <div class="sp-row" style="align-items:baseline"><span class="sp-row-label">location</span><span class="sp-row-val" id="sp-loc" style="text-align:right;max-width:160px;font-size:10px">detecting…</span></div>
+  <div class="sp-row"><span class="sp-row-label">night mix</span><span class="sp-row-val" id="sp-mix">0%</span></div>
+  <div class="sp-scrub" id="sp-scrub-wrap">
+    <div class="sp-scrub-header">
+      <span class="sp-scrub-label">scrub 24h</span>
+      <button class="sp-scrub-btn" id="sp-live-btn">live</button>
+    </div>
+    <input type="range" min="0" max="24" step="0.05" id="sp-slider" />
+    <div class="sp-ticks"><span>00</span><span>06</span><span>12</span><span>18</span><span>24</span></div>
+  </div>
+  <div class="sp-mode-row" id="sp-mode-wrap">
+    <span class="sp-scrub-label">mode</span>
+    <button class="sp-scrub-btn" id="sp-mode-btn">auto</button>
+  </div>
+</div>
+
+<div id="live-wrapper">
+
+  <!-- ── ALMANAC (day) ─────────────────────────────────────────── -->
+  <div id="alm-layer" class="alm-root">
+
+    <nav class="alm-nav">
+      <a class="alm-brand" href="/">A·lR</a>
+      <div class="alm-edition">
+        <span id="alm-date"></span>
+      </div>
+    </nav>
+
+    <header class="art-hero">
+      <div class="art-eyebrow">§ work · code</div>
+      <h1 class="art-h1">Code as a <em>Career Multiplier</em></h1>
+      <p class="art-lede">Adding programming to your professional toolkit.</p>
     </header>
-    <article>
-        <div class="hero">
-            <h1>Code as a Career Multiplier</h1>
-            <p>
-                Adding Programming to Your Professional Toolkit.
-            </p>
+
+    <div class="art-meta-bar">
+      <div class="art-meta-item">
+        <span>published</span>
+        <span class="art-meta-val">2026-04-14</span>
+      </div>
+      <div class="art-meta-item">
+        <span>version</span>
+        <select class="art-version-select" onchange="if(this.value) window.location.href = this.value;">
+          <option value="ccm.html" selected>latest</option>
+          <option value="ccm_v0.1.0.html">v0.1.0</option>
+        </select>
+      </div>
+    </div>
+
+    <article class="art-body">
+      <section>
+        <p>This article was written in response to a need observed by colleagues and students asking advice for getting into software development. There are many other technical and non-technical professionals that are also interested in exploring the programming or the extended software development landscape. Pursuing this interest is highly encouraged since augmenting professions with programming skills can truly act as a career multiplier.</p>
+        <p>The goal, however, is to not just give the reader a list of tips or things to learn. There is a very unique mindset that fulltime software developers need to adopt in order to fulfil their responsibilities. While civil engineers construct a bridge the requirements are not changed as is the case in software development. One is not good and the other bad. Different professions are just different in nature, and so are their ways of thinking. Learning to think like a software developer while writing code for a different domain can result in software that can reliably solve a real world problem in a powerful way.</p>
+        <p>Once important paradigms are presented the article will continue to present fundamental tools and technologies that receive little official coverage but are vital for effective development. Although it falls outside the scope of this article a few words will be shared on programming languages. The article ends with a broader overview of practices and disciples the reader simply needs to know of.</p>
+        <div class="note block">
+          <h3>Note</h3>
+          <p>The nature of this article leans more toward the subjective side. These are topics that spark a variety of opinions in a discipline that evolves rapidly. Points in this article may change. However, the goal remains cultivating a way of thinking instead of a checklist to follow. The reader is encouraged to critique these topics and disagree where necessary.</p>
         </div>
-        <div class="article-info">
-            <div class="index" id="article-index">
-                <ul></ul>
-            </div>
-            <div class="versions">
-                <label for="publish-dates">Date Published:</label>
-                <span id="publish-date">2026-04-14</span>
-                <label for="version-select">Version:</label>
-                <select id="version-select" onchange="if(this.value) window.location.href = this.value;">
-                    <option value="ccm.html" selected>latest</option>
-                    <option value="ccm_v0.1.0.html">v0.1.0</option>
-                </select>
-            </div>
+        <h2>Paradigms</h2>
+        <p>Below is a graph that maps out 16 ways of thinking that will further be referred to as paradigms. Clicking on each node will show the description of the paradigm. There are also connections between the paradigms and clicking on each connecting edge will show the relation between the paradigms.</p>
+        <div class="art-graph-wrap">
+          <svg id="alm-graph" class="art-graph" style="width:100%;height:auto;"></svg>
         </div>
-        <section>
-            <p>
-                This article was written in response to a need observed where
-                engineers asked how to get into software development. There are
-                many other technical and non-technical professionals that are
-                also interested in exploring the programming or the extended
-                software development landscape. Pursuing this interest is highly
-                encouraged since augmenting professions with programming skills
-                can truly act as a career multiplier.
-            </p>
-            <p>
-                The goal, however, is to not just give the reader a list of tips
-                or things to learn. There is a very unique mindset that fulltime
-                software developers need to adopt in order to fulfil their
-                responsibilities. While civil engineers construct a bridge the
-                requirements are not changed as is the case in software
-                development. One is not good and the other bad. Different
-                professions are just different in nature, and so are their ways
-                of thinking. Learning to think like a software developer while
-                writing code for a different domain can result in software that
-                can reliably solve a real world problem in a powerful way.
-            </p>
-            <div class="note block">
-                <h3>Note</h3>
-                <p>
-                    The nature of this article leans more toward the subjective
-                    side. These are topics that spark a variety of opinions in a
-                    discipline that evolves rapidly. Points in this article may
-                    change. However, the goal remains cultivating a way of
-                    thinking instead of a checklist to follow. The reader is
-                    encouraged to critique these topics and disagree where
-                    necessary.
-                </p>
-            </div>
-            <h2>Paradigms</h2>
-            <p>
-                Below is a graph that maps out 16 ways of thinking that will
-                further be referred to as paradigms. Clicking on each node will
-                show the description of the paradigm. There are also connections
-                between the paradigms and clicking on each connecting edge will
-                show the relation between the paradigms.
-            </p>
-            <p>
-                Once important paradigms are presented the article will continue
-                to present fundamental tools and technologies that receive
-                little official coverage but are vital for effective
-                development. Although it falls outside the scope of this article
-                a few words will be shared on programming languages. The article
-                will end with a broader overview of practices and disciples the
-                reader needs to simply know of.
-            </p>
-            <p>
-                There is much to learn in the software development landscape.
-                It's impossible to master them all, but fortunately not
-                necessary.
-            </p>
-            <svg id="graph" style="width: 100%; height: auto;"></svg>
-            <div id="node-details" style="margin-top: 20px; display: none;">
-                <h3 id="detail-title"></h3>
-                <h4 id="detail-group" style="color: #666; margin-bottom: 5px;"></h4>
-                <div id="detail-connections" style="font-size: 0.9em; color: #888; margin-bottom: 15px;">
-                    <span id="connections-label"></span>
-                    <ul id="connections-list" style="margin-top: 5px; padding-left: 20px;"></ul>
-                </div>
-                <div id="detail-content"></div>
-            </div>
-        </section>
-        <section>
-            <h2>Important Tools and Technologies</h2>
-            <p>
-                There is a side of development that is seldom officially taught. It's not
-                programming, algorithms or databases. It is tools, small practices and
-                technologies that make development smoother, more reliable and more efficient.
-                It spreads informally by word of mouth between colleagues, friends or developer
-                influencers. It can therefore be difficult to prioritise such adoption if there
-                is little urgency. Worst case, the newcomer may not learn about an important
-                tool for years.
-            </p>
-            <p>
-                The <a href="https://missing.csail.mit.edu/" class="standout">MIT Missing Semester</a> course
-                is a recommended resource to remedy this.
-            </p>
-        </section>
-        <section>
-            <h2>Programming Languages</h2>
-            <p>
-                Regarding programming languages, it is important to understand the difference
-                between interpreted and compiled languages as well as dynamic and static typed
-                languages. Each language have their domain of focus and knowing this helps to
-                gauge how far one is operating from the language limitations.
-            </p>
-            <p>
-                A very useful resource for learning about the domains of different languages is
-                <a href="https://www.youtube.com/watch?v=Sg4U4r_AgJU&pp=ygUPYnJpYW4ga2VybmlnaGFu" class="standout">this presentation by Brian Kernighan</a>.
-            </p>
-        </section>
-        <section>
-            <h2>Methodologies and Disciplines</h2>
-            <p>
-                Breaking work down is always difficult but generally a very important skill to
-                master. In software development it is the key that small batches of work enable
-                regular value delivery, feedback and corrections to the delivery plan. The goal
-                is, what many call agility, but simply the ability to constantly correct the
-                trajectory and easily adapt to change.
-            </p>
-            <p>
-                The <a href="https://agilemanifesto.org/" class="standout">Agile Manifesto</a>
-                is a good methodology starting point.
-            </p>
-            <p>
-                Lean software development advocates for reducing waste and increasing value
-                delivery. The way software is developed should be constantly evaluated for
-                processes and practices that are not delivering as much value as was originally
-                expected. Be wary of becoming too dependent on methodologies that claim to be
-                agile but are excessively rigid.
-            </p>
-            <p>
-                There is more than just programming when looking at the entire software
-                development landscape. Some people manage infrastructure, some do quality
-                assurance. <a href="https://roadmap.sh/" class="standout">roadmap.sh</a> is a
-                good resource to get an overview of disciplines and the skills and technologies
-                that need to be mastered.
-            </p>
-        </section>
+        <div id="alm-node-details" class="art-node-details" style="display:none;">
+          <h3 id="alm-detail-title" class="art-detail-title"></h3>
+          <div id="alm-detail-group" class="art-detail-group"></div>
+          <div id="alm-detail-connections" class="art-detail-connections">
+            <span id="alm-connections-label" class="art-connections-label"></span>
+            <ul id="alm-connections-list" class="art-connections-list"></ul>
+          </div>
+          <div id="alm-detail-content" class="art-detail-content"></div>
+        </div>
+      </section>
+      <section>
+        <h2>Important Tools and Technologies</h2>
+        <p>There is a side of development that is seldom officially taught. It's not programming, algorithms or databases. It is tools, small practices and technologies that make development smoother, more reliable and more efficient. It spreads informally by word of mouth between colleagues, friends or developer influencers. It can therefore be difficult to prioritise such adoption if there is little urgency. Worst case, the newcomer may not learn about an important tool for years.</p>
+        <p>The <a href="https://missing.csail.mit.edu/" class="standout">MIT Missing Semester</a> course is a recommended resource to remedy this.</p>
+      </section>
+      <section>
+        <h2>Programming Languages</h2>
+        <p>Regarding programming languages, it is not necessary to know all languages but it is good to learn more than one. Swearing by one language can result in a very inefficient programmer. Each language has their domain of focus and knowing this helps to gauge how far one is operating from the language limitations. Be careful of ranking languages.</p>
+        <p>It is important to understand the differences between:</p>
+        <ul>
+          <li>interpreted and compiled languages</li>
+          <li>dynamic and static typed languages</li>
+          <li>garbage collected and non garbage collected languages</li>
+          <li>procedural, object-orientated and functional languages</li>
+        </ul>
+        <p>A very useful resource for learning about the domains of different languages is <a href="https://www.youtube.com/watch?v=Sg4U4r_AgJU&pp=ygUPYnJpYW4ga2VybmlnaGFu" class="standout">this presentation by Brian Kernighan</a>.</p>
+      </section>
+      <section>
+        <h2>Methodologies and Disciplines</h2>
+        <p>Breaking work down is always difficult but generally a very important skill to master. In software development it is the key that small batches of work enable regular value delivery, feedback and corrections to the delivery plan. The goal is, what many call agility, but simply the ability to constantly correct the trajectory and easily adapt to change.</p>
+        <p>The <a href="https://agilemanifesto.org/" class="standout">Agile Manifesto</a> is a good methodology starting point.</p>
+        <p>Lean software development advocates for reducing waste and increasing value delivery. The way software is developed should be constantly evaluated for processes and practices that are not delivering as much value as was originally expected. Be wary of becoming too dependent on methodologies that claim to be agile but are excessively rigid.</p>
+        <p>There is more than just programming when looking at the entire software development landscape. Some people manage infrastructure, some do quality assurance. <a href="https://roadmap.sh/" class="standout">roadmap.sh</a> is a good resource to get an overview of disciplines and the skills and technologies that need to be mastered.</p>
+      </section>
     </article>
-    <footer>
-        <div>
-            © <span id="year"></span> Anro le Roux. All rights reserved.
-            <div class="social-links">
-                <a href="https://linkedin.com/in/anroleroux" target="_blank" aria-label="LinkedIn">LinkedIn</a>
-                <a href="https://github.com/anroleroux" target="_blank" aria-label="GitHub">GitHub</a>
-            </div>
-        </div>
+
+    <footer class="alm-foot">
+      <div>© <span id="alm-year"></span> Anro le Roux</div>
+      <div class="alm-foot-mark">A·lR</div>
+      <div class="alm-foot-links">
+        <a href="https://linkedin.com/in/anroleroux" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="https://github.com/anroleroux" target="_blank" rel="noopener">GitHub</a>
+      </div>
+      <div class="site-auth" id="alm-auth"></div>
     </footer>
 
-    <script>
-        document.getElementById('year').textContent = new Date().getFullYear();
+  </div><!-- /alm-layer -->
 
-        const nodes = [
-            { id: 1, label: "1 Small\nprograms", group: "arch", paragraphs: [
-                "Compose-ability over complexity. Do one thing well.",
-                "The best software does one thing well. This is not a guideline to consider when convenient — it is a foundational principle that shapes every architectural decision. A program that does one thing well is easier to test, easier to replace, easier to understand, and easier to compose with other programs. Complexity is not a sign of capability; it is usually a sign of unclear thinking.",
-                "Composability is the payoff. When a mesher, an analyser, and a visual editor of a finite element analysis suite are separate programs, any one of them can be swapped out, reused in a different context, or improved in isolation. The whole becomes greater than the sum of its parts precisely because the parts are honest about what they are.",
-                "This philosophy aligns with the Unix principle of building simple, modular tools that can be combined to solve complex problems through pipes and scripting."
-            ]},
-            { id: 2, label: "2 Open\ninterfaces", group: "arch", paragraphs: [
-                "APIs, CLIs, standard formats. Contract-first design.",
-                "A program that cannot be spoken to is a dead end. Open interfaces — APIs, CLIs, standard formats like JSON, SVG, and Markdown — are the grammar that allows programs to talk to each other and to the humans and systems that depend on them. Contract-first design means agreeing on the language before writing the implementation, which forces clarity and prevents the interface from becoming an afterthought.",
-                "Semantic versioning and backward compatibility are acts of respect toward everyone downstream. When no standard exists, the right move is to create one and publish it. Contributing, for example, a mesh data format to the public domain is worth more in the long run than a proprietary format that locks users in and limits adoption.",
-                "Open interfaces allow different systems to communicate seamlessly. By defining clear contracts, you enable interoperability and allow components to be swapped or upgraded without breaking the entire system."
-            ]},
-            { id: 3, label: "3 Interface /\nimpl sep.", group: "arch", paragraphs: [
-                "What vs how. Decouple contract from mechanism.",
-                "What a system does must be defined independently of how it does it. This separation is what makes it possible to improve, replace, or swap an implementation without affecting the code that uses it. It is also what makes parallel development possible — one person can build against a contract while another fulfils it.",
-                "This principle runs deeper than API design. It is a habit of mind: always ask what the contract is before asking how to honour it. When interface and implementation are tangled together, change becomes expensive and risk accumulates quietly.",
-                "This decoupling is essential for long-term flexibility, leading to cleaner architectural designs and more robust software systems."
-            ]},
-            { id: 4, label: "4 Automation &\nvirt.", group: "prag", paragraphs: [
-                "CI/CD, observability: metrics, alerts, logs.",
-                "Manual deployment is a liability. Every step that requires a human to intervene is a step that can be skipped, forgotten, or done differently by a different person on a different day. CI/CD pipelines are not a luxury — they are the backbone of a system that can be trusted to behave consistently across environments and over time.",
-                "Observability is the other side of that coin. Metrics, alerts, and logs must not be hidden in dashboards that nobody opens. They must be visible, actionable, and tied to the behaviour of the system in production. A system you cannot observe is a system you cannot understand, and a system you cannot understand is a system you cannot improve."
-            ]},
-            { id: 5, label: "5 Testing", group: "prag", paragraphs: [
-                "Unit to integration, security, load testing.",
-                "A comprehensive testing strategy is essential for building reliable software. This includes unit tests for individual functions, integration tests for systems, and performance testing for scale.",
-                "Testing is not a phase that happens before release. It is a continuous activity that is woven into development. A feature that works but has no tests is unfinished work that leaves a debt for whoever touches it next.",
-                "Automated tests act as a safety net, allowing developers to refactor code with confidence, knowing that regressions will be caught immediately."
-            ]},
-            { id: 6, label: "6 CLI\nfirst", group: "arch", paragraphs: [
-                "Fully operable without a human in the loop.",
-                "Designing with a CLI-first approach ensures that every function of your software can be automated. This is a prerequisite for modern DevOps practices and continuous integration pipelines.",
-                "The CLI is the most honest interface a system can have — it exposes exactly what the system can do, without ceremony, and it can be scripted, piped, and automated by anything. Building CLI-first means building a system that can participate in larger workflows without requiring human supervision.",
-                "Configuration files, structured logs, and observability systems replace the human in the loop. The UI, when it exists, should be a layer on top of a fully functional headless system — not the only way in.",
-                "A command-line interface provides a powerful way for power users and scripts to interact with your application, often proving more efficient than a graphical user interface for repetitive tasks."
-            ]},
-            { id: 7, label: "7 Open\naccess", group: "oss", paragraphs: [
-                "No licenses needed. Better automation.",
-                "Open access to tools and libraries removes legal and financial friction from the development process. It allows teams to experiment and scale without worrying about seat counts or license renewals.",
-                "This freedom is not just about cost — it is about the ability to move quickly, to fork when necessary, and to build on a foundation that the whole community can inspect and improve.",
-                "Open access also aligns naturally with the other paradigms. Open interfaces, composability, and automation all benefit from a culture that defaults to openness rather than restriction."
-            ]},
-            { id: 8, label: "8 Multi-lang\ncomfort", group: "cult", paragraphs: [
-                "Work fluently across languages, formats, standards.",
-                "Modern software development often requires working with multiple languages—perhaps Python for data, JavaScript for the UI, and SQL for the database. Being comfortable across stacks is a major advantage.",
-                "A developer who is loyal to a single language is limited by that language's strengths and blind to its weaknesses. Multi-language comfort is not about knowing every language superficially; it is about being genuinely at ease moving between paradigms, idioms, and ecosystems.",
-                "This requires managing the real risk of distraction. New languages and frameworks are worth exploring, but curiosity must be disciplined. The goal is to expand the palette without losing focus on the work."
-            ]},
-            { id: 9, label: "9 Non-sentimental\ncode", group: "cult", paragraphs: [
-                "Rewrite freely. It's about performance, not attachment.",
-                "Code is not an achievement to be preserved — it is a means to an end. The willingness to rewrite, replace, or discard code is a sign of maturity, not carelessness. Software that cannot be replaced becomes a trap: it accumulates complexity, resists improvement, and eventually becomes the thing that holds the whole system hostage.",
-                "Products should move from prototype to pilot to powerhouse. Each stage demands different code, different tradeoffs, and different priorities. Lessons learned in the prototype should be applied ruthlessly in the rewrite. What matters is how the system performs, how maintainable it is, and how secure it is — not how long it took to write or how clever it is.",
-                "Non-sentimentality prevents 'sunk cost' thinking, where teams stick with bad architectural decisions just because they've already invested time in them."
-            ] },
-            { id: 10, label: "10 Use existing\ntech", group: "prag", paragraphs: [
-                "Don't build your own DB, regex, config. Learn first.",
-                "One of the most important skills in software development is knowing when not to write code. Using proven, existing technologies for common tasks saves time and reduces bugs.",
-                "Building something that already exists is usually a mistake. Databases, visualisation libraries, regular expression engines, configuration formats — these are solved problems, and solving them again consumes time that could be spent on the actual problem. The engineering instinct to build from scratch must be balanced against the cost of reinventing infrastructure that others have already hardened over years.",
-                "The discipline here is breadth of knowledge. Spinning up an unfamiliar technology in Docker to understand what it does is a small investment with a large return. The developer who knows what exists can reach for the right tool; the developer who only knows what they have built is always starting from scratch.",
-                "Leveraging mature libraries and platforms allows you to focus your energy on the unique problems your software is actually trying to solve."
-            ] },
-            { id: 11, label: "11 Security", group: "oss", paragraphs: [
-                "Open source prevents backdoors. Secrets management.",
-                "Security is not a feature to be added at the end — it is a cross-cutting concern that touches every layer of a system. Open source is a natural ally here: transparent code is harder to hide backdoors in, and more eyes on a codebase means more chances to catch vulnerabilities before they are exploited. 'Security through obscurity' is a known anti-pattern.",
-                "Beyond openness, security requires active practice: secrets management so that credentials never live in source code, dependency auditing so that the supply chain is understood and monitored, and threat modelling so that risks are identified before they are realised. Security is a habit, not a checklist."
-            ] },
-            { id: 12, label: "12 Larger\ndev teams", group: "oss", paragraphs: [
-                "Open source expands the talent pool globally.",
-                "Open source changes the economics of talent. A codebase that is public can attract contributors from anywhere in the world, across time zones and institutions, each bringing different experience and perspective. The talent pool is no longer bounded by geography or headcount.",
-                "Such diversity of perspective often leads to more robust and feature-rich software but requires strong leadership and well-defined contribution guidelines.",
-                "This scale also distributes knowledge. When many people understand a system, the risk of a single point of failure in the team is reduced. The codebase becomes a shared asset rather than the private domain of a small group."
-            ]},
-            { id: 13, label: "13 Community\nsupport", group: "oss", paragraphs: [
-                "More people to answer questions and review code.",
-                "The community surrounding a piece of technology is often as important as the code itself. A vibrant community provides a wealth of shared knowledge, tutorials, and third-party extensions.",
-                "A healthy open source community is a support system that no internal team can replicate. Questions get answered by people who have faced the same problems. Bugs get reported by users who encounter edge cases the original developers never imagined. The collective knowledge of a community compounds over time in a way that isolated teams cannot match.",
-                "Support and peer reviews within the community creates accountability, helping to maintain high code quality standards. Code that is visible to the public tends to be written with more care. The knowledge that others will read, use, and critique the work raises the standard naturally."
-            ] },
-            { id: 14, label: "14 Iterative\ndev", group: "cult", paragraphs: [
-                "Agile, lean, smallest deliverable tasks.",
-                "Iterative development focuses on delivering small, functional increments of software frequently. This allows for rapid feedback and ensures that the project remains aligned with user needs.",
-                "Large batches of work are the enemy of predictability. Breaking work into the smallest possible tasks that still deliver presentable value makes it possible to measure progress in a way that supports honest forecasting.",
-                "By breaking large projects into smaller, manageable tasks, teams can reduce risk and maintain a steady, predictable pace of delivery."
-            ]},
-            { id: 15, label: "15 Products\nnot projects", group: "cult", paragraphs: [
-                "Software grows and adapts continuously.",
-                "A project has an end date. A product does not. Software that is treated as a project gets built, delivered, and abandoned — left running in a corner, untouched and unmaintained, until it becomes a liability. Software that is treated as a product is expected to adapt, grow, and respond to the changing needs of its users.",
-                "This distinction shapes everything: how work is prioritised, how teams are structured, how success is measured. Products invite continuous improvement. Projects invite avoidance. The goal is software that people want to keep working on — not software that everyone is afraid to touch.",
-                "A product mindset focuses on long-term value and user experience, rather than just checking off a list of requirements for a one-time delivery."
-            ]},
-            { id: 16, label: "16 Work as\na team", group: "cult", paragraphs: [
-                "Transparency, overlap, pair programming.",
-                "Software is a team sport. Individual brilliance is worth far less than a team where knowledge is shared, work is visible, and any member can pick up where another left off. Pair programming, transparent task management, and deliberate overlap between focus areas are the practices that make this real. The hidden cost of isolated developers is enormous — duplicated work, knowledge silos, and the catastrophic risk of a single person being the only one who understands a critical system.",
-                "Documentation should serve the team, not satisfy an audit. Dependency diagrams, flow diagrams, and system diagrams are functional tools that help new and existing members understand how things fit together. The code itself should be the primary explanation of what it does — clear naming, small functions, and honest structure — with comments reserved for the rare cases where intent cannot be made obvious from the code alone.",
-                "Transparency in communication and decision-making builds trust within the team and allows everyone to contribute to the project's success."
-            ] },
-        ];
+  <!-- ── COSMOS (night) ────────────────────────────────────────── -->
+  <div id="cos-layer" class="cos-root">
 
-        const links = [
-            { source: 1, target: 2, desc: "Small programs and open interfaces are two sides of the same coin. A program that does one thing well is only useful if other programs can talk to it, and that conversation requires a well-defined, published interface. Composability — the whole point of keeping programs small — is impossible without the contracts that open interfaces provide. You cannot compose what you cannot address." },
-            { source: 1, target: 3, desc: "Keeping a program small is only sustainably possible when its interface is decoupled from its internals. Without that separation, the temptation to grow the program's surface area alongside its implementation is irresistible. Separation of concerns is what gives smallness its structural integrity — it defines the boundary at which the program stops." },
-            { source: 1, target: 6, desc: "A small, single-purpose program is a natural fit for the command line. It takes inputs, does one thing, and produces outputs — exactly the model that shells, pipes, and scripts are built around. The more a program does, the more it tends to grow a GUI to manage that complexity. Keeping programs small keeps them scriptable." },
-            { source: 2, target: 3, desc: "An open interface is the published contract; implementation separation is the discipline that keeps that contract stable. If implementation details leak into the interface, the contract becomes brittle — callers depend on internals that were never meant to be visible. The two paradigms enforce each other: you cannot have a trustworthy open interface without the separation that insulates it from change." },
-            { source: 2, target: 6, desc: "Open interfaces and CLI-first design are almost synonymous in practice. A CLI is an interface — a contract between a program and its callers, expressed in commands, flags, and exit codes rather than HTTP verbs. Designing a system to be CLI-operable is, in effect, designing it to have an open, scriptable interface that any tool or person can drive without special knowledge of its internals." },
-            { source: 3, target: 6, desc: "When a system cleanly separates what it does from how it does it, driving it from a CLI becomes straightforward — the CLI targets the interface, not the implementation. This means the system can be scripted, automated, and tested without any change to its internals. CLI-first operability is, in this sense, a practical test of whether the separation is real." },
-            { source: 7, target: 11, desc: "Open source and security reinforce each other in a way that is often underappreciated. When code is publicly visible, backdoors are hard to hide and vulnerabilities attract scrutiny from people with no stake in concealing them. Closed systems rely on secrecy as a security mechanism, which is fragile. Open systems rely on transparency, which scales. More eyes on the code means more chances to catch what a single team might miss." },
-            { source: 7, target: 12, desc: "Open access removes the licensing and access barriers that limit who can contribute to a codebase. A project that anyone can clone, run, and submit a pull request to has a potential contributor pool that is, in principle, the entire global developer community. This does not mean all contributors are equal, but it does mean that talent is not artificially constrained by geography, employer, or procurement process." },
-            { source: 7, target: 13, desc: "Open-source projects naturally accumulate communities around them. When the code is public and the issues are public, knowledge about the system diffuses broadly — people ask questions in forums, write blog posts, record walkthroughs, and answer each other's questions without being paid to do so. This community knowledge base is a form of distributed documentation and support that no internal team could replicate alone." },
-            { source: 11, target: 12, desc: "Security is fundamentally a numbers game at the review stage. A larger team means more people reading code, more varied threat models applied, and a greater likelihood that someone will notice the subtle mistake that a smaller group would skip past. This is not about redundancy — it is about cognitive diversity applied to a problem where the attacker only needs to find one gap." },
-            { source: 12, target: 13, desc: "Larger teams and strong communities are mutually reinforcing. A bigger contributor base generates more questions, more edge cases encountered in production, and more people motivated to write answers. That body of shared knowledge then attracts more contributors, because the onboarding cost drops when good documentation and support already exist. The two grow together." },
-            { source: 8, target: 9, desc: "You cannot be non-sentimental about code if you are emotionally attached to the language it is written in. A developer who has invested years in mastering only one language and one ecosystem will find it genuinely difficult to recommend that a service be rewritten in something better suited to the task. Multi-language comfort removes that resistance — if you are fluent across several stacks, the choice of language becomes a technical decision rather than an identity one." },
-            { source: 9, target: 14, desc: "Iterative development produces code that was right for its moment but is not right for the next one. Prototypes become pilots, pilots become powerhouses, and at each stage the previous version must be let go of without grief. A team that is sentimental about code will find iteration painful — every rewrite feels like a loss. A team that sees code as a means rather than an end finds iteration natural." },
-            { source: 9, target: 15, desc: "A product that is expected to evolve continuously will periodically need to shed its own history. Core services get replaced, data models get redesigned, entire subsystems get retired. If the team is attached to the code that built the first version of the product, the product will calcify around it. Non-sentimentality is what allows a product to keep growing into something its original authors would not recognise — and that is a measure of success, not failure." },
-            { source: 14, target: 15, desc: "Iterative development is the operational expression of a product mindset. A project has a delivery date and a done state; a product has a roadmap and a next sprint. Breaking work into the smallest possible deliverable tasks only makes sense if there is always a next task — and there is always a next task only if the software is understood to be a product. The two paradigms together define how living software actually gets built." },
-            { source: 14, target: 16, desc: "Short iterations only work if the team is genuinely shared. When work is broken into small tasks that complete in days, the handoffs between team members become frequent and the need for shared context becomes acute. A developer who disappears into a task for three weeks and surfaces with a finished module is running a project. A developer who completes a small slice, hands it off, and picks up another is working on a product — and that requires a team that communicates constantly." },
-            { source: 15, target: 16, desc: "A product that runs indefinitely cannot be owned by one person. People change roles, leave, go on leave. If the product's continuity depends on any individual's presence, it is a project masquerading as a product. Genuine product thinking requires that knowledge, ownership, and context are distributed across the team — not hoarded in any single person's head. The team is the guarantor of the product's continuity." },
-            { source: 4, target: 5, desc: "Automation provides the infrastructure without which continuous testing is impractical. Running a full suite of unit, integration, security, and load tests by hand after every change is not feasible; running it automatically on every commit is. CI/CD pipelines are what turn testing from a periodic ceremony into a permanent feedback loop. Automation does not make testing better in isolation — it makes testing actually happen." },
-            { source: 4, target: 10, desc: "The tooling that powers modern automation — container runtimes, pipeline orchestrators, monitoring stacks, secret managers — is almost entirely open-source and mature. Building your own CI system, your own metrics pipeline, or your own deployment tooling is an enormous investment in something that is not your core product. Automation and existing technology belong together: the whole point of the automation ecosystem is that it is already built and you should use it." },
-            { source: 5, target: 10, desc: "Every major language ecosystem has mature testing frameworks, assertion libraries, mocking tools, fuzzing harnesses, and load testing rigs. Writing your own is a waste of effort that will produce something inferior. Using existing testing technology means the team spends its energy writing tests, not building the infrastructure to run them. The leverage is enormous — a good testing framework represents years of thought about how to make test failures legible and actionable." },
-            { source: 1, target: 4, desc: "Small, independently deployable programs are the unit that CI/CD pipelines are designed around. A pipeline that builds, tests, and deploys a single focused service is tractable. A pipeline that must coordinate a monolith — where a change to one part requires rebuilding and retesting everything — is expensive and slow. Keeping programs small makes automation faster, cheaper, and more reliable." },
-            { source: 2, target: 4, desc: "Automation scripts and CI/CD pipelines need something to target. Open, well-defined interfaces are that target — they give pipelines a stable, versioned surface to call, monitor, and verify without knowledge of internal implementation. An interface that changes unpredictably breaks automation silently; a stable, semantically versioned one makes automation trustworthy over time." },
-            { source: 3, target: 5, desc: "A well-defined interface is the contract that tests verify. When the interface is clearly separated from the implementation, tests can be written against that contract without any knowledge of how the implementation works — which is exactly the right level of abstraction. Tests that depend on implementation details are unecessary noise and brittle; tests that depend on the interface are stable and survive refactoring." },
-            { source: 6, target: 4, desc: "A system that requires a human to click through a GUI cannot be automated. CLI-first design is not just a convenience — it is a prerequisite for automation. Every step in a CI/CD pipeline, every health check, every deployment script, every scheduled job assumes it can invoke the system programmatically. CLI-first means the system is, by design, automation-ready." },
-            { source: 6, target: 5, desc: "CLI operability means test runners can invoke the system directly, pass it inputs, and inspect its outputs without standing up a browser, a GUI driver, or a human operator. This makes tests fast, deterministic, and easy to run in isolation. A system that is only operable through a GUI is a system that is, at best, expensive to test and, at worst, effectively untestable in an automated pipeline." },
-            { source: 2, target: 7, desc: "Publishing an open interface is itself an act of openness — it invites others to build on, integrate with, and improve a system without needing access to its internals. In the FEA example from paradigm 1, publishing the mesh data format as an open standard is simultaneously an open interface decision and an open-source contribution. The two reinforce each other: open interfaces make open source more useful, and open source makes open interfaces more widely adopted." },
-            { source: 2, target: 11, desc: "Open interfaces make the attack surface explicit. When a system's boundaries are clearly defined and publicly documented, it becomes possible to reason precisely about what is exposed, what is not, and what the threat model is. Hidden, undocumented interfaces are where security assumptions go unexamined. A clear contract forces the team to think about what they are committing to protect." },
-            { source: 1, target: 7, desc: "Small, focused programs are easier to open-source than large, sprawling ones. Their scope is bounded, their dependencies are limited, and their reuse value is immediately legible to someone encountering them for the first time. A program that does one thing well is a gift to the ecosystem — it can be understood, trusted, and adopted without reading thousands of lines of tangled code." },
-            { source: 1, target: 14, desc: "Small programs map naturally onto small, iterative development tasks. A service that does one thing can be specified, built, tested, and shipped within a single sprint. This creates a tight feedback loop between development and delivery that is hard to achieve when the unit of work is a sprawling system. Keeping programs small keeps the iteration cycle short." },
-            { source: 3, target: 9, desc: "When the interface is stable and cleanly separated from the implementation, rewriting the implementation becomes a low-risk, low-drama operation. The contract with the outside world does not change; only the internals do. This is what makes non-sentimentality practical rather than reckless — you can swap out an implementation precisely because the interface shields callers from the change. Without separation, every rewrite is a breaking change." },
-            { source: 6, target: 8, desc: "Building a CLI-first system requires comfort with shell scripting, configuration file formats, environment variables, piping, and the idiosyncrasies of terminal environments across operating systems. These are not the concerns of a single language — they span bash, Python, TOML, YAML, JSON, and more. CLI-first development is, in practice, a daily exercise in multi-language fluency." },
-            { source: 7, target: 4, desc: "Open-source tools (Docker, GitHub Actions, Prometheus) are the building blocks of modern automation — open access enabled the development and maturity of the ecosystem." },
-            { source: 7, target: 10, desc: "The entire premise of \"use existing technology\" depends on that technology being accessible. Open access — to libraries, frameworks, databases, and infrastructure tools — is what makes it possible to spin up a mature, battle-tested solution in an afternoon rather than building one over months. Open source is the library from which the \"use existing technology\" principle draws." },
-            { source: 11, target: 5, desc: "Security is not a property that emerges from functional correctness alone — it requires its own testing discipline. Dependency auditing, static analysis, fuzz testing, and penetration testing are all forms of automated security testing that belong in the same pipeline as unit and integration tests. Treating security as a testing concern means it gets the same continuous feedback loop rather than being a one-time audit." },
-            { source: 14, target: 5, desc: "In iterative development, testing is not a phase that happens after development — it is part of the definition of done. Every task that is completed must include updated tests; a feature without tests is not finished. This keeps the test suite aligned with the codebase at every point in the iteration, and it distributes the testing burden evenly rather than accumulating it as a debt that is paid at the end." },
-            { source: 15, target: 4, desc: "A product that is expected to evolve and be maintained indefinitely cannot rely on manual deployment and manual monitoring. The operational burden of a living product — releases, rollbacks, health checks, alerting — must be automated, because it never ends. Automation is what makes continuous product maintenance sustainable for a team that is simultaneously building the next version." },
-            { source: 9, target: 10, desc: "Being unsentimental about code includes being unsentimental about the code you wrote when a better alternative already exists. The temptation to build your own implementation of something — a configuration parser, a job queue, a metrics library — is often rooted in attachment to the craft of building rather than a genuine need. Non-sentimentality clears that attachment: if something good enough already exists, use it." },
-            { source: 12, target: 16, desc: "Larger teams make the team practices described in paradigm 16 non-optional. Transparency, communication, overlap of knowledge, and pair programming are nice-to-haves in a team of 2 to 3; they are vital requirements in a team of 5 or more. At scale, the hidden costs of isolation — duplicated work, lost context, single points of failure — become too large to ignore. Good team practices are what allow a large team to function as a team rather than a collection of individuals." },
-            { source: 13, target: 16, desc: "A strong external community models good internal team practices. Open-source communities have developed, through necessity, sophisticated norms around communication, code review, issue triage, and knowledge transfer — because contributors are distributed, asynchronous, and transient. Internal teams that engage with these communities absorb those norms and bring them back into their day-to-day work." },
-            { source: 7, target: 15, desc: "An open-source project is, almost by definition, a product. It has users with expectations, a version history with commitments, and a community that depends on its continued existence. Treating open-source work as a project — a one-time effort with a completion date — is how open-source projects become abandoned repositories. Open access creates the conditions for product thinking by making the software public and its users real." },
-        ];
+    <svg class="cos-stars" viewBox="0 0 1440 2400" preserveAspectRatio="none" aria-hidden="true"></svg>
 
-        const colors = { arch: "#534AB7", oss: "#0F6E56", cult: "#993C1D", prag: "#185FA5" };
+    <nav class="cos-nav">
+      <a class="cos-brand" href="/">A · lR</a>
+      <div class="cos-nav-right">
+        <span id="cos-date"></span>
+      </div>
+    </nav>
 
-        const width = 800, height = 500;
+    <header class="art-hero">
+      <div class="art-eyebrow">§ work · code</div>
+      <h1 class="art-h1">Code as a <em>Career Multiplier</em></h1>
+      <p class="art-lede">Adding programming to your professional toolkit.</p>
+    </header>
 
-        const svg = d3.select("#graph")
-            .attr("viewBox", `0 0 ${width} ${height}`);
+    <div class="art-meta-bar">
+      <div class="art-meta-item">
+        <span>published</span>
+        <span class="art-meta-val">2026-04-14</span>
+      </div>
+      <div class="art-meta-item">
+        <span>version</span>
+        <select class="art-version-select" onchange="if(this.value) window.location.href = this.value;">
+          <option value="ccm.html" selected>latest</option>
+          <option value="ccm_v0.1.0.html">v0.1.0</option>
+        </select>
+      </div>
+    </div>
 
-        // Simulation
-        const simulation = d3.forceSimulation(nodes)
-            .force("link", d3.forceLink(links).id(d => d.id).distance(120))
-            .force("charge", d3.forceManyBody().strength(-400))
-            .force("center", d3.forceCenter(width / 2, height / 2));
+    <article class="art-body">
+      <section>
+        <p>This article was written in response to a need observed by colleagues and students asking advice for getting into software development. There are many other technical and non-technical professionals that are also interested in exploring the programming or the extended software development landscape. Pursuing this interest is highly encouraged since augmenting professions with programming skills can truly act as a career multiplier.</p>
+        <p>The goal, however, is to not just give the reader a list of tips or things to learn. There is a very unique mindset that fulltime software developers need to adopt in order to fulfil their responsibilities. While civil engineers construct a bridge the requirements are not changed as is the case in software development. One is not good and the other bad. Different professions are just different in nature, and so are their ways of thinking. Learning to think like a software developer while writing code for a different domain can result in software that can reliably solve a real world problem in a powerful way.</p>
+        <p>Once important paradigms are presented the article will continue to present fundamental tools and technologies that receive little official coverage but are vital for effective development. Although it falls outside the scope of this article a few words will be shared on programming languages. The article ends with a broader overview of practices and disciples the reader simply needs to know of.</p>
+        <div class="note block">
+          <h3>Note</h3>
+          <p>The nature of this article leans more toward the subjective side. These are topics that spark a variety of opinions in a discipline that evolves rapidly. Points in this article may change. However, the goal remains cultivating a way of thinking instead of a checklist to follow. The reader is encouraged to critique these topics and disagree where necessary.</p>
+        </div>
+        <h2>Paradigms</h2>
+        <p>Below is a graph that maps out 16 ways of thinking that will further be referred to as paradigms. Clicking on each node will show the description of the paradigm. There are also connections between the paradigms and clicking on each connecting edge will show the relation between the paradigms.</p>
+        <div class="art-graph-wrap">
+          <svg id="cos-graph" class="art-graph" style="width:100%;height:auto;"></svg>
+        </div>
+        <div id="cos-node-details" class="art-node-details" style="display:none;">
+          <h3 id="cos-detail-title" class="art-detail-title"></h3>
+          <div id="cos-detail-group" class="art-detail-group"></div>
+          <div id="cos-detail-connections" class="art-detail-connections">
+            <span id="cos-connections-label" class="art-connections-label"></span>
+            <ul id="cos-connections-list" class="art-connections-list"></ul>
+          </div>
+          <div id="cos-detail-content" class="art-detail-content"></div>
+        </div>
+      </section>
+      <section>
+        <h2>Important Tools and Technologies</h2>
+        <p>There is a side of development that is seldom officially taught. It's not programming, algorithms or databases. It is tools, small practices and technologies that make development smoother, more reliable and more efficient. It spreads informally by word of mouth between colleagues, friends or developer influencers. It can therefore be difficult to prioritise such adoption if there is little urgency. Worst case, the newcomer may not learn about an important tool for years.</p>
+        <p>The <a href="https://missing.csail.mit.edu/" class="standout">MIT Missing Semester</a> course is a recommended resource to remedy this.</p>
+      </section>
+      <section>
+        <h2>Programming Languages</h2>
+        <p>Regarding programming languages, it is not necessary to know all languages but it is good to learn more than one. Swearing by one language can result in a very inefficient programmer. Each language has their domain of focus and knowing this helps to gauge how far one is operating from the language limitations. Be careful of ranking languages.</p>
+        <p>It is important to understand the differences between:</p>
+        <ul>
+          <li>interpreted and compiled languages</li>
+          <li>dynamic and static typed languages</li>
+          <li>garbage collected and non garbage collected languages</li>
+          <li>procedural, object-orientated and functional languages</li>
+        </ul>
+        <p>A very useful resource for learning about the domains of different languages is <a href="https://www.youtube.com/watch?v=Sg4U4r_AgJU&pp=ygUPYnJpYW4ga2VybmlnaGFu" class="standout">this presentation by Brian Kernighan</a>.</p>
+      </section>
+      <section>
+        <h2>Methodologies and Disciplines</h2>
+        <p>Breaking work down is always difficult but generally a very important skill to master. In software development it is the key that small batches of work enable regular value delivery, feedback and corrections to the delivery plan. The goal is, what many call agility, but simply the ability to constantly correct the trajectory and easily adapt to change.</p>
+        <p>The <a href="https://agilemanifesto.org/" class="standout">Agile Manifesto</a> is a good methodology starting point.</p>
+        <p>Lean software development advocates for reducing waste and increasing value delivery. The way software is developed should be constantly evaluated for processes and practices that are not delivering as much value as was originally expected. Be wary of becoming too dependent on methodologies that claim to be agile but are excessively rigid.</p>
+        <p>There is more than just programming when looking at the entire software development landscape. Some people manage infrastructure, some do quality assurance. <a href="https://roadmap.sh/" class="standout">roadmap.sh</a> is a good resource to get an overview of disciplines and the skills and technologies that need to be mastered.</p>
+      </section>
+    </article>
 
-        // Draw links
-        const link = svg.append("g")
-            .selectAll("line")
-            .data(links)
-            .enter().append("line")
-            .attr("stroke", "#999")
-            .attr("stroke-width", 2);
+    <footer class="cos-foot">
+      <div>© <span id="cos-year"></span> Anro le Roux</div>
+      <div class="cos-foot-mark">A · lR</div>
+      <div class="cos-foot-links">
+        <a href="https://linkedin.com/in/anroleroux" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="https://github.com/anroleroux" target="_blank" rel="noopener">GitHub</a>
+      </div>
+      <div class="site-auth" id="cos-auth"></div>
+    </footer>
 
-        // Transparent wider lines for easier edge clicking (below nodes in z-order)
-        const linkHit = svg.append("g")
-            .selectAll("line")
-            .data(links)
-            .enter().append("line")
-            .attr("stroke", "transparent")
-            .attr("stroke-width", 12)
-            .attr("cursor", "pointer")
-            .on("click", (event, d) => selectLink(d, true))
-            .on("touchend", (event, d) => { event.preventDefault(); selectLink(d, true); });
+  </div><!-- /cos-layer -->
 
-        const groups = [
-            { id: "arch", label: "Architecture" },
-            { id: "oss",  label: "Open Source" },
-            { id: "cult", label: "Culture" },
-            { id: "prag", label: "Pragmatism" }
-        ];
+</div><!-- /live-wrapper -->
 
-        // Draw nodes
-        const node = svg.append("g")
-            .selectAll("g")
-            .data(nodes)
-            .enter().append("g")
-            .attr("cursor", "pointer")
-            .on("click", (event, d) => selectNode(d, true))
-            .call(drag(simulation));
+<script>
+// ── Solar math ────────────────────────────────────────────────
+function solarElevationDeg(lat, lon, now) {
+  var LAT = lat * Math.PI / 180;
+  var jan1 = Date.UTC(now.getUTCFullYear(), 0, 1);
+  var N = Math.floor((now - jan1) / 86400000) + 1;
+  var G = (2 * Math.PI / 365) * (N - 1);
+  var decl = 0.006918 - 0.399912 * Math.cos(G) + 0.070257 * Math.sin(G)
+           - 0.006758 * Math.cos(2*G) + 0.000907 * Math.sin(2*G)
+           - 0.002697 * Math.cos(3*G) - 0.00148  * Math.sin(3*G);
+  var eot  = (229.18 * (0.000075 + 0.001868 * Math.cos(G) - 0.032077 * Math.sin(G)
+           - 0.014615 * Math.cos(2*G) - 0.04089 * Math.sin(2*G))) / 60;
+  var utcH = now.getUTCHours() + now.getUTCMinutes() / 60 + now.getUTCSeconds() / 3600;
+  var solarTime = utcH + lon / 15 + eot;
+  var ha  = ((solarTime - 12) * 15) * Math.PI / 180;
+  var el  = Math.asin(Math.sin(LAT) * Math.sin(decl) + Math.cos(LAT) * Math.cos(decl) * Math.cos(ha));
+  return el * 180 / Math.PI;
+}
+function smoothstep(a, b, x) {
+  var t = Math.max(0, Math.min(1, (x - a) / (b - a)));
+  return t * t * (3 - 2 * t);
+}
 
-        node.append("circle")
-            .attr("r", 25)
-            .attr("fill", d => colors[d.group] || "steelblue")
-            .attr("stroke", "none")
-            .attr("stroke-width", 3);
+// ── Build starfield ───────────────────────────────────────────
+(function() {
+  var SVG_NS = 'http://www.w3.org/2000/svg';
+  var svg = document.querySelector('.cos-stars');
+  for (var i = 0; i < 90; i++) {
+    var x = (i * 137.508) % 1440;
+    var y = ((i * 73.21) + 47) % 2400;
+    var r = 0.4 + ((i * 31) % 11) / 18;
+    var o = 0.25 + ((i * 19) % 7) / 12;
+    var c = document.createElementNS(SVG_NS, 'circle');
+    c.setAttribute('cx', x.toFixed(1)); c.setAttribute('cy', y.toFixed(1));
+    c.setAttribute('r',  r.toFixed(2)); c.setAttribute('fill', '#ece2c8');
+    c.setAttribute('opacity', o.toFixed(2));
+    svg.appendChild(c);
+  }
+})();
 
-        node.append("text")
-            .attr("text-anchor", "middle")
-            .attr("fill", "#fff")
-            .style("font-size", "8px")
-            .style("font-family", "sans-serif")
-            .style("pointer-events", "none")
-            .selectAll("tspan")
-            .data(d => d.label.split('\n'))
-            .enter().append("tspan")
-            .attr("x", 0)
-            .attr("dy", (d, i) => i === 0 ? "-0.1em" : "1.2em")
-            .text(d => d);
+// ── State ─────────────────────────────────────────────────────
+var loc = { lat: 51.5, lon: 0, label: 'Greenwich · UK' };
+var timeOverride = null;
+var modeOverride = localStorage.getItem('sp-mode') || null;
 
-        function selectLink(d, scroll = false) {
-            node.select("circle").attr("stroke", "none");
+var spPhase    = document.getElementById('sp-phase');
+var spElev     = document.getElementById('sp-elev');
+var spTime     = document.getElementById('sp-time');
+var spLoc      = document.getElementById('sp-loc');
+var spMix      = document.getElementById('sp-mix');
+var spSlider   = document.getElementById('sp-slider');
+var spLiveBtn  = document.getElementById('sp-live-btn');
+var spHline    = document.getElementById('sp-hline');
+var spArc      = document.getElementById('sp-arc');
+var spSun      = document.getElementById('sp-sun');
+var spRise     = document.getElementById('sp-rise');
+var spSet      = document.getElementById('sp-set');
+var spPanel    = document.getElementById('sun-panel');
+var spScrubWrap = document.getElementById('sp-scrub-wrap');
 
-            link.attr("stroke", l => l === d ? "#333" : "#999")
-                .attr("stroke-width", l => l === d ? 3.5 : 2);
+spSlider.addEventListener('input', function(e){ timeOverride = parseFloat(e.target.value); });
+spLiveBtn.addEventListener('click', function(){ timeOverride = null; });
 
-            const sourceNode = nodes.find(n => n.id === (d.source.id ?? d.source));
-            const targetNode = nodes.find(n => n.id === (d.target.id ?? d.target));
+var spModeBtn = document.getElementById('sp-mode-btn');
+spModeBtn.addEventListener('click', function(){
+  if (modeOverride === null) modeOverride = 'day';
+  else if (modeOverride === 'day') modeOverride = 'night';
+  else modeOverride = null;
+  if (modeOverride) localStorage.setItem('sp-mode', modeOverride);
+  else localStorage.removeItem('sp-mode');
+  tick();
+});
 
-            const details = d3.select("#node-details");
-            details.style("display", "block");
-            d3.select("#detail-title").text(
-                `${sourceNode.label.replace('\n', ' ')} → ${targetNode.label.replace('\n', ' ')}`
-            );
-            d3.select("#detail-group").text("Connection");
-            d3.select("#connections-label").text("Connects:");
-            const connectionsList = d3.select("#connections-list");
-            connectionsList.selectAll("li").remove();
-            [sourceNode, targetNode].forEach(n => {
-                connectionsList.append("li")
-                    .style("margin-bottom", "2px")
-                    .append("a")
-                    .text(n.label.replace('\n', ' '))
-                    .attr("href", "#")
-                    .style("cursor", "pointer")
-                    .on("click", (event) => { event.preventDefault(); selectNode(n, false); })
-                    .on("touchend", (event) => { event.preventDefault(); selectNode(n, false); });
-            });
+var spRestore = document.getElementById('sp-restore');
+document.getElementById('sp-hide-btn').addEventListener('click', function(){
+  spPanel.style.display = 'none';
+  spRestore.style.display = 'flex';
+});
+spRestore.addEventListener('click', function(){
+  spPanel.style.display = 'block';
+  spRestore.style.display = 'none';
+});
 
-            const content = d3.select("#detail-content");
-            content.selectAll("p").remove();
-            content.append("p").text(d.desc);
+function pad2(n){ return String(n).padStart(2, '0'); }
 
-            if (scroll) details.node().scrollIntoView({ behavior: 'smooth' });
-        }
+function tick() {
+  var real = new Date();
+  var now;
+  if (timeOverride == null) {
+    now = real;
+    spSlider.value = real.getHours() + real.getMinutes() / 60;
+  } else {
+    now = new Date(real);
+    var h = Math.floor(timeOverride);
+    var m = Math.floor((timeOverride - h) * 60);
+    var s = Math.floor(((timeOverride - h) * 60 - m) * 60);
+    now.setHours(h, m, s, 0);
+  }
 
-        function selectNode(d, scroll = false) {
-            link.attr("stroke", "#999").attr("stroke-width", 2);
+  var yr  = now.getFullYear();
+  var mo  = now.toLocaleString('en', { month: 'long' });
+  var moS = now.toLocaleString('en', { month: 'short' });
+  var d   = now.getDate();
+  var hh  = pad2(now.getHours());
+  var mm  = pad2(now.getMinutes());
+  var ss  = pad2(now.getSeconds());
 
-            node.select("circle")
-                .attr("stroke", n => n.id === d.id ? "#000" : "none");
+  var elev     = solarElevationDeg(loc.lat, loc.lon, now);
+  var nightMix = 1 - smoothstep(-6, 10, elev);
 
-            const details = d3.select("#node-details");
-            details.style("display", "block");
-            d3.select("#detail-title").text(d.label.replace('\n', ' '));
+  var phase = elev > 10 ? 'day'
+    : elev > 0  ? 'golden hour'
+    : elev > -6 ? 'civil twilight'
+    : elev > -12 ? 'nautical twilight'
+    : 'night';
 
-            const groupObj = groups.find(g => g.id === d.group);
-            d3.select("#detail-group").text(groupObj ? groupObj.label : "");
+  var almLayer = document.getElementById('alm-layer');
+  var cosLayer = document.getElementById('cos-layer');
+  var effectiveMix = modeOverride === 'day' ? 0 : modeOverride === 'night' ? 1 : nightMix;
+  almLayer.style.opacity = (1 - effectiveMix);
+  cosLayer.style.opacity = effectiveMix;
+  cosLayer.style.pointerEvents = effectiveMix >= 0.5 ? 'auto' : 'none';
 
-            const connectedNodeIds = links
-                .filter(l => l.source === d.id || l.target === d.id || l.source.id === d.id || l.target.id === d.id)
-                .map(l => {
-                    const sourceId = l.source.id || l.source;
-                    const targetId = l.target.id || l.target;
-                    return sourceId === d.id ? targetId : sourceId;
-                });
+  document.getElementById('alm-date').textContent = mo + ' ' + d + ', ' + yr;
+  document.getElementById('alm-year').textContent = yr;
+  document.getElementById('cos-date').textContent = moS + ' ' + d + ' ' + yr;
+  document.getElementById('cos-year').textContent = yr;
 
-            const connectedNodes = nodes.filter(n => connectedNodeIds.includes(n.id));
+  var dark   = modeOverride === 'day' ? false : modeOverride === 'night' ? true : nightMix > 0.5;
+  var fg     = dark ? 'rgba(236,226,200,0.92)' : 'rgba(28,22,16,0.92)';
+  var fgMute = dark ? 'rgba(236,226,200,0.55)' : 'rgba(28,22,16,0.55)';
+  var accent = dark ? '#d6ab5e' : '#8a3a13';
+  var border = dark ? 'rgba(214,171,94,0.28)' : 'rgba(28,22,16,0.18)';
 
-            const connectionsLabel = d3.select("#connections-label");
-            const connectionsList = d3.select("#connections-list");
-            connectionsList.selectAll("li").remove();
+  spPanel.className   = dark ? 'night' : 'day';
+  spRestore.className = dark ? 'night' : 'day';
+  spPhase.textContent = phase;
+  spPhase.style.color = accent;
+  spElev.textContent  = elev.toFixed(1) + '°';
+  spTime.textContent  = hh + ':' + mm;
+  spLoc.textContent   = loc.label;
+  spMix.textContent   = Math.round(nightMix * 100) + '%';
 
-            if (connectedNodes.length > 0) {
-                connectionsLabel.text("Connected Paradigms:");
-                connectedNodes.forEach(n => {
-                    const edgeLink = links.find(l => {
-                        const s = l.source.id ?? l.source;
-                        const t = l.target.id ?? l.target;
-                        return (s === d.id && t === n.id) || (s === n.id && t === d.id);
-                    });
+  var elevC = Math.max(-30, Math.min(60, elev));
+  var sunY  = 50 - (elevC / 60) * 35;
+  spSun.setAttribute('cy', sunY.toFixed(1));
+  spSun.setAttribute('fill', dark ? '#f5d78f' : '#e0a330');
+  spSun.style.filter = dark ? 'drop-shadow(0 0 6px #f5d78f)' : 'none';
+  spHline.setAttribute('stroke', fgMute);
+  spArc.setAttribute('stroke', fgMute);
+  spRise.setAttribute('fill', fgMute);
+  spSet.setAttribute('fill', fgMute);
 
-                    const li = connectionsList.append("li")
-                        .style("margin-bottom", "2px");
+  document.querySelectorAll('.sp-row-label, .sp-scrub-label').forEach(function(el){ el.style.color = fgMute; });
+  document.querySelectorAll('.sp-row-val, .sp-ticks span').forEach(function(el){ el.style.color = fg; });
+  spScrubWrap.style.borderTopColor = border;
+  spLiveBtn.style.borderColor = border;
+  spLiveBtn.style.color = timeOverride == null ? accent : fgMute;
+  spLiveBtn.textContent = timeOverride == null ? 'live' : 'snap to live';
+  spModeBtn.textContent = modeOverride === null ? 'auto' : modeOverride;
+  spModeBtn.style.color = modeOverride === null ? fgMute : accent;
+  spModeBtn.style.borderColor = border;
+  document.getElementById('sp-mode-wrap').style.borderTopColor = border;
+}
 
-                    li.append("a")
-                        .text(n.label.replace('\n', ' '))
-                        .attr("href", "#")
-                        .style("cursor", "pointer")
-                        .on("click", (event) => { event.preventDefault(); selectNode(n, false); })
-                        .on("touchend", (event) => { event.preventDefault(); selectNode(n, false); });
+tick();
+setInterval(tick, 1000);
+</script>
 
-                    if (edgeLink) {
-                        li.append("span").text(" · ");
-                        li.append("a")
-                            .text("connection")
-                            .attr("href", "#")
-                            .style("cursor", "pointer")
-                            .on("click", (event) => { event.preventDefault(); selectLink(edgeLink, false); })
-                            .on("touchend", (event) => { event.preventDefault(); selectLink(edgeLink, false); });
-                    }
-                });
-            } else {
-                connectionsLabel.text("");
-            }
+<script>
+// ── Graph data ────────────────────────────────────────────────
+var nodes = [
+  { id: 1, label: "1 Small\nprograms", group: "arch", paragraphs: ["Compose-ability over complexity. Do one thing well.", "The best software does one thing well. This is not a guideline to consider when convenient — it is a foundational principle that shapes every architectural decision. A program that does one thing well is easier to test, easier to replace, easier to understand, and easier to compose with other programs. Complexity is not a sign of capability; it is usually a sign of unclear thinking.", "Composability is the payoff. When a mesher, an analyser, and a visual editor of a finite element analysis suite are separate programs, any one of them can be swapped out, reused in a different context, or improved in isolation. The whole becomes greater than the sum of its parts precisely because the parts are honest about what they are.", "This philosophy aligns with the Unix principle of building simple, modular tools that can be combined to solve complex problems through pipes and scripting."] },
+  { id: 2, label: "2 Open\ninterfaces", group: "arch", paragraphs: ["APIs, CLIs, standard formats. Contract-first design.", "A program that cannot be spoken to is a dead end. Open interfaces — APIs, CLIs, standard formats like JSON, SVG, and Markdown — are the grammar that allows programs to talk to each other and to the humans and systems that depend on them. Contract-first design means agreeing on the language before writing the implementation, which forces clarity and prevents the interface from becoming an afterthought.", "Semantic versioning and backward compatibility are acts of respect toward everyone downstream. When no standard exists, the right move is to create one and publish it. Contributing, for example, a mesh data format to the public domain is worth more in the long run than a proprietary format that locks users in and limits adoption.", "Open interfaces allow different systems to communicate seamlessly. By defining clear contracts, you enable interoperability and allow components to be swapped or upgraded without breaking the entire system."] },
+  { id: 3, label: "3 Interface /\nimpl sep.", group: "arch", paragraphs: ["What vs how. Decouple contract from mechanism.", "What a system does must be defined independently of how it does it. This separation is what makes it possible to improve, replace, or swap an implementation without affecting the code that uses it. It is also what makes parallel development possible — one person can build against a contract while another fulfils it.", "This principle runs deeper than API design. It is a habit of mind: always ask what the contract is before asking how to honour it. When interface and implementation are tangled together, change becomes expensive and risk accumulates quietly.", "This decoupling is essential for long-term flexibility, leading to cleaner architectural designs and more robust software systems."] },
+  { id: 4, label: "4 Automation &\nvirt.", group: "prag", paragraphs: ["CI/CD, observability: metrics, alerts, logs.", "Manual deployment is a liability. Every step that requires a human to intervene is a step that can be skipped, forgotten, or done differently by a different person on a different day. CI/CD pipelines are not a luxury — they are the backbone of a system that can be trusted to behave consistently across environments and over time.", "Observability is the other side of that coin. Metrics, alerts, and logs must not be hidden in dashboards that nobody opens. They must be visible, actionable, and tied to the behaviour of the system in production. A system you cannot observe is a system you cannot understand, and a system you cannot understand is a system you cannot improve."] },
+  { id: 5, label: "5 Testing", group: "prag", paragraphs: ["Unit to integration, security, load testing.", "A comprehensive testing strategy is essential for building reliable software. This includes unit tests for individual functions, integration tests for systems, and performance testing for scale.", "Testing is not a phase that happens before release. It is a continuous activity that is woven into development. A feature that works but has no tests is unfinished work that leaves a debt for whoever touches it next.", "Automated tests act as a safety net, allowing developers to refactor code with confidence, knowing that regressions will be caught immediately."] },
+  { id: 6, label: "6 CLI\nfirst", group: "arch", paragraphs: ["Fully operable without a human in the loop.", "Designing with a CLI-first approach ensures that every function of your software can be automated. This is a prerequisite for modern DevOps practices and continuous integration pipelines.", "The CLI is the most honest interface a system can have — it exposes exactly what the system can do, without ceremony, and it can be scripted, piped, and automated by anything. Building CLI-first means building a system that can participate in larger workflows without requiring human supervision.", "Configuration files, structured logs, and observability systems replace the human in the loop. The UI, when it exists, should be a layer on top of a fully functional headless system — not the only way in.", "A command-line interface provides a powerful way for power users and scripts to interact with your application, often proving more efficient than a graphical user interface for repetitive tasks."] },
+  { id: 7, label: "7 Open\naccess", group: "oss", paragraphs: ["No licenses needed. Better automation.", "Open access to tools and libraries removes legal and financial friction from the development process. It allows teams to experiment and scale without worrying about seat counts or license renewals.", "This freedom is not just about cost — it is about the ability to move quickly, to fork when necessary, and to build on a foundation that the whole community can inspect and improve.", "Open access also aligns naturally with the other paradigms. Open interfaces, composability, and automation all benefit from a culture that defaults to openness rather than restriction."] },
+  { id: 8, label: "8 Multi-lang\ncomfort", group: "cult", paragraphs: ["Work fluently across languages, formats, standards.", "Modern software development often requires working with multiple languages—perhaps Python for data, JavaScript for the UI, and SQL for the database. Being comfortable across stacks is a major advantage.", "A developer who is loyal to a single language is limited by that language's strengths and blind to its weaknesses. Multi-language comfort is not about knowing every language superficially; it is about being genuinely at ease moving between paradigms, idioms, and ecosystems.", "This requires managing the real risk of distraction. New languages and frameworks are worth exploring, but curiosity must be disciplined. The goal is to expand the palette without losing focus on the work."] },
+  { id: 9, label: "9 Non-sentimental\ncode", group: "cult", paragraphs: ["Rewrite freely. It's about performance, not attachment.", "Code is not an achievement to be preserved — it is a means to an end. The willingness to rewrite, replace, or discard code is a sign of maturity, not carelessness. Software that cannot be replaced becomes a trap: it accumulates complexity, resists improvement, and eventually becomes the thing that holds the whole system hostage.", "Products should move from prototype to pilot to powerhouse. Each stage demands different code, different tradeoffs, and different priorities. Lessons learned in the prototype should be applied ruthlessly in the rewrite. What matters is how the system performs, how maintainable it is, and how secure it is — not how long it took to write or how clever it is.", "Non-sentimentality prevents 'sunk cost' thinking, where teams stick with bad architectural decisions just because they've already invested time in them."] },
+  { id: 10, label: "10 Use existing\ntech", group: "prag", paragraphs: ["Don't build your own DB, regex, config. Learn first.", "One of the most important skills in software development is knowing when not to write code. Using proven, existing technologies for common tasks saves time and reduces bugs.", "Building something that already exists is usually a mistake. Databases, visualisation libraries, regular expression engines, configuration formats — these are solved problems, and solving them again consumes time that could be spent on the actual problem. The engineering instinct to build from scratch must be balanced against the cost of reinventing infrastructure that others have already hardened over years.", "The discipline here is breadth of knowledge. Spinning up an unfamiliar technology in Docker to understand what it does is a small investment with a large return. The developer who knows what exists can reach for the right tool; the developer who only knows what they have built is always starting from scratch.", "Leveraging mature libraries and platforms allows you to focus your energy on the unique problems your software is actually trying to solve."] },
+  { id: 11, label: "11 Security", group: "oss", paragraphs: ["Open source prevents backdoors. Secrets management.", "Security is not a feature to be added at the end — it is a cross-cutting concern that touches every layer of a system. Open source is a natural ally here: transparent code is harder to hide backdoors in, and more eyes on a codebase means more chances to catch vulnerabilities before they are exploited. 'Security through obscurity' is a known anti-pattern.", "Beyond openness, security requires active practice: secrets management so that credentials never live in source code, dependency auditing so that the supply chain is understood and monitored, and threat modelling so that risks are identified before they are realised. Security is a habit, not a checklist."] },
+  { id: 12, label: "12 Larger\ndev teams", group: "oss", paragraphs: ["Open source expands the talent pool globally.", "Open source changes the economics of talent. A codebase that is public can attract contributors from anywhere in the world, across time zones and institutions, each bringing different experience and perspective. The talent pool is no longer bounded by geography or headcount.", "Such diversity of perspective often leads to more robust and feature-rich software but requires strong leadership and well-defined contribution guidelines.", "This scale also distributes knowledge. When many people understand a system, the risk of a single point of failure in the team is reduced. The codebase becomes a shared asset rather than the private domain of a small group."] },
+  { id: 13, label: "13 Community\nsupport", group: "oss", paragraphs: ["More people to answer questions and review code.", "The community surrounding a piece of technology is often as important as the code itself. A vibrant community provides a wealth of shared knowledge, tutorials, and third-party extensions.", "A healthy open source community is a support system that no internal team can replicate. Questions get answered by people who have faced the same problems. Bugs get reported by users who encounter edge cases the original developers never imagined. The collective knowledge of a community compounds over time in a way that isolated teams cannot match.", "Support and peer reviews within the community creates accountability, helping to maintain high code quality standards. Code that is visible to the public tends to be written with more care. The knowledge that others will read, use, and critique the work raises the standard naturally."] },
+  { id: 14, label: "14 Iterative\ndev", group: "cult", paragraphs: ["Agile, lean, smallest deliverable tasks.", "Iterative development focuses on delivering small, functional increments of software frequently. This allows for rapid feedback and ensures that the project remains aligned with user needs.", "Large batches of work are the enemy of predictability. Breaking work into the smallest possible tasks that still deliver presentable value makes it possible to measure progress in a way that supports honest forecasting.", "By breaking large projects into smaller, manageable tasks, teams can reduce risk and maintain a steady, predictable pace of delivery."] },
+  { id: 15, label: "15 Products\nnot projects", group: "cult", paragraphs: ["Software grows and adapts continuously.", "A project has an end date. A product does not. Software that is treated as a project gets built, delivered, and abandoned — left running in a corner, untouched and unmaintained, until it becomes a liability. Software that is treated as a product is expected to adapt, grow, and respond to the changing needs of its users.", "This distinction shapes everything: how work is prioritised, how teams are structured, how success is measured. Products invite continuous improvement. Projects invite avoidance. The goal is software that people want to keep working on — not software that everyone is afraid to touch.", "A product mindset focuses on long-term value and user experience, rather than just checking off a list of requirements for a one-time delivery."] },
+  { id: 16, label: "16 Work as\na team", group: "cult", paragraphs: ["Transparency, overlap, pair programming.", "Software is a team sport. Individual brilliance is worth far less than a team where knowledge is shared, work is visible, and any member can pick up where another left off. Pair programming, transparent task management, and deliberate overlap between focus areas are the practices that make this real. The hidden cost of isolated developers is enormous — duplicated work, knowledge silos, and the catastrophic risk of a single person being the only one who understands a critical system.", "Documentation should serve the team, not satisfy an audit. Dependency diagrams, flow diagrams, and system diagrams are functional tools that help new and existing members understand how things fit together. The code itself should be the primary explanation of what it does — clear naming, small functions, and honest structure — with comments reserved for the rare cases where intent cannot be made obvious from the code alone.", "Transparency in communication and decision-making builds trust within the team and allows everyone to contribute to the project's success."] },
+];
 
-            const content = d3.select("#detail-content");
-            content.selectAll("p").remove();
-            d.paragraphs.forEach(p => {
-                content.append("p").text(p);
-            });
+var links = [
+  { source: 1, target: 2, desc: "Small programs and open interfaces are two sides of the same coin. A program that does one thing well is only useful if other programs can talk to it, and that conversation requires a well-defined, published interface. Composability — the whole point of keeping programs small — is impossible without the contracts that open interfaces provide. You cannot compose what you cannot address." },
+  { source: 1, target: 3, desc: "Keeping a program small is only sustainably possible when its interface is decoupled from its internals. Without that separation, the temptation to grow the program's surface area alongside its implementation is irresistible. Separation of concerns is what gives smallness its structural integrity — it defines the boundary at which the program stops." },
+  { source: 1, target: 6, desc: "A small, single-purpose program is a natural fit for the command line. It takes inputs, does one thing, and produces outputs — exactly the model that shells, pipes, and scripts are built around. The more a program does, the more it tends to grow a GUI to manage that complexity. Keeping programs small keeps them scriptable." },
+  { source: 2, target: 3, desc: "An open interface is the published contract; implementation separation is the discipline that keeps that contract stable. If implementation details leak into the interface, the contract becomes brittle — callers depend on internals that were never meant to be visible. The two paradigms enforce each other: you cannot have a trustworthy open interface without the separation that insulates it from change." },
+  { source: 2, target: 6, desc: "Open interfaces and CLI-first design are almost synonymous in practice. A CLI is an interface — a contract between a program and its callers, expressed in commands, flags, and exit codes rather than HTTP verbs. Designing a system to be CLI-operable is, in effect, designing it to have an open, scriptable interface that any tool or person can drive without special knowledge of its internals." },
+  { source: 3, target: 6, desc: "When a system cleanly separates what it does from how it does it, driving it from a CLI becomes straightforward — the CLI targets the interface, not the implementation. This means the system can be scripted, automated, and tested without any change to its internals. CLI-first operability is, in this sense, a practical test of whether the separation is real." },
+  { source: 7, target: 11, desc: "Open source and security reinforce each other in a way that is often underappreciated. When code is publicly visible, backdoors are hard to hide and vulnerabilities attract scrutiny from people with no stake in concealing them. Closed systems rely on secrecy as a security mechanism, which is fragile. Open systems rely on transparency, which scales. More eyes on the code means more chances to catch what a single team might miss." },
+  { source: 7, target: 12, desc: "Open access removes the licensing and access barriers that limit who can contribute to a codebase. A project that anyone can clone, run, and submit a pull request to has a potential contributor pool that is, in principle, the entire global developer community. This does not mean all contributors are equal, but it does mean that talent is not artificially constrained by geography, employer, or procurement process." },
+  { source: 7, target: 13, desc: "Open-source projects naturally accumulate communities around them. When the code is public and the issues are public, knowledge about the system diffuses broadly — people ask questions in forums, write blog posts, record walkthroughs, and answer each other's questions without being paid to do so. This community knowledge base is a form of distributed documentation and support that no internal team could replicate alone." },
+  { source: 11, target: 12, desc: "Security is fundamentally a numbers game at the review stage. A larger team means more people reading code, more varied threat models applied, and a greater likelihood that someone will notice the subtle mistake that a smaller group would skip past. This is not about redundancy — it is about cognitive diversity applied to a problem where the attacker only needs to find one gap." },
+  { source: 12, target: 13, desc: "Larger teams and strong communities are mutually reinforcing. A bigger contributor base generates more questions, more edge cases encountered in production, and more people motivated to write answers. That body of shared knowledge then attracts more contributors, because the onboarding cost drops when good documentation and support already exist. The two grow together." },
+  { source: 8, target: 9, desc: "You cannot be non-sentimental about code if you are emotionally attached to the language it is written in. A developer who has invested years in mastering only one language and one ecosystem will find it genuinely difficult to recommend that a service be rewritten in something better suited to the task. Multi-language comfort removes that resistance — if you are fluent across several stacks, the choice of language becomes a technical decision rather than an identity one." },
+  { source: 9, target: 14, desc: "Iterative development produces code that was right for its moment but is not right for the next one. Prototypes become pilots, pilots become powerhouses, and at each stage the previous version must be let go of without grief. A team that is sentimental about code will find iteration painful — every rewrite feels like a loss. A team that sees code as a means rather than an end finds iteration natural." },
+  { source: 9, target: 15, desc: "A product that is expected to evolve continuously will periodically need to shed its own history. Core services get replaced, data models get redesigned, entire subsystems get retired. If the team is attached to the code that built the first version of the product, the product will calcify around it. Non-sentimentality is what allows a product to keep growing into something its original authors would not recognise — and that is a measure of success, not failure." },
+  { source: 14, target: 15, desc: "Iterative development is the operational expression of a product mindset. A project has a delivery date and a done state; a product has a roadmap and a next sprint. Breaking work into the smallest possible deliverable tasks only makes sense if there is always a next task — and there is always a next task only if the software is understood to be a product. The two paradigms together define how living software actually gets built." },
+  { source: 14, target: 16, desc: "Short iterations only work if the team is genuinely shared. When work is broken into small tasks that complete in days, the handoffs between team members become frequent and the need for shared context becomes acute. A developer who disappears into a task for three weeks and surfaces with a finished module is running a project. A developer who completes a small slice, hands it off, and picks up another is working on a product — and that requires a team that communicates constantly." },
+  { source: 15, target: 16, desc: "A product that runs indefinitely cannot be owned by one person. People change roles, leave, go on leave. If the product's continuity depends on any individual's presence, it is a project masquerading as a product. Genuine product thinking requires that knowledge, ownership, and context are distributed across the team — not hoarded in any single person's head. The team is the guarantor of the product's continuity." },
+  { source: 4, target: 5, desc: "Automation provides the infrastructure without which continuous testing is impractical. Running a full suite of unit, integration, security, and load tests by hand after every change is not feasible; running it automatically on every commit is. CI/CD pipelines are what turn testing from a periodic ceremony into a permanent feedback loop. Automation does not make testing better in isolation — it makes testing actually happen." },
+  { source: 4, target: 10, desc: "The tooling that powers modern automation — container runtimes, pipeline orchestrators, monitoring stacks, secret managers — is almost entirely open-source and mature. Building your own CI system, your own metrics pipeline, or your own deployment tooling is an enormous investment in something that is not your core product. Automation and existing technology belong together: the whole point of the automation ecosystem is that it is already built and you should use it." },
+  { source: 5, target: 10, desc: "Every major language ecosystem has mature testing frameworks, assertion libraries, mocking tools, fuzzing harnesses, and load testing rigs. Writing your own is a waste of effort that will produce something inferior. Using existing testing technology means the team spends its energy writing tests, not building the infrastructure to run them. The leverage is enormous — a good testing framework represents years of thought about how to make test failures legible and actionable." },
+  { source: 1, target: 4, desc: "Small, independently deployable programs are the unit that CI/CD pipelines are designed around. A pipeline that builds, tests, and deploys a single focused service is tractable. A pipeline that must coordinate a monolith — where a change to one part requires rebuilding and retesting everything — is expensive and slow. Keeping programs small makes automation faster, cheaper, and more reliable." },
+  { source: 2, target: 4, desc: "Automation scripts and CI/CD pipelines need something to target. Open, well-defined interfaces are that target — they give pipelines a stable, versioned surface to call, monitor, and verify without knowledge of internal implementation. An interface that changes unpredictably breaks automation silently; a stable, semantically versioned one makes automation trustworthy over time." },
+  { source: 3, target: 5, desc: "A well-defined interface is the contract that tests verify. When the interface is clearly separated from the implementation, tests can be written against that contract without any knowledge of how the implementation works — which is exactly the right level of abstraction. Tests that depend on implementation details are unecessary noise and brittle; tests that depend on the interface are stable and survive refactoring." },
+  { source: 6, target: 4, desc: "A system that requires a human to click through a GUI cannot be automated. CLI-first design is not just a convenience — it is a prerequisite for automation. Every step in a CI/CD pipeline, every health check, every deployment script, every scheduled job assumes it can invoke the system programmatically. CLI-first means the system is, by design, automation-ready." },
+  { source: 6, target: 5, desc: "CLI operability means test runners can invoke the system directly, pass it inputs, and inspect its outputs without standing up a browser, a GUI driver, or a human operator. This makes tests fast, deterministic, and easy to run in isolation. A system that is only operable through a GUI is a system that is, at best, expensive to test and, at worst, effectively untestable in an automated pipeline." },
+  { source: 2, target: 7, desc: "Publishing an open interface is itself an act of openness — it invites others to build on, integrate with, and improve a system without needing access to its internals. In the FEA example from paradigm 1, publishing the mesh data format as an open standard is simultaneously an open interface decision and an open-source contribution. The two reinforce each other: open interfaces make open source more useful, and open source makes open interfaces more widely adopted." },
+  { source: 2, target: 11, desc: "Open interfaces make the attack surface explicit. When a system's boundaries are clearly defined and publicly documented, it becomes possible to reason precisely about what is exposed, what is not, and what the threat model is. Hidden, undocumented interfaces are where security assumptions go unexamined. A clear contract forces the team to think about what they are committing to protect." },
+  { source: 1, target: 7, desc: "Small, focused programs are easier to open-source than large, sprawling ones. Their scope is bounded, their dependencies are limited, and their reuse value is immediately legible to someone encountering them for the first time. A program that does one thing well is a gift to the ecosystem — it can be understood, trusted, and adopted without reading thousands of lines of tangled code." },
+  { source: 1, target: 14, desc: "Small programs map naturally onto small, iterative development tasks. A service that does one thing can be specified, built, tested, and shipped within a single sprint. This creates a tight feedback loop between development and delivery that is hard to achieve when the unit of work is a sprawling system. Keeping programs small keeps the iteration cycle short." },
+  { source: 3, target: 9, desc: "When the interface is stable and cleanly separated from the implementation, rewriting the implementation becomes a low-risk, low-drama operation. The contract with the outside world does not change; only the internals do. This is what makes non-sentimentality practical rather than reckless — you can swap out an implementation precisely because the interface shields callers from the change. Without separation, every rewrite is a breaking change." },
+  { source: 6, target: 8, desc: "Building a CLI-first system requires comfort with shell scripting, configuration file formats, environment variables, piping, and the idiosyncrasies of terminal environments across operating systems. These are not the concerns of a single language — they span bash, Python, TOML, YAML, JSON, and more. CLI-first development is, in practice, a daily exercise in multi-language fluency." },
+  { source: 7, target: 4, desc: "Open-source tools (Docker, GitHub Actions, Prometheus) are the building blocks of modern automation — open access enabled the development and maturity of the ecosystem." },
+  { source: 7, target: 10, desc: "The entire premise of \"use existing technology\" depends on that technology being accessible. Open access — to libraries, frameworks, databases, and infrastructure tools — is what makes it possible to spin up a mature, battle-tested solution in an afternoon rather than building one over months. Open source is the library from which the \"use existing technology\" principle draws." },
+  { source: 11, target: 5, desc: "Security is not a property that emerges from functional correctness alone — it requires its own testing discipline. Dependency auditing, static analysis, fuzz testing, and penetration testing are all forms of automated security testing that belong in the same pipeline as unit and integration tests. Treating security as a testing concern means it gets the same continuous feedback loop rather than being a one-time audit." },
+  { source: 14, target: 5, desc: "In iterative development, testing is not a phase that happens after development — it is part of the definition of done. Every task that is completed must include updated tests; a feature without tests is not finished. This keeps the test suite aligned with the codebase at every point in the iteration, and it distributes the testing burden evenly rather than accumulating it as a debt that is paid at the end." },
+  { source: 15, target: 4, desc: "A product that is expected to evolve and be maintained indefinitely cannot rely on manual deployment and manual monitoring. The operational burden of a living product — releases, rollbacks, health checks, alerting — must be automated, because it never ends. Automation is what makes continuous product maintenance sustainable for a team that is simultaneously building the next version." },
+  { source: 9, target: 10, desc: "Being unsentimental about code includes being unsentimental about the code you wrote when a better alternative already exists. The temptation to build your own implementation of something — a configuration parser, a job queue, a metrics library — is often rooted in attachment to the craft of building rather than a genuine need. Non-sentimentality clears that attachment: if something good enough already exists, use it." },
+  { source: 12, target: 16, desc: "Larger teams make the team practices described in paradigm 16 non-optional. Transparency, communication, overlap of knowledge, and pair programming are nice-to-haves in a team of 2 to 3; they are vital requirements in a team of 5 or more. At scale, the hidden costs of isolation — duplicated work, lost context, single points of failure — become too large to ignore. Good team practices are what allow a large team to function as a team rather than a collection of individuals." },
+  { source: 13, target: 16, desc: "A strong external community models good internal team practices. Open-source communities have developed, through necessity, sophisticated norms around communication, code review, issue triage, and knowledge transfer — because contributors are distributed, asynchronous, and transient. Internal teams that engage with these communities absorb those norms and bring them back into their day-to-day work." },
+  { source: 7, target: 15, desc: "An open-source project is, almost by definition, a product. It has users with expectations, a version history with commitments, and a community that depends on its continued existence. Treating open-source work as a project — a one-time effort with a completion date — is how open-source projects become abandoned repositories. Open access creates the conditions for product thinking by making the software public and its users real." },
+];
 
-            if (scroll) details.node().scrollIntoView({ behavior: 'smooth' });
-        }
+var graphGroups = [
+  { id: "arch", label: "Architecture" },
+  { id: "oss",  label: "Open Source" },
+  { id: "cult", label: "Culture" },
+  { id: "prag", label: "Pragmatism" }
+];
 
-        selectNode(nodes[0]);
+var graphColors = { arch: "#534AB7", oss: "#0F6E56", cult: "#993C1D", prag: "#185FA5" };
 
-        // Add drag behavior
-        function drag(simulation) {
-        return d3.drag()
-            .on("start", event => {
-            if (!event.active) simulation.alphaTarget(0.3).restart();
-            event.subject.fx = event.subject.x;
-            event.subject.fy = event.subject.y;
-            })
-            .on("drag", event => {
-            event.subject.fx = event.x;
-            event.subject.fy = event.y;
-            })
-            .on("end", event => {
-            if (!event.active) simulation.alphaTarget(0);
-            event.subject.fx = null;
-            event.subject.fy = null;
-            });
-        }
+// ── Graph factory ─────────────────────────────────────────────
+function initGraph(prefix, linkStroke) {
+  var simNodes = nodes.map(function(n) { return Object.assign({}, n); });
+  var simLinks = links.map(function(l) { return { source: l.source, target: l.target, desc: l.desc }; });
 
-        // Update positions on tick
-        simulation.on("tick", () => {
-        link
-            .attr("x1", d => d.source.x)
-            .attr("y1", d => d.source.y)
-            .attr("x2", d => d.target.x)
-            .attr("y2", d => d.target.y);
+  var width = 800, height = 500;
+  var svg = d3.select('#' + prefix + '-graph').attr('viewBox', '0 0 ' + width + ' ' + height);
 
-        linkHit
-            .attr("x1", d => d.source.x)
-            .attr("y1", d => d.source.y)
-            .attr("x2", d => d.target.x)
-            .attr("y2", d => d.target.y);
+  var simulation = d3.forceSimulation(simNodes)
+    .force('link', d3.forceLink(simLinks).id(function(d){ return d.id; }).distance(120))
+    .force('charge', d3.forceManyBody().strength(-400))
+    .force('center', d3.forceCenter(width / 2, height / 2));
 
-        node
-            .attr("transform", d => `translate(${d.x},${d.y})`);
+  var link = svg.append('g').selectAll('line').data(simLinks).enter().append('line')
+    .attr('stroke', linkStroke || '#999').attr('stroke-width', 2);
+
+  var linkHit = svg.append('g').selectAll('line').data(simLinks).enter().append('line')
+    .attr('stroke', 'transparent').attr('stroke-width', 12).attr('cursor', 'pointer')
+    .on('click', function(event, d){ selectLink(d, true); })
+    .on('touchend', function(event, d){ event.preventDefault(); selectLink(d, true); });
+
+  var node = svg.append('g').selectAll('g').data(simNodes).enter().append('g')
+    .attr('cursor', 'pointer')
+    .on('click', function(event, d){ selectNode(d, true); })
+    .call(d3.drag()
+      .on('start', function(event){ if (!event.active) simulation.alphaTarget(0.3).restart(); event.subject.fx = event.subject.x; event.subject.fy = event.subject.y; })
+      .on('drag',  function(event){ event.subject.fx = event.x; event.subject.fy = event.y; })
+      .on('end',   function(event){ if (!event.active) simulation.alphaTarget(0); event.subject.fx = null; event.subject.fy = null; })
+    );
+
+  node.append('circle').attr('r', 25).attr('fill', function(d){ return graphColors[d.group] || 'steelblue'; }).attr('stroke', 'none').attr('stroke-width', 3);
+  node.append('text').attr('text-anchor', 'middle').attr('fill', '#fff').style('font-size', '8px').style('font-family', 'sans-serif').style('pointer-events', 'none')
+    .selectAll('tspan').data(function(d){ return d.label.split('\n'); }).enter().append('tspan')
+    .attr('x', 0).attr('dy', function(d, i){ return i === 0 ? '-0.1em' : '1.2em'; }).text(function(d){ return d; });
+
+  function sel(id){ return document.getElementById(prefix + '-' + id); }
+
+  function selectLink(d, scroll) {
+    node.select('circle').attr('stroke', 'none');
+    link.attr('stroke', function(l){ return l === d ? '#333' : (linkStroke || '#999'); }).attr('stroke-width', function(l){ return l === d ? 3.5 : 2; });
+    var sn = simNodes.find(function(n){ return n.id === (d.source.id != null ? d.source.id : d.source); });
+    var tn = simNodes.find(function(n){ return n.id === (d.target.id != null ? d.target.id : d.target); });
+    var details = d3.select('#' + prefix + '-node-details');
+    details.style('display', 'block');
+    d3.select('#' + prefix + '-detail-title').text(sn.label.replace('\n', ' ') + ' → ' + tn.label.replace('\n', ' '));
+    d3.select('#' + prefix + '-detail-group').text('Connection');
+    d3.select('#' + prefix + '-connections-label').text('Connects:');
+    var cl = d3.select('#' + prefix + '-connections-list');
+    cl.selectAll('li').remove();
+    [sn, tn].forEach(function(n) {
+      cl.append('li').style('margin-bottom', '2px').append('a').text(n.label.replace('\n', ' ')).attr('href', '#').style('cursor', 'pointer')
+        .on('click', function(e){ e.preventDefault(); selectNode(n, false); })
+        .on('touchend', function(e){ e.preventDefault(); selectNode(n, false); });
+    });
+    d3.select('#' + prefix + '-detail-content').selectAll('p').remove();
+    d3.select('#' + prefix + '-detail-content').append('p').text(d.desc);
+    if (scroll) details.node().scrollIntoView({ behavior: 'smooth' });
+  }
+
+  function selectNode(d, scroll) {
+    link.attr('stroke', linkStroke || '#999').attr('stroke-width', 2);
+    node.select('circle').attr('stroke', function(n){ return n.id === d.id ? '#000' : 'none'; });
+    var details = d3.select('#' + prefix + '-node-details');
+    details.style('display', 'block');
+    d3.select('#' + prefix + '-detail-title').text(d.label.replace('\n', ' '));
+    var g = graphGroups.find(function(g){ return g.id === d.group; });
+    d3.select('#' + prefix + '-detail-group').text(g ? g.label : '');
+    var connIds = simLinks.filter(function(l){
+      var s = l.source.id != null ? l.source.id : l.source;
+      var t = l.target.id != null ? l.target.id : l.target;
+      return s === d.id || t === d.id;
+    }).map(function(l){
+      var s = l.source.id != null ? l.source.id : l.source;
+      var t = l.target.id != null ? l.target.id : l.target;
+      return s === d.id ? t : s;
+    });
+    var connNodes = simNodes.filter(function(n){ return connIds.indexOf(n.id) !== -1; });
+    var cl = d3.select('#' + prefix + '-connections-list');
+    cl.selectAll('li').remove();
+    if (connNodes.length > 0) {
+      d3.select('#' + prefix + '-connections-label').text('Connected Paradigms:');
+      connNodes.forEach(function(n) {
+        var el = simLinks.find(function(l){
+          var s = l.source.id != null ? l.source.id : l.source;
+          var t = l.target.id != null ? l.target.id : l.target;
+          return (s === d.id && t === n.id) || (s === n.id && t === d.id);
         });
-    </script>
+        var li = cl.append('li').style('margin-bottom', '2px');
+        li.append('a').text(n.label.replace('\n', ' ')).attr('href', '#').style('cursor', 'pointer')
+          .on('click', function(e){ e.preventDefault(); selectNode(n, false); })
+          .on('touchend', function(e){ e.preventDefault(); selectNode(n, false); });
+        if (el) {
+          li.append('span').text(' · ');
+          li.append('a').text('connection').attr('href', '#').style('cursor', 'pointer')
+            .on('click', function(e){ e.preventDefault(); selectLink(el, false); })
+            .on('touchend', function(e){ e.preventDefault(); selectLink(el, false); });
+        }
+      });
+    } else {
+      d3.select('#' + prefix + '-connections-label').text('');
+    }
+    d3.select('#' + prefix + '-detail-content').selectAll('p').remove();
+    d.paragraphs.forEach(function(p){ d3.select('#' + prefix + '-detail-content').append('p').text(p); });
+    if (scroll) details.node().scrollIntoView({ behavior: 'smooth' });
+  }
+
+  simulation.on('tick', function() {
+    link.attr('x1', function(d){ return d.source.x; }).attr('y1', function(d){ return d.source.y; })
+        .attr('x2', function(d){ return d.target.x; }).attr('y2', function(d){ return d.target.y; });
+    linkHit.attr('x1', function(d){ return d.source.x; }).attr('y1', function(d){ return d.source.y; })
+            .attr('x2', function(d){ return d.target.x; }).attr('y2', function(d){ return d.target.y; });
+    node.attr('transform', function(d){ return 'translate(' + d.x + ',' + d.y + ')'; });
+  });
+
+  selectNode(simNodes[0]);
+}
+
+initGraph('alm', 'rgba(28,22,16,0.25)');
+initGraph('cos', 'rgba(236,226,200,0.2)');
+</script>
+
+<script>
+// ── Supabase auth ─────────────────────────────────────────────
+var SUPABASE_URL  = 'https://hbiyyreqmliesghdclpg.supabase.co';
+var SUPABASE_ANON = 'sb_publishable_OsrWXMOvvDm0PluzQE6-6g_zb2yaaP7';
+var SESSION_KEY   = 'alr_sid';
+
+var sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+
+var trackToken = localStorage.getItem(SESSION_KEY);
+if (!trackToken) { trackToken = crypto.randomUUID(); localStorage.setItem(SESSION_KEY, trackToken); }
+
+function trackVisit(authSession) {
+  var bearer = authSession ? authSession.access_token : SUPABASE_ANON;
+  fetch(SUPABASE_URL + '/functions/v1/track-visit', {
+    method: 'POST', keepalive: true,
+    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + bearer },
+    body: JSON.stringify({ session_token: trackToken, page: location.pathname, referrer: document.referrer || null }),
+  }).catch(function(){});
+}
+
+var authStatus = 'loading', authSession = null, tracked = false;
+
+function renderAuth() {
+  var html = authHTML();
+  ['alm-auth', 'cos-auth'].forEach(function(id) {
+    var el = document.getElementById(id);
+    if (el) el.innerHTML = html;
+  });
+}
+
+function authHTML() {
+  if (authStatus === 'loading') return '';
+  if (authStatus === 'signed-in') return 'signed in as ' + authSession.user.email + ' &middot; <button class="site-auth-link" onclick="authSignOut()">sign out</button>';
+  if (authStatus === 'sent') return 'magic link sent — check your email';
+  if (authStatus === 'form') return '<form class="site-auth-form" onsubmit="authSendLink(event)"><input class="site-auth-input" type="email" placeholder="your@email.com" required autofocus /><button class="site-auth-link" type="submit">send link</button><button class="site-auth-link" type="button" onclick="authCancel()">×</button></form>';
+  return '<button class="site-auth-link" onclick="authShowForm()">sign in</button>';
+}
+
+function authShowForm() { authStatus = 'form'; renderAuth(); }
+function authCancel()   { authStatus = 'idle'; renderAuth(); }
+function authSendLink(e) {
+  e.preventDefault();
+  sb.auth.signInWithOtp({ email: e.target.querySelector('input').value, options: { emailRedirectTo: window.location.origin } })
+    .then(function(res) { if (res.error) { alert(res.error.message); return; } authStatus = 'sent'; renderAuth(); });
+}
+function authSignOut() {
+  sb.auth.signOut().then(function() { authStatus = 'idle'; authSession = null; renderAuth(); });
+}
+
+sb.auth.onAuthStateChange(function(event, session) {
+  authSession = session;
+  authStatus  = session ? 'signed-in' : (authStatus === 'sent' ? 'sent' : 'idle');
+  renderAuth();
+  if (event === 'INITIAL_SESSION' && !tracked) { tracked = true; trackVisit(session); }
+});
+</script>
+
 </body>
 </html>

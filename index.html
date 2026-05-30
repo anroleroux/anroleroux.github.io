@@ -8,6 +8,46 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;1,9..144,300;1,9..144,400&family=Inter+Tight:wght@300;400;500;600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="/home.css" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+  <style>
+    /* ── Auth widget (shared by almanac + cosmos footers) ── */
+    .site-auth {
+      width: 100%;
+      margin-top: 0.8rem;
+      font-size: 0.7rem;
+      letter-spacing: 0.05em;
+      opacity: 0.6;
+    }
+    .site-auth-link {
+      background: none;
+      border: none;
+      padding: 0;
+      cursor: pointer;
+      color: inherit;
+      font: inherit;
+      font-size: inherit;
+      letter-spacing: inherit;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+    .site-auth-link:hover { opacity: 0.8; }
+    .site-auth-form { display: flex; align-items: baseline; gap: 0.6rem; }
+    .site-auth-input {
+      background: none;
+      border: none;
+      border-bottom: 1px solid currentColor;
+      padding: 0 0 1px;
+      color: inherit;
+      font: inherit;
+      font-size: inherit;
+      letter-spacing: inherit;
+      width: 13rem;
+      outline: none;
+      opacity: 0.8;
+    }
+    .site-auth-input::placeholder { opacity: 0.5; }
+    .site-auth-input:focus { opacity: 1; }
+  </style>
 </head>
 <body>
 
@@ -220,6 +260,7 @@
         <a href="https://linkedin.com/in/anroleroux" target="_blank" rel="noopener">LinkedIn</a>
         <a href="https://github.com/anroleroux" target="_blank" rel="noopener">GitHub</a>
       </div>
+      <div class="site-auth" id="alm-auth"></div>
     </footer>
 
   </div><!-- /alm-layer -->
@@ -394,6 +435,7 @@
         <a href="https://linkedin.com/in/anroleroux" target="_blank" rel="noopener">LinkedIn</a>
         <a href="https://github.com/aleroux85" target="_blank" rel="noopener">GitHub</a>
       </div>
+      <div class="site-auth" id="cos-auth"></div>
     </footer>
 
   </div><!-- /cos-layer -->
@@ -712,35 +754,109 @@ setInterval(tick, 1000);
 </script>
 
 <script>
+// ── Supabase (shared by auth + tracking) ──────────────────────
+var SUPABASE_URL  = 'https://hbiyyreqmliesghdclpg.supabase.co';
+var SUPABASE_ANON = 'sb_publishable_OsrWXMOvvDm0PluzQE6-6g_zb2yaaP7';
+var SESSION_KEY   = 'alr_sid';
+
+var sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+
 // ── Visit tracking ────────────────────────────────────────────
-(function () {
-  var SUPABASE_URL  = 'https://hbiyyreqmliesghdclpg.supabase.co';
-  var SUPABASE_ANON = 'sb_publishable_OsrWXMOvvDm0PluzQE6-6g_zb2yaaP7';
-  var SESSION_KEY   = 'alr_sid';
+var trackToken = localStorage.getItem(SESSION_KEY);
+if (!trackToken) {
+  trackToken = crypto.randomUUID();
+  localStorage.setItem(SESSION_KEY, trackToken);
+}
 
-  var token = localStorage.getItem(SESSION_KEY);
-  if (!token) {
-    token = crypto.randomUUID();
-    localStorage.setItem(SESSION_KEY, token);
-  }
-
-  var payload = JSON.stringify({
-    session_token: token,
-    page:          location.pathname,
-    referrer:      document.referrer || null,
-  });
-
-  // keepalive ensures the request completes even on navigation
+function trackVisit(authSession) {
+  // Pass user JWT when authenticated so the edge function can record user_id;
+  // fall back to anon key for unauthenticated visits.
+  var bearer = authSession ? authSession.access_token : SUPABASE_ANON;
   fetch(SUPABASE_URL + '/functions/v1/track-visit', {
     method:    'POST',
     keepalive: true,
-    headers: {
-      'Content-Type':  'application/json',
-      'Authorization': 'Bearer ' + SUPABASE_ANON,
-    },
-    body: payload,
-  }).catch(function () { /* fire-and-forget */ });
-})();
+    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + bearer },
+    body: JSON.stringify({
+      session_token: trackToken,
+      page:          location.pathname,
+      referrer:      document.referrer || null,
+    }),
+  }).catch(function () {});
+}
+
+// ── Auth UI ───────────────────────────────────────────────────
+var authStatus = 'loading'; // loading | idle | form | sent | signed-in
+var authSession = null;
+var tracked = false;
+
+function renderAuth() {
+  var html = authHTML();
+  ['alm-auth', 'cos-auth'].forEach(function (id) {
+    var el = document.getElementById(id);
+    if (el) el.innerHTML = html;
+  });
+}
+
+function authHTML() {
+  if (authStatus === 'loading') return '';
+
+  if (authStatus === 'signed-in') {
+    var email = authSession.user.email;
+    return 'signed in as ' + email +
+      ' &middot; <button class="site-auth-link" onclick="authSignOut()">sign out</button>';
+  }
+
+  if (authStatus === 'sent') {
+    return 'magic link sent — check your email';
+  }
+
+  if (authStatus === 'form') {
+    return '<form class="site-auth-form" onsubmit="authSendLink(event)">' +
+      '<input class="site-auth-input" type="email" placeholder="your@email.com" required autofocus />' +
+      '<button class="site-auth-link" type="submit">send link</button>' +
+      '<button class="site-auth-link" type="button" onclick="authCancel()">×</button>' +
+      '</form>';
+  }
+
+  // idle
+  return '<button class="site-auth-link" onclick="authShowForm()">sign in</button>';
+}
+
+function authShowForm()  { authStatus = 'form'; renderAuth(); }
+function authCancel()    { authStatus = 'idle'; renderAuth(); }
+
+function authSendLink(e) {
+  e.preventDefault();
+  var email = e.target.querySelector('input').value;
+  sb.auth.signInWithOtp({
+    email: email,
+    options: { emailRedirectTo: window.location.origin },
+  }).then(function (res) {
+    if (res.error) { alert(res.error.message); return; }
+    authStatus = 'sent';
+    renderAuth();
+  });
+}
+
+function authSignOut() {
+  sb.auth.signOut().then(function () {
+    authStatus = 'idle';
+    authSession = null;
+    renderAuth();
+  });
+}
+
+// Auth state drives both UI and tracking — track exactly once on INITIAL_SESSION.
+sb.auth.onAuthStateChange(function (event, session) {
+  authSession = session;
+  authStatus  = session ? 'signed-in' : (authStatus === 'sent' ? 'sent' : 'idle');
+  renderAuth();
+
+  if (event === 'INITIAL_SESSION' && !tracked) {
+    tracked = true;
+    trackVisit(session);
+  }
+});
 </script>
 </body>
 </html>

@@ -14,6 +14,13 @@ CREATE TABLE IF NOT EXISTS sessions (
   session_token  UUID         PRIMARY KEY,
   user_id        UUID         REFERENCES auth.users(id) ON DELETE SET NULL,  -- nullable; populated on future auth
   ip_hash        TEXT         NOT NULL,
+  country        CHAR(2),               -- ISO 3166-1 alpha-2 from cf-ipcountry; NULL if unknown
+  continent      CHAR(2),               -- cf-ipcontinent
+  city           TEXT,                  -- cf-ipcity
+  latitude       DOUBLE PRECISION,      -- cf-iplatitude  (city-level)
+  longitude      DOUBLE PRECISION,      -- cf-iplongitude (city-level)
+  timezone       TEXT,                  -- cf-timezone (IANA)
+  asorg          TEXT,                  -- cf-asorganization (ISP / org; useful for bot filtering)
   user_agent     TEXT,
   created_at     TIMESTAMPTZ  NOT NULL DEFAULT NOW(),
   last_seen      TIMESTAMPTZ  NOT NULL DEFAULT NOW()

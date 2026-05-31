@@ -64,8 +64,13 @@ for (let n = 9; n <= 99; n+=2) {
     gammanData.push(row);
 }
 
-function plotGammaN() {
-    const chartsContainer = document.getElementById('gammanplot');
+function plotGammaN(opts) {
+    opts = opts || {};
+    var containerId = opts.containerId || 'gammanplot';
+    var tooltipId   = opts.tooltipId   || 'tooltip';
+    var onSelect    = opts.onSelect    || function() {};
+
+    const chartsContainer = document.getElementById(containerId);
     chartsContainer.innerHTML = '';
 
     const gValues = [2, 3, 4, 5, 6, 7];
@@ -157,7 +162,7 @@ function plotGammaN() {
         .range(d3.schemeTableau10);
 
     const seriesGroup = plot.append('g');
-    const tooltip = d3.select('#tooltip');
+    const tooltip = d3.select('#' + tooltipId);
 
     const lineGroups = seriesGroup.selectAll('.series-line')
         .data(series)
@@ -176,10 +181,7 @@ function plotGammaN() {
         .attr('class', 'series-points');
 
     function updateSelectionFields(d) {
-        document.getElementById('in_g').value = d.g;
-        document.getElementById('in_n').value = d.n;
-        drawClock();
-        // document.getElementById('selectedValue').value = d.value.toFixed(6);
+        onSelect(d);
     }
 
     pointGroups.selectAll('circle')

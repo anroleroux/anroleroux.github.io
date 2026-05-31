@@ -1,754 +1,1088 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Anro</title>
-    <link rel="stylesheet" href="/index.css"/>
-    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
-    <script src="https://d3js.org/d3.v7.min.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Primes and Cryptography — Anro le Roux</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;1,9..144,300;1,9..144,400&family=Inter+Tight:wght@300;400;500;600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/home.css" />
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+  <style>
+    /* ── Auth widget ──────────────────────────────────────────────── */
+    .site-auth { width: 100%; margin-top: 0.8rem; font-size: 0.7rem; letter-spacing: 0.05em; opacity: 0.6; }
+    .site-auth-link { background: none; border: none; padding: 0; cursor: pointer; color: inherit; font: inherit; font-size: inherit; letter-spacing: inherit; text-decoration: underline; text-underline-offset: 2px; }
+    .site-auth-link:hover { opacity: 0.8; }
+    .site-auth-form { display: flex; align-items: baseline; gap: 0.6rem; }
+    .site-auth-input { background: none; border: none; border-bottom: 1px solid currentColor; padding: 0 0 1px; color: inherit; font: inherit; font-size: inherit; letter-spacing: inherit; width: 13rem; outline: none; opacity: 0.8; }
+    .site-auth-input::placeholder { opacity: 0.5; }
+    .site-auth-input:focus { opacity: 1; }
+
+    /* ── Nav brand as link ────────────────────────────────────────── */
+    a.alm-brand, a.cos-brand { text-decoration: none; color: inherit; }
+
+    /* ── Article hero ─────────────────────────────────────────────── */
+    .art-hero { padding: var(--ms6) var(--ms6) var(--ms5); border-bottom: 1px solid var(--rule); }
+    .art-eyebrow { font-family: var(--mono); font-size: var(--ts11); letter-spacing: 1.4px; text-transform: uppercase; color: var(--ink-faint); margin-bottom: var(--ms2); }
+    .art-h1 { font-family: var(--serif); font-weight: 400; font-size: var(--ts56); line-height: 1.05; letter-spacing: -0.02em; margin: 0 0 var(--ms1); max-width: 20ch; }
+    .art-h1 em { font-style: italic; color: var(--accent); }
+    .art-lede { font-family: var(--serif); font-size: var(--ts22); line-height: 1.45; color: var(--ink-muted); max-width: 44ch; margin: 0; font-weight: 400; }
+
+    /* ── Article meta bar ─────────────────────────────────────────── */
+    .art-meta-bar { display: flex; gap: var(--ms5); align-items: baseline; padding: var(--ms1) var(--ms6); border-bottom: 1px solid var(--rule); font-family: var(--mono); font-size: var(--ts11); letter-spacing: 0.8px; color: var(--ink-faint); text-transform: uppercase; }
+    .art-meta-item { display: flex; gap: var(--ms-2); align-items: baseline; }
+    .art-meta-val { color: var(--ink-muted); font-variant-numeric: tabular-nums; }
+    .art-version-select { background: none; border: none; font-family: var(--mono); font-size: var(--ts11); letter-spacing: 0.8px; text-transform: uppercase; color: var(--ink-muted); cursor: pointer; padding: 0; appearance: none; -webkit-appearance: none; }
+    .art-version-select:focus { outline: none; }
+
+    /* ── Article TOC ──────────────────────────────────────────────── */
+    .art-toc { padding: var(--ms2) var(--ms6); border-bottom: 1px solid var(--rule); }
+    .art-toc ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: var(--ms-2) var(--ms3); }
+    .art-toc li { font-family: var(--mono); font-size: var(--ts11); letter-spacing: 0.6px; }
+    .art-toc a { color: var(--ink-faint); text-decoration: none; }
+    .art-toc a:hover { color: var(--accent); }
+
+    /* ── Article body ─────────────────────────────────────────────── */
+    .art-body section { padding: var(--ms5) var(--ms6); border-top: 1px solid var(--rule); }
+    .art-body section:first-child { padding-top: var(--ms6); }
+    .art-body h2 { font-family: var(--serif); font-weight: 400; font-size: var(--ts36); line-height: 1.1; letter-spacing: -0.01em; margin: 0 0 var(--ms3); color: var(--ink); }
+    .art-body h3 { font-family: var(--serif); font-weight: 400; font-size: var(--ts24); line-height: 1.2; margin: var(--ms3) 0 var(--ms2); color: var(--ink); }
+    .art-body p { font-family: var(--sans); font-size: var(--ts15); line-height: 1.75; color: var(--ink-muted); max-width: 66ch; margin: 0 0 var(--ms0); }
+    .art-body a { color: var(--accent); text-decoration: none; border-bottom: 1px solid rgba(138,58,19,0.3); }
+    .art-body a:hover { border-bottom-color: var(--accent); }
+    .art-body ul { font-family: var(--sans); font-size: var(--ts15); line-height: 1.75; color: var(--ink-muted); max-width: 66ch; margin: 0 0 var(--ms0); padding-left: 1.6em; }
+    .numbering { margin-right: 0.4ch; }
+
+    /* ── Warning block ────────────────────────────────────────────── */
+    .warning.block { border-left: 2px solid #c0521a; padding: var(--ms1) var(--ms3); margin: var(--ms3) 0; background: rgba(192,82,26,0.06); max-width: 66ch; }
+    .warning.block h4 { font-family: var(--mono); font-size: var(--ts11); letter-spacing: 1.4px; text-transform: uppercase; color: #c0521a; margin: 0 0 var(--ms-1); font-weight: 500; }
+    .warning.block p { font-size: var(--ts14); margin: 0; }
+
+    /* ── Insight block ────────────────────────────────────────────── */
+    .insight.block { border-left: 2px solid var(--accent); padding: var(--ms1) var(--ms3); margin: var(--ms3) 0; background: rgba(28,22,16,0.03); max-width: 66ch; }
+    .insight.block h3 { font-family: var(--mono); font-size: var(--ts11); letter-spacing: 1.4px; text-transform: uppercase; color: var(--accent); margin: 0 0 var(--ms-1); font-weight: 500; }
+    .insight.block p { font-size: var(--ts14); margin: 0 0 var(--ms-2); }
+    .insight.block p:last-child { margin: 0; }
+
+    /* ── Interactions ─────────────────────────────────────────────── */
+    .interactions { margin: var(--ms3) 0; }
+    .interactions p { font-family: var(--sans); font-size: var(--ts15); line-height: 1.75; color: var(--ink-muted); margin: 0 0 var(--ms-1); }
+    .interactions input[type=number], .interactions input[type=text] {
+      margin-left: var(--ms1); padding: 10px 14px; border: 1px solid var(--rule);
+      border-radius: 8px; font: inherit; font-size: var(--ts14); background: rgba(28,22,16,0.03);
+      color: var(--ink); width: auto;
+    }
+    .interactions input[type=text] { width: 22rem; max-width: 100%; }
+    .interactions input[type=number]::-webkit-outer-spin-button,
+    .interactions input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+    .interactions input[type=number] { -moz-appearance: textfield; }
+    .number-input-wrapper { display: inline-flex; align-items: center; position: relative; vertical-align: middle; }
+    .number-controls { display: flex; flex-direction: column; position: absolute; right: 5px; height: calc(100% - 4px); justify-content: center; gap: 1px; }
+    .number-controls button { background: none; border: none; cursor: pointer; font-size: 8px; padding: 0 5px; line-height: 1; display: flex; align-items: center; justify-content: center; height: 45%; color: var(--ink-faint); }
+    .number-controls button:hover { color: var(--accent); }
+
+    /* ── Clock SVG ────────────────────────────────────────────────── */
+    .art-clock-svg { display: block; margin: var(--ms3) auto; max-width: 100%; height: auto; border: 1px solid var(--rule); border-radius: 2px; }
+
+    /* ── Sequence / mod display ───────────────────────────────────── */
+    .mod-seq { font-family: var(--mono); font-size: var(--ts13); line-height: 1.6; color: var(--ink-muted); max-width: 66ch; margin: 0 0 var(--ms-2); }
+    .mod-seq-box { word-break: break-all; font-family: var(--mono); height: var(--ms8); font-size: var(--ts13); overflow-y: auto; border: 1px solid var(--rule); border-radius: 8px; padding: var(--ms1); background: rgba(28,22,16,0.02); margin-bottom: var(--ms2); }
+
+    /* ── D3 chart ─────────────────────────────────────────────────── */
+    .charta svg { display: block; width: 100%; height: auto; }
+    .charta .axis-label { fill: var(--ink-muted); font-family: var(--sans); font-size: 12px; }
+
+    /* ── Gamma tooltip ────────────────────────────────────────────── */
+    .gamman.tooltip { position: absolute; pointer-events: none; background: rgba(255,255,255,0.96); border: 1px solid var(--rule); border-radius: 6px; padding: 8px 10px; font-family: var(--mono); font-size: var(--ts13); color: var(--ink); box-shadow: 0 2px 8px rgba(0,0,0,0.12); display: none; white-space: nowrap; }
+
+    /* ── Figure captions ──────────────────────────────────────────── */
+    .figure-numbering { display: flex; justify-content: center; margin: 0 0 var(--ms3); }
+    .figure-numbering p { font-family: var(--mono); font-size: var(--ts13); color: var(--ink-faint); margin: 0; max-width: 60ch; text-align: center; }
+
+    /* ── Primality span ───────────────────────────────────────────── */
+    .primality { font-family: var(--mono); font-size: var(--ts13); margin-left: var(--ms-1); }
+
+    /* ── RSA auth image ───────────────────────────────────────────── */
+    .art-rsa-img { display: block; margin: var(--ms3) 0; width: 100%; height: auto; border: 1px solid var(--rule); padding: var(--ms1); box-sizing: border-box; }
+
+    /* ── Cosmos overrides ─────────────────────────────────────────── */
+    .cos-root .art-hero { border-bottom-color: var(--bone-fainter); }
+    .cos-root .art-eyebrow { color: var(--gold-soft); }
+    .cos-root .art-h1 { font-family: var(--display); font-weight: 300; color: var(--bone); }
+    .cos-root .art-h1 em { color: var(--gold); }
+    .cos-root .art-lede { color: var(--bone-muted); font-family: var(--display); }
+    .cos-root .art-meta-bar { border-bottom-color: var(--bone-fainter); color: var(--bone-faint); }
+    .cos-root .art-meta-val { color: var(--bone-muted); }
+    .cos-root .art-version-select { color: var(--bone-muted); }
+    .cos-root .art-toc { border-bottom-color: var(--bone-fainter); }
+    .cos-root .art-toc a { color: var(--bone-faint); }
+    .cos-root .art-toc a:hover { color: var(--gold); }
+    .cos-root .art-body section { border-top-color: var(--bone-fainter); }
+    .cos-root .art-body h2 { font-family: var(--display); font-weight: 300; color: var(--bone); }
+    .cos-root .art-body h3 { font-family: var(--display); font-weight: 300; color: var(--bone); }
+    .cos-root .art-body p { color: var(--bone-muted); }
+    .cos-root .art-body a { color: var(--gold); border-bottom-color: rgba(214,171,94,0.3); }
+    .cos-root .art-body a:hover { border-bottom-color: var(--gold); }
+    .cos-root .art-body ul { color: var(--bone-muted); }
+    .cos-root .warning.block { border-left-color: #d4855a; background: rgba(212,133,90,0.06); }
+    .cos-root .warning.block h4 { color: #d4855a; }
+    .cos-root .insight.block { border-left-color: var(--gold); background: rgba(214,171,94,0.04); }
+    .cos-root .insight.block h3 { color: var(--gold); }
+    .cos-root .interactions p { color: var(--bone-muted); }
+    .cos-root .interactions input[type=number],
+    .cos-root .interactions input[type=text] { border-color: var(--bone-fainter); background: rgba(236,226,200,0.04); color: var(--bone); }
+    .cos-root .number-controls button { color: var(--bone-faint); }
+    .cos-root .number-controls button:hover { color: var(--gold); }
+    .cos-root .art-clock-svg { border-color: var(--bone-fainter); }
+    .cos-root .mod-seq { color: var(--bone-muted); }
+    .cos-root .mod-seq-box { border-color: var(--bone-fainter); background: rgba(236,226,200,0.02); color: var(--bone-muted); }
+    .cos-root .charta .axis-label { fill: var(--bone-muted); }
+    .cos-root .gamman.tooltip { background: rgba(20,18,14,0.96); border-color: var(--bone-fainter); color: var(--bone); }
+    .cos-root .figure-numbering p { color: var(--bone-faint); }
+    .cos-root .art-rsa-img { border-color: var(--bone-fainter); }
+
+    /* ── Responsive ───────────────────────────────────────────────── */
+    @media (max-width: 800px) {
+      .art-hero { padding: var(--ms4) var(--ms1) var(--ms3); }
+      .art-h1 { font-size: var(--ts36); }
+      .art-lede { font-size: var(--ts18); }
+      .art-meta-bar { padding: var(--ms1) var(--ms1); flex-wrap: wrap; gap: var(--ms2); }
+      .art-toc { padding: var(--ms2) var(--ms1); }
+      .art-body section { padding: var(--ms3) var(--ms1); }
+    }
+  </style>
 </head>
-<body class="sumner time-theme">
-    <header>
-        <div class="navbar">
-            <a class="brand" href="/">Anro le Roux</a>
-            <nav class="menu" aria-label="Primary">
-                
-                
-            </nav>
-        </div>
+<body>
+
+<button id="sp-restore" class="day" title="Show sun panel">☀</button>
+
+<div id="sun-panel" class="day">
+  <div class="sp-header">
+    <span class="sp-label">sun · live</span>
+    <span class="sp-phase" id="sp-phase">day</span>
+    <button id="sp-hide-btn" title="Hide sun panel">×</button>
+  </div>
+  <svg id="sp-horizon" viewBox="0 0 220 70" style="width:100%;height:70px;display:block;margin-bottom:10px">
+    <line id="sp-hline" x1="0" y1="50" x2="220" y2="50" stroke-width="0.5" />
+    <path id="sp-arc" d="M 30 50 Q 110 5 190 50" fill="none" stroke-width="0.5" opacity="0.4" stroke-dasharray="2 3" />
+    <circle id="sp-sun" cx="110" cy="30" r="6" />
+    <text id="sp-rise" x="30" y="64" font-size="8" text-anchor="middle" font-family="inherit">rise</text>
+    <text id="sp-set"  x="190" y="64" font-size="8" text-anchor="middle" font-family="inherit">set</text>
+  </svg>
+  <div class="sp-row"><span class="sp-row-label">elevation</span><span class="sp-row-val" id="sp-elev">0.0°</span></div>
+  <div class="sp-row"><span class="sp-row-label">local time</span><span class="sp-row-val" id="sp-time">00:00</span></div>
+  <div class="sp-row" style="align-items:baseline"><span class="sp-row-label">location</span><span class="sp-row-val" id="sp-loc" style="text-align:right;max-width:160px;font-size:10px">detecting…</span></div>
+  <div class="sp-row"><span class="sp-row-label">night mix</span><span class="sp-row-val" id="sp-mix">0%</span></div>
+  <div class="sp-scrub" id="sp-scrub-wrap">
+    <div class="sp-scrub-header">
+      <span class="sp-scrub-label">scrub 24h</span>
+      <button class="sp-scrub-btn" id="sp-live-btn">live</button>
+    </div>
+    <input type="range" min="0" max="24" step="0.05" id="sp-slider" />
+    <div class="sp-ticks"><span>00</span><span>06</span><span>12</span><span>18</span><span>24</span></div>
+  </div>
+  <div class="sp-mode-row" id="sp-mode-wrap">
+    <span class="sp-scrub-label">mode</span>
+    <button class="sp-scrub-btn" id="sp-mode-btn">auto</button>
+  </div>
+</div>
+
+<div id="live-wrapper">
+
+  <!-- ── ALMANAC (day) ─────────────────────────────────────────── -->
+  <div id="alm-layer" class="alm-root">
+
+    <nav class="alm-nav">
+      <a class="alm-brand" href="/">A·lR</a>
+      <div class="alm-edition">
+        <span id="alm-date"></span>
+      </div>
+    </nav>
+
+    <header class="art-hero">
+      <div class="art-eyebrow">§ work · mathematics</div>
+      <h1 class="art-h1">Primes and <em>Cryptography</em></h1>
+      <p class="art-lede">How the modern world is built on a seemingly insignificant math peculiarity.</p>
     </header>
-    <article>
-        <div class="hero">
-            <h1>Primes and Cryptography</h1>
-            <p>
-                How the modern world is built on a
-                seemingly insignificant math peculiarity.
-            </p>
-        </div>
-        <div class="article-info">
-            <div class="index" id="article-index">
-                <ul></ul>
-            </div>
-            <div class="versions">
-                <label for="publish-dates">Date Published:</label>
-                <span id="publish-date">2026-04-24</span>
-                <label for="version-select">Version:</label>
-                <select id="version-select" onchange="if(this.value) window.location.href = this.value;">
-                    <option value="pic.html" selected>latest</option>
-                    <option value="pic_v0.1.6.html">v0.1.6</option>
-                </select>
-            </div>
-        </div>
-        <section>
-            <p>
-                Why are prime numbers such a big deal in mathematics? It's
-                quirky, but of what use is it really? This article will go into
-                details of prime numbers and show how they are extensively used
-                in key exchange and cryptography. The reader will find it no
-                surprise that trust among 5 billion people using the internet
-                rely on the humble prime.
-            </p>
-            <p>
-                Three problems will be addressed. Assuming an
-                insecure network, a sender needs to send a message to a
-                recipient that:
-                <ul>
-                    <li>no one else can read (encryption),</li>
-                    <li>is sent without prior exchanging of a secret key (key exchange),</li>
-                    <li>where the recipient can verify the sender is the sender (authentication).</li>
-                </ul>
-            </p>
-            <div class="warning block">
-                <h4>Warning</h4>
-                <p>
-                    This article is intended to take the reader on a discovery journey of
-                    interesting cryptography handshaking concepts and
-                    how prime numbers are used to secure them. Do not build and rely
-                    on your own security algorithms. There are plenty of robust open
-                    tools that are maintained by professionals.
-                </p>
-            </div>
-            <p>
-                There are two types of cryptography, symmetric where the same
-                key is used for encryption and decryption, and asymmetric where
-                each person has a key that is publicly accessible and a key that
-                stays private/secret. Symmetric cryptography immediately raises
-                the question of how a secret key can be shared over an insecure
-                network.
-            </p>
-        </section>
-        <section>
-            <h2>Key Exchange</h2>
-            <p>
-                Diffie-Hellman (DH) key exchange was published in 1967 as a
-                method to exchange a secret key over an insecure channel. It
-                uses the hardness of the discrete logarithm problem to calculate
-                an irreversible representation of a secret key. The
-                representation can be publicly accessible since the secret
-                cannot be obtained from it.
-            </p>
-            <p>
-                Consider a secret key \(a\) and its public representation \(A\)
-                that will be owned by Alice. \(A\) can be obtained with
-                \[A = g^a \bmod{n}\]
-            </p>
-            <p>
-                where \(g\) is a base (usually 2 or 5) and \(n\)
-                is a large number that makes it hard to reverse the calculation
-                and get back to \(a\) from \(A\).
-            </p>
-            <div class="insight block">
-                <h3>Insight</h3>
-                <p>
-                    It is easy to calculate the modulo of an exponential function
-                    \[X = g^x \bmod{n}\]
-                    if the base \(g\), the power \(x\) and the modulus \(n\) is known,
-                    but it is hard to calculate \(x\) from \(X\) if \(n\) is a large
-                    prime number.
-                </p>
-            </div>
-            <p>
-                Bob does the same to obtain \(B\) with his secret key \(b\) and
-                sends it to Alice to compute \(z\) with
-            </p>
-            <p>
-                \[B^a \bmod{n} = g^{b a} \bmod{n} = g^{a b} \bmod{n} = z\]
-            </p>
-            <p>
-                Bob can also compute the same \(z\) by using \(A\) and \(b\).
-            </p>
-            <p>
-                \[A^b \bmod{n} = g^{a b} \bmod{n} = z\]
-            </p>
-            <p>
-                Note that a shared key (\(z\)) was established without ever exposing
-                secret keys \(a\) or \(b\) and no one can compute \(z\) with only \(g\),
-                \(n\), \(A\) and \(B\). Still, one may wonder why \(n\) must be specifically
-                prime.
-            </p>
-            <p>
-                If \(n=15\) and \(g=2\), then \(z\) only falls within the set of
-                \(\zeta = \{1,2,4,8\}\), instead of utilizing the entire possible range
-                \(\{1,...,n-1\}\). A utilization ratio, \(\gamma\), can thus be expressed
-                as the number of elements utilized, \(|\zeta|\), divided by \(n-1\).
-                Thus, when \(n=15\) and \(g=2\), the utilization ratio,
-                \[\gamma = \frac{|\zeta|}{n-1}=\frac{4}{14}\]
-                is approximately 0.286. In this case \(A\), \(B\) and \(z\) only cycle
-                through 28.6% of the numbers making it easier to guess the shared key \(z\).
-                Figure <span class="figure-number" data-fid="mod-clock"></span>
-                shows how much numbers are utilised. With \(n=19\) and \(g=2\) it cycles through
-                all the numbers \(\{1,...,n-1\}\). Thus \(\gamma = 1\), which is
-                usually the case when \(n\) is prime.
-            </p>
-            <div class="interactions">
-                <p>\(n\):
-                    <span class="number-input-wrapper">
-                        <input id="in_n" value="19" type="number" />
-                        <span class="number-controls">
-                            <button type="button" class="num-up">▲</button>
-                            <button type="button" class="num-down">▼</button>
-                        </span>
-                    </span>
-                    <span class="primality"></span>
-                </p>
-                <p>\(g\):
-                    <span class="number-input-wrapper">
-                        <input id="in_g" value="2" type="number" />
-                        <span class="number-controls">
-                            <button type="button" class="num-up">▲</button>
-                            <button type="button" class="num-down">▼</button>
-                        </span>
-                    </span>
-                </p>
-                <svg id="clock_svg" width="400" height="400" style="display: block; margin: 20px auto; max-width: 100%; height: auto; border: 1px solid #ccc;"></svg>
-                <div id="mod-clock" class="figure-numbering"><p>Modular clock diagram.</p></div>
-                <p class="mod-seq">Sequence:</p>
-                <div id="out_sequence" class="mod-seq"></div>
-            </div>
-            <div id="gammanplot" class="charta"></div>
-            <div id="tooltip" class="gamman tooltip"></div>
-            <div id="gamma-n-plot" class="figure-numbering"><p>Plot of \(\gamma\) against \(n\) with prime \(n\) values highlighted with green lines.</p></div>
-            <p>
-                Figure <span class="figure-number" data-fid="gamma-n-plot"></span>
-                shows a graph of \(\gamma\) over a range of \(n\) values. Even numbers
-                of \(n\) are omitted and prime \(n\) numbers are highlighted with green
-                vertical lines. Click on the points to set \(n\) and \(g\) above and see
-                how each pattern look in the modular clock diagram.
-            </p>
-        </section>
-        <section>
-            <h2>The Atoms of Math</h2>
-            <p>
-                If asked to find the factors of 5040, a sensible strategy might
-                be to start from the lowest numbers and see what can divide
-                5040.
-                \[\begin{align}
-                    5040/1 &= 5040 && \text{(no effect, use 2)} \\
-                    5040/2 &= 2520 && \text{(continue with 2)} \\
-                    2520/2 &= 1260 && \text{(continue with 2)} \\
-                    1260/2 &= 630 && \text{(continue with 2)} \\
-                    630/2 &= 315 && \text{(try to divide by 3)} \\
-                    315/3 &= 105 && \text{(try again with 3)} \\
-                    105/3 &= 35 && \text{(continue with 5)} \\
-                    35/5 &= 7 && \text{(only divisible by 7)} \\
-                    7/7 &= 1 && \text{(found all factors)} \\
-                \end{align}\]
-            </p>
-            <p>
-                The list of factors are
-                \[2*2*2*2*3*3*5*7=5040\]
-                That's interesting because 5040 was actually constructed from factors
-                \[2*3*4*5*6*7=5040\]
-                However, 4 and 6 have factors of their own, thus
-                \[\begin{align}
-                    5040&=2*3*4*5*6*7 \\
-                    &=2*3*(2*2)*5*(2*3)*7 \\
-                    &=2*2*2*2*3*3*5*7 \\
-                    &=2^4*3^2*5*7
-                \end{align}\]
-            </p>
-            <p>
-                Notice that all the factors are prime numbers. In fact, every
-                number has only one list of factors that is all prime. This is
-                called the Fundamental Theorem of Arithmetic and was detailed by
-                Carl Friedrich Gauss in 1801. Admittedly, I was embarrassed to
-                only learn this now, especially after using words like peculiar
-                and quirky.
-            </p>
-            <p>
-                Prime numbers are not just weird numbers in everyday counting
-                numbers, they are actually the atoms of which all numbers are
-                made up of. This also means that two prime numbers can be
-                selected, and the product of them will only have those two
-                numbers as factors. When asked to find the factors of 679, only
-                17 will be found to divide it together with 41. When asked about
-                22790237 one will have to go up to 3187. It becomes apparent
-                that factoring products of two large primes is difficult.
-            </p>
-            <div class="insight block">
-                <h3>Insight</h3>
-                <p>
-                    Multiplying two large prime numbers results in a new prime
-                    number with only the two prime factors. The
-                    multiplication (forward) is easy, but factoring it
-                    (backwards) into the two original primes is hard.
-                </p>
-                <p></p>
-            </div>
-        </section>
-        <section>
-            <h2>Inventing RSA</h2>
-            <p>
-                With asymmetric cryptography each person has a public key (\(S\), \(R\)) and a
-                private key (\(s\), \(r\)). Anyone can see the public keys but only the owners
-                ever know the private keys. The sender can encrypt a message
-                with the recipient's public key (\(R\)) and only the recipient can
-                decrypt the message with the matching private key (\(r\)). Encryption is
-                established without exchanging any secret keys.
-            </p>
-            <p>
-                The method in Insight 1 can also be used to encrypt messages.
-                The message \(m\) is used instead of the base \(g\) and raised to the
-                power of an encryption key \(e\). The encrypted message \(M\) is thus
-                \[M=m^e \bmod{n}\]
-                However, it will be convenient to also be able to decrypt \(M\) in the
-                same way by applying a decryption key as another power to get back to \(m\)
-                \[m=M^d \bmod{n}\]
-                which is equivalent to
-                \[\begin{equation}
-                    m \equiv m^{e d} \pmod{n} \tag{eq 1}
-                \end{equation}\]
-            </p>
-            <p>
-                Rivest, Shamir and Adleman published RSA in 1977 in which they
-                derived \(e\) and \(d\) to encrypt and decrypt messages. The RSA
-                authors build on math discovered three centuries earlier. The
-                initial version of Euler's theorem was first published in 1736
-                as a proof of Fermat's little theorem (published without proof
-                in 1640).
-            </p>
-            <p>
-                Refer back to how modulo sequences went though the numbers in
-                section 1. It's clear in the short vulnerable
-                sets that the sequences always end with one
-                \(\{1,2,4,8,1,2,4,8,1,...\}\). The same is true when a large
-                prime modulus is used. This phenomenon can be used to decrypt
-                an encrypted value by moving it forward to the end of the sequence.
-            </p>
-            <p>
-                Euler's theorem:
-                \[m^{\varphi(n)} \equiv 1 \pmod{n}\]
-                shows that there is a power (Euler's Totient) one can raise a
-                base to, that results in a remainder of 1. So if one power (in
-                an exponent) is used to encrypt a value, a second power can be
-                calculated that decrypts it again.
-            </p>
-            <p>
-                It starts by generating two large prime numbers, \(p\) and \(q\),
-                and calculating the product.
-                \[n = p q\]
-                \(n\) is a new prime number that can be publicly shared while
-                \(p\) and \(q\) remain secret because of the irreversibility pointed
-                out by Insight 2. Thus, \(p\) and \(q\) can still be used to
-                calculate Euler's Totient:
-                \[\varphi(n) = (p-1)(q-1)\]
-            </p>
-            <p>
-                \(e\) and \(d\) need to be calculated using \(\varphi(n)\).
-                First, \(1 \pmod{n}\) is isolated in equation 1.
-            </p>
-            <p>\[m^{ed} \equiv m \pmod{n} \iff m^{ed-1} \equiv 1 \pmod{n}\]</p>
 
-            <p>
-                Secondly, Euler's theorem is modified to handle any multiple of \(\varphi(n)\).
-                \[(m^{\varphi(n)})^k \equiv 1^k \equiv 1 \pmod{n}\]
-            </p>
-            <p>
-                The latter two equations can now be combined.
-                \[m^{\varphi(n)k} \equiv m^{ed-1} \equiv 1 \pmod{n}\]
-            </p>
-            <p>
-                The exponents \(e\) and \(d\) can then be calculated with:
-                \[ed-1 = \varphi(n)k \iff ed-\varphi(n)k = 1\]
-            </p>
-            <p>
-                that can be transformed into modulo form (this is why the multiple \(k\) was required earlier):
-                \[ed \equiv 1 \pmod{\varphi(n)}\]
-            </p>
-        </section>
-        <section>
-            <h2>Encryption and Decryption</h2>
-            <p>
-                Two primes are required to produce the modulus \(n\) and Euler's Totient \(\varphi(n)\).
-            </p>
-            <p>
-                \[n = p q\]
-                \[\varphi(n) = (p-1)(q-1)\]
-            </p>
-            <div class="interactions">
-                <p>\(p\):
-                    <span class="number-input-wrapper">
-                        <input id="in_p" value="1777" type="number" />
-                        <span class="number-controls">
-                            <button type="button" class="num-up">▲</button>
-                            <button type="button" class="num-down">▼</button>
-                        </span>
-                    </span>
-                    <span class="primality"></span>
-                </p>
-                <p>\(q\):
-                    <span class="number-input-wrapper">
-                        <input id="in_q" value="937" type="number" />
-                        <span class="number-controls">
-                            <button type="button" class="num-up">▲</button>
-                            <button type="button" class="num-down">▼</button>
-                        </span>
-                    </span>
-                    <span class="primality"></span>
-                </p>
-                <p>\(n\):<span id="out_n"></span></p>
-                <p>\(\varphi(n)\):<span id="out_phi"></span></p>
-            </div>
-            <p>
-                \(e\) must be smaller than \(\varphi(n)\) and be coprime with it.
-                A number that, in its binary form, has zeros and starts and ends
-                with 1 is a preferred for \(e\). \(d\) is then obtained by finding \(d\) where
-                \(e d \bmod{\varphi(n)} = 1\).
+    <div class="art-meta-bar">
+      <div class="art-meta-item">
+        <span>published</span>
+        <span class="art-meta-val">2026-04-24</span>
+      </div>
+      <div class="art-meta-item">
+        <span>version</span>
+        <select class="art-version-select" onchange="if(this.value) window.location.href = this.value;">
+          <option value="pic.html" selected>latest</option>
+          <option value="pic_v0.1.6.html">v0.1.6</option>
+        </select>
+      </div>
+    </div>
 
-            </p>
-            <div class="interactions">
-                <p>\(e\):<span id="out_e"></span></p>
-                <p>\(d\):<span id="out_d"></span></p>
-            </div>
-            <h3>Encryption on a Single Number</h3>
-            <p>
-                The public key consists of \(e\) and \(n\). Anyone can use a recipient's public key to encrypt a number \(x\) with \(c = x^e \bmod{n}\).
-            </p>
-            <div class="interactions">
-                <p>\(x\):
-                    <span class="number-input-wrapper">
-                        <input id="in_x" value="1234" type="number" />
-                        <span class="number-controls">
-                            <button type="button" class="num-up">▲</button>
-                            <button type="button" class="num-down">▼</button>
-                        </span>
-                    </span>
-                </p>
-                <p>\(c\):<span id="out_c"></span></p>
-            </div>
-            <p>
-                The recipient's private key consists of \(d\) and \(n\). The encrypted number can be decrypted with \(x = c^d \bmod{n}\).
-            </p>
-            <div class="interactions">
-                <p>\(x\):<span id="out_x"></span></p>
-            </div>
-            <h3>Encryption on a String</h3>
-            <p>
-                The number \(x\) is probably only 4 bytes. To encrypt strings of
-                bytes a padding scheme is used that first converts the string
-                into a 4 byte sequence of padded numbers that can be passed
-                through encryption. The padding scheme is reversed after
-                decoding to obtain the original message.
-            </p>
-            <div class="interactions">
-                <p>Original message:<input id="in_orig_msg" value="Testing. Does this work? Great!" type="text" /></p>
-                <p>Original characters:<span id="out_orig_msg"></span></p>
-                <p>Padded message:<span id="out_padd_msg"></span></p>
-                <p>Encrypted message:<span id="out_encr_msg"></span></p>
-                <p>Decrypted message:<span id="out_decr_msg"></span></p>
-            </div>
-        </section>
-        <section>
-            <h2>Authentication</h2>
-            <p>
-                Notice that only two of the original goals were covered thus
-                far. The receiver still needs to know that the sender is in fact
-                the sender. With RSA this can be done by simply encrypting a
-                string with the sender's private key. The receiver can then use
-                the sender's public key to decrypt it and see if it makes sense.
-                The only problem is that everyone can decrypt that message.
-            </p>
-            <p>
-                A popular solution to get both encryption and authentication is
-                to run the message content through a hashing function like
-                SHA-256 prior to encryption. The hashing is an irreversible
-                function that takes in data and produces an unpredictable digest
-                (number) that's unique. Hashing the message and encrypting the
-                hash with the private key is called signing the message or
-                creating a digital signature.
-            </p>
-            <p>
-                Anyone that decrypts the signature only gets the hash digest.
-                However, the recipient can apply the same hashing on the
-                private-key-decoded message and compare it with the hash. If it
-                matches, the recipient knows that the message is signed by the
-                sender. Authentication is established together with secure
-                encryption. The RSA encryption-decryption flow with
-                authentication can be seen in the following diagram.
-            </p>
-            <div class="interactions">
-                <img src="RSAAuth.svg" alt="RSA Encryption and Authentication Flow" style="display: block; margin: 20px auto; max-width: 100%; height: auto; border: 1px solid #ccc; padding: 10px; background: white;"/>
-            </div>
-        </section>
-        <section>
-            <h2>Conclusion</h2>
-            <p>
-                This article shows how prime numbers are used to secure DH key
-                exchange and RSA. Even SHA-256 hash algorithms used in
-                authentication rely on prime numbers for randomization. This
-                junction in math and cryptography is such a contested topic that
-                there are two Millennium Prize Problems, the P vs NP Problem and
-                the Riemann Hypothesis, that relates to it. Proving them is
-                important because if any two of these prove different than what
-                is assumed, current cryptography standards are in trouble.
-            </p>
-            <p>
-                People often fall ignorant of the role of mathematics. Prime
-                numbers get far less attention than they should be since they
-                are the atoms of the numbers we use everyday. Euler and Fermat
-                probably did not realise how important their theories would
-                become centuries later. Mathematics is a deep, slow form of
-                knowledge that should not be discarded if its value cannot
-                immediately be realised.
-            </p>
-            <p>
-                The beauty and genius with which the key-exchange, encryption
-                and authentication problems were solved is astonishing. But as
-                always, it was made possible by many discoveries and innovations
-                that came before it. Big or small, don't stop exploring and
-                don't despise small contributions.
-            </p>
-        </section>
+    <nav class="art-toc" id="alm-article-index"><ul></ul></nav>
+
+    <article class="art-body">
+      <section>
+        <p>Why are prime numbers such a big deal in mathematics? It's quirky, but of what use is it really? This article will go into details of prime numbers and show how they are extensively used in key exchange and cryptography. The reader will find it no surprise that trust among 5 billion people using the internet rely on the humble prime.</p>
+        <p>Three problems will be addressed. Assuming an insecure network, a sender needs to send a message to a recipient that:</p>
+        <ul>
+          <li>no one else can read (encryption),</li>
+          <li>is sent without prior exchanging of a secret key (key exchange),</li>
+          <li>where the recipient can verify the sender is the sender (authentication).</li>
+        </ul>
+        <div class="warning block">
+          <h4>Warning</h4>
+          <p>This article is intended to take the reader on a discovery journey of interesting cryptography handshaking concepts and how prime numbers are used to secure them. Do not build and rely on your own security algorithms. There are plenty of robust open tools that are maintained by professionals.</p>
+        </div>
+        <p>There are two types of cryptography, symmetric where the same key is used for encryption and decryption, and asymmetric where each person has a key that is publicly accessible and a key that stays private/secret. Symmetric cryptography immediately raises the question of how a secret key can be shared over an insecure network.</p>
+      </section>
+      <section>
+        <h2>Key Exchange</h2>
+        <p>Diffie-Hellman (DH) key exchange was published in 1967 as a method to exchange a secret key over an insecure channel. It uses the hardness of the discrete logarithm problem to calculate an irreversible representation of a secret key. The representation can be publicly accessible since the secret cannot be obtained from it.</p>
+        <p>Consider a secret key \(a\) and its public representation \(A\) that will be owned by Alice. \(A\) can be obtained with \[A = g^a \bmod{n}\]</p>
+        <p>where \(g\) is a base (usually 2 or 5) and \(n\) is a large number that makes it hard to reverse the calculation and get back to \(a\) from \(A\).</p>
+        <div class="insight block">
+          <h3>Insight</h3>
+          <p>It is easy to calculate the modulo of an exponential function \[X = g^x \bmod{n}\] if the base \(g\), the power \(x\) and the modulus \(n\) is known, but it is hard to calculate \(x\) from \(X\) if \(n\) is a large prime number.</p>
+        </div>
+        <p>Bob does the same to obtain \(B\) with his secret key \(b\) and sends it to Alice to compute \(z\) with</p>
+        <p>\[B^a \bmod{n} = g^{b a} \bmod{n} = g^{a b} \bmod{n} = z\]</p>
+        <p>Bob can also compute the same \(z\) by using \(A\) and \(b\).</p>
+        <p>\[A^b \bmod{n} = g^{a b} \bmod{n} = z\]</p>
+        <p>Note that a shared key (\(z\)) was established without ever exposing secret keys \(a\) or \(b\) and no one can compute \(z\) with only \(g\), \(n\), \(A\) and \(B\). Still, one may wonder why \(n\) must be specifically prime.</p>
+        <p>If \(n=15\) and \(g=2\), then \(z\) only falls within the set of \(\zeta = \{1,2,4,8\}\), instead of utilizing the entire possible range \(\{1,...,n-1\}\). A utilization ratio, \(\gamma\), can thus be expressed as the number of elements utilized, \(|\zeta|\), divided by \(n-1\). Thus, when \(n=15\) and \(g=2\), the utilization ratio, \[\gamma = \frac{|\zeta|}{n-1}=\frac{4}{14}\] is approximately 0.286. In this case \(A\), \(B\) and \(z\) only cycle through 28.6% of the numbers making it easier to guess the shared key \(z\). Figure <span class="figure-number" data-fid="alm-mod-clock"></span> shows how much numbers are utilised. With \(n=19\) and \(g=2\) it cycles through all the numbers \(\{1,...,n-1\}\). Thus \(\gamma = 1\), which is usually the case when \(n\) is prime.</p>
+        <div class="interactions">
+          <p>\(n\):
+            <span class="number-input-wrapper">
+              <input id="alm-in-n" value="19" type="number" />
+              <span class="number-controls">
+                <button type="button" class="num-up">▲</button>
+                <button type="button" class="num-down">▼</button>
+              </span>
+            </span>
+            <span class="primality"></span>
+          </p>
+          <p>\(g\):
+            <span class="number-input-wrapper">
+              <input id="alm-in-g" value="2" type="number" />
+              <span class="number-controls">
+                <button type="button" class="num-up">▲</button>
+                <button type="button" class="num-down">▼</button>
+              </span>
+            </span>
+          </p>
+          <svg id="alm-clock-svg" class="art-clock-svg" width="400" height="400"></svg>
+          <div id="alm-mod-clock" class="figure-numbering"><p>Modular clock diagram.</p></div>
+          <p class="mod-seq">Sequence:</p>
+          <div id="alm-out-sequence" class="mod-seq-box"></div>
+        </div>
+        <div id="alm-gammanplot" class="charta"></div>
+        <div id="alm-tooltip" class="gamman tooltip"></div>
+        <div id="alm-gamma-n-plot" class="figure-numbering"><p>Plot of \(\gamma\) against \(n\) with prime \(n\) values highlighted with green lines.</p></div>
+        <p>Figure <span class="figure-number" data-fid="alm-gamma-n-plot"></span> shows a graph of \(\gamma\) over a range of \(n\) values. Even numbers of \(n\) are omitted and prime \(n\) numbers are highlighted with green vertical lines. Click on the points to set \(n\) and \(g\) above and see how each pattern look in the modular clock diagram.</p>
+      </section>
+      <section>
+        <h2>The Atoms of Math</h2>
+        <p>If asked to find the factors of 5040, a sensible strategy might be to start from the lowest numbers and see what can divide 5040.
+          \[\begin{align}
+            5040/1 &= 5040 && \text{(no effect, use 2)} \\
+            5040/2 &= 2520 && \text{(continue with 2)} \\
+            2520/2 &= 1260 && \text{(continue with 2)} \\
+            1260/2 &= 630 && \text{(continue with 2)} \\
+            630/2 &= 315 && \text{(try to divide by 3)} \\
+            315/3 &= 105 && \text{(try again with 3)} \\
+            105/3 &= 35 && \text{(continue with 5)} \\
+            35/5 &= 7 && \text{(only divisible by 7)} \\
+            7/7 &= 1 && \text{(found all factors)} \\
+          \end{align}\]
+        </p>
+        <p>The list of factors are \[2*2*2*2*3*3*5*7=5040\] That's interesting because 5040 was actually constructed from factors \[2*3*4*5*6*7=5040\] However, 4 and 6 have factors of their own, thus
+          \[\begin{align}
+            5040&=2*3*4*5*6*7 \\
+            &=2*3*(2*2)*5*(2*3)*7 \\
+            &=2*2*2*2*3*3*5*7 \\
+            &=2^4*3^2*5*7
+          \end{align}\]
+        </p>
+        <p>Notice that all the factors are prime numbers. In fact, every number has only one list of factors that is all prime. This is called the Fundamental Theorem of Arithmetic and was detailed by Carl Friedrich Gauss in 1801. Admittedly, I was embarrassed to only learn this now, especially after using words like peculiar and quirky.</p>
+        <p>Prime numbers are not just weird numbers in everyday counting numbers, they are actually the atoms of which all numbers are made up of. This also means that two prime numbers can be selected, and the product of them will only have those two numbers as factors. When asked to find the factors of 679, only 17 will be found to divide it together with 41. When asked about 22790237 one will have to go up to 3187. It becomes apparent that factoring products of two large primes is difficult.</p>
+        <div class="insight block">
+          <h3>Insight</h3>
+          <p>Multiplying two large prime numbers results in a new prime number with only the two prime factors. The multiplication (forward) is easy, but factoring it (backwards) into the two original primes is hard.</p>
+        </div>
+      </section>
+      <section>
+        <h2>Inventing RSA</h2>
+        <p>With asymmetric cryptography each person has a public key (\(S\), \(R\)) and a private key (\(s\), \(r\)). Anyone can see the public keys but only the owners ever know the private keys. The sender can encrypt a message with the recipient's public key (\(R\)) and only the recipient can decrypt the message with the matching private key (\(r\)). Encryption is established without exchanging any secret keys.</p>
+        <p>The method in Insight 1 can also be used to encrypt messages. The message \(m\) is used instead of the base \(g\) and raised to the power of an encryption key \(e\). The encrypted message \(M\) is thus \[M=m^e \bmod{n}\] However, it will be convenient to also be able to decrypt \(M\) in the same way by applying a decryption key as another power to get back to \(m\) \[m=M^d \bmod{n}\] which is equivalent to \[\begin{equation} m \equiv m^{e d} \pmod{n} \tag{eq 1} \end{equation}\]</p>
+        <p>Rivest, Shamir and Adleman published RSA in 1977 in which they derived \(e\) and \(d\) to encrypt and decrypt messages. The RSA authors build on math discovered three centuries earlier. The initial version of Euler's theorem was first published in 1736 as a proof of Fermat's little theorem (published without proof in 1640).</p>
+        <p>Refer back to how modulo sequences went though the numbers in section 1. It's clear in the short vulnerable sets that the sequences always end with one \(\{1,2,4,8,1,2,4,8,1,...\}\). The same is true when a large prime modulus is used. This phenomenon can be used to decrypt an encrypted value by moving it forward to the end of the sequence.</p>
+        <p>Euler's theorem: \[m^{\varphi(n)} \equiv 1 \pmod{n}\] shows that there is a power (Euler's Totient) one can raise a base to, that results in a remainder of 1. So if one power (in an exponent) is used to encrypt a value, a second power can be calculated that decrypts it again.</p>
+        <p>It starts by generating two large prime numbers, \(p\) and \(q\), and calculating the product. \[n = p q\] \(n\) is a new prime number that can be publicly shared while \(p\) and \(q\) remain secret because of the irreversibility pointed out by Insight 2. Thus, \(p\) and \(q\) can still be used to calculate Euler's Totient: \[\varphi(n) = (p-1)(q-1)\]</p>
+        <p>\(e\) and \(d\) need to be calculated using \(\varphi(n)\). First, \(1 \pmod{n}\) is isolated in equation 1.</p>
+        <p>\[m^{ed} \equiv m \pmod{n} \iff m^{ed-1} \equiv 1 \pmod{n}\]</p>
+        <p>Secondly, Euler's theorem is modified to handle any multiple of \(\varphi(n)\). \[(m^{\varphi(n)})^k \equiv 1^k \equiv 1 \pmod{n}\]</p>
+        <p>The latter two equations can now be combined. \[m^{\varphi(n)k} \equiv m^{ed-1} \equiv 1 \pmod{n}\]</p>
+        <p>The exponents \(e\) and \(d\) can then be calculated with: \[ed-1 = \varphi(n)k \iff ed-\varphi(n)k = 1\]</p>
+        <p>that can be transformed into modulo form (this is why the multiple \(k\) was required earlier): \[ed \equiv 1 \pmod{\varphi(n)}\]</p>
+      </section>
+      <section>
+        <h2>Encryption and Decryption</h2>
+        <p>Two primes are required to produce the modulus \(n\) and Euler's Totient \(\varphi(n)\).</p>
+        <p>\[n = p q\] \[\varphi(n) = (p-1)(q-1)\]</p>
+        <div class="interactions">
+          <p>\(p\):
+            <span class="number-input-wrapper">
+              <input id="alm-in-p" value="1777" type="number" />
+              <span class="number-controls">
+                <button type="button" class="num-up">▲</button>
+                <button type="button" class="num-down">▼</button>
+              </span>
+            </span>
+            <span class="primality"></span>
+          </p>
+          <p>\(q\):
+            <span class="number-input-wrapper">
+              <input id="alm-in-q" value="937" type="number" />
+              <span class="number-controls">
+                <button type="button" class="num-up">▲</button>
+                <button type="button" class="num-down">▼</button>
+              </span>
+            </span>
+            <span class="primality"></span>
+          </p>
+          <p>\(n\):<span id="alm-out-n"></span></p>
+          <p>\(\varphi(n)\):<span id="alm-out-phi"></span></p>
+        </div>
+        <p>\(e\) must be smaller than \(\varphi(n)\) and be coprime with it. A number that, in its binary form, has zeros and starts and ends with 1 is a preferred for \(e\). \(d\) is then obtained by finding \(d\) where \(e d \bmod{\varphi(n)} = 1\).</p>
+        <div class="interactions">
+          <p>\(e\):<span id="alm-out-e"></span></p>
+          <p>\(d\):<span id="alm-out-d"></span></p>
+        </div>
+        <h3>Encryption on a Single Number</h3>
+        <p>The public key consists of \(e\) and \(n\). Anyone can use a recipient's public key to encrypt a number \(x\) with \(c = x^e \bmod{n}\).</p>
+        <div class="interactions">
+          <p>\(x\):
+            <span class="number-input-wrapper">
+              <input id="alm-in-x" value="1234" type="number" />
+              <span class="number-controls">
+                <button type="button" class="num-up">▲</button>
+                <button type="button" class="num-down">▼</button>
+              </span>
+            </span>
+          </p>
+          <p>\(c\):<span id="alm-out-c"></span></p>
+        </div>
+        <p>The recipient's private key consists of \(d\) and \(n\). The encrypted number can be decrypted with \(x = c^d \bmod{n}\).</p>
+        <div class="interactions">
+          <p>\(x\):<span id="alm-out-x"></span></p>
+        </div>
+        <h3>Encryption on a String</h3>
+        <p>The number \(x\) is probably only 4 bytes. To encrypt strings of bytes a padding scheme is used that first converts the string into a 4 byte sequence of padded numbers that can be passed through encryption. The padding scheme is reversed after decoding to obtain the original message.</p>
+        <div class="interactions">
+          <p>Original message:<input id="alm-in-orig-msg" value="Testing. Does this work? Great!" type="text" /></p>
+          <p>Original characters:<span id="alm-out-orig-msg"></span></p>
+          <p>Padded message:<span id="alm-out-padd-msg"></span></p>
+          <p>Encrypted message:<span id="alm-out-encr-msg"></span></p>
+          <p>Decrypted message:<span id="alm-out-decr-msg"></span></p>
+        </div>
+      </section>
+      <section>
+        <h2>Authentication</h2>
+        <p>Notice that only two of the original goals were covered thus far. The receiver still needs to know that the sender is in fact the sender. With RSA this can be done by simply encrypting a string with the sender's private key. The receiver can then use the sender's public key to decrypt it and see if it makes sense. The only problem is that everyone can decrypt that message.</p>
+        <p>A popular solution to get both encryption and authentication is to run the message content through a hashing function like SHA-256 prior to encryption. The hashing is an irreversible function that takes in data and produces an unpredictable digest (number) that's unique. Hashing the message and encrypting the hash with the private key is called signing the message or creating a digital signature.</p>
+        <p>Anyone that decrypts the signature only gets the hash digest. However, the recipient can apply the same hashing on the private-key-decoded message and compare it with the hash. If it matches, the recipient knows that the message is signed by the sender. Authentication is established together with secure encryption. The RSA encryption-decryption flow with authentication can be seen in the following diagram.</p>
+        <div class="interactions">
+          <img src="RSAAuth.svg" alt="RSA Encryption and Authentication Flow" class="art-rsa-img" />
+        </div>
+      </section>
+      <section>
+        <h2>Conclusion</h2>
+        <p>This article shows how prime numbers are used to secure DH key exchange and RSA. Even SHA-256 hash algorithms used in authentication rely on prime numbers for randomization. This junction in math and cryptography is such a contested topic that there are two Millennium Prize Problems, the P vs NP Problem and the Riemann Hypothesis, that relates to it. Proving them is important because if any two of these prove different than what is assumed, current cryptography standards are in trouble.</p>
+        <p>People often fall ignorant of the role of mathematics. Prime numbers get far less attention than they should be since they are the atoms of the numbers we use everyday. Euler and Fermat probably did not realise how important their theories would become centuries later. Mathematics is a deep, slow form of knowledge that should not be discarded if its value cannot immediately be realised.</p>
+        <p>The beauty and genius with which the key-exchange, encryption and authentication problems were solved is astonishing. But as always, it was made possible by many discoveries and innovations that came before it. Big or small, don't stop exploring and don't despise small contributions.</p>
+      </section>
     </article>
-    <footer>
-        <div>
-            © <span id="year"></span> Anro le Roux. All rights reserved.
-            <div class="social-links">
-                <a href="https://linkedin.com/in/anroleroux" target="_blank" aria-label="LinkedIn">LinkedIn</a>
-                <a href="https://github.com/aleroux85" target="_blank" aria-label="GitHub">GitHub</a>
-            </div>
-        </div>
+
+    <footer class="alm-foot">
+      <div>© <span id="alm-year"></span> Anro le Roux</div>
+      <div class="alm-foot-mark">A·lR</div>
+      <div class="alm-foot-links">
+        <a href="https://linkedin.com/in/anroleroux" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="https://github.com/anroleroux" target="_blank" rel="noopener">GitHub</a>
+      </div>
+      <div class="site-auth" id="alm-auth"></div>
     </footer>
 
-    <script src="pic-mod.js"></script>
-    <script>
-        document.getElementById('year').textContent = new Date().getFullYear();
+  </div><!-- /alm-layer -->
 
-        let refs = {};
+  <!-- ── COSMOS (night) ────────────────────────────────────────── -->
+  <div id="cos-layer" class="cos-root">
 
-        function index() {
-            const article = document.querySelector('article');
-            const elements = article.querySelectorAll('h2, h3, .insight.block, .figure-numbering');
-            const indexUl = document.querySelector('#article-index ul');
-            
-            let h2Count = 0;
-            let h3Count = 0;
-            let insightCount = 0;
-            let figureCount = 0;
+    <svg class="cos-stars" viewBox="0 0 1440 2400" preserveAspectRatio="none" aria-hidden="true"></svg>
 
-            const toLowerSnakeCase = (str) => {
-                return str
-                    .toLowerCase()
-                    .replace(/[^a-z0-9 ]/g, '')
-                    .split(' ')
-                    .filter(word => word.length > 0)
-                    .join('-');
-            };
+    <nav class="cos-nav">
+      <a class="cos-brand" href="/">A · lR</a>
+      <div class="cos-nav-right">
+        <span id="cos-date"></span>
+      </div>
+    </nav>
 
-            elements.forEach((el) => {
-                if (el.tagName === 'H2') {
-                    h2Count++;
-                    h3Count = 0;
-                    const h2Text = el.textContent;
-                    const h2Id = toLowerSnakeCase(h2Text);
-                    el.id = h2Id;
-                    el.innerHTML = `<span class="numbering">${h2Count}.</span>${h2Text}`;
+    <header class="art-hero">
+      <div class="art-eyebrow">§ work · mathematics</div>
+      <h1 class="art-h1">Primes and <em>Cryptography</em></h1>
+      <p class="art-lede">How the modern world is built on a seemingly insignificant math peculiarity.</p>
+    </header>
 
-                    // Add to index
-                    const li = document.createElement('li');
-                    li.innerHTML = `<a href="#${h2Id}">${h2Count}. ${h2Text}</a>`;
-                    indexUl.appendChild(li);
-                } else if (el.tagName === 'H3') {
-                    // Check if it's NOT an insight block's h3
-                    if (!el.closest('.insight.block')) {
-                        h3Count++;
-                        const h3Text = el.textContent;
-                        const h3Id = toLowerSnakeCase(h3Text);
-                        const h3Num = h2Count > 0 ? `${h2Count}.${h3Count}` : `${h3Count}`;
-                        el.id = h3Id;
-                        el.innerHTML = `<span class="numbering">${h3Num}</span>${h3Text}`;
-                        
-                        // Optionally add h3 to index if h2Count > 0
-                        if (h2Count > 0) {
-                            const li = document.createElement('li');
-                            li.style.marginLeft = '1rem';
-                            li.style.fontSize = '0.9em';
-                            li.innerHTML = `<a href="#${h3Id}">${h3Num} ${h3Text}</a>`;
-                            indexUl.appendChild(li);
-                        }
-                    }
-                } else if (el.classList.contains('insight') && el.classList.contains('block')) {
-                    insightCount++;
-                    const insightH3 = el.querySelector('h3');
-                    if (insightH3) {
-                        const originalText = insightH3.textContent.replace(/^Insight\s*\d*\s*:?\s*/i, '').trim();
-                        const insightId = toLowerSnakeCase(originalText || `insight_${insightCount}`);
-                        el.id = insightId;
-                        const separator = originalText ? ': ' : '';
-                        insightH3.innerHTML = `<span class="numbering">Insight ${insightCount}</span>${separator}${originalText}`;
-                    }
-                } else if (el.classList.contains('figure-numbering')) {
-                    figureCount++;
-                    const pElm = el.querySelector('p');
-                    const pText = pElm.textContent;
-                    pElm.innerHTML = `<span class="numbering">Figure ${figureCount}.</span>${pText}`;
-                    refs[el.id] = `${figureCount}`;
-                }
-            });
+    <div class="art-meta-bar">
+      <div class="art-meta-item">
+        <span>published</span>
+        <span class="art-meta-val">2026-04-24</span>
+      </div>
+      <div class="art-meta-item">
+        <span>version</span>
+        <select class="art-version-select" onchange="if(this.value) window.location.href = this.value;">
+          <option value="pic.html" selected>latest</option>
+          <option value="pic_v0.1.6.html">v0.1.6</option>
+        </select>
+      </div>
+    </div>
 
-            const rf = article.querySelectorAll('.figure-number');
-            rf.forEach((el) => {
-                if (el.tagName === 'SPAN' && el.classList.contains('figure-number')) {
-                    el.innerHTML = refs[el.dataset.fid]
-                }
-            })
+    <nav class="art-toc" id="cos-article-index"><ul></ul></nav>
 
+    <article class="art-body">
+      <section>
+        <p>Why are prime numbers such a big deal in mathematics? It's quirky, but of what use is it really? This article will go into details of prime numbers and show how they are extensively used in key exchange and cryptography. The reader will find it no surprise that trust among 5 billion people using the internet rely on the humble prime.</p>
+        <p>Three problems will be addressed. Assuming an insecure network, a sender needs to send a message to a recipient that:</p>
+        <ul>
+          <li>no one else can read (encryption),</li>
+          <li>is sent without prior exchanging of a secret key (key exchange),</li>
+          <li>where the recipient can verify the sender is the sender (authentication).</li>
+        </ul>
+        <div class="warning block">
+          <h4>Warning</h4>
+          <p>This article is intended to take the reader on a discovery journey of interesting cryptography handshaking concepts and how prime numbers are used to secure them. Do not build and rely on your own security algorithms. There are plenty of robust open tools that are maintained by professionals.</p>
+        </div>
+        <p>There are two types of cryptography, symmetric where the same key is used for encryption and decryption, and asymmetric where each person has a key that is publicly accessible and a key that stays private/secret. Symmetric cryptography immediately raises the question of how a secret key can be shared over an insecure network.</p>
+      </section>
+      <section>
+        <h2>Key Exchange</h2>
+        <p>Diffie-Hellman (DH) key exchange was published in 1967 as a method to exchange a secret key over an insecure channel. It uses the hardness of the discrete logarithm problem to calculate an irreversible representation of a secret key. The representation can be publicly accessible since the secret cannot be obtained from it.</p>
+        <p>Consider a secret key \(a\) and its public representation \(A\) that will be owned by Alice. \(A\) can be obtained with \[A = g^a \bmod{n}\]</p>
+        <p>where \(g\) is a base (usually 2 or 5) and \(n\) is a large number that makes it hard to reverse the calculation and get back to \(a\) from \(A\).</p>
+        <div class="insight block">
+          <h3>Insight</h3>
+          <p>It is easy to calculate the modulo of an exponential function \[X = g^x \bmod{n}\] if the base \(g\), the power \(x\) and the modulus \(n\) is known, but it is hard to calculate \(x\) from \(X\) if \(n\) is a large prime number.</p>
+        </div>
+        <p>Bob does the same to obtain \(B\) with his secret key \(b\) and sends it to Alice to compute \(z\) with</p>
+        <p>\[B^a \bmod{n} = g^{b a} \bmod{n} = g^{a b} \bmod{n} = z\]</p>
+        <p>Bob can also compute the same \(z\) by using \(A\) and \(b\).</p>
+        <p>\[A^b \bmod{n} = g^{a b} \bmod{n} = z\]</p>
+        <p>Note that a shared key (\(z\)) was established without ever exposing secret keys \(a\) or \(b\) and no one can compute \(z\) with only \(g\), \(n\), \(A\) and \(B\). Still, one may wonder why \(n\) must be specifically prime.</p>
+        <p>If \(n=15\) and \(g=2\), then \(z\) only falls within the set of \(\zeta = \{1,2,4,8\}\), instead of utilizing the entire possible range \(\{1,...,n-1\}\). A utilization ratio, \(\gamma\), can thus be expressed as the number of elements utilized, \(|\zeta|\), divided by \(n-1\). Thus, when \(n=15\) and \(g=2\), the utilization ratio, \[\gamma = \frac{|\zeta|}{n-1}=\frac{4}{14}\] is approximately 0.286. In this case \(A\), \(B\) and \(z\) only cycle through 28.6% of the numbers making it easier to guess the shared key \(z\). Figure <span class="figure-number" data-fid="cos-mod-clock"></span> shows how much numbers are utilised. With \(n=19\) and \(g=2\) it cycles through all the numbers \(\{1,...,n-1\}\). Thus \(\gamma = 1\), which is usually the case when \(n\) is prime.</p>
+        <div class="interactions">
+          <p>\(n\):
+            <span class="number-input-wrapper">
+              <input id="cos-in-n" value="19" type="number" />
+              <span class="number-controls">
+                <button type="button" class="num-up">▲</button>
+                <button type="button" class="num-down">▼</button>
+              </span>
+            </span>
+            <span class="primality"></span>
+          </p>
+          <p>\(g\):
+            <span class="number-input-wrapper">
+              <input id="cos-in-g" value="2" type="number" />
+              <span class="number-controls">
+                <button type="button" class="num-up">▲</button>
+                <button type="button" class="num-down">▼</button>
+              </span>
+            </span>
+          </p>
+          <svg id="cos-clock-svg" class="art-clock-svg" width="400" height="400"></svg>
+          <div id="cos-mod-clock" class="figure-numbering"><p>Modular clock diagram.</p></div>
+          <p class="mod-seq">Sequence:</p>
+          <div id="cos-out-sequence" class="mod-seq-box"></div>
+        </div>
+        <div id="cos-gammanplot" class="charta"></div>
+        <div id="cos-tooltip" class="gamman tooltip"></div>
+        <div id="cos-gamma-n-plot" class="figure-numbering"><p>Plot of \(\gamma\) against \(n\) with prime \(n\) values highlighted with green lines.</p></div>
+        <p>Figure <span class="figure-number" data-fid="cos-gamma-n-plot"></span> shows a graph of \(\gamma\) over a range of \(n\) values. Even numbers of \(n\) are omitted and prime \(n\) numbers are highlighted with green vertical lines. Click on the points to set \(n\) and \(g\) above and see how each pattern look in the modular clock diagram.</p>
+      </section>
+      <section>
+        <h2>The Atoms of Math</h2>
+        <p>If asked to find the factors of 5040, a sensible strategy might be to start from the lowest numbers and see what can divide 5040.
+          \[\begin{align}
+            5040/1 &= 5040 && \text{(no effect, use 2)} \\
+            5040/2 &= 2520 && \text{(continue with 2)} \\
+            2520/2 &= 1260 && \text{(continue with 2)} \\
+            1260/2 &= 630 && \text{(continue with 2)} \\
+            630/2 &= 315 && \text{(try to divide by 3)} \\
+            315/3 &= 105 && \text{(try again with 3)} \\
+            105/3 &= 35 && \text{(continue with 5)} \\
+            35/5 &= 7 && \text{(only divisible by 7)} \\
+            7/7 &= 1 && \text{(found all factors)} \\
+          \end{align}\]
+        </p>
+        <p>The list of factors are \[2*2*2*2*3*3*5*7=5040\] That's interesting because 5040 was actually constructed from factors \[2*3*4*5*6*7=5040\] However, 4 and 6 have factors of their own, thus
+          \[\begin{align}
+            5040&=2*3*4*5*6*7 \\
+            &=2*3*(2*2)*5*(2*3)*7 \\
+            &=2*2*2*2*3*3*5*7 \\
+            &=2^4*3^2*5*7
+          \end{align}\]
+        </p>
+        <p>Notice that all the factors are prime numbers. In fact, every number has only one list of factors that is all prime. This is called the Fundamental Theorem of Arithmetic and was detailed by Carl Friedrich Gauss in 1801. Admittedly, I was embarrassed to only learn this now, especially after using words like peculiar and quirky.</p>
+        <p>Prime numbers are not just weird numbers in everyday counting numbers, they are actually the atoms of which all numbers are made up of. This also means that two prime numbers can be selected, and the product of them will only have those two numbers as factors. When asked to find the factors of 679, only 17 will be found to divide it together with 41. When asked about 22790237 one will have to go up to 3187. It becomes apparent that factoring products of two large primes is difficult.</p>
+        <div class="insight block">
+          <h3>Insight</h3>
+          <p>Multiplying two large prime numbers results in a new prime number with only the two prime factors. The multiplication (forward) is easy, but factoring it (backwards) into the two original primes is hard.</p>
+        </div>
+      </section>
+      <section>
+        <h2>Inventing RSA</h2>
+        <p>With asymmetric cryptography each person has a public key (\(S\), \(R\)) and a private key (\(s\), \(r\)). Anyone can see the public keys but only the owners ever know the private keys. The sender can encrypt a message with the recipient's public key (\(R\)) and only the recipient can decrypt the message with the matching private key (\(r\)). Encryption is established without exchanging any secret keys.</p>
+        <p>The method in Insight 1 can also be used to encrypt messages. The message \(m\) is used instead of the base \(g\) and raised to the power of an encryption key \(e\). The encrypted message \(M\) is thus \[M=m^e \bmod{n}\] However, it will be convenient to also be able to decrypt \(M\) in the same way by applying a decryption key as another power to get back to \(m\) \[m=M^d \bmod{n}\] which is equivalent to \[\begin{equation} m \equiv m^{e d} \pmod{n} \tag{eq 1} \end{equation}\]</p>
+        <p>Rivest, Shamir and Adleman published RSA in 1977 in which they derived \(e\) and \(d\) to encrypt and decrypt messages. The RSA authors build on math discovered three centuries earlier. The initial version of Euler's theorem was first published in 1736 as a proof of Fermat's little theorem (published without proof in 1640).</p>
+        <p>Refer back to how modulo sequences went though the numbers in section 1. It's clear in the short vulnerable sets that the sequences always end with one \(\{1,2,4,8,1,2,4,8,1,...\}\). The same is true when a large prime modulus is used. This phenomenon can be used to decrypt an encrypted value by moving it forward to the end of the sequence.</p>
+        <p>Euler's theorem: \[m^{\varphi(n)} \equiv 1 \pmod{n}\] shows that there is a power (Euler's Totient) one can raise a base to, that results in a remainder of 1. So if one power (in an exponent) is used to encrypt a value, a second power can be calculated that decrypts it again.</p>
+        <p>It starts by generating two large prime numbers, \(p\) and \(q\), and calculating the product. \[n = p q\] \(n\) is a new prime number that can be publicly shared while \(p\) and \(q\) remain secret because of the irreversibility pointed out by Insight 2. Thus, \(p\) and \(q\) can still be used to calculate Euler's Totient: \[\varphi(n) = (p-1)(q-1)\]</p>
+        <p>\(e\) and \(d\) need to be calculated using \(\varphi(n)\). First, \(1 \pmod{n}\) is isolated in equation 1.</p>
+        <p>\[m^{ed} \equiv m \pmod{n} \iff m^{ed-1} \equiv 1 \pmod{n}\]</p>
+        <p>Secondly, Euler's theorem is modified to handle any multiple of \(\varphi(n)\). \[(m^{\varphi(n)})^k \equiv 1^k \equiv 1 \pmod{n}\]</p>
+        <p>The latter two equations can now be combined. \[m^{\varphi(n)k} \equiv m^{ed-1} \equiv 1 \pmod{n}\]</p>
+        <p>The exponents \(e\) and \(d\) can then be calculated with: \[ed-1 = \varphi(n)k \iff ed-\varphi(n)k = 1\]</p>
+        <p>that can be transformed into modulo form (this is why the multiple \(k\) was required earlier): \[ed \equiv 1 \pmod{\varphi(n)}\]</p>
+      </section>
+      <section>
+        <h2>Encryption and Decryption</h2>
+        <p>Two primes are required to produce the modulus \(n\) and Euler's Totient \(\varphi(n)\).</p>
+        <p>\[n = p q\] \[\varphi(n) = (p-1)(q-1)\]</p>
+        <div class="interactions">
+          <p>\(p\):
+            <span class="number-input-wrapper">
+              <input id="cos-in-p" value="1777" type="number" />
+              <span class="number-controls">
+                <button type="button" class="num-up">▲</button>
+                <button type="button" class="num-down">▼</button>
+              </span>
+            </span>
+            <span class="primality"></span>
+          </p>
+          <p>\(q\):
+            <span class="number-input-wrapper">
+              <input id="cos-in-q" value="937" type="number" />
+              <span class="number-controls">
+                <button type="button" class="num-up">▲</button>
+                <button type="button" class="num-down">▼</button>
+              </span>
+            </span>
+            <span class="primality"></span>
+          </p>
+          <p>\(n\):<span id="cos-out-n"></span></p>
+          <p>\(\varphi(n)\):<span id="cos-out-phi"></span></p>
+        </div>
+        <p>\(e\) must be smaller than \(\varphi(n)\) and be coprime with it. A number that, in its binary form, has zeros and starts and ends with 1 is a preferred for \(e\). \(d\) is then obtained by finding \(d\) where \(e d \bmod{\varphi(n)} = 1\).</p>
+        <div class="interactions">
+          <p>\(e\):<span id="cos-out-e"></span></p>
+          <p>\(d\):<span id="cos-out-d"></span></p>
+        </div>
+        <h3>Encryption on a Single Number</h3>
+        <p>The public key consists of \(e\) and \(n\). Anyone can use a recipient's public key to encrypt a number \(x\) with \(c = x^e \bmod{n}\).</p>
+        <div class="interactions">
+          <p>\(x\):
+            <span class="number-input-wrapper">
+              <input id="cos-in-x" value="1234" type="number" />
+              <span class="number-controls">
+                <button type="button" class="num-up">▲</button>
+                <button type="button" class="num-down">▼</button>
+              </span>
+            </span>
+          </p>
+          <p>\(c\):<span id="cos-out-c"></span></p>
+        </div>
+        <p>The recipient's private key consists of \(d\) and \(n\). The encrypted number can be decrypted with \(x = c^d \bmod{n}\).</p>
+        <div class="interactions">
+          <p>\(x\):<span id="cos-out-x"></span></p>
+        </div>
+        <h3>Encryption on a String</h3>
+        <p>The number \(x\) is probably only 4 bytes. To encrypt strings of bytes a padding scheme is used that first converts the string into a 4 byte sequence of padded numbers that can be passed through encryption. The padding scheme is reversed after decoding to obtain the original message.</p>
+        <div class="interactions">
+          <p>Original message:<input id="cos-in-orig-msg" value="Testing. Does this work? Great!" type="text" /></p>
+          <p>Original characters:<span id="cos-out-orig-msg"></span></p>
+          <p>Padded message:<span id="cos-out-padd-msg"></span></p>
+          <p>Encrypted message:<span id="cos-out-encr-msg"></span></p>
+          <p>Decrypted message:<span id="cos-out-decr-msg"></span></p>
+        </div>
+      </section>
+      <section>
+        <h2>Authentication</h2>
+        <p>Notice that only two of the original goals were covered thus far. The receiver still needs to know that the sender is in fact the sender. With RSA this can be done by simply encrypting a string with the sender's private key. The receiver can then use the sender's public key to decrypt it and see if it makes sense. The only problem is that everyone can decrypt that message.</p>
+        <p>A popular solution to get both encryption and authentication is to run the message content through a hashing function like SHA-256 prior to encryption. The hashing is an irreversible function that takes in data and produces an unpredictable digest (number) that's unique. Hashing the message and encrypting the hash with the private key is called signing the message or creating a digital signature.</p>
+        <p>Anyone that decrypts the signature only gets the hash digest. However, the recipient can apply the same hashing on the private-key-decoded message and compare it with the hash. If it matches, the recipient knows that the message is signed by the sender. Authentication is established together with secure encryption. The RSA encryption-decryption flow with authentication can be seen in the following diagram.</p>
+        <div class="interactions">
+          <img src="RSAAuth.svg" alt="RSA Encryption and Authentication Flow" class="art-rsa-img" />
+        </div>
+      </section>
+      <section>
+        <h2>Conclusion</h2>
+        <p>This article shows how prime numbers are used to secure DH key exchange and RSA. Even SHA-256 hash algorithms used in authentication rely on prime numbers for randomization. This junction in math and cryptography is such a contested topic that there are two Millennium Prize Problems, the P vs NP Problem and the Riemann Hypothesis, that relates to it. Proving them is important because if any two of these prove different than what is assumed, current cryptography standards are in trouble.</p>
+        <p>People often fall ignorant of the role of mathematics. Prime numbers get far less attention than they should be since they are the atoms of the numbers we use everyday. Euler and Fermat probably did not realise how important their theories would become centuries later. Mathematics is a deep, slow form of knowledge that should not be discarded if its value cannot immediately be realised.</p>
+        <p>The beauty and genius with which the key-exchange, encryption and authentication problems were solved is astonishing. But as always, it was made possible by many discoveries and innovations that came before it. Big or small, don't stop exploring and don't despise small contributions.</p>
+      </section>
+    </article>
+
+    <footer class="cos-foot">
+      <div>© <span id="cos-year"></span> Anro le Roux</div>
+      <div class="cos-foot-mark">A · lR</div>
+      <div class="cos-foot-links">
+        <a href="https://linkedin.com/in/anroleroux" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="https://github.com/anroleroux" target="_blank" rel="noopener">GitHub</a>
+      </div>
+      <div class="site-auth" id="cos-auth"></div>
+    </footer>
+
+  </div><!-- /cos-layer -->
+
+</div><!-- /live-wrapper -->
+
+<script src="pic-mod.js"></script>
+<script>
+// ── Solar math ────────────────────────────────────────────────
+function solarElevationDeg(lat, lon, now) {
+  var LAT = lat * Math.PI / 180;
+  var jan1 = Date.UTC(now.getUTCFullYear(), 0, 1);
+  var N = Math.floor((now - jan1) / 86400000) + 1;
+  var G = (2 * Math.PI / 365) * (N - 1);
+  var decl = 0.006918 - 0.399912 * Math.cos(G) + 0.070257 * Math.sin(G)
+           - 0.006758 * Math.cos(2*G) + 0.000907 * Math.sin(2*G)
+           - 0.002697 * Math.cos(3*G) - 0.00148  * Math.sin(3*G);
+  var eot  = (229.18 * (0.000075 + 0.001868 * Math.cos(G) - 0.032077 * Math.sin(G)
+           - 0.014615 * Math.cos(2*G) - 0.04089 * Math.sin(2*G))) / 60;
+  var utcH = now.getUTCHours() + now.getUTCMinutes() / 60 + now.getUTCSeconds() / 3600;
+  var solarTime = utcH + lon / 15 + eot;
+  var ha  = ((solarTime - 12) * 15) * Math.PI / 180;
+  var el  = Math.asin(Math.sin(LAT) * Math.sin(decl) + Math.cos(LAT) * Math.cos(decl) * Math.cos(ha));
+  return el * 180 / Math.PI;
+}
+function smoothstep(a, b, x) {
+  var t = Math.max(0, Math.min(1, (x - a) / (b - a)));
+  return t * t * (3 - 2 * t);
+}
+
+// ── Build starfield ───────────────────────────────────────────
+(function() {
+  var SVG_NS = 'http://www.w3.org/2000/svg';
+  var svg = document.querySelector('.cos-stars');
+  for (var i = 0; i < 90; i++) {
+    var x = (i * 137.508) % 1440;
+    var y = ((i * 73.21) + 47) % 2400;
+    var r = 0.4 + ((i * 31) % 11) / 18;
+    var o = 0.25 + ((i * 19) % 7) / 12;
+    var c = document.createElementNS(SVG_NS, 'circle');
+    c.setAttribute('cx', x.toFixed(1)); c.setAttribute('cy', y.toFixed(1));
+    c.setAttribute('r',  r.toFixed(2)); c.setAttribute('fill', '#ece2c8');
+    c.setAttribute('opacity', o.toFixed(2));
+    svg.appendChild(c);
+  }
+})();
+
+// ── State ─────────────────────────────────────────────────────
+var loc = { lat: 51.5, lon: 0, label: 'Greenwich · UK' };
+var timeOverride = null;
+var modeOverride = localStorage.getItem('sp-mode') || null;
+
+var spPhase    = document.getElementById('sp-phase');
+var spElev     = document.getElementById('sp-elev');
+var spTime     = document.getElementById('sp-time');
+var spLoc      = document.getElementById('sp-loc');
+var spMix      = document.getElementById('sp-mix');
+var spSlider   = document.getElementById('sp-slider');
+var spLiveBtn  = document.getElementById('sp-live-btn');
+var spHline    = document.getElementById('sp-hline');
+var spArc      = document.getElementById('sp-arc');
+var spSun      = document.getElementById('sp-sun');
+var spRise     = document.getElementById('sp-rise');
+var spSet      = document.getElementById('sp-set');
+var spPanel    = document.getElementById('sun-panel');
+var spScrubWrap = document.getElementById('sp-scrub-wrap');
+
+spSlider.addEventListener('input', function(e){ timeOverride = parseFloat(e.target.value); });
+spLiveBtn.addEventListener('click', function(){ timeOverride = null; });
+
+var spModeBtn = document.getElementById('sp-mode-btn');
+spModeBtn.addEventListener('click', function(){
+  if (modeOverride === null) modeOverride = 'day';
+  else if (modeOverride === 'day') modeOverride = 'night';
+  else modeOverride = null;
+  if (modeOverride) localStorage.setItem('sp-mode', modeOverride);
+  else localStorage.removeItem('sp-mode');
+  tick();
+});
+
+var spRestore = document.getElementById('sp-restore');
+document.getElementById('sp-hide-btn').addEventListener('click', function(){
+  spPanel.style.display = 'none';
+  spRestore.style.display = 'flex';
+});
+spRestore.addEventListener('click', function(){
+  spPanel.style.display = 'block';
+  spRestore.style.display = 'none';
+});
+
+function pad2(n){ return String(n).padStart(2, '0'); }
+
+function tick() {
+  var real = new Date();
+  var now;
+  if (timeOverride == null) {
+    now = real;
+    spSlider.value = real.getHours() + real.getMinutes() / 60;
+  } else {
+    now = new Date(real);
+    var h = Math.floor(timeOverride);
+    var m = Math.floor((timeOverride - h) * 60);
+    var s = Math.floor(((timeOverride - h) * 60 - m) * 60);
+    now.setHours(h, m, s, 0);
+  }
+
+  var yr  = now.getFullYear();
+  var mo  = now.toLocaleString('en', { month: 'long' });
+  var moS = now.toLocaleString('en', { month: 'short' });
+  var d   = now.getDate();
+  var hh  = pad2(now.getHours());
+  var mm  = pad2(now.getMinutes());
+
+  var elev     = solarElevationDeg(loc.lat, loc.lon, now);
+  var nightMix = 1 - smoothstep(-6, 10, elev);
+
+  var phase = elev > 10 ? 'day'
+    : elev > 0  ? 'golden hour'
+    : elev > -6 ? 'civil twilight'
+    : elev > -12 ? 'nautical twilight'
+    : 'night';
+
+  var almLayer = document.getElementById('alm-layer');
+  var cosLayer = document.getElementById('cos-layer');
+  var effectiveMix = modeOverride === 'day' ? 0 : modeOverride === 'night' ? 1 : nightMix;
+  almLayer.style.opacity = (1 - effectiveMix);
+  cosLayer.style.opacity = effectiveMix;
+  cosLayer.style.pointerEvents = effectiveMix >= 0.5 ? 'auto' : 'none';
+
+  document.getElementById('alm-date').textContent = mo + ' ' + d + ', ' + yr;
+  document.getElementById('alm-year').textContent = yr;
+  document.getElementById('cos-date').textContent = moS + ' ' + d + ' ' + yr;
+  document.getElementById('cos-year').textContent = yr;
+
+  var dark   = modeOverride === 'day' ? false : modeOverride === 'night' ? true : nightMix > 0.5;
+  var fg     = dark ? 'rgba(236,226,200,0.92)' : 'rgba(28,22,16,0.92)';
+  var fgMute = dark ? 'rgba(236,226,200,0.55)' : 'rgba(28,22,16,0.55)';
+  var accent = dark ? '#d6ab5e' : '#8a3a13';
+  var border = dark ? 'rgba(214,171,94,0.28)' : 'rgba(28,22,16,0.18)';
+
+  spPanel.className   = dark ? 'night' : 'day';
+  spRestore.className = dark ? 'night' : 'day';
+  spPhase.textContent = phase;
+  spPhase.style.color = accent;
+  spElev.textContent  = elev.toFixed(1) + '°';
+  spTime.textContent  = hh + ':' + mm;
+  spLoc.textContent   = loc.label;
+  spMix.textContent   = Math.round(nightMix * 100) + '%';
+
+  var elevC = Math.max(-30, Math.min(60, elev));
+  var sunY  = 50 - (elevC / 60) * 35;
+  spSun.setAttribute('cy', sunY.toFixed(1));
+  spSun.setAttribute('fill', dark ? '#f5d78f' : '#e0a330');
+  spSun.style.filter = dark ? 'drop-shadow(0 0 6px #f5d78f)' : 'none';
+  spHline.setAttribute('stroke', fgMute);
+  spArc.setAttribute('stroke', fgMute);
+  spRise.setAttribute('fill', fgMute);
+  spSet.setAttribute('fill', fgMute);
+
+  document.querySelectorAll('.sp-row-label, .sp-scrub-label').forEach(function(el){ el.style.color = fgMute; });
+  document.querySelectorAll('.sp-row-val, .sp-ticks span').forEach(function(el){ el.style.color = fg; });
+  spScrubWrap.style.borderTopColor = border;
+  spLiveBtn.style.borderColor = border;
+  spLiveBtn.style.color = timeOverride == null ? accent : fgMute;
+  spLiveBtn.textContent = timeOverride == null ? 'live' : 'snap to live';
+  spModeBtn.textContent = modeOverride === null ? 'auto' : modeOverride;
+  spModeBtn.style.color = modeOverride === null ? fgMute : accent;
+  spModeBtn.style.borderColor = border;
+  document.getElementById('sp-mode-wrap').style.borderTopColor = border;
+}
+
+tick();
+setInterval(tick, 1000);
+
+// ── Geolocation ───────────────────────────────────────────────
+if (navigator.geolocation) {
+  navigator.geolocation.getCurrentPosition(function(pos) {
+    loc.lat = pos.coords.latitude;
+    loc.lon = pos.coords.longitude;
+    fetch('https://nominatim.openstreetmap.org/reverse?format=json&lat=' + loc.lat + '&lon=' + loc.lon)
+      .then(function(r){ return r.json(); })
+      .then(function(j){
+        var a = j.address || {};
+        loc.label = (a.city || a.town || a.village || a.county || '') + (a.country_code ? ' · ' + a.country_code.toUpperCase() : '');
+      }).catch(function(){});
+    tick();
+  }, function(){}, { timeout: 8000 });
+}
+
+// ── Article init ──────────────────────────────────────────────
+function initArticle(p) {
+  function $id(id) { return document.getElementById(p + '-' + id); }
+  function $all(sel) { return document.querySelectorAll('#' + p + '-layer ' + sel); }
+
+  // Section / figure numbering
+  var refs = {};
+  (function() {
+    var article = document.querySelector('#' + p + '-layer article.art-body');
+    if (!article) return;
+    var elements = article.querySelectorAll('h2, h3, .insight.block, .figure-numbering');
+    var indexEl  = $id('article-index');
+    var indexUl  = indexEl ? indexEl.querySelector('ul') : null;
+    var h2Count = 0, h3Count = 0, insightCount = 0, figureCount = 0;
+    function slug(str) {
+      return p + '-' + str.toLowerCase().replace(/[^a-z0-9 ]/g, '').trim().split(/\s+/).join('-');
+    }
+    elements.forEach(function(el) {
+      if (el.tagName === 'H2') {
+        h2Count++; h3Count = 0;
+        var text = el.textContent;
+        var id = slug(text);
+        el.id = id;
+        el.innerHTML = '<span class="numbering">' + h2Count + '.</span>' + text;
+        if (indexUl) {
+          var li = document.createElement('li');
+          li.innerHTML = '<a href="#' + id + '">' + h2Count + '. ' + text + '</a>';
+          indexUl.appendChild(li);
         }
-        index();
+      } else if (el.tagName === 'H3' && !el.closest('.insight.block')) {
+        h3Count++;
+        var text = el.textContent;
+        var id = slug(text);
+        var num = h2Count > 0 ? h2Count + '.' + h3Count : '' + h3Count;
+        el.id = id;
+        el.innerHTML = '<span class="numbering">' + num + '</span>' + text;
+        if (indexUl && h2Count > 0) {
+          var li = document.createElement('li');
+          li.style.marginLeft = '1rem';
+          li.innerHTML = '<a href="#' + id + '">' + num + ' ' + text + '</a>';
+          indexUl.appendChild(li);
+        }
+      } else if (el.classList.contains('insight') && el.classList.contains('block')) {
+        insightCount++;
+        var h3 = el.querySelector('h3');
+        if (h3) {
+          var orig = h3.textContent.replace(/^Insight\s*\d*\s*:?\s*/i, '').trim();
+          h3.innerHTML = '<span class="numbering">Insight ' + insightCount + '</span>' + (orig ? ': ' + orig : '');
+        }
+      } else if (el.classList.contains('figure-numbering')) {
+        figureCount++;
+        var p2 = el.querySelector('p');
+        var t = p2.textContent;
+        p2.innerHTML = '<span class="numbering">Figure ' + figureCount + '.</span>' + t;
+        refs[el.id] = '' + figureCount;
+      }
+    });
+    article.querySelectorAll('.figure-number').forEach(function(el) {
+      el.textContent = refs[el.dataset.fid] || '';
+    });
+  })();
 
-        const pInput = document.getElementById('in_p');
-        const qInput = document.getElementById('in_q');
-        const xInput = document.getElementById('in_x');
-        const mInput = document.getElementById('in_orig_msg');
-        const nSpan = document.getElementById('out_n');
-        const phiSpan = document.getElementById('out_phi');
-        const eSpan = document.getElementById('out_e');
-        const dSpan = document.getElementById('out_d');
-        const cSpan = document.getElementById('out_c');
-        const xSpan = document.getElementById('out_x');
-        const omSpan = document.getElementById('out_orig_msg');
-        const pmSpan = document.getElementById('out_padd_msg');
-        const emSpan = document.getElementById('out_encr_msg');
-        const dmSpan = document.getElementById('out_decr_msg');
+  // Clock drawing
+  var nDHInput = $id('in-n');
+  var gDHInput = $id('in-g');
+  var clockSvg = $id('clock-svg');
+  var seqDiv   = $id('out-sequence');
 
-        plotGammaN();
+  function drawClock() {
+    var n = parseInt(nDHInput.value);
+    var g = parseInt(gDHInput.value);
+    if (isNaN(n) || isNaN(g) || n < 2) return;
+    clockSvg.innerHTML = '';
+    var cx = 200, cy = 200, r = 160;
+    var points = [], sequence = [];
+    var nB = BigInt(n), gB = BigInt(g);
+    for (var i = 0; i < n; i++) {
+      var ang = (2 * Math.PI * i) / n - Math.PI / 2;
+      var x = cx + r * Math.cos(ang), y = cy + r * Math.sin(ang);
+      points.push({x: x, y: y});
+      var dot = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+      dot.setAttribute('cx', x); dot.setAttribute('cy', y);
+      dot.setAttribute('r', n > 100 ? '1' : '3');
+      dot.setAttribute('fill', '#666');
+      clockSvg.appendChild(dot);
+      if (n <= 50) {
+        var lbl = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+        lbl.setAttribute('x', cx + (r + 15) * Math.cos(ang));
+        lbl.setAttribute('y', cy + (r + 15) * Math.sin(ang));
+        lbl.setAttribute('text-anchor', 'middle');
+        lbl.setAttribute('dominant-baseline', 'middle');
+        lbl.setAttribute('font-size', '10');
+        lbl.setAttribute('fill', '#333');
+        lbl.textContent = i;
+        clockSvg.appendChild(lbl);
+      }
+    }
+    var cur = gB % nB;
+    for (var k = 0; k < n - 1; k++) {
+      sequence.push(cur.toString());
+      var next = (cur * gB) % nB;
+      var p1 = points[Number(cur)], p2 = points[Number(next)];
+      var ln = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+      ln.setAttribute('x1', p1.x); ln.setAttribute('y1', p1.y);
+      ln.setAttribute('x2', p2.x); ln.setAttribute('y2', p2.y);
+      ln.setAttribute('stroke', 'hsl(' + (k * 360 / n) + ',70%,50%)');
+      ln.setAttribute('stroke-width', '1'); ln.setAttribute('opacity', '0.6');
+      clockSvg.appendChild(ln);
+      cur = next;
+    }
+    seqDiv.textContent = sequence.join(', ');
+  }
 
-        const nDHInput = document.getElementById('in_n');
-        const gDHInput = document.getElementById('in_g');
+  // RSA calculations
+  var pIn  = $id('in-p'),  qIn  = $id('in-q');
+  var xIn  = $id('in-x'),  mIn  = $id('in-orig-msg');
+  var nOut = $id('out-n'), phiOut = $id('out-phi');
+  var eOut = $id('out-e'), dOut   = $id('out-d');
+  var cOut = $id('out-c'), xOut   = $id('out-x');
+  var omOut = $id('out-orig-msg'), pmOut = $id('out-padd-msg');
+  var emOut = $id('out-encr-msg'), dmOut = $id('out-decr-msg');
 
-        document.querySelectorAll('.number-controls button').forEach(button => {
-            button.addEventListener('click', () => {
-                const input = button.closest('.number-input-wrapper').querySelector('input');
-                if (button.classList.contains('num-up')) {
-                    input.stepUp();
-                } else {
-                    input.stepDown();
-                }
-                input.dispatchEvent(new Event('input'));
-            });
+  function updateCalculations() {
+    $all('.primality').forEach(function(span) {
+      var inp = span.parentElement.querySelector('input');
+      if (inp) {
+        var val = parseInt(inp.value);
+        span.textContent = isPrime(val) ? ' (prime)' : ' (not prime)';
+        span.style.color = isPrime(val) ? 'green' : 'red';
+      }
+    });
+    var pv = parseInt(pIn.value), qv = parseInt(qIn.value);
+    var n = pv * qv, phi = (pv - 1) * (qv - 1);
+    nOut.textContent = n; phiOut.textContent = phi;
+    var e = 5;
+    if (gcd(e, phi) !== 1) { while (gcd(e, phi) !== 1 && e < phi) { e--; e = e << 1; e++; } }
+    if (gcd(e, phi) !== 1) { e = 3; while (gcd(e, phi) !== 1 && e < phi) { e += 2; } }
+    eOut.textContent = e;
+    var d = modInverse(e, phi);
+    dOut.textContent = d;
+    var x = parseInt(xIn.value);
+    var c = modPow(x, e, n);
+    cOut.textContent = c;
+    xOut.textContent = modPow(c, d, n);
+    var msg = mIn.value;
+    var bytes = new TextEncoder().encode(msg);
+    omOut.textContent = Array.from(bytes).join(', ');
+    var blockSize = Math.max(1, Math.floor(Math.log2(n) / 8));
+    var blocks = [];
+    for (var i = 0; i < bytes.length; i += blockSize) {
+      var block = 0n;
+      for (var j = 0; j < blockSize && (i + j) < bytes.length; j++) {
+        block = (block << 8n) | BigInt(bytes[i + j]);
+      }
+      blocks.push(block);
+    }
+    pmOut.textContent = blocks.join(', ');
+    var encBlocks = blocks.map(function(m) { return modPow(m, e, n); });
+    emOut.textContent = encBlocks.join(', ');
+    var decBlocks = encBlocks.map(function(cv) { return modPow(cv, d, n); });
+    var recovered = [];
+    for (var i = 0; i < decBlocks.length; i++) {
+      var bl = decBlocks[i], chunk = [];
+      var cnt = (i === decBlocks.length - 1) ? (bytes.length % blockSize || blockSize) : blockSize;
+      for (var j = 0; j < cnt; j++) { chunk.push(Number(bl & 255n)); bl >>= 8n; }
+      recovered.push.apply(recovered, chunk.reverse());
+    }
+    dmOut.textContent = new TextDecoder().decode(new Uint8Array(recovered));
+  }
+
+  // Wire up number stepper buttons
+  $all('.number-controls button').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var inp = btn.closest('.number-input-wrapper').querySelector('input');
+      if (btn.classList.contains('num-up')) inp.stepUp(); else inp.stepDown();
+      inp.dispatchEvent(new Event('input'));
+    });
+  });
+
+  nDHInput.addEventListener('input', drawClock);
+  nDHInput.addEventListener('input', updateCalculations);
+  gDHInput.addEventListener('input', drawClock);
+  gDHInput.addEventListener('input', updateCalculations);
+  pIn.addEventListener('input', updateCalculations);
+  qIn.addEventListener('input', updateCalculations);
+  xIn.addEventListener('input', updateCalculations);
+  mIn.addEventListener('input', updateCalculations);
+
+  // Gamma-N plot
+  plotGammaN({
+    containerId: p + '-gammanplot',
+    tooltipId:   p + '-tooltip',
+    onSelect: function(d) {
+      gDHInput.value = d.g;
+      nDHInput.value = d.n;
+      drawClock();
+    }
+  });
+
+  updateCalculations();
+  drawClock();
+}
+
+initArticle('alm');
+initArticle('cos');
+</script>
+
+<script>
+// ── Supabase auth ─────────────────────────────────────────────
+(function() {
+  var SB_URL = 'https://eqjifddwulodynzwkxhk.supabase.co';
+  var SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVxamlmZGR3dWxvZHluenpreGhrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDM2MDI4OTgsImV4cCI6MjA1OTE3ODg5OH0.fPOjFxGVMGBi6aFYFRjWbRysJGIJ0axJq-LxRzPVOxI';
+  var sb = supabase.createClient(SB_URL, SB_KEY);
+
+  var VISIT_FN = SB_URL + '/functions/v1/track-visit';
+  var TOKEN_KEY = 'anon_token';
+  var token = localStorage.getItem(TOKEN_KEY);
+  if (!token) { token = crypto.randomUUID(); localStorage.setItem(TOKEN_KEY, token); }
+  fetch(VISIT_FN, { method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + SB_KEY }, body: JSON.stringify({ token: token, page: location.pathname }) }).catch(function(){});
+
+  function renderAuth(el, session) {
+    if (!el) return;
+    if (session) {
+      el.innerHTML = '<span>' + session.user.email + ' · <button class="site-auth-link" id="signout-' + el.id + '">sign out</button></span>';
+      document.getElementById('signout-' + el.id).addEventListener('click', function(){ sb.auth.signOut(); });
+    } else {
+      el.innerHTML = '<span><button class="site-auth-link" id="signin-' + el.id + '">sign in</button></span>';
+      document.getElementById('signin-' + el.id).addEventListener('click', function(){
+        el.innerHTML = '<form class="site-auth-form" id="form-' + el.id + '"><input class="site-auth-input" type="email" placeholder="your@email.com" /><button class="site-auth-link" type="submit">send link</button></form>';
+        document.getElementById('form-' + el.id).addEventListener('submit', function(e){
+          e.preventDefault();
+          var email = e.target.querySelector('input').value;
+          sb.auth.signInWithOtp({ email: email }).then(function(){ el.innerHTML = '<span>check your email</span>'; });
         });
+      });
+    }
+  }
 
-        const clockSvg = document.getElementById('clock_svg');
-        const sequenceSpan = document.getElementById('out_sequence');
+  var almAuth = document.getElementById('alm-auth');
+  var cosAuth = document.getElementById('cos-auth');
 
-        function drawClock() {
-            const n = parseInt(nDHInput.value);
-            const g = parseInt(gDHInput.value);
-            if (isNaN(n) || isNaN(g) || n < 2) return;
-
-            clockSvg.innerHTML = '';
-            const cx = 200, cy = 200, r = 160;
-            const points = [];
-            const nBig = BigInt(n);
-            const gBig = BigInt(g);
-            const sequence = [];
-
-            for (let i = 0; i < n; i++) {
-                const angle = (2 * Math.PI * i) / n - Math.PI / 2;
-                const x = cx + r * Math.cos(angle);
-                const y = cy + r * Math.sin(angle);
-                points.push({x, y});
-                
-                const dot = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-                dot.setAttribute("cx", x);
-                dot.setAttribute("cy", y);
-                dot.setAttribute("r", n > 100 ? "1" : "3");
-                dot.setAttribute("fill", "#666");
-                clockSvg.appendChild(dot);
-
-                if (n <= 50) {
-                    const label = document.createElementNS("http://www.w3.org/2000/svg", "text");
-                    const lx = cx + (r + 15) * Math.cos(angle);
-                    const ly = cy + (r + 15) * Math.sin(angle);
-                    label.setAttribute("x", lx);
-                    label.setAttribute("y", ly);
-                    label.setAttribute("text-anchor", "middle");
-                    label.setAttribute("dominant-baseline", "middle");
-                    label.setAttribute("font-size", "10");
-                    label.setAttribute("fill", "#333");
-                    label.textContent = i;
-                    clockSvg.appendChild(label);
-                }
-            }
-
-            let current = gBig % nBig;
-            for (let k = 0; k < n-1; k++) {
-                sequence.push(current.toString());
-                const next = (current * gBig) % nBig;
-                const p1 = points[Number(current)];
-                const p2 = points[Number(next)];
-                
-                const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
-                line.setAttribute("x1", p1.x);
-                line.setAttribute("y1", p1.y);
-                line.setAttribute("x2", p2.x);
-                line.setAttribute("y2", p2.y);
-                line.setAttribute("stroke", "hsl(" + (k * 360 / n) + ", 70%, 50%)");
-                line.setAttribute("stroke-width", "1");
-                line.setAttribute("opacity", "0.6");
-                clockSvg.appendChild(line);
-                
-                current = next;
-            }
-            sequenceSpan.textContent = sequence.join(', ');
-        }
-
-        nDHInput.addEventListener('input', drawClock);
-        nDHInput.addEventListener('input', updateCalculations);
-        gDHInput.addEventListener('input', drawClock);
-        gDHInput.addEventListener('input', updateCalculations);
-
-        function updateCalculations() {
-            document.querySelectorAll('.primality').forEach(span => {
-                const input = span.parentElement.querySelector('input');
-                if (input) {
-                    const val = parseInt(input.value);
-                    if (isPrime(val)) {
-                        span.textContent = ' (prime)';
-                        span.style.color = 'green';
-                    } else {
-                        span.textContent = ' (not prime)';
-                        span.style.color = 'red';
-                    }
-                }
-            });
-
-            const p = parseInt(pInput.value);
-            const q = parseInt(qInput.value);
-            const n = p * q;
-            const phi = (p - 1) * (q - 1);
-            
-            nSpan.textContent = n;
-            phiSpan.textContent = phi;
-
-            let e = 5;
-            if (gcd(e, phi) !== 1) {
-                while (gcd(e, phi) !== 1 && e < phi) {
-                    e--;
-                    e = e<<1;
-                    e++;
-                }
-            }
-
-            if (gcd(e, phi) !== 1) {
-                e = 3;
-                while (gcd(e, phi) !== 1 && e < phi) {
-                    e += 2;
-                }
-            }
-            
-            eSpan.textContent = e;
-            const d = modInverse(e, phi);
-            dSpan.textContent = d;
-
-            const x = parseInt(xInput.value);
-
-            const c = modPow(x, e, n);
-            cSpan.textContent = c;
-            xSpan.textContent = modPow(c, d, n);
-
-            const msg = mInput.value;
-            const encoder = new TextEncoder();
-            const bytes = encoder.encode(msg);
-            omSpan.textContent = bytes.join(', ');
-            const blockSize = Math.max(1, Math.floor(Math.log2(n) / 8));
-            
-            const blocks = [];
-            for (let i = 0; i < bytes.length; i += blockSize) {
-                let block = 0n;
-                for (let j = 0; j < blockSize && (i + j) < bytes.length; j++) {
-                    block = (block << 8n) | BigInt(bytes[i + j]);
-                }
-                blocks.push(block);
-            }
-            pmSpan.textContent = blocks.join(', ');
-
-            const encBlocks = blocks.map(m => modPow(m, e, n));
-            emSpan.textContent = encBlocks.join(', ');
-
-            const decBlocks = encBlocks.map(c => modPow(c, d, n));
-            let recoveredBytes = [];
-            for (let i = 0; i < decBlocks.length; i++) {
-                let block = decBlocks[i];
-                let chunk = [];
-                let count = (i === decBlocks.length - 1) ? (bytes.length % blockSize || blockSize) : blockSize;
-                for (let j = 0; j < count; j++) {
-                    chunk.push(Number(block & 255n));
-                    block >>= 8n;
-                }
-                recoveredBytes.push(...chunk.reverse());
-            }
-            dmSpan.textContent = new TextDecoder().decode(new Uint8Array(recoveredBytes));
-        }
-
-        pInput.addEventListener('input', updateCalculations);
-        qInput.addEventListener('input', updateCalculations);
-        xInput.addEventListener('input', updateCalculations);
-        mInput.addEventListener('input', updateCalculations);
-
-        updateCalculations();
-        drawClock();
-    </script>
+  sb.auth.getSession().then(function(r){
+    renderAuth(almAuth, r.data.session);
+    renderAuth(cosAuth, r.data.session);
+  });
+  sb.auth.onAuthStateChange(function(_, session){
+    renderAuth(almAuth, session);
+    renderAuth(cosAuth, session);
+  });
+})();
+</script>
 </body>
 </html>

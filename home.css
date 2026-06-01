@@ -153,16 +153,6 @@ body { margin: 0; padding: 0; width: 100%; font-family: 'Inter', system-ui, sans
 .alm-rings-wrap {
   display: flex; justify-content: center; align-items: center; position: relative;
 }
-.alm-rings-frame { position: absolute; inset: -28px; border: 1px solid var(--rule); border-radius: 50%; opacity: 0.5; }
-.alm-rings-caption {
-  position: absolute; left: 50%; bottom: -64px; transform: translateX(-50%);
-  font-family: var(--mono); font-size: var(--ts11); letter-spacing: var(--ms-7);
-  text-transform: uppercase; color: var(--ink-faint); white-space: nowrap; text-align: center;
-}
-.alm-rings-caption em {
-  font-family: var(--serif); font-style: italic; font-size: var(--ts13);
-  letter-spacing: 0; text-transform: none; color: var(--ink-muted); display: block; margin-top: var(--ms-3);
-}
 .alm-rings-wrap svg { animation: ringsBreath 24s ease-in-out infinite; }
 
 .alm-section { padding: var(--ms6) var(--ms6); border-top: 1px solid var(--rule); }
@@ -256,8 +246,11 @@ body { margin: 0; padding: 0; width: 100%; font-family: 'Inter', system-ui, sans
 .cos-nav-right { display: flex; gap: var(--ms2); font-variant-numeric: tabular-nums; }
 .cos-nav-right .dot { color: var(--gold); }
 
-.cos-hero { padding: var(--ms5) var(--ms3) var(--ms6); position: relative; text-align: center; }
-.cos-eyebrow { font-family: var(--mono); font-size: var(--ts11); letter-spacing: 3px; text-transform: uppercase; color: var(--gold-soft); margin-bottom: var(--ms3); }
+.cos-hero { padding: var(--ms5) var(--ms1) var(--ms6); position: relative; text-align: center; }
+.cos-eyebrow {
+  font-family: var(--mono); font-size: var(--ts11); letter-spacing: 3px; text-transform: uppercase;
+  color: var(--gold-soft); margin-bottom: var(--ms3); padding: 0 var(--ms1);
+}
 .cos-h1 {
   font-family: var(--display); font-weight: 300;
   font-size: var(--ms5); line-height: 0.95; letter-spacing: -0.025em;
@@ -268,7 +261,7 @@ body { margin: 0; padding: 0; width: 100%; font-family: 'Inter', system-ui, sans
 
 .cos-rings-stage { margin-top: var(--ms5); position: relative; display: flex; justify-content: center; align-items: center; min-height: 720px; }
 .cos-rings-glow {
-  position: absolute; width:720px; height: 720px; left: 50%; top: 50%;
+  position: absolute; width:100%; height: 720px; left: 50%; top: 50%; max-width: 720px;
   transform: translate(-50%,-50%);
   background: radial-gradient(circle, rgba(214,171,94,0.12), transparent 60%);
   pointer-events: none;
@@ -418,7 +411,7 @@ body { margin: 0; padding: 0; width: 100%; font-family: 'Inter', system-ui, sans
   .alm-entry-kind, .alm-entry-arrow { text-align: left; }
   .alm-disciplines { grid-template-columns: 1fr 1fr; }
   .alm-foot { padding: var(--ms2) var(--ms1) var(--ms4); }
-  .cos-hero { padding: var(--ms3) var(--ms1) var(--ms5); }
+  .cos-hero { padding: var(--ms3) 0 var(--ms5) 0; }
   .cos-h1 { font-size: var(--ts48); }
   .cos-rings-stage { min-height: 400px; }
   .cos-section { padding: var(--ms5) var(--ms1) var(--ms3); }

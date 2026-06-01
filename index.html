@@ -124,10 +124,6 @@
       <div class="alm-rings-wrap">
         <!-- <div class="alm-rings-frame"></div> -->
         <div id="alm-rings"></div>
-        <div class="alm-rings-caption">
-          fig. i — concentric clocks
-          <em>seven scales of the present</em>
-        </div>
       </div>
     </header>
 
@@ -269,6 +265,9 @@
   <div id="cos-layer" class="cos-root">
 
     <svg class="cos-stars" viewBox="0 0 1440 2400" preserveAspectRatio="none" aria-hidden="true"></svg>
+    <svg id="cos-smihula" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;overflow:visible;" aria-hidden="true">
+      <path id="cos-smihula-path" fill="none" stroke="#c8a35d" stroke-width="0.55" stroke-dasharray="2 4.5" stroke-linecap="round" opacity="0.2"/>
+    </svg>
 
     <nav class="cos-nav">
       <div class="cos-brand">A · lR</div>
@@ -292,8 +291,8 @@
         <div class="cos-rings-side left">
           <div class="cos-side-h">outer rings</div>
           <div class="cos-side-line">
-            <span class="cos-side-line-val" id="cos-mill">year — / 1000</span>
-            <span class="cos-side-line-name">millennium</span>
+            <span class="cos-side-line-val" id="cos-mill">year — / 25</span>
+            <span class="cos-side-line-name">smihula wave</span>
           </div>
           <div class="cos-side-line">
             <span class="cos-side-line-val" id="cos-cent">year — / 100</span>
@@ -471,6 +470,35 @@ var MOON_SYN_MS = 29.53058867 * 86400000;
 var SVG_NS = 'http://www.w3.org/2000/svg';
 var RADII = [240, 204, 168, 134, 102, 72, 44];
 
+// Smihula wave: chirp model — frequency linearly interpolated from previous
+// cycle (30 yr) to current cycle (25 yr), normalised so one revolution = 25 yr.
+// frac(t) = (t/T_p + (1/T_c − 1/T_p)·t²/(2T_c)) / (T_c·(1/T_p + 1/T_c)/2)
+var SMIHULA_START = Date.UTC(2015, 0, 1);
+var SMIHULA_T_PREV = 30;   // previous cycle length (years)
+var SMIHULA_T_CURR = 25;   // current cycle length (years)
+var SMIHULA_DEN = SMIHULA_T_CURR * (1/SMIHULA_T_PREV + 1/SMIHULA_T_CURR) / 2;
+function smihulaCycleFrac(now) {
+  var t = (now - SMIHULA_START) / (365.25 * 86400000);
+  var num = t / SMIHULA_T_PREV
+          + (1/SMIHULA_T_CURR - 1/SMIHULA_T_PREV) * t * t / (2 * SMIHULA_T_CURR);
+  return Math.max(0, Math.min(1, num / SMIHULA_DEN));
+}
+
+// Global Smihula phase — linear chirp anchored at cycle midpoints:
+// ω(2000)=1/30, ω(2027.5)=1/25; capped at ω_min=1/100 for deep history.
+// Φ(t) = cycles accumulated since 2015 (negative = past, positive = future).
+var SM_K       = (1/SMIHULA_T_CURR - 1/SMIHULA_T_PREV) / 27.5;
+var SM_W0      = 1 / SMIHULA_T_PREV;
+var SM_WMIN    = 1 / 100;
+var SM_TCROSS  = 2000 + (SM_WMIN - SM_W0) / SM_K;
+var SM_PHICROSS = SM_W0*(2015 - SM_TCROSS) + SM_K/2*(225 - (SM_TCROSS-2000)*(SM_TCROSS-2000));
+function smihulaGlobalPhase(t) {
+  var d = t - 2000;
+  if (t >= 2015)      return SM_W0*(t-2015) + SM_K/2*(d*d - 225);
+  if (t >= SM_TCROSS) return -(SM_W0*(2015-t) + SM_K/2*(225 - d*d));
+  return -(SM_WMIN*(SM_TCROSS-t) + SM_PHICROSS);
+}
+
 function moonPhaseName(frac) {
   var P = [[0.037,'New'],[0.213,'Waxing crescent'],[0.287,'First quarter'],
     [0.463,'Waxing gibbous'],[0.537,'Full'],[0.713,'Waning gibbous'],
@@ -487,7 +515,7 @@ function getRingData(now) {
   var yearFrac = (now - y0) / (y1 - y0);
   var yr = now.getFullYear() + yearFrac;
   return [
-    { frac: ((yr % 1000) + 1000) % 1000 / 1000 },
+    { frac: smihulaCycleFrac(now) },
     { frac: ((yr % 100)  + 100)  % 100  / 100  },
     { frac: ((yr % 10)   + 10)   % 10   / 10   },
     { frac: yearFrac },
@@ -568,6 +596,7 @@ function makeRings(containerId, palette, size) {
           mx.toFixed(2) + ' ' + my.toFixed(2));
       }
     });
+
   };
 }
 
@@ -596,14 +625,16 @@ var modeOverride = localStorage.getItem('sp-mode') || null; // null = auto, 'day
 var updateAlmRings = makeRings('alm-rings', 'almanac', 520);
 var updateCosRings = makeRings('cos-rings',  'cosmos',  640);
 
-// fetch('https://ipapi.co/json/')
-//   .then(function(r){ return r.json(); })
-//   .then(function(d){
-//     if (!d || d.error || d.latitude == null) return;
-//     var parts = [d.city, d.country_name].filter(Boolean).join(', ');
-//     loc = { lat: d.latitude, lon: d.longitude, label: parts || 'detected' };
-//   })
-//   .catch(function(){});
+fetch('https://ipapi.co/json/')
+  .then(function(r){ return r.json(); })
+  .then(function(d){
+    if (!d || d.error || d.latitude == null) return;
+    var parts = [d.city, d.country_name].filter(Boolean).join(', ');
+    loc = { lat: d.latitude, lon: d.longitude, label: parts || 'detected' };
+  })
+  .catch(function(){});
+
+var cosSmihulPath = document.getElementById('cos-smihula-path');
 
 var spPhase    = document.getElementById('sp-phase');
 var spElev     = document.getElementById('sp-elev');
@@ -644,6 +675,50 @@ spRestore.addEventListener('click', function(){
 });
 
 function pad2(n){ return String(n).padStart(2, '0'); }
+
+function updateCosSmihula(now) {
+  if (!cosSmihulPath) return;
+  var cosEl   = document.getElementById('cos-layer');
+  var ringsEl = document.getElementById('cos-rings');
+  if (!cosEl || !ringsEl) return;
+
+  var cosR   = cosEl.getBoundingClientRect();
+  var ringsR = ringsEl.getBoundingClientRect();
+
+  // Ring center in wave-SVG coordinates (= cosmos-layer coordinates)
+  var cx = ringsR.left - cosR.left + ringsR.width  / 2;
+  var cy = ringsR.top  - cosR.top  + ringsR.height / 2;
+
+  // Pixels per SVG unit (rings SVG is 640px tall, viewBox 540 units tall)
+  var svgScale = ringsR.height / 540;
+  var A = 240 * svgScale;  // amplitude in screen pixels
+
+  // Dot position
+  var smFrac  = smihulaCycleFrac(now);
+  var smAngle = smFrac * 2 * Math.PI - Math.PI / 2;
+  var dotX    = cx + 240 * svgScale * Math.cos(smAngle);
+  var dotY    = cy + 240 * svgScale * Math.sin(smAngle);  // = cy - A*cos(smFrac*2π)
+
+  if (dotX <= 0) return;
+
+  // Time axis: 1700 → x=0, t_now → x=dotX  (wave passes exactly through the dot)
+  var tNow   = now.getFullYear() + (now.getMonth() + (now.getDate()-1)/31) / 12;
+  var xScale = dotX / (tNow - 1700);  // px per year
+  var tEnd   = tNow + (cosR.width - dotX) / xScale + 20;  // fill right edge + a little past
+
+  // Phase correction so the wave passes exactly through the dot
+  var phOff = smFrac - smihulaGlobalPhase(tNow);
+
+  var d = '';
+  var nPts = 400;
+  for (var i = 0; i <= nPts; i++) {
+    var wt = 1700 + (tEnd - 1700) * i / nPts;
+    var wx = ((wt - 1700) * xScale).toFixed(1);
+    var wy = (cy - A * Math.cos(2 * Math.PI * (smihulaGlobalPhase(wt) + phOff))).toFixed(1);
+    d += i === 0 ? ('M ' + wx + ' ' + wy) : (' L ' + wx + ' ' + wy);
+  }
+  cosSmihulPath.setAttribute('d', d);
+}
 
 function tick() {
   var real = new Date();
@@ -699,7 +774,8 @@ function tick() {
   document.getElementById('cos-year').textContent = yr;
 
   // Cosmos side panels
-  document.getElementById('cos-mill').textContent = 'year ' + Math.floor(yr % 1000) + ' / 1000';
+  var smT = Math.max(0, (now - new Date(SMIHULA_START)) / (365.25 * 86400000));
+  document.getElementById('cos-mill').textContent = 'year ' + smT.toFixed(1) + ' / 25';
   document.getElementById('cos-cent').textContent = 'year ' + Math.floor(yr % 100)  + ' / 100';
   document.getElementById('cos-dec').textContent  = 'year ' + Math.floor(yr % 10)   + ' / 10';
   document.getElementById('cos-yr').textContent   = 'day '  + doy;
@@ -709,6 +785,7 @@ function tick() {
   // Update rings
   updateAlmRings(now);
   updateCosRings(now);
+  // updateCosSmihula(now);
 
   // Sun panel
   var dark   = modeOverride === 'day' ? false : modeOverride === 'night' ? true : nightMix > 0.5;

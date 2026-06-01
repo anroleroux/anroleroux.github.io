@@ -422,6 +422,16 @@ function smoothstep(a, b, x) {
 
 // ── State ─────────────────────────────────────────────────────
 var loc = { lat: 51.5, lon: 0, label: 'Greenwich · UK' };
+
+fetch('https://ipapi.co/json/')
+  .then(function(r){ return r.json(); })
+  .then(function(d){
+    if (!d || d.error || d.latitude == null) return;
+    var parts = [d.city, d.country_name].filter(Boolean).join(', ');
+    loc = { lat: d.latitude, lon: d.longitude, label: parts || 'detected' };
+  })
+  .catch(function(){});
+
 var timeOverride = null;
 var modeOverride = localStorage.getItem('sp-mode') || null;
 

@@ -818,20 +818,14 @@ function tick() {
 tick();
 setInterval(tick, 1000);
 
-// ── Geolocation ───────────────────────────────────────────────
-if (navigator.geolocation) {
-  navigator.geolocation.getCurrentPosition(function(pos) {
-    loc.lat = pos.coords.latitude;
-    loc.lon = pos.coords.longitude;
-    fetch('https://nominatim.openstreetmap.org/reverse?format=json&lat=' + loc.lat + '&lon=' + loc.lon)
-      .then(function(r){ return r.json(); })
-      .then(function(j){
-        var a = j.address || {};
-        loc.label = (a.city || a.town || a.village || a.county || '') + (a.country_code ? ' · ' + a.country_code.toUpperCase() : '');
-      }).catch(function(){});
-    tick();
-  }, function(){}, { timeout: 8000 });
-}
+fetch('https://ipapi.co/json/')
+  .then(function(r){ return r.json(); })
+  .then(function(d){
+    if (!d || d.error || d.latitude == null) return;
+    var parts = [d.city, d.country_name].filter(Boolean).join(', ');
+    loc = { lat: d.latitude, lon: d.longitude, label: parts || 'detected' };
+  })
+  .catch(function(){});
 
 // ── Article init ──────────────────────────────────────────────
 function initArticle(p) {

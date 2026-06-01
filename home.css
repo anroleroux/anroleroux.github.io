@@ -266,7 +266,7 @@ body { margin: 0; padding: 0; width: 100%; overflow-x: hidden; font-family: 'Int
 .cos-h1 em { font-style: italic; color: var(--gold); font-weight: 300; }
 .cos-h1 .slash { color: var(--gold-faint); margin: 0 0.15em; font-weight: 200; }
 
-.cos-rings-stage { margin-top: var(--ms5); position: relative; display: flex; justify-content: center; align-items: center; min-height: 720px; }
+.cos-rings-stage { margin-top: var(--ms5); position: relative; display: flex; justify-content: center; align-items: center; min-height: 720px; overflow-x: hidden; }
 .cos-rings-glow {
   position: absolute; width:720px; height: 720px; left: 50%; top: 50%;
   transform: translate(-50%,-50%);

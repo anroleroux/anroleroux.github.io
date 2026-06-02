@@ -69,6 +69,9 @@ function plotGammaN(opts) {
     var containerId = opts.containerId || 'gammanplot';
     var tooltipId   = opts.tooltipId   || 'tooltip';
     var onSelect    = opts.onSelect    || function() {};
+    var isDark      = opts.isDark      || false;
+    var fg          = isDark ? 'rgba(236,226,200,0.7)'  : '#555';
+    var fgFaint     = isDark ? 'rgba(236,226,200,0.35)' : '#aaa';
 
     const chartsContainer = document.getElementById(containerId);
     chartsContainer.innerHTML = '';
@@ -220,23 +223,27 @@ function plotGammaN(opts) {
     plot.append('g')
         .attr('class', 'axis')
         .attr('transform', `translate(0,${innerHeight})`)
-        .call(d3.axisBottom(xScale));
+        .call(d3.axisBottom(xScale))
+        .style('color', fg);
 
     plot.append('g')
         .attr('class', 'axis')
-        .call(d3.axisLeft(yScale));
+        .call(d3.axisLeft(yScale))
+        .style('color', fg);
 
     svg.append('text')
         .attr('class', 'axis-label')
         .attr('x', margin.left + innerWidth / 2)
         .attr('y', height - 10)
         .attr('text-anchor', 'middle')
+        .attr('fill', fg)
         .text('n');
 
     svg.append('text')
         .attr('class', 'axis-label')
         .attr('transform', `translate(16, ${margin.top + innerHeight / 2}) rotate(-90)`)
         .attr('text-anchor', 'middle')
+        .attr('fill', fg)
         .text('𝛾');
 
     const legend = svg.append('g')
@@ -285,6 +292,7 @@ function plotGammaN(opts) {
     legendItems.append('text')
         .attr('x', 32)
         .attr('y', 4)
+        .attr('fill', fg)
         .text(g => `g = ${g}`);
 
     refreshVisibility();

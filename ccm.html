@@ -697,7 +697,8 @@ var graphGroups = [
 var graphColors = { arch: "#534AB7", oss: "#0F6E56", cult: "#993C1D", prag: "#185FA5" };
 
 // ── Graph factory ─────────────────────────────────────────────
-function initGraph(prefix, linkStroke) {
+function initGraph(prefix, linkStroke, highlightColor) {
+  highlightColor = highlightColor || '#333';
   var simNodes = nodes.map(function(n) { return Object.assign({}, n); });
   var simLinks = links.map(function(l) { return { source: l.source, target: l.target, desc: l.desc }; });
 
@@ -734,7 +735,7 @@ function initGraph(prefix, linkStroke) {
 
   function selectLink(d, scroll) {
     node.select('circle').attr('stroke', 'none');
-    link.attr('stroke', function(l){ return l === d ? '#333' : (linkStroke || '#999'); }).attr('stroke-width', function(l){ return l === d ? 3.5 : 2; });
+    link.attr('stroke', function(l){ return l === d ? highlightColor : (linkStroke || '#999'); }).attr('stroke-width', function(l){ return l === d ? 3.5 : 2; });
     var sn = simNodes.find(function(n){ return n.id === (d.source.id != null ? d.source.id : d.source); });
     var tn = simNodes.find(function(n){ return n.id === (d.target.id != null ? d.target.id : d.target); });
     var details = d3.select('#' + prefix + '-node-details');
@@ -756,7 +757,7 @@ function initGraph(prefix, linkStroke) {
 
   function selectNode(d, scroll) {
     link.attr('stroke', linkStroke || '#999').attr('stroke-width', 2);
-    node.select('circle').attr('stroke', function(n){ return n.id === d.id ? '#000' : 'none'; });
+    node.select('circle').attr('stroke', function(n){ return n.id === d.id ? highlightColor : 'none'; });
     var details = d3.select('#' + prefix + '-node-details');
     details.style('display', 'block');
     d3.select('#' + prefix + '-detail-title').text(d.name || d.label.replace('\n', ' '));
@@ -812,8 +813,8 @@ function initGraph(prefix, linkStroke) {
   selectNode(simNodes[0]);
 }
 
-initGraph('alm', 'rgba(28,22,16,0.25)');
-initGraph('cos', 'rgba(236,226,200,0.2)');
+initGraph('alm', 'rgba(28,22,16,0.25)', '#333');
+initGraph('cos', 'rgba(236,226,200,0.2)', 'rgba(214,171,94,0.95)');
 </script>
 
 <script>

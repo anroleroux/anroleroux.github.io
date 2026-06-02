@@ -144,6 +144,17 @@
     .cos-root .art-connections-list a:hover { border-bottom-color: var(--gold); }
     .cos-root .art-detail-content p { color: var(--bone-muted); }
 
+    /* ── Article TOC ──────────────────────────────────────────────── */
+    .art-toc { padding: var(--ms2) var(--ms6); border-bottom: 1px solid var(--rule); }
+    .art-toc ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: var(--ms-2); }
+    .art-toc li { font-family: var(--mono); font-size: var(--ts11); letter-spacing: 0.6px; }
+    .art-toc a { color: var(--ink-faint); text-decoration: none; }
+    .art-toc a:hover { color: var(--accent); }
+    .numbering { margin-right: 0.4ch; }
+    .cos-root .art-toc { border-bottom-color: var(--bone-fainter); }
+    .cos-root .art-toc a { color: var(--bone-faint); }
+    .cos-root .art-toc a:hover { color: var(--gold); }
+
     /* ── Responsive ───────────────────────────────────────────────── */
     @media (max-width: 800px) {
       .art-hero { padding: var(--ms4) var(--ms1) var(--ms3); }
@@ -152,6 +163,7 @@
       .art-meta-bar { padding: var(--ms1) var(--ms1); flex-wrap: wrap; gap: var(--ms2); }
       .art-body section { padding: var(--ms3) var(--ms1); }
       .note.block { padding: var(--ms0) var(--ms2); }
+      .art-toc { padding: var(--ms2) var(--ms1); }
     }
   </style>
 </head>
@@ -202,7 +214,7 @@
       </div>
     </nav>
 
-    <header class="art-hero">
+    <header class="art-hero" id="alm-art-hero">
       <div class="art-eyebrow">§ work · code</div>
       <h1 class="art-h1">Code as a <em>Career Multiplier</em></h1>
       <p class="art-lede">Adding programming to your professional toolkit.</p>
@@ -221,6 +233,8 @@
         </select>
       </div>
     </div>
+
+    <nav class="art-toc" id="alm-article-index"><ul></ul></nav>
 
     <article class="art-body">
       <section>
@@ -315,6 +329,8 @@
         </select>
       </div>
     </div>
+
+    <nav class="art-toc" id="cos-article-index"><ul></ul></nav>
 
     <article class="art-body">
       <section>
@@ -815,6 +831,33 @@ function initGraph(prefix, linkStroke, highlightColor) {
 
 initGraph('alm', 'rgba(28,22,16,0.25)', '#333');
 initGraph('cos', 'rgba(236,226,200,0.2)', 'rgba(214,171,94,0.95)');
+
+function initArticle(p) {
+  function $id(id) { return document.getElementById(p + '-' + id); }
+  var article = document.querySelector('#' + p + '-layer article.art-body');
+  if (!article) return;
+  var indexEl = $id('article-index');
+  var indexUl = indexEl ? indexEl.querySelector('ul') : null;
+  var h2Count = 0;
+  function slug(str) {
+    return p + '-' + str.toLowerCase().replace(/[^a-z0-9 ]/g, '').trim().split(/\s+/).join('-');
+  }
+  article.querySelectorAll('h2').forEach(function(el) {
+    h2Count++;
+    var text = el.textContent;
+    var id = slug(text);
+    el.id = id;
+    el.innerHTML = '<span class="numbering">' + h2Count + '.</span>' + text;
+    if (indexUl) {
+      var li = document.createElement('li');
+      li.innerHTML = '<a href="#' + id + '">' + h2Count + '. ' + text + '</a>';
+      indexUl.appendChild(li);
+    }
+  });
+}
+
+initArticle('alm');
+initArticle('cos');
 </script>
 
 <script>

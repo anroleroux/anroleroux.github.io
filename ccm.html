@@ -577,7 +577,7 @@ var nodes = [
     "What a system does must be defined independently of how it does it. This separation is what makes it possible to improve, replace, or swap an implementation without breaking the world around it. It is also what makes parallel development possible — one team can build against a contract while another fulfils it.",
     "This principle runs deeper than API design. It is a habit of mind: always ask what the contract is before asking how to honour it. When interface and implementation are tangled together, change becomes expensive and risk accumulates quietly. This decoupling is essential for long-term flexibility, leading to cleaner architectural designs and more robust software systems."
   ] },
-  { id: 4, label: "4 Automation &\nvirt.", group: "arch", paragraphs: [
+  { id: 4, label: "4 Automation &\nvirt.", group: "prag", paragraphs: [
     "CI/CD, observability: metrics, alerts, logs.",
     "Manual deployment is a liability. Every step that requires a human to intervene is a step that can be skipped, forgotten, or done differently by a different person on a different day. CI/CD pipelines are not a luxury — they are the backbone of a system that can be trusted to behave consistently across environments and over time.",
     "Observability is the other side of that coin. Metrics, alerts, and logs must not be hidden in dashboards that nobody opens. They must be visible, actionable, and tied to the behaviour of the system in production. A system you cannot observe is a system you cannot understand, and a system you cannot understand is a system you cannot improve."

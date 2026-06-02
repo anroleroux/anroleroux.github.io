@@ -85,7 +85,7 @@
     .number-controls button:hover { color: var(--accent); }
 
     /* ── Clock SVG ────────────────────────────────────────────────── */
-    .art-clock-svg { display: block; margin: var(--ms3) auto; max-width: 100%; height: auto; border: 1px solid var(--rule); border-radius: 2px; }
+    .art-clock-svg { display: block; margin: var(--ms3) auto; width: 100%; max-width: 400px; height: auto; border: 1px solid var(--rule); border-radius: 2px; }
 
     /* ── Sequence / mod display ───────────────────────────────────── */
     .mod-seq { font-family: var(--mono); font-size: var(--ts13); line-height: 1.6; color: var(--ink-muted); max-width: 66ch; margin: 0 0 var(--ms-2); }
@@ -274,7 +274,7 @@
               </span>
             </span>
           </p>
-          <svg id="alm-clock-svg" class="art-clock-svg" width="400" height="400"></svg>
+          <svg id="alm-clock-svg" class="art-clock-svg" viewBox="0 0 400 400" width="400" height="400"></svg>
           <div id="alm-mod-clock" class="figure-numbering"><p>Modular clock diagram.</p></div>
           <p class="mod-seq">Sequence:</p>
           <div id="alm-out-sequence" class="mod-seq-box"></div>
@@ -503,7 +503,7 @@
               </span>
             </span>
           </p>
-          <svg id="cos-clock-svg" class="art-clock-svg" width="400" height="400"></svg>
+          <svg id="cos-clock-svg" class="art-clock-svg" viewBox="0 0 400 400" width="400" height="400"></svg>
           <div id="cos-mod-clock" class="figure-numbering"><p>Modular clock diagram.</p></div>
           <p class="mod-seq">Sequence:</p>
           <div id="cos-out-sequence" class="mod-seq-box"></div>

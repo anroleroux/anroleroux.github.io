@@ -9,6 +9,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;1,9..144,300;1,9..144,400&family=Inter+Tight:wght@300;400;500;600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="/home.css" />
   <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
+  <script src="https://d3js.org/d3.v7.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
   <style>
     /* ── Auth widget ──────────────────────────────────────────────── */
@@ -70,6 +71,16 @@
     .gov-table td { padding: var(--ms0) var(--ms1) var(--ms0) 0; border-bottom: 1px solid var(--rule); vertical-align: top; line-height: 1.6; }
     .gov-table td:first-child { font-family: var(--serif); font-size: var(--ts15); color: var(--ink); white-space: nowrap; }
 
+    /* ── Figure / D3 chart ────────────────────────────────────────── */
+    .art-fig { margin: var(--ms3) 0; max-width: 66ch; }
+    .charta svg { display: block; width: 100%; height: auto; }
+    .charta .axis-label { fill: var(--ink-muted); font-family: var(--sans); font-size: 12px; }
+    .charta .panel-title { fill: var(--ink); font-family: var(--mono); font-size: 11px; letter-spacing: 0.6px; text-transform: uppercase; }
+    .charta .tick text { fill: var(--ink-faint); font-family: var(--mono); font-size: 10px; }
+    .charta .tick line, .charta .domain { stroke: var(--rule); }
+    .figure-numbering { margin: var(--ms1) 0 0; }
+    .figure-numbering p { font-family: var(--mono); font-size: var(--ts13); color: var(--ink-faint); margin: 0; line-height: 1.5; max-width: 60ch; }
+
     /* ── Cosmos overrides ─────────────────────────────────────────── */
     .cos-root .art-hero { border-bottom-color: var(--bone-fainter); }
     .cos-root .art-eyebrow { color: var(--gold-soft); }
@@ -95,6 +106,11 @@
     .cos-root .gov-table th { color: var(--bone-faint); border-bottom-color: var(--bone-fainter); }
     .cos-root .gov-table td { border-bottom-color: var(--bone-fainter); color: var(--bone-muted); }
     .cos-root .gov-table td:first-child { font-family: var(--display); color: var(--bone); }
+    .cos-root .charta .axis-label { fill: var(--bone-muted); }
+    .cos-root .charta .panel-title { fill: var(--bone); }
+    .cos-root .charta .tick text { fill: var(--bone-faint); }
+    .cos-root .charta .tick line, .cos-root .charta .domain { stroke: var(--bone-fainter); }
+    .cos-root .figure-numbering p { color: var(--bone-faint); }
 
     /* ── Responsive ───────────────────────────────────────────────── */
     @media (max-width: 800px) {
@@ -190,6 +206,8 @@
         <p>If our particle gets connected to an immovable base, the stretchiness, squishiness or bendiness of the connecting member resists a change in position of the particle. We signify such a member as a spring. The assumption is that the stiffness is linear and the spring applies an opposite force that is proportional to the distance moved away from its original location — Hooke's Law.</p>
         <p>This may seem like a very idealistic model of reality but is actually a very good approximation. From your eyeballs to a guitar string, everything can compress and stretch. Even buildings bend and prop shafts twist in the same springy way. The contact point of a glass marble on a sheet of glass deforms both surfaces to create a contact patch of \[a = \left( \frac{3FR}{4E^*} \right)^{\frac{1}{3}}\] without which the stress would be infinite and crack the glass.</p>
         <p>With only stiffness governing our particle, applying a force moves it proportional to that force. The force acting on the particle steps up instantaneously, stays constant and disappears again after a moment. The position of the particle follows the same form as the force. It instantaneously moves to distance \(x\) and back to zero. The position is now governed but it still reaches infinite speeds and acceleration.</p>
+        <div class="art-fig"><div class="charta force-resp-fig"></div></div>
+        <div class="figure-numbering"><p><span class="numbering">Figure 1.</span> A step-up–down force applied to an object governed only by stiffness. The position responds instantaneously and proportionally, mirroring the form of the force exactly.</p></div>
         <h3>Damping</h3>
         <p>The second law of thermodynamics says that entropy always increases. If we define entropy as the spread of energy we can see how any moving thing spreads its kinetic energy to the surroundings. Everything that moves bumps into air molecules or scrapes along surfaces. Even rolling ball bearings compress the crystal lattice in their races, absorbing some of the briefly stored potential energy and converting it into heat.</p>
         <p>With only damping applied to our fictional particle, its speed is governed. Position wise, it can still move infinitely far but it can only move as fast as a force applied to it allows. Thus its position changes linearly while the force is applied.</p>
@@ -299,6 +317,8 @@
         <p>If our particle gets connected to an immovable base, the stretchiness, squishiness or bendiness of the connecting member resists a change in position of the particle. We signify such a member as a spring. The assumption is that the stiffness is linear and the spring applies an opposite force that is proportional to the distance moved away from its original location — Hooke's Law.</p>
         <p>This may seem like a very idealistic model of reality but is actually a very good approximation. From your eyeballs to a guitar string, everything can compress and stretch. Even buildings bend and prop shafts twist in the same springy way. The contact point of a glass marble on a sheet of glass deforms both surfaces to create a contact patch of \[a = \left( \frac{3FR}{4E^*} \right)^{\frac{1}{3}}\] without which the stress would be infinite and crack the glass.</p>
         <p>With only stiffness governing our particle, applying a force moves it proportional to that force. The force acting on the particle steps up instantaneously, stays constant and disappears again after a moment. The position of the particle follows the same form as the force. It instantaneously moves to distance \(x\) and back to zero. The position is now governed but it still reaches infinite speeds and acceleration.</p>
+        <div class="art-fig"><div class="charta force-resp-fig"></div></div>
+        <div class="figure-numbering"><p><span class="numbering">Figure 1.</span> A step-up–down force applied to an object governed only by stiffness. The position responds instantaneously and proportionally, mirroring the form of the force exactly.</p></div>
         <h3>Damping</h3>
         <p>The second law of thermodynamics says that entropy always increases. If we define entropy as the spread of energy we can see how any moving thing spreads its kinetic energy to the surroundings. Everything that moves bumps into air molecules or scrapes along surfaces. Even rolling ball bearings compress the crystal lattice in their races, absorbing some of the briefly stored potential energy and converting it into heat.</p>
         <p>With only damping applied to our fictional particle, its speed is governed. Position wise, it can still move infinitely far but it can only move as fast as a force applied to it allows. Thus its position changes linearly while the force is applied.</p>
@@ -587,6 +607,78 @@ function initArticle(p) {
 
 initArticle('alm');
 initArticle('cos');
+
+// ── Figure 1: force step + stiffness-governed response ────────
+function drawForceResponse(layerId, isDark) {
+  var container = document.querySelector('#' + layerId + ' .force-resp-fig');
+  if (!container) return;
+  container.innerHTML = '';
+
+  var forceCol = isDark ? '#9ab7c4' : '#3a6b86';   // cool tone for the input force
+  var posCol   = isDark ? '#d6ab5e' : '#8a3a13';   // accent for the particle position
+  var guide    = isDark ? 'rgba(236,226,200,0.18)' : 'rgba(28,22,16,0.14)';
+
+  var W = 640, H = 460;
+  var m = { top: 26, right: 22, bottom: 30, left: 56 };
+  var gap = 54;
+  var innerW = W - m.left - m.right;
+  var panelH = (H - m.top - m.bottom - gap) / 2;
+
+  // Step profile: rises at t=1, holds for 2 s, drops at t=3. Domain 0..5 s.
+  var t0 = 1, t1 = 3, tMax = 5;
+  var step = [[0,0],[t0,0],[t0,1],[t1,1],[t1,0],[tMax,0]];
+
+  var x = d3.scaleLinear().domain([0, tMax]).range([0, innerW]);
+
+  var svg = d3.select(container).append('svg')
+    .attr('viewBox', '0 0 ' + W + ' ' + H)
+    .attr('preserveAspectRatio', 'xMidYMid meet');
+
+  var line = d3.line().x(function(d){ return x(d[0]); });
+
+  [
+    { title: 'Force  ·  F(t)',     color: forceCol, ylabel: 'force F', yi: 0 },
+    { title: 'Position  ·  x(t)',  color: posCol,   ylabel: 'position x', yi: 1 }
+  ].forEach(function(panel) {
+    var top = m.top + panel.yi * (panelH + gap);
+    var y = d3.scaleLinear().domain([0, 1.25]).range([panelH, 0]);
+    var g = svg.append('g').attr('transform', 'translate(' + m.left + ',' + top + ')');
+
+    g.append('text').attr('class', 'panel-title').attr('x', 0).attr('y', -10).text(panel.title);
+
+    // baseline + zero axis
+    g.append('g').attr('transform', 'translate(0,' + panelH + ')')
+      .call(d3.axisBottom(x).ticks(5).tickFormat(function(d){ return d + 's'; }));
+    g.append('g').call(d3.axisLeft(y).ticks(3).tickFormat(function(d){ return d === 1 ? '1' : (d === 0 ? '0' : ''); }));
+
+    // dashed guides at the step transitions
+    [t0, t1].forEach(function(tt) {
+      g.append('line').attr('x1', x(tt)).attr('x2', x(tt))
+        .attr('y1', y(0)).attr('y2', y(1))
+        .attr('stroke', guide).attr('stroke-width', 1).attr('stroke-dasharray', '3 3');
+    });
+
+    // the step line
+    line.y(function(d){ return y(d[1]); });
+    g.append('path').datum(step).attr('fill', 'none')
+      .attr('stroke', panel.color).attr('stroke-width', 2.5)
+      .attr('stroke-linejoin', 'round').attr('d', line);
+
+    // y-axis label
+    g.append('text').attr('class', 'axis-label')
+      .attr('transform', 'rotate(-90)')
+      .attr('x', -panelH / 2).attr('y', -40).attr('text-anchor', 'middle')
+      .text(panel.ylabel);
+  });
+
+  // shared x-axis label
+  svg.append('text').attr('class', 'axis-label')
+    .attr('x', m.left + innerW / 2).attr('y', H - 4).attr('text-anchor', 'middle')
+    .text('time (s)');
+}
+
+drawForceResponse('alm-layer', false);
+drawForceResponse('cos-layer', true);
 </script>
 
 <script>

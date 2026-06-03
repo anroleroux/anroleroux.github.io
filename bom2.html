@@ -199,7 +199,7 @@
         <h2>Governing Interactions</h2>
         <p>The ungoverned particle not only instantly moved infinitely far, it also instantly moved at an infinite velocity, as well as instantly had an infinite acceleration as long as the force acted upon it. Fortunately everything has mass, making matter lazy to move. Additionally, friction and resistance is all around us dissipating kinetic energy into everything it touches. And finally, there are forces that hold things together in a surprisingly stretchy manner.</p>
         <div class="art-fig"><div class="charta ungoverned-fig"></div></div>
-        <div class="figure-numbering"><p><span class="numbering">Figure 0.</span> The same force step applied to a completely ungoverned particle — no stiffness, no damping, no mass. The instant the force is applied the position shoots to infinity. There is nothing to oppose, delay, or limit the motion.</p></div>
+        <div class="figure-numbering"><p><span class="numbering">Figure 0.</span> The same force step applied to a completely ungoverned particle — no stiffness, no damping, no mass. The instant the force is applied the position shoots to infinity and stays there. With no restoring force and no resistance, there is nothing to bring it back.</p></div>
         <div class="note block">
           <h3>Note</h3>
           <p>This article is only concerned with macroscopic physical phenomena where bodies move relatively slow compared to light. The fictitious infinities of position, velocity and acceleration in the imaginary absence of governing interactions is the important takeaway.</p>
@@ -316,7 +316,7 @@
         <h2>Governing Interactions</h2>
         <p>The ungoverned particle not only instantly moved infinitely far, it also instantly moved at an infinite velocity, as well as instantly had an infinite acceleration as long as the force acted upon it. Fortunately everything has mass, making matter lazy to move. Additionally, friction and resistance is all around us dissipating kinetic energy into everything it touches. And finally, there are forces that hold things together in a surprisingly stretchy manner.</p>
         <div class="art-fig"><div class="charta ungoverned-fig"></div></div>
-        <div class="figure-numbering"><p><span class="numbering">Figure 0.</span> The same force step applied to a completely ungoverned particle — no stiffness, no damping, no mass. The instant the force is applied the position shoots to infinity. There is nothing to oppose, delay, or limit the motion.</p></div>
+        <div class="figure-numbering"><p><span class="numbering">Figure 0.</span> The same force step applied to a completely ungoverned particle — no stiffness, no damping, no mass. The instant the force is applied the position shoots to infinity and stays there. With no restoring force and no resistance, there is nothing to bring it back.</p></div>
         <div class="note block">
           <h3>Note</h3>
           <p>This article is only concerned with macroscopic physical phenomena where bodies move relatively slow compared to light. The fictitious infinities of position, velocity and acceleration in the imaginary absence of governing interactions is the important takeaway.</p>
@@ -716,33 +716,20 @@ function drawUngoverned(layerId, isDark) {
       .attr('stroke', posCol).attr('stroke-width', 2.5)
       .attr('marker-end', 'url(#' + markId + ')');
 
-    // dashed ∞ line across the "force on" region at the top
+    // dashed ∞ line from t0 to end of chart
     g.append('line')
       .attr('x1', x(t0)).attr('y1', arrowPad)
-      .attr('x2', x(t1)).attr('y2', arrowPad)
+      .attr('x2', x(tMax)).attr('y2', arrowPad)
       .attr('stroke', infLine).attr('stroke-width', 1.5)
       .attr('stroke-dasharray', '4 3');
 
-    // ∞ symbol annotation
+    // ∞ symbol annotation — centred over the dashed line
     g.append('text')
-      .attr('x', x(t0) + (x(t1) - x(t0)) / 2)
+      .attr('x', x(t0) + (x(tMax) - x(t0)) / 2)
       .attr('y', arrowPad - 6)
       .attr('text-anchor', 'middle')
       .attr('fill', posCol).attr('font-size', 15).attr('opacity', 0.75)
       .text('∞');
-
-    // vertical drop back to 0 at t1
-    g.append('line')
-      .attr('x1', x(t1)).attr('y1', arrowPad)
-      .attr('x2', x(t1)).attr('y2', panelH)
-      .attr('stroke', posCol).attr('stroke-width', 2.5)
-      .attr('stroke-dasharray', '4 3');
-
-    // flat at 0 after t1
-    g.append('line')
-      .attr('x1', x(t1)).attr('y1', panelH)
-      .attr('x2', x(tMax)).attr('y2', panelH)
-      .attr('stroke', posCol).attr('stroke-width', 2.5);
 
     g.append('text').attr('class', 'axis-label').attr('transform', 'rotate(-90)')
       .attr('x', -panelH / 2).attr('y', -40).attr('text-anchor', 'middle').text('position x');

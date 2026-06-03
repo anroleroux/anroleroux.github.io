@@ -211,6 +211,8 @@
         <h3>Damping</h3>
         <p>The second law of thermodynamics says that entropy always increases. If we define entropy as the spread of energy we can see how any moving thing spreads its kinetic energy to the surroundings. Everything that moves bumps into air molecules or scrapes along surfaces. Even rolling ball bearings compress the crystal lattice in their races, absorbing some of the briefly stored potential energy and converting it into heat.</p>
         <p>With only damping applied to our fictional particle, its speed is governed. Position wise, it can still move infinitely far but it can only move as fast as a force applied to it allows. Thus its position changes linearly while the force is applied.</p>
+        <div class="art-fig"><div class="charta damping-resp-fig"></div></div>
+        <div class="figure-numbering"><p><span class="numbering">Figure 2.</span> A step-up–down force applied to an object governed only by damping. Velocity is proportional to force, so position ramps linearly during the force and holds flat once it is removed — no inertia to carry it further.</p></div>
         <h3>Inertia</h3>
         <p>Enough playing around with imaginary massless particles. All matter has mass, and mass brings about very interesting phenomena. First, it bends spacetime resulting in gravity. Secondly, it makes objects lazy to get moving and then lazy to slow down again. We call this inertia and define it with Newton's second law of motion: \[F = ma\]</p>
         <p>Now, accounting for mass, our particle's acceleration is governed and its position changes quadratically when the force is applied. Notice how the position keeps on changing after the force is removed with a constant velocity. Without damping it can reach infinite speeds and continue into infinity.</p>
@@ -322,6 +324,8 @@
         <h3>Damping</h3>
         <p>The second law of thermodynamics says that entropy always increases. If we define entropy as the spread of energy we can see how any moving thing spreads its kinetic energy to the surroundings. Everything that moves bumps into air molecules or scrapes along surfaces. Even rolling ball bearings compress the crystal lattice in their races, absorbing some of the briefly stored potential energy and converting it into heat.</p>
         <p>With only damping applied to our fictional particle, its speed is governed. Position wise, it can still move infinitely far but it can only move as fast as a force applied to it allows. Thus its position changes linearly while the force is applied.</p>
+        <div class="art-fig"><div class="charta damping-resp-fig"></div></div>
+        <div class="figure-numbering"><p><span class="numbering">Figure 2.</span> A step-up–down force applied to an object governed only by damping. Velocity is proportional to force, so position ramps linearly during the force and holds flat once it is removed — no inertia to carry it further.</p></div>
         <h3>Inertia</h3>
         <p>Enough playing around with imaginary massless particles. All matter has mass, and mass brings about very interesting phenomena. First, it bends spacetime resulting in gravity. Secondly, it makes objects lazy to get moving and then lazy to slow down again. We call this inertia and define it with Newton's second law of motion: \[F = ma\]</p>
         <p>Now, accounting for mass, our particle's acceleration is governed and its position changes quadratically when the force is applied. Notice how the position keeps on changing after the force is removed with a constant velocity. Without damping it can reach infinite speeds and continue into infinity.</p>
@@ -679,6 +683,77 @@ function drawForceResponse(layerId, isDark) {
 
 drawForceResponse('alm-layer', false);
 drawForceResponse('cos-layer', true);
+
+// ── Figure 2: force step + damping-only response ──────────────
+// F = c·v  →  v = F/c  →  position ramps linearly while F>0, then holds flat.
+function drawDampingResponse(layerId, isDark) {
+  var container = document.querySelector('#' + layerId + ' .damping-resp-fig');
+  if (!container) return;
+  container.innerHTML = '';
+
+  var forceCol = isDark ? '#9ab7c4' : '#3a6b86';
+  var posCol   = isDark ? '#d6ab5e' : '#8a3a13';
+  var guide    = isDark ? 'rgba(236,226,200,0.18)' : 'rgba(28,22,16,0.14)';
+
+  var W = 640, H = 460;
+  var m = { top: 26, right: 22, bottom: 30, left: 56 };
+  var gap = 54;
+  var innerW = W - m.left - m.right;
+  var panelH = (H - m.top - m.bottom - gap) / 2;
+
+  var tMax = 5, t0 = 1, t1 = 3;
+  // force: same step as Fig 1
+  var forceData = [[0,0],[t0,0],[t0,1],[t1,1],[t1,0],[tMax,0]];
+  // position: flat → linear ramp → flat hold (slope = 1/(t1-t0) = 0.5 per sec)
+  var posData   = [[0,0],[t0,0],[t1,1],[tMax,1]];
+
+  var x = d3.scaleLinear().domain([0, tMax]).range([0, innerW]);
+
+  var svg = d3.select(container).append('svg')
+    .attr('viewBox', '0 0 ' + W + ' ' + H)
+    .attr('preserveAspectRatio', 'xMidYMid meet');
+
+  var panels = [
+    { title: 'Force  ·  F(t)',    color: forceCol, data: forceData, ylabel: 'force F' },
+    { title: 'Position  ·  x(t)', color: posCol,   data: posData,   ylabel: 'position x' }
+  ];
+
+  panels.forEach(function(panel, pi) {
+    var top = m.top + pi * (panelH + gap);
+    var y = d3.scaleLinear().domain([0, 1.25]).range([panelH, 0]);
+    var g = svg.append('g').attr('transform', 'translate(' + m.left + ',' + top + ')');
+
+    g.append('text').attr('class', 'panel-title').attr('x', 0).attr('y', -10).text(panel.title);
+
+    g.append('g').attr('transform', 'translate(0,' + panelH + ')')
+      .call(d3.axisBottom(x).ticks(5).tickFormat(function(d){ return d + 's'; }));
+    g.append('g').call(d3.axisLeft(y).ticks(3).tickFormat(function(d){ return d === 1 ? '1' : (d === 0 ? '0' : ''); }));
+
+    [t0, t1].forEach(function(tt) {
+      g.append('line')
+        .attr('x1', x(tt)).attr('x2', x(tt))
+        .attr('y1', y(0)).attr('y2', y(1))
+        .attr('stroke', guide).attr('stroke-width', 1).attr('stroke-dasharray', '3 3');
+    });
+
+    var line = d3.line().x(function(d){ return x(d[0]); }).y(function(d){ return y(d[1]); });
+    g.append('path').datum(panel.data).attr('fill', 'none')
+      .attr('stroke', panel.color).attr('stroke-width', 2.5)
+      .attr('stroke-linejoin', 'round').attr('d', line);
+
+    g.append('text').attr('class', 'axis-label')
+      .attr('transform', 'rotate(-90)')
+      .attr('x', -panelH / 2).attr('y', -40).attr('text-anchor', 'middle')
+      .text(panel.ylabel);
+  });
+
+  svg.append('text').attr('class', 'axis-label')
+    .attr('x', m.left + innerW / 2).attr('y', H - 4).attr('text-anchor', 'middle')
+    .text('time (s)');
+}
+
+drawDampingResponse('alm-layer', false);
+drawDampingResponse('cos-layer', true);
 </script>
 
 <script>

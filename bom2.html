@@ -216,6 +216,8 @@
         <h3>Inertia</h3>
         <p>Enough playing around with imaginary massless particles. All matter has mass, and mass brings about very interesting phenomena. First, it bends spacetime resulting in gravity. Secondly, it makes objects lazy to get moving and then lazy to slow down again. We call this inertia and define it with Newton's second law of motion: \[F = ma\]</p>
         <p>Now, accounting for mass, our particle's acceleration is governed and its position changes quadratically when the force is applied. Notice how the position keeps on changing after the force is removed with a constant velocity. Without damping it can reach infinite speeds and continue into infinity.</p>
+        <div class="art-fig"><div class="charta inertia-resp-fig"></div></div>
+        <div class="figure-numbering"><p><span class="numbering">Figure 3.</span> A step-up–down force applied to an object governed only by inertia. Position rises quadratically as the constant acceleration builds velocity. When the force is removed the acceleration drops to zero but the velocity — and therefore the position — carry on indefinitely.</p></div>
         <h3>Summary</h3>
         <p>Three independent interactions govern the motion of all physical objects. Each opposes change in a different quantity.</p>
         <table class="gov-table">
@@ -329,6 +331,8 @@
         <h3>Inertia</h3>
         <p>Enough playing around with imaginary massless particles. All matter has mass, and mass brings about very interesting phenomena. First, it bends spacetime resulting in gravity. Secondly, it makes objects lazy to get moving and then lazy to slow down again. We call this inertia and define it with Newton's second law of motion: \[F = ma\]</p>
         <p>Now, accounting for mass, our particle's acceleration is governed and its position changes quadratically when the force is applied. Notice how the position keeps on changing after the force is removed with a constant velocity. Without damping it can reach infinite speeds and continue into infinity.</p>
+        <div class="art-fig"><div class="charta inertia-resp-fig"></div></div>
+        <div class="figure-numbering"><p><span class="numbering">Figure 3.</span> A step-up–down force applied to an object governed only by inertia. Position rises quadratically as the constant acceleration builds velocity. When the force is removed the acceleration drops to zero but the velocity — and therefore the position — carry on indefinitely.</p></div>
         <h3>Summary</h3>
         <p>Three independent interactions govern the motion of all physical objects. Each opposes change in a different quantity.</p>
         <table class="gov-table">
@@ -754,6 +758,108 @@ function drawDampingResponse(layerId, isDark) {
 
 drawDampingResponse('alm-layer', false);
 drawDampingResponse('cos-layer', true);
+
+// ── Figure 3: force step + inertia-only response ──────────────
+// F = ma  →  a = F/m = const while F>0.
+// x(t) = ½a(t-t0)²  (quadratic) during force.
+// After force: a=0, v stays at v_end, x drifts linearly forever.
+// Using a=0.5 so x(t1)=1 and v(t1)=1, making axes comparable to Figs 1&2.
+function drawInertiaResponse(layerId, isDark) {
+  var container = document.querySelector('#' + layerId + ' .inertia-resp-fig');
+  if (!container) return;
+  container.innerHTML = '';
+
+  var forceCol = isDark ? '#9ab7c4' : '#3a6b86';
+  var posCol   = isDark ? '#d6ab5e' : '#8a3a13';
+  var guide    = isDark ? 'rgba(236,226,200,0.18)' : 'rgba(28,22,16,0.14)';
+  var driftCol = isDark ? 'rgba(214,171,94,0.35)' : 'rgba(138,58,19,0.3)';
+
+  var W = 640, H = 460;
+  var m = { top: 26, right: 22, bottom: 30, left: 56 };
+  var gap = 54;
+  var innerW = W - m.left - m.right;
+  var panelH = (H - m.top - m.bottom - gap) / 2;
+
+  var tMax = 5, t0 = 1, t1 = 3;
+  var a = 0.5;                          // acceleration (normalised so x(t1)=1)
+  var vEnd = a * (t1 - t0);             // = 1
+  var xEnd = 0.5 * a * Math.pow(t1 - t0, 2); // = 1
+  var yMax = xEnd + vEnd * (tMax - t1) + 0.4; // = 3.4 — gives headroom
+
+  var x = d3.scaleLinear().domain([0, tMax]).range([0, innerW]);
+
+  // Build dense position data for smooth quadratic curve
+  var posData = [[0, 0], [t0, 0]];
+  var nCurve = 60;
+  for (var i = 1; i <= nCurve; i++) {
+    var tc = t0 + (t1 - t0) * i / nCurve;
+    posData.push([tc, 0.5 * a * Math.pow(tc - t0, 2)]);
+  }
+  posData.push([tMax, xEnd + vEnd * (tMax - t1)]);  // linear drift end
+
+  var forceData = [[0,0],[t0,0],[t0,1],[t1,1],[t1,0],[tMax,0]];
+
+  var svg = d3.select(container).append('svg')
+    .attr('viewBox', '0 0 ' + W + ' ' + H)
+    .attr('preserveAspectRatio', 'xMidYMid meet');
+
+  var panels = [
+    { title: 'Force  ·  F(t)',    color: forceCol, data: forceData, yDom: [0, 1.25], ylabel: 'force F',    ticks: [0, 1] },
+    { title: 'Position  ·  x(t)', color: posCol,   data: posData,  yDom: [0, yMax],  ylabel: 'position x', ticks: [0, 1, 2, 3] }
+  ];
+
+  panels.forEach(function(panel, pi) {
+    var top = m.top + pi * (panelH + gap);
+    var y = d3.scaleLinear().domain(panel.yDom).range([panelH, 0]);
+    var g = svg.append('g').attr('transform', 'translate(' + m.left + ',' + top + ')');
+
+    g.append('text').attr('class', 'panel-title').attr('x', 0).attr('y', -10).text(panel.title);
+
+    g.append('g').attr('transform', 'translate(0,' + panelH + ')')
+      .call(d3.axisBottom(x).ticks(5).tickFormat(function(d){ return d + 's'; }));
+    g.append('g').call(
+      d3.axisLeft(y).tickValues(panel.ticks).tickFormat(function(d){ return d; })
+    );
+
+    // dashed vertical guides at step edges
+    [t0, t1].forEach(function(tt) {
+      g.append('line')
+        .attr('x1', x(tt)).attr('x2', x(tt))
+        .attr('y1', y(panel.yDom[0])).attr('y2', y(panel.yDom[1]))
+        .attr('stroke', guide).attr('stroke-width', 1).attr('stroke-dasharray', '3 3');
+    });
+
+    // for position panel: shade the drift region after t1 to highlight it
+    if (pi === 1) {
+      g.append('rect')
+        .attr('x', x(t1)).attr('y', 0)
+        .attr('width', x(tMax) - x(t1)).attr('height', panelH)
+        .attr('fill', driftCol);
+      g.append('text')
+        .attr('x', x(t1) + 6).attr('y', y(yMax * 0.85))
+        .attr('fill', posCol).attr('opacity', isDark ? 0.7 : 0.55)
+        .attr('font-family', 'var(--mono, monospace)').attr('font-size', 10)
+        .text('constant velocity drift →');
+    }
+
+    var line = d3.line().x(function(d){ return x(d[0]); }).y(function(d){ return y(d[1]); });
+    g.append('path').datum(panel.data).attr('fill', 'none')
+      .attr('stroke', panel.color).attr('stroke-width', 2.5)
+      .attr('stroke-linejoin', 'round').attr('d', line);
+
+    g.append('text').attr('class', 'axis-label')
+      .attr('transform', 'rotate(-90)')
+      .attr('x', -panelH / 2).attr('y', -40).attr('text-anchor', 'middle')
+      .text(panel.ylabel);
+  });
+
+  svg.append('text').attr('class', 'axis-label')
+    .attr('x', m.left + innerW / 2).attr('y', H - 4).attr('text-anchor', 'middle')
+    .text('time (s)');
+}
+
+drawInertiaResponse('alm-layer', false);
+drawInertiaResponse('cos-layer', true);
 </script>
 
 <script>

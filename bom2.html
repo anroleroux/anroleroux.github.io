@@ -70,6 +70,12 @@
     .gov-table th { font-family: var(--mono); font-size: var(--ts11); letter-spacing: 1px; text-transform: uppercase; color: var(--ink-faint); font-weight: 500; text-align: left; padding: var(--ms-2) var(--ms1) var(--ms-2) 0; border-bottom: 1px solid var(--rule); }
     .gov-table td { padding: var(--ms0) var(--ms1) var(--ms0) 0; border-bottom: 1px solid var(--rule); vertical-align: top; line-height: 1.6; }
     .gov-table td:first-child { font-family: var(--serif); font-size: var(--ts15); color: var(--ink); white-space: nowrap; }
+    .gov-table-mobile { display: none; margin: var(--ms2) 0 var(--ms3); }
+    .gov-mob-row { padding: var(--ms1) 0; border-bottom: 1px solid var(--rule); }
+    .gov-mob-row:last-child { border-bottom: none; }
+    .gov-mob-row dt { font-family: var(--serif); font-size: var(--ts17); color: var(--ink); margin: 0 0 var(--ms-1); }
+    .gov-mob-row dd { font-family: var(--sans); font-size: var(--ts14); color: var(--ink-muted); margin: 0 0 var(--ms-2); line-height: 1.5; }
+    .gov-mob-label { font-family: var(--mono); font-size: var(--ts11); letter-spacing: 1px; text-transform: uppercase; color: var(--ink-faint); margin-right: var(--ms-2); }
 
     /* ── Figure / D3 chart ────────────────────────────────────────── */
     .art-fig { margin: var(--ms3) 0; max-width: 66ch; }
@@ -106,6 +112,10 @@
     .cos-root .gov-table th { color: var(--bone-faint); border-bottom-color: var(--bone-fainter); }
     .cos-root .gov-table td { border-bottom-color: var(--bone-fainter); color: var(--bone-muted); }
     .cos-root .gov-table td:first-child { font-family: var(--display); color: var(--bone); }
+    .cos-root .gov-mob-row { border-bottom-color: var(--bone-fainter); }
+    .cos-root .gov-mob-row dt { font-family: var(--display); color: var(--bone); }
+    .cos-root .gov-mob-row dd { color: var(--bone-muted); }
+    .cos-root .gov-mob-label { color: var(--bone-faint); }
     .cos-root .charta .axis-label { fill: var(--bone-muted); }
     .cos-root .charta .panel-title { fill: var(--bone); }
     .cos-root .charta .tick text { fill: var(--bone-faint); }
@@ -113,6 +123,10 @@
     .cos-root .figure-numbering p { color: var(--bone-faint); }
 
     /* ── Responsive ───────────────────────────────────────────────── */
+    @media (max-width: 1099px) {
+      .gov-table { display: none; }
+      .gov-table-mobile { display: block; }
+    }
     @media (max-width: 800px) {
       .art-hero { padding: var(--ms4) var(--ms1) var(--ms3); }
       .art-h1 { font-size: var(--ts36); }
@@ -252,6 +266,26 @@
             </tr>
           </tbody>
         </table>
+        <dl class="gov-table-mobile">
+          <div class="gov-mob-row">
+            <dt>Stiffness</dt>
+            <dd><span class="gov-mob-label">Opposes</span>displacement</dd>
+            <dd><span class="gov-mob-label">Formula</span>\(F = kx\)</dd>
+            <dd><span class="gov-mob-label">Sources</span>spring, material stiffness, air compression</dd>
+          </div>
+          <div class="gov-mob-row">
+            <dt>Damping</dt>
+            <dd><span class="gov-mob-label">Opposes</span>velocity</dd>
+            <dd><span class="gov-mob-label">Formula</span>\(F = cv\), \(F = a \rho v^2\)</dd>
+            <dd><span class="gov-mob-label">Sources</span>air resistance, fluid resistance, surface friction, material deformation</dd>
+          </div>
+          <div class="gov-mob-row">
+            <dt>Inertia</dt>
+            <dd><span class="gov-mob-label">Opposes</span>acceleration</dd>
+            <dd><span class="gov-mob-label">Formula</span>\(F = ma\), \(T = I\alpha\)</dd>
+            <dd><span class="gov-mob-label">Sources</span>linear mass, rotational inertia</dd>
+          </div>
+        </dl>
       </section>
       <section>
         <h2>Motion-Energy Relationship</h2>
@@ -369,6 +403,26 @@
             </tr>
           </tbody>
         </table>
+        <dl class="gov-table-mobile">
+          <div class="gov-mob-row">
+            <dt>Stiffness</dt>
+            <dd><span class="gov-mob-label">Opposes</span>displacement</dd>
+            <dd><span class="gov-mob-label">Formula</span>\(F = kx\)</dd>
+            <dd><span class="gov-mob-label">Sources</span>spring, material stiffness, air compression</dd>
+          </div>
+          <div class="gov-mob-row">
+            <dt>Damping</dt>
+            <dd><span class="gov-mob-label">Opposes</span>velocity</dd>
+            <dd><span class="gov-mob-label">Formula</span>\(F = cv\), \(F = a \rho v^2\)</dd>
+            <dd><span class="gov-mob-label">Sources</span>air resistance, fluid resistance, surface friction, material deformation</dd>
+          </div>
+          <div class="gov-mob-row">
+            <dt>Inertia</dt>
+            <dd><span class="gov-mob-label">Opposes</span>acceleration</dd>
+            <dd><span class="gov-mob-label">Formula</span>\(F = ma\), \(T = I\alpha\)</dd>
+            <dd><span class="gov-mob-label">Sources</span>linear mass, rotational inertia</dd>
+          </div>
+        </dl>
       </section>
       <section>
         <h2>Motion-Energy Relationship</h2>

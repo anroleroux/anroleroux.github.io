@@ -211,9 +211,9 @@
       </section>
       <section>
         <div class="art-fig"><div class="charta ungoverned-fig"></div></div>
-        <div class="figure-numbering"><p><span class="numbering">Figure 0.</span> The same force step applied to a completely ungoverned particle — no stiffness, no damping, no mass. The instant the force is applied the position shoots to infinity and stays there. With no restoring force and no resistance, there is nothing to bring it back.</p></div>
+        <div class="figure-numbering" data-fig="ungoverned"><p>The same force step applied to a completely ungoverned particle — no stiffness, no damping, no mass. The instant the force is applied the position shoots to infinity and stays there. With no restoring force and no resistance, there is nothing to bring it back.</p></div>
         <h2>Governing Interactions</h2>
-        <p>The ungoverned particle not only instantly moved infinitely far, it also instantly moved at an infinite velocity, as well as instantly had an infinite acceleration as long as the force acted upon it. Fortunately everything has mass, making matter lazy to move. Additionally, friction and resistance is all around us dissipating kinetic energy into everything it touches. And finally, there are forces that hold things together in a surprisingly stretchy manner.</p>
+        <p>As Figure <span class="figure-number" data-fid="ungoverned"></span> shows, the ungoverned particle not only instantly moved infinitely far, it also instantly moved at an infinite velocity, as well as instantly had an infinite acceleration as long as the force acted upon it. Fortunately everything has mass, making matter lazy to move. Additionally, friction and resistance is all around us dissipating kinetic energy into everything it touches. And finally, there are forces that hold things together in a surprisingly stretchy manner.</p>
         <div class="note block">
           <h3>Note</h3>
           <p>This article is only concerned with macroscopic physical phenomena where bodies move relatively slow compared to light. The fictitious infinities of position, velocity and acceleration in the imaginary absence of governing interactions is the important takeaway.</p>
@@ -221,19 +221,19 @@
         <h3>Stiffness</h3>
         <p>If our particle gets connected to an immovable base, the stretchiness, squishiness or bendiness of the connecting member resists a change in position of the particle. We signify such a member as a spring. The assumption is that the stiffness is linear and the spring applies an opposite force that is proportional to the distance moved away from its original location — Hooke's Law.</p>
         <p>This may seem like a very idealistic model of reality but is actually a very good approximation. From your eyeballs to a guitar string, everything can compress and stretch. Even buildings bend and prop shafts twist in the same springy way. The contact point of a glass marble on a sheet of glass deforms both surfaces to create a contact patch of \[a = \left( \frac{3FR}{4E^*} \right)^{\frac{1}{3}}\] without which the stress would be infinite and crack the glass.</p>
-        <p>With only stiffness governing our particle, applying a force moves it proportional to that force. The force acting on the particle steps up instantaneously, stays constant and disappears again after a moment. The position of the particle follows the same form as the force. It instantaneously moves to distance \(x\) and back to zero. The position is now governed but it still reaches infinite speeds and acceleration.</p>
+        <p>With only stiffness governing our particle, applying a force moves it proportional to that force. The force acting on the particle steps up instantaneously, stays constant and disappears again after a moment. The position of the particle follows the same form as the force (Figure <span class="figure-number" data-fid="stiffness"></span>). It instantaneously moves to distance \(x\) and back to zero. The position is now governed but it still reaches infinite speeds and acceleration.</p>
         <div class="art-fig"><div class="charta force-resp-fig"></div></div>
-        <div class="figure-numbering"><p><span class="numbering">Figure 2.</span> A step-up–down force applied to an object governed only by stiffness. The position responds instantaneously and proportionally, mirroring the form of the force exactly.</p></div>
+        <div class="figure-numbering" data-fig="stiffness"><p>A step-up–down force applied to an object governed only by stiffness. The position responds instantaneously and proportionally, mirroring the form of the force exactly.</p></div>
         <h3>Damping</h3>
         <p>The second law of thermodynamics says that entropy always increases. If we define entropy as the spread of energy we can see how any moving thing spreads its kinetic energy to the surroundings. Everything that moves bumps into air molecules or scrapes along surfaces. Even rolling ball bearings compress the crystal lattice in their races, absorbing some of the briefly stored potential energy and converting it into heat.</p>
-        <p>With only damping applied to our fictional particle, its speed is governed. Position wise, it can still move infinitely far but it can only move as fast as a force applied to it allows. Thus its position changes linearly while the force is applied.</p>
+        <p>With only damping applied to our fictional particle, its speed is governed. Position wise, it can still move infinitely far but it can only move as fast as a force applied to it allows. Thus its position changes linearly while the force is applied (Figure <span class="figure-number" data-fid="damping"></span>).</p>
         <div class="art-fig"><div class="charta damping-resp-fig"></div></div>
-        <div class="figure-numbering"><p><span class="numbering">Figure 3.</span> A step-up–down force applied to an object governed only by damping. Velocity is proportional to force, so position ramps linearly during the force and holds flat once it is removed — no inertia to carry it further.</p></div>
+        <div class="figure-numbering" data-fig="damping"><p>A step-up–down force applied to an object governed only by damping. Velocity is proportional to force, so position ramps linearly during the force and holds flat once it is removed — no inertia to carry it further.</p></div>
         <h3>Inertia</h3>
         <p>Enough playing around with imaginary massless particles. All matter has mass, and mass brings about very interesting phenomena. First, it bends spacetime resulting in gravity. Secondly, it makes objects lazy to get moving and then lazy to slow down again. We call this inertia and define it with Newton's second law of motion: \[F = ma\]</p>
-        <p>Now, accounting for mass, our particle's acceleration is governed and its position changes quadratically when the force is applied. Notice how the position keeps on changing after the force is removed with a constant velocity. Without damping it can reach infinite speeds and continue into infinity.</p>
+        <p>Now, accounting for mass, our particle's acceleration is governed and its position changes quadratically when the force is applied. Notice in Figure <span class="figure-number" data-fid="inertia"></span> how the position keeps on changing after the force is removed with a constant velocity. Without damping it can reach infinite speeds and continue into infinity.</p>
         <div class="art-fig"><div class="charta inertia-resp-fig"></div></div>
-        <div class="figure-numbering"><p><span class="numbering">Figure 4.</span> A step-up–down force applied to an object governed only by inertia. Position rises quadratically as the constant acceleration builds velocity. When the force is removed the acceleration drops to zero but the velocity — and therefore the position — carry on indefinitely.</p></div>
+        <div class="figure-numbering" data-fig="inertia"><p>A step-up–down force applied to an object governed only by inertia. Position rises quadratically as the constant acceleration builds velocity. When the force is removed the acceleration drops to zero but the velocity — and therefore the position — carry on indefinitely.</p></div>
         <h3>Summary</h3>
         <p>Three independent interactions govern the motion of all physical objects. Each opposes change in a different quantity.</p>
         <table class="gov-table">
@@ -300,21 +300,21 @@
         <h2>Combined Effect of Governing Interactions</h2>
         <p>In nature all three elements work together as energy gets passed between them. But before we go all out and mix everything together again, let's see how they behave two at a time.</p>
         <h3>Stiffness and Damping</h3>
-        <p>Without mass there is no inertia to carry the particle past its mark. The spring decides where the particle wants to come to rest and the damper governs how quickly it gets there. When the force steps up, the position eases smoothly toward its steady offset of \(F/k\); when the force is removed it relaxes back to zero just as smoothly. There is no overshoot and no oscillation — with no kinetic energy store, the motion can only ever approach its target, never pass it.</p>
+        <p>Without mass there is no inertia to carry the particle past its mark. The spring decides where the particle wants to come to rest and the damper governs how quickly it gets there. When the force steps up, the position eases smoothly toward its steady offset of \(F/k\); when the force is removed it relaxes back to zero just as smoothly. There is no overshoot and no oscillation — with no kinetic energy store, the motion can only ever approach its target, never pass it (Figure <span class="figure-number" data-fid="sd"></span>).</p>
         <div class="art-fig"><div class="charta sd-resp-fig"></div></div>
-        <div class="figure-numbering"><p><span class="numbering">Figure 5.</span> A step-up–down force applied to an object governed by stiffness and damping. The position eases toward its steady offset and relaxes back without ever overshooting — with no mass there is no kinetic energy to carry it past the mark.</p></div>
+        <div class="figure-numbering" data-fig="sd"><p>A step-up–down force applied to an object governed by stiffness and damping. The position eases toward its steady offset and relaxes back without ever overshooting — with no mass there is no kinetic energy to carry it past the mark.</p></div>
         <h3>Inertia and Damping</h3>
-        <p>Here there is no spring, so nothing pulls the particle back to where it started. The damper caps how fast it can move and the mass smooths the start and the stop. While the force acts, the particle accelerates and settles into a steady drift; once the force is gone the mass keeps it coasting, but the damper steadily bleeds the velocity away until it glides to a halt — and there it stays, with no restoring force to call it home.</p>
+        <p>Here there is no spring, so nothing pulls the particle back to where it started. The damper caps how fast it can move and the mass smooths the start and the stop. While the force acts, the particle accelerates and settles into a steady drift; once the force is gone the mass keeps it coasting, but the damper steadily bleeds the velocity away until it glides to a halt — and there it stays, with no restoring force to call it home (Figure <span class="figure-number" data-fid="md"></span>).</p>
         <div class="art-fig"><div class="charta md-resp-fig"></div></div>
-        <div class="figure-numbering"><p><span class="numbering">Figure 6.</span> A step-up–down force applied to an object governed by inertia and damping. The mass drifts while the force acts and coasts to a halt once it is removed; with no spring there is nothing to return it to the start.</p></div>
+        <div class="figure-numbering" data-fig="md"><p>A step-up–down force applied to an object governed by inertia and damping. The mass drifts while the force acts and coasts to a halt once it is removed; with no spring there is nothing to return it to the start.</p></div>
         <h3>Stiffness and Inertia</h3>
-        <p>This is where it gets interesting. With this combination — the two governing interactions that can store and release energy — energy can be shifted back and forth indefinitely. Just like a pendulum or an idealistic bouncing ball, the spring and mass system will oscillate after perturbation. The spring turns position into a restoring force, the mass turns that force into motion, and with no damper to dissipate anything the two simply trade potential and kinetic energy forever. The force kicks the system into motion and it never settles.</p>
+        <p>This is where it gets interesting. With this combination — the two governing interactions that can store and release energy — energy can be shifted back and forth indefinitely. Just like a pendulum or an idealistic bouncing ball, the spring and mass system will oscillate after perturbation. The spring turns position into a restoring force, the mass turns that force into motion, and with no damper to dissipate anything the two simply trade potential and kinetic energy forever. The force kicks the system into motion and it never settles (Figure <span class="figure-number" data-fid="sm"></span>).</p>
         <div class="art-fig"><div class="charta sm-resp-fig"></div></div>
-        <div class="figure-numbering"><p><span class="numbering">Figure 7.</span> A step-up–down force applied to an object governed by stiffness and inertia. With no damper to dissipate energy, the spring and mass trade potential and kinetic energy indefinitely and the system oscillates without end.</p></div>
+        <div class="figure-numbering" data-fig="sm"><p>A step-up–down force applied to an object governed by stiffness and inertia. With no damper to dissipate energy, the spring and mass trade potential and kinetic energy indefinitely and the system oscillates without end.</p></div>
         <h3>Full System</h3>
-        <p>Add the damper back to the spring and mass and we have the complete picture — the single equation that governs very nearly everything that moves: \[m\ddot{x} + c\dot{x} + kx = F\] The stored energy still sloshes between spring and mass, but now the damper drains a little of it with every swing. The particle overshoots its steady offset, rings a few times, and settles. Remove the force and it rings back down to rest. Stiffness, damping and inertia acting together — every trajectory, every vibration and every impact in the physical world is some version of this one balance.</p>
+        <p>Add the damper back to the spring and mass of Figure <span class="figure-number" data-fid="sm"></span> and we have the complete picture — the single equation that governs very nearly everything that moves: \[m\ddot{x} + c\dot{x} + kx = F\] The stored energy still sloshes between spring and mass, but now the damper drains a little of it with every swing. The particle overshoots its steady offset, rings a few times, and settles (Figure <span class="figure-number" data-fid="smd"></span>). Remove the force and it rings back down to rest. Stiffness, damping and inertia acting together — every trajectory, every vibration and every impact in the physical world is some version of this one balance.</p>
         <div class="art-fig"><div class="charta smd-resp-fig"></div></div>
-        <div class="figure-numbering"><p><span class="numbering">Figure 8.</span> A step-up–down force applied to an object governed by stiffness, inertia and damping. The damped oscillation overshoots, rings down and settles — the behaviour of very nearly every real moving object.</p></div>
+        <div class="figure-numbering" data-fig="smd"><p>A step-up–down force applied to an object governed by stiffness, inertia and damping. The damped oscillation overshoots, rings down and settles — the behaviour of very nearly every real moving object.</p></div>
       </section>
     </article>
 
@@ -368,9 +368,9 @@
       </section>
       <section>
         <div class="art-fig"><div class="charta ungoverned-fig"></div></div>
-        <div class="figure-numbering"><p><span class="numbering">Figure 0.</span> The same force step applied to a completely ungoverned particle — no stiffness, no damping, no mass. The instant the force is applied the position shoots to infinity and stays there. With no restoring force and no resistance, there is nothing to bring it back.</p></div>
+        <div class="figure-numbering" data-fig="ungoverned"><p>The same force step applied to a completely ungoverned particle — no stiffness, no damping, no mass. The instant the force is applied the position shoots to infinity and stays there. With no restoring force and no resistance, there is nothing to bring it back.</p></div>
         <h2>Governing Interactions</h2>
-        <p>The ungoverned particle not only instantly moved infinitely far, it also instantly moved at an infinite velocity, as well as instantly had an infinite acceleration as long as the force acted upon it. Fortunately everything has mass, making matter lazy to move. Additionally, friction and resistance is all around us dissipating kinetic energy into everything it touches. And finally, there are forces that hold things together in a surprisingly stretchy manner.</p>
+        <p>As Figure <span class="figure-number" data-fid="ungoverned"></span> shows, the ungoverned particle not only instantly moved infinitely far, it also instantly moved at an infinite velocity, as well as instantly had an infinite acceleration as long as the force acted upon it. Fortunately everything has mass, making matter lazy to move. Additionally, friction and resistance is all around us dissipating kinetic energy into everything it touches. And finally, there are forces that hold things together in a surprisingly stretchy manner.</p>
         <div class="note block">
           <h3>Note</h3>
           <p>This article is only concerned with macroscopic physical phenomena where bodies move relatively slow compared to light. The fictitious infinities of position, velocity and acceleration in the imaginary absence of governing interactions is the important takeaway.</p>
@@ -378,19 +378,19 @@
         <h3>Stiffness</h3>
         <p>If our particle gets connected to an immovable base, the stretchiness, squishiness or bendiness of the connecting member resists a change in position of the particle. We signify such a member as a spring. The assumption is that the stiffness is linear and the spring applies an opposite force that is proportional to the distance moved away from its original location — Hooke's Law.</p>
         <p>This may seem like a very idealistic model of reality but is actually a very good approximation. From your eyeballs to a guitar string, everything can compress and stretch. Even buildings bend and prop shafts twist in the same springy way. The contact point of a glass marble on a sheet of glass deforms both surfaces to create a contact patch of \[a = \left( \frac{3FR}{4E^*} \right)^{\frac{1}{3}}\] without which the stress would be infinite and crack the glass.</p>
-        <p>With only stiffness governing our particle, applying a force moves it proportional to that force. The force acting on the particle steps up instantaneously, stays constant and disappears again after a moment. The position of the particle follows the same form as the force. It instantaneously moves to distance \(x\) and back to zero. The position is now governed but it still reaches infinite speeds and acceleration.</p>
+        <p>With only stiffness governing our particle, applying a force moves it proportional to that force. The force acting on the particle steps up instantaneously, stays constant and disappears again after a moment. The position of the particle follows the same form as the force (Figure <span class="figure-number" data-fid="stiffness"></span>). It instantaneously moves to distance \(x\) and back to zero. The position is now governed but it still reaches infinite speeds and acceleration.</p>
         <div class="art-fig"><div class="charta force-resp-fig"></div></div>
-        <div class="figure-numbering"><p><span class="numbering">Figure 2.</span> A step-up–down force applied to an object governed only by stiffness. The position responds instantaneously and proportionally, mirroring the form of the force exactly.</p></div>
+        <div class="figure-numbering" data-fig="stiffness"><p>A step-up–down force applied to an object governed only by stiffness. The position responds instantaneously and proportionally, mirroring the form of the force exactly.</p></div>
         <h3>Damping</h3>
         <p>The second law of thermodynamics says that entropy always increases. If we define entropy as the spread of energy we can see how any moving thing spreads its kinetic energy to the surroundings. Everything that moves bumps into air molecules or scrapes along surfaces. Even rolling ball bearings compress the crystal lattice in their races, absorbing some of the briefly stored potential energy and converting it into heat.</p>
-        <p>With only damping applied to our fictional particle, its speed is governed. Position wise, it can still move infinitely far but it can only move as fast as a force applied to it allows. Thus its position changes linearly while the force is applied.</p>
+        <p>With only damping applied to our fictional particle, its speed is governed. Position wise, it can still move infinitely far but it can only move as fast as a force applied to it allows. Thus its position changes linearly while the force is applied (Figure <span class="figure-number" data-fid="damping"></span>).</p>
         <div class="art-fig"><div class="charta damping-resp-fig"></div></div>
-        <div class="figure-numbering"><p><span class="numbering">Figure 3.</span> A step-up–down force applied to an object governed only by damping. Velocity is proportional to force, so position ramps linearly during the force and holds flat once it is removed — no inertia to carry it further.</p></div>
+        <div class="figure-numbering" data-fig="damping"><p>A step-up–down force applied to an object governed only by damping. Velocity is proportional to force, so position ramps linearly during the force and holds flat once it is removed — no inertia to carry it further.</p></div>
         <h3>Inertia</h3>
         <p>Enough playing around with imaginary massless particles. All matter has mass, and mass brings about very interesting phenomena. First, it bends spacetime resulting in gravity. Secondly, it makes objects lazy to get moving and then lazy to slow down again. We call this inertia and define it with Newton's second law of motion: \[F = ma\]</p>
-        <p>Now, accounting for mass, our particle's acceleration is governed and its position changes quadratically when the force is applied. Notice how the position keeps on changing after the force is removed with a constant velocity. Without damping it can reach infinite speeds and continue into infinity.</p>
+        <p>Now, accounting for mass, our particle's acceleration is governed and its position changes quadratically when the force is applied. Notice in Figure <span class="figure-number" data-fid="inertia"></span> how the position keeps on changing after the force is removed with a constant velocity. Without damping it can reach infinite speeds and continue into infinity.</p>
         <div class="art-fig"><div class="charta inertia-resp-fig"></div></div>
-        <div class="figure-numbering"><p><span class="numbering">Figure 4.</span> A step-up–down force applied to an object governed only by inertia. Position rises quadratically as the constant acceleration builds velocity. When the force is removed the acceleration drops to zero but the velocity — and therefore the position — carry on indefinitely.</p></div>
+        <div class="figure-numbering" data-fig="inertia"><p>A step-up–down force applied to an object governed only by inertia. Position rises quadratically as the constant acceleration builds velocity. When the force is removed the acceleration drops to zero but the velocity — and therefore the position — carry on indefinitely.</p></div>
         <h3>Summary</h3>
         <p>Three independent interactions govern the motion of all physical objects. Each opposes change in a different quantity.</p>
         <table class="gov-table">
@@ -457,21 +457,21 @@
         <h2>Combined Effect of Governing Interactions</h2>
         <p>In nature all three elements work together as energy gets passed between them. But before we go all out and mix everything together again, let's see how they behave two at a time.</p>
         <h3>Stiffness and Damping</h3>
-        <p>Without mass there is no inertia to carry the particle past its mark. The spring decides where the particle wants to come to rest and the damper governs how quickly it gets there. When the force steps up, the position eases smoothly toward its steady offset of \(F/k\); when the force is removed it relaxes back to zero just as smoothly. There is no overshoot and no oscillation — with no kinetic energy store, the motion can only ever approach its target, never pass it.</p>
+        <p>Without mass there is no inertia to carry the particle past its mark. The spring decides where the particle wants to come to rest and the damper governs how quickly it gets there. When the force steps up, the position eases smoothly toward its steady offset of \(F/k\); when the force is removed it relaxes back to zero just as smoothly. There is no overshoot and no oscillation — with no kinetic energy store, the motion can only ever approach its target, never pass it (Figure <span class="figure-number" data-fid="sd"></span>).</p>
         <div class="art-fig"><div class="charta sd-resp-fig"></div></div>
-        <div class="figure-numbering"><p><span class="numbering">Figure 5.</span> A step-up–down force applied to an object governed by stiffness and damping. The position eases toward its steady offset and relaxes back without ever overshooting — with no mass there is no kinetic energy to carry it past the mark.</p></div>
+        <div class="figure-numbering" data-fig="sd"><p>A step-up–down force applied to an object governed by stiffness and damping. The position eases toward its steady offset and relaxes back without ever overshooting — with no mass there is no kinetic energy to carry it past the mark.</p></div>
         <h3>Inertia and Damping</h3>
-        <p>Here there is no spring, so nothing pulls the particle back to where it started. The damper caps how fast it can move and the mass smooths the start and the stop. While the force acts, the particle accelerates and settles into a steady drift; once the force is gone the mass keeps it coasting, but the damper steadily bleeds the velocity away until it glides to a halt — and there it stays, with no restoring force to call it home.</p>
+        <p>Here there is no spring, so nothing pulls the particle back to where it started. The damper caps how fast it can move and the mass smooths the start and the stop. While the force acts, the particle accelerates and settles into a steady drift; once the force is gone the mass keeps it coasting, but the damper steadily bleeds the velocity away until it glides to a halt — and there it stays, with no restoring force to call it home (Figure <span class="figure-number" data-fid="md"></span>).</p>
         <div class="art-fig"><div class="charta md-resp-fig"></div></div>
-        <div class="figure-numbering"><p><span class="numbering">Figure 6.</span> A step-up–down force applied to an object governed by inertia and damping. The mass drifts while the force acts and coasts to a halt once it is removed; with no spring there is nothing to return it to the start.</p></div>
+        <div class="figure-numbering" data-fig="md"><p>A step-up–down force applied to an object governed by inertia and damping. The mass drifts while the force acts and coasts to a halt once it is removed; with no spring there is nothing to return it to the start.</p></div>
         <h3>Stiffness and Inertia</h3>
-        <p>This is where it gets interesting. With this combination — the two governing interactions that can store and release energy — energy can be shifted back and forth indefinitely. Just like a pendulum or an idealistic bouncing ball, the spring and mass system will oscillate after perturbation. The spring turns position into a restoring force, the mass turns that force into motion, and with no damper to dissipate anything the two simply trade potential and kinetic energy forever. The force kicks the system into motion and it never settles.</p>
+        <p>This is where it gets interesting. With this combination — the two governing interactions that can store and release energy — energy can be shifted back and forth indefinitely. Just like a pendulum or an idealistic bouncing ball, the spring and mass system will oscillate after perturbation. The spring turns position into a restoring force, the mass turns that force into motion, and with no damper to dissipate anything the two simply trade potential and kinetic energy forever. The force kicks the system into motion and it never settles (Figure <span class="figure-number" data-fid="sm"></span>).</p>
         <div class="art-fig"><div class="charta sm-resp-fig"></div></div>
-        <div class="figure-numbering"><p><span class="numbering">Figure 7.</span> A step-up–down force applied to an object governed by stiffness and inertia. With no damper to dissipate energy, the spring and mass trade potential and kinetic energy indefinitely and the system oscillates without end.</p></div>
+        <div class="figure-numbering" data-fig="sm"><p>A step-up–down force applied to an object governed by stiffness and inertia. With no damper to dissipate energy, the spring and mass trade potential and kinetic energy indefinitely and the system oscillates without end.</p></div>
         <h3>Full System</h3>
-        <p>Add the damper back to the spring and mass and we have the complete picture — the single equation that governs very nearly everything that moves: \[m\ddot{x} + c\dot{x} + kx = F\] The stored energy still sloshes between spring and mass, but now the damper drains a little of it with every swing. The particle overshoots its steady offset, rings a few times, and settles. Remove the force and it rings back down to rest. Stiffness, damping and inertia acting together — every trajectory, every vibration and every impact in the physical world is some version of this one balance.</p>
+        <p>Add the damper back to the spring and mass of Figure <span class="figure-number" data-fid="sm"></span> and we have the complete picture — the single equation that governs very nearly everything that moves: \[m\ddot{x} + c\dot{x} + kx = F\] The stored energy still sloshes between spring and mass, but now the damper drains a little of it with every swing. The particle overshoots its steady offset, rings a few times, and settles (Figure <span class="figure-number" data-fid="smd"></span>). Remove the force and it rings back down to rest. Stiffness, damping and inertia acting together — every trajectory, every vibration and every impact in the physical world is some version of this one balance.</p>
         <div class="art-fig"><div class="charta smd-resp-fig"></div></div>
-        <div class="figure-numbering"><p><span class="numbering">Figure 8.</span> A step-up–down force applied to an object governed by stiffness, inertia and damping. The damped oscillation overshoots, rings down and settles — the behaviour of very nearly every real moving object.</p></div>
+        <div class="figure-numbering" data-fig="smd"><p>A step-up–down force applied to an object governed by stiffness, inertia and damping. The damped oscillation overshoots, rings down and settles — the behaviour of very nearly every real moving object.</p></div>
       </section>
     </article>
 
@@ -671,11 +671,12 @@ function initArticle(p) {
   if (!article) return;
   var indexEl = document.getElementById(p + '-article-index');
   var indexUl = indexEl ? indexEl.querySelector('ul') : null;
-  var h2Count = 0, h3Count = 0, insightCount = 0;
+  var h2Count = 0, h3Count = 0, insightCount = 0, figureCount = 0;
+  var refs = {};
   function slug(str) {
     return p + '-' + str.toLowerCase().replace(/[^a-z0-9 ]/g, '').trim().split(/\s+/).join('-');
   }
-  article.querySelectorAll('h2, h3, .insight.block').forEach(function(el) {
+  article.querySelectorAll('h2, h3, .insight.block, .figure-numbering').forEach(function(el) {
     if (el.tagName === 'H2') {
       h2Count++; h3Count = 0;
       var text = el.textContent;
@@ -707,14 +708,23 @@ function initArticle(p) {
         var orig = h3.textContent.replace(/^Insight\s*\d*\s*:?\s*/i, '').trim();
         h3.innerHTML = '<span class="numbering">Insight ' + insightCount + '</span>' + (orig ? ': ' + orig : '');
       }
+    } else if (el.classList.contains('figure-numbering')) {
+      figureCount++;
+      var cap = el.querySelector('p');
+      if (cap) cap.innerHTML = '<span class="numbering">Figure ' + figureCount + '.</span>' + cap.textContent;
+      if (el.dataset.fig) refs[el.dataset.fig] = '' + figureCount;
     }
+  });
+  // resolve in-text figure cross-references (Figure <span class="figure-number" data-fid="…">)
+  article.querySelectorAll('.figure-number').forEach(function(el) {
+    el.textContent = refs[el.dataset.fid] || '';
   });
 }
 
 initArticle('alm');
 initArticle('cos');
 
-// ── Figure 0: ungoverned particle — shoots to infinity ────────
+// ── Figure 1: ungoverned particle — shoots to infinity ────────
 // No stiffness, no damping, no mass. F>0 → x = ∞ instantly.
 // Visual: flat at 0 → vertical arrow off chart at t0 → dashed ∞ line
 // → vertical drop back to 0 at t1 → flat at 0.
@@ -837,7 +847,7 @@ function drawUngoverned(layerId, isDark) {
 drawUngoverned('alm-layer', false);
 drawUngoverned('cos-layer', true);
 
-// ── Figure 1: force step + stiffness-governed response ────────
+// ── Figure 2: force step + stiffness-governed response ────────
 function drawForceResponse(layerId, isDark) {
   var container = document.querySelector('#' + layerId + ' .force-resp-fig');
   if (!container) return;
@@ -909,7 +919,7 @@ function drawForceResponse(layerId, isDark) {
 drawForceResponse('alm-layer', false);
 drawForceResponse('cos-layer', true);
 
-// ── Figure 2: force step + damping-only response ──────────────
+// ── Figure 3: force step + damping-only response ──────────────
 // F = c·v  →  v = F/c  →  position ramps linearly while F>0, then holds flat.
 function drawDampingResponse(layerId, isDark) {
   var container = document.querySelector('#' + layerId + ' .damping-resp-fig');
@@ -980,7 +990,7 @@ function drawDampingResponse(layerId, isDark) {
 drawDampingResponse('alm-layer', false);
 drawDampingResponse('cos-layer', true);
 
-// ── Figure 3: force step + inertia-only response ──────────────
+// ── Figure 4: force step + inertia-only response ──────────────
 // F = ma  →  a = F/m = const while F>0.
 // x(t) = ½a(t-t0)²  (quadratic) during force.
 // After force: a=0, v stays at v_end, x drifts linearly forever.

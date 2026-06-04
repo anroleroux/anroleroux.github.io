@@ -425,3 +425,39 @@ body { margin: 0; padding: 0; width: 100%; font-family: 'Inter', system-ui, sans
   .cos-nav { flex-direction: column; align-items: baseline; }
   html {font-size: 14px;}
 }
+
+/* ── CTA buttons ─────────────────────────────────────────────── */
+.alm-cta-btn {
+  display: inline-flex; align-items: center; gap: var(--ms-1);
+  font-family: var(--mono); font-size: var(--ts11); letter-spacing: 1.6px;
+  text-transform: uppercase; color: var(--paper); background: var(--ink);
+  padding: var(--ms0) var(--ms3); border: none; text-decoration: none;
+  margin-top: var(--ms2); transition: background 0.25s;
+}
+.alm-cta-btn:hover { background: var(--accent); }
+
+.cos-cta-btn {
+  display: inline-flex; align-items: center; gap: var(--ms-1);
+  font-family: var(--mono); font-size: var(--ts11); letter-spacing: 1.6px;
+  text-transform: uppercase; color: var(--ink); background: var(--gold);
+  padding: var(--ms0) var(--ms3); border: none; text-decoration: none;
+  margin-top: var(--ms3); transition: opacity 0.25s;
+}
+.cos-cta-btn:hover { opacity: 0.82; }
+
+/* ── Service feature lists ───────────────────────────────────── */
+.alm-features { list-style: none; padding: 0; margin: var(--ms2) 0 0; }
+.alm-features li {
+  font-family: var(--sans); font-size: var(--ts14); line-height: 1.6;
+  color: var(--ink-muted); padding: var(--ms-2) 0;
+  border-top: 1px solid var(--rule); display: flex; gap: var(--ms-1);
+}
+.alm-features li::before { content: '—'; color: var(--accent); flex-shrink: 0; }
+
+.cos-features { list-style: none; padding: 0; margin: var(--ms2) 0 0; }
+.cos-features li {
+  font-family: var(--sans); font-size: var(--ts14); line-height: 1.6;
+  color: var(--bone-muted); padding: var(--ms-2) 0;
+  border-top: 1px solid var(--bone-fainter); display: flex; gap: var(--ms-1);
+}
+.cos-features li::before { content: '·'; color: var(--gold); flex-shrink: 0; }

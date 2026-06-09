@@ -94,12 +94,6 @@
     }
     .art-body a { color: var(--accent); text-decoration: none; border-bottom: 1px solid rgba(138,58,19,0.3); }
     .art-body a:hover { border-bottom-color: var(--accent); }
-    .art-body ol {
-      font-family: var(--sans); font-size: var(--ts15); line-height: 1.75;
-      color: var(--ink-muted); max-width: 66ch; margin: 0 0 var(--ms0); padding-left: 1.6em;
-    }
-    .art-body ol li { margin-bottom: var(--ms-2); }
-
     /* ── Deployment grid ──────────────────────────────────────────── */
     .deploy-grid {
       display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
@@ -142,7 +136,6 @@
     .cos-root .art-body p { color: var(--bone-muted); }
     .cos-root .art-body a { color: var(--gold); border-bottom-color: rgba(214,171,94,0.3); }
     .cos-root .art-body a:hover { border-bottom-color: var(--gold); }
-    .cos-root .art-body ol { color: var(--bone-muted); }
     .cos-root .deploy-card { border-color: var(--bone-fainter); }
     .cos-root .deploy-card-label { color: var(--bone-faint); }
     .cos-root .deploy-card-name { color: var(--bone); font-family: var(--display); font-weight: 300; }
@@ -240,16 +233,13 @@
       </section>
       <section>
         <h2>Workflow</h2>
-        <p>The workflow starts with an Attributes page where important characteristics or results are defined. Attributes are also grouped together. An example might be a group of Strengths and a group of Wins. The Strengths group might have Communication and Problem Solving as attributes. The Wins group may have "Developed part counting system" as a successful project you pioneered. The attributes capture what the subject has to offer and will next be used to prioritise ideas.</p>
-        <ol>
-          <li>Create Attribute Groups under the Attributes → Attribute Groups submenu and then populate Attributes.</li>
-          <li>Add Criteria under the Ideas → Criteria submenu and then add Ideas.</li>
-          <li>Add and modify attribute and criteria ratings in the idea detail view or under the Ideas → Attribute/Criteria Ratings.</li>
-          <li>Create Portfolio Items in the Portfolio page.</li>
-          <li>Create Milestones and Tasks under the Milestones → Tasks submenu.</li>
-        </ol>
-        <p>Attributes or any other entries do not have to be perfect before continuing to next steps further down the workflow. The application is built to adapt to any change made anywhere in the workflow.</p>
+        <p>The workflow starts with an Attributes page where important characteristics or results are defined. Attributes are also grouped together. An example might be a group of Strengths and a group of Wins. The Strengths group might have Communication and Problem Solving as attributes. The Wins group may have "Developed part counting system" as a successful project you pioneered. The attributes capture what the subject has to offer and will next be used to prioritize ideas. Step 1: Create Attribute Groups under the Attributes → Attribute Groups submenu and then populate Attributes.</p>
+        <p>Before continuing it is necessary to mention that Attributes or any other entries does not have to be perfect before continuing to next steps further down the workflow. The application is built to adapt to any change made anywhere in the workflow.</p>
         <p>Another useful feature is to add a Gemini API key in the Settings page and enable attribute and criteria rating population with Gemini. This way an LLM can check how well attributes and criteria relate (based on names and descriptions) and automatically fill the ratings for all the attributes and all the criteria for each idea. Ratings can be changed anytime but it can be very laborious to manually enter ratings.</p>
+        <p>With attributes defined, ideas can be populated. That is done on the ideas page. But before starting with ideas, criteria should also be defined for further weighing of ideas. Criteria is different from attributes in the sense that attributes weigh ideas based on qualities of the subject while criteria weigh it further based on external factors like demand, cost to manufacture or technical feasibility. Step 2: Add criteria under the Ideas → Criteria submenu and then add Ideas.</p>
+        <p>Ratings are necessary to weigh ideas and generate the priorities. A rating is required to indicate how well an attribute or criteria relate to an idea. A score of ten resembles the highest relation, and 0 the lowest. The idea priorities are then calculated and sorted from highest priority to the lowest. Step 3: Add and modify attribute and criteria ratings in the idea detail view or under the Ideas → Attribute/Criteria Ratings.</p>
+        <p>Portfolio items are next created and linked back to ideas. A portfolio item can be a product, project or service. Items are then linked back to one or more ideas to establish their priorities. Step 4: Create Portfolio Items in the Portfolio page.</p>
+        <p>Milestones are created, linking to Portfolio Items. Tasks are created, linking to a Milestone. Dependencies can be created between Milestones and Tasks. Step 5: Create Milestones and Tasks under the Milestones → Tasks submenu.</p>
       </section>
       <section>
         <h2>Privacy &amp; Deployment</h2>
@@ -337,16 +327,13 @@
       </section>
       <section>
         <h2>Workflow</h2>
-        <p>The workflow starts with an Attributes page where important characteristics or results are defined. Attributes are also grouped together. An example might be a group of Strengths and a group of Wins. The Strengths group might have Communication and Problem Solving as attributes. The Wins group may have "Developed part counting system" as a successful project you pioneered. The attributes capture what the subject has to offer and will next be used to prioritise ideas.</p>
-        <ol>
-          <li>Create Attribute Groups under the Attributes → Attribute Groups submenu and then populate Attributes.</li>
-          <li>Add Criteria under the Ideas → Criteria submenu and then add Ideas.</li>
-          <li>Add and modify attribute and criteria ratings in the idea detail view or under the Ideas → Attribute/Criteria Ratings.</li>
-          <li>Create Portfolio Items in the Portfolio page.</li>
-          <li>Create Milestones and Tasks under the Milestones → Tasks submenu.</li>
-        </ol>
-        <p>Attributes or any other entries do not have to be perfect before continuing to next steps further down the workflow. The application is built to adapt to any change made anywhere in the workflow.</p>
+        <p>The workflow starts with an Attributes page where important characteristics or results are defined. Attributes are also grouped together. An example might be a group of Strengths and a group of Wins. The Strengths group might have Communication and Problem Solving as attributes. The Wins group may have "Developed part counting system" as a successful project you pioneered. The attributes capture what the subject has to offer and will next be used to prioritize ideas. Step 1: Create Attribute Groups under the Attributes → Attribute Groups submenu and then populate Attributes.</p>
+        <p>Before continuing it is necessary to mention that Attributes or any other entries does not have to be perfect before continuing to next steps further down the workflow. The application is built to adapt to any change made anywhere in the workflow.</p>
         <p>Another useful feature is to add a Gemini API key in the Settings page and enable attribute and criteria rating population with Gemini. This way an LLM can check how well attributes and criteria relate (based on names and descriptions) and automatically fill the ratings for all the attributes and all the criteria for each idea. Ratings can be changed anytime but it can be very laborious to manually enter ratings.</p>
+        <p>With attributes defined, ideas can be populated. That is done on the ideas page. But before starting with ideas, criteria should also be defined for further weighing of ideas. Criteria is different from attributes in the sense that attributes weigh ideas based on qualities of the subject while criteria weigh it further based on external factors like demand, cost to manufacture or technical feasibility. Step 2: Add criteria under the Ideas → Criteria submenu and then add Ideas.</p>
+        <p>Ratings are necessary to weigh ideas and generate the priorities. A rating is required to indicate how well an attribute or criteria relate to an idea. A score of ten resembles the highest relation, and 0 the lowest. The idea priorities are then calculated and sorted from highest priority to the lowest. Step 3: Add and modify attribute and criteria ratings in the idea detail view or under the Ideas → Attribute/Criteria Ratings.</p>
+        <p>Portfolio items are next created and linked back to ideas. A portfolio item can be a product, project or service. Items are then linked back to one or more ideas to establish their priorities. Step 4: Create Portfolio Items in the Portfolio page.</p>
+        <p>Milestones are created, linking to Portfolio Items. Tasks are created, linking to a Milestone. Dependencies can be created between Milestones and Tasks. Step 5: Create Milestones and Tasks under the Milestones → Tasks submenu.</p>
       </section>
       <section>
         <h2>Privacy &amp; Deployment</h2>

@@ -41,6 +41,16 @@
       color: var(--ink-muted); max-width: 44ch; margin: 0 0 var(--ms4); font-weight: 400;
     }
 
+    /* ── Article meta bar ─────────────────────────────────────────── */
+    .art-meta-bar {
+      display: flex; gap: var(--ms5); align-items: baseline;
+      padding: var(--ms1) var(--ms6); border-bottom: 1px solid var(--rule);
+      font-family: var(--mono); font-size: var(--ts11); letter-spacing: 0.8px;
+      color: var(--ink-faint); text-transform: uppercase;
+    }
+    .art-meta-item { display: flex; gap: var(--ms-2); align-items: baseline; }
+    .art-meta-val { color: var(--ink-muted); font-variant-numeric: tabular-nums; }
+
     /* ── CTA buttons ──────────────────────────────────────────────── */
     .app-cta-group {
       display: flex; flex-wrap: wrap; gap: var(--ms2);
@@ -66,12 +76,6 @@
     .art-toc a { color: var(--ink-faint); text-decoration: none; }
     .art-toc a:hover { color: var(--accent); }
     .numbering { margin-right: 0.4ch; }
-
-    /* ── Published line in article ────────────────────────────────── */
-    .art-published {
-      font-family: var(--mono); font-size: var(--ts11); letter-spacing: 0.8px;
-      text-transform: uppercase; color: var(--ink-faint); margin-bottom: var(--ms3);
-    }
 
     /* ── Article body ─────────────────────────────────────────────── */
     .art-body section { padding: var(--ms5) var(--ms6); border-top: 1px solid var(--rule); }
@@ -123,6 +127,8 @@
     .cos-root .art-h1 { font-family: var(--display); font-weight: 300; color: var(--bone); }
     .cos-root .art-h1 em { color: var(--gold); }
     .cos-root .art-lede { color: var(--bone-muted); font-family: var(--display); }
+    .cos-root .art-meta-bar { border-bottom-color: var(--bone-fainter); color: var(--bone-faint); }
+    .cos-root .art-meta-val { color: var(--bone-muted); }
     .cos-root .app-cta-btn { border-color: var(--bone-fainter); color: var(--bone-muted); }
     .cos-root .app-cta-btn:hover { border-color: var(--gold); color: var(--gold); }
     .cos-root .app-cta-btn.primary { border-color: var(--gold); color: var(--gold); background: rgba(214,171,94,0.04); }
@@ -130,7 +136,6 @@
     .cos-root .art-toc { border-bottom-color: var(--bone-fainter); }
     .cos-root .art-toc a { color: var(--bone-faint); }
     .cos-root .art-toc a:hover { color: var(--gold); }
-    .cos-root .art-published { color: var(--bone-faint); }
     .cos-root .art-body section { border-top-color: var(--bone-fainter); }
     .cos-root .art-body h2 { font-family: var(--display); font-weight: 300; color: var(--bone); }
     .cos-root .art-body h3 { font-family: var(--display); font-weight: 300; color: var(--bone); }
@@ -148,6 +153,7 @@
       .art-hero { padding: var(--ms4) var(--ms1) var(--ms3); }
       .art-h1 { font-size: var(--ts36); }
       .art-lede { font-size: var(--ts18); }
+      .art-meta-bar { padding: var(--ms1) var(--ms1); flex-wrap: wrap; gap: var(--ms2); }
       .art-toc { padding: var(--ms2) var(--ms1); }
       .art-body section { padding: var(--ms3) var(--ms1); }
     }
@@ -217,11 +223,17 @@
       </div>
     </header>
 
+    <div class="art-meta-bar">
+      <div class="art-meta-item">
+        <span>published</span>
+        <span class="art-meta-val">2026-06-08</span>
+      </div>
+    </div>
+
     <nav class="art-toc" id="alm-article-index"><ul></ul></nav>
 
     <article class="art-body">
       <section>
-        <div class="art-published">published · 2026-06-08</div>
         <h2>About</h2>
         <p>This application started from a personal need to list ideas and prioritise them. When you need to generate additional income, one needs to know what to prioritise. However, prioritisation becomes complex when the subject is complex — and humans are complex.</p>
         <p>UnLog provides a structured workflow to capture attributes, evaluate ideas against criteria, build a portfolio and plan milestones — all in one focused place.</p>
@@ -308,11 +320,17 @@
       </div>
     </header>
 
+    <div class="art-meta-bar">
+      <div class="art-meta-item">
+        <span>published</span>
+        <span class="art-meta-val">2026-06-08</span>
+      </div>
+    </div>
+
     <nav class="art-toc" id="cos-article-index"><ul></ul></nav>
 
     <article class="art-body">
       <section>
-        <div class="art-published">published · 2026-06-08</div>
         <h2>About</h2>
         <p>This application started from a personal need to list ideas and prioritise them. When you need to generate additional income, one needs to know what to prioritise. However, prioritisation becomes complex when the subject is complex — and humans are complex.</p>
         <p>UnLog provides a structured workflow to capture attributes, evaluate ideas against criteria, build a portfolio and plan milestones — all in one focused place.</p>

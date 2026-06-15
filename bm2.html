@@ -197,6 +197,7 @@
         <div class="art-fig"><div class="charta smd-diag-fig"></div></div>
         <div class="figure-numbering" data-fig="smd-diag"><p>A horizontally sliding 2-mass (2DoF) SMD system constrained on both sides. The masses are assumed to slide without friction.</p></div>
 
+        <h3>The Model</h3>
         <p>Applying Newton's second law \(F = ma\) to each mass and summing all forces gives the equations of motion. For mass 1, three forces act: the wall spring and damper on the left, and the shared spring and damper coupling it to mass 2. Taking rightward displacement as positive:</p>
         \[m_1\ddot{x}_1 = -k_1 x_1 - c_1\dot{x}_1 - k_2(x_1 - x_2) - c_2(\dot{x}_1 - \dot{x}_2)\]
         <p>Collecting terms by kinematic quantity:</p>
@@ -244,7 +245,8 @@ K = np.array([
     [-k2,     k2 + k3  ]
 ])</code>
 
-        <p>The initial conditions set mass 1 displaced by 0.1 units while everything else starts from rest:</p>
+        <h3>Simulating Perturbation</h3>
+        <p>The first scenario is a free response: mass 1 is pulled slightly aside, held while everything is still, then released. The initial conditions set mass 1 displaced by 0.1 units while everything else starts from rest:</p>
         <p class="art-code-label">Python</p>
         <code class="art-code">y0 = np.array([0.1, 0.0, 0.0, 0.0])</code>
 
@@ -282,6 +284,45 @@ def eom(t, y, M, C, K):
         <div class="figure-numbering" data-fig="smd-resp"><p>Displacement of both masses over time with mass 1 starting at 0.1 and mass 2 at rest. The coupling transfers energy between the masses while damping dissipates it until both settle back to equilibrium.</p></div>
 
         <p>The graph confirms the initial conditions: mass 1 begins at 0.1 and mass 2 at zero, both with zero velocity — shown by the horizontal tangent of each curve at t = 0. The shared spring and damper couple the two masses so that energy displaced into mass 1 is gradually transferred to mass 2. Both masses oscillate at a blend of the two natural frequencies of the system, and damping steadily drains the energy until both return to rest.</p>
+
+        <h3>Forced Vibration</h3>
+        <p>When a steady oscillating force is applied to the system, it never fully settles — even with damping present, the input keeps feeding energy in. To isolate this behaviour the system now starts from rest, with zero displacement and zero velocity:</p>
+        <p class="art-code-label">Python</p>
+        <code class="art-code">y0 = np.array([0.0, 0.0, 0.0, 0.0])</code>
+
+        <p>A sinusoidal force is applied to mass 1 alone by replacing the zero forcing vector inside <code>eom</code> with a time-dependent one:</p>
+        <p class="art-code-label">Python</p>
+        <code class="art-code">f = np.array([10.0 * np.sin(5.0 * t), 0.0])</code>
+        <p>This drives mass 1 with an amplitude of 10 at an angular frequency of 5 rad/s — about \(5/2\pi \approx 0.80\) Hz. Note that the forcing now depends on \(t\), so the time argument already passed to <code>eom</code> is finally put to use.</p>
+
+        <div class="art-fig"><div class="charta smd-forced-fig"></div></div>
+        <div class="figure-numbering" data-fig="smd-forced"><p>Displacement of both masses with a 5 rad/s (≈0.80 Hz) sinusoidal force applied to mass 1, starting from rest.</p></div>
+
+        <p>The response shows mass 1 reacting to the force first while mass 2 lags behind, dragged along through the shared spring and damper. After the initial transient dies away, both masses settle into a steady-state oscillation at the driving frequency, moving together in the same direction. The natural question is what happens as the driving frequency changes — and that is where the natural frequencies provide great insight.</p>
+
+        <h3>Natural Frequencies and Mode Shapes</h3>
+        <p>Every undamped SMD system has a set of special frequencies at which it naturally prefers to vibrate, each with an associated shape of motion. They are found by setting damping and forcing aside and posing the generalized eigenvalue problem on the mass and stiffness matrices:</p>
+        \[\mathbf{K}\boldsymbol{\phi} = \omega^2\,\mathbf{M}\boldsymbol{\phi}\]
+        <p>Here \(\omega\) is a natural frequency and \(\boldsymbol{\phi}\) its mode shape — the relative amplitudes of the masses when the system oscillates purely at that frequency. SciPy solves this directly with <code>eigh</code>, which is built for symmetric matrix pairs like \(\mathbf{K}\) and \(\mathbf{M}\):</p>
+        <p class="art-code-label">Python</p>
+        <code class="art-code">from scipy.linalg import eigh
+import numpy as np
+
+omega_squared, Phi = eigh(K, M)
+
+omega   = np.sqrt(omega_squared)
+freq_hz = omega / (2 * np.pi)</code>
+
+        <p>For the parameter values used above, the two natural frequencies are</p>
+        \[\omega_1 = 7.81\ \text{rad/s}\ (1.24\ \text{Hz}), \qquad \omega_2 = 12.81\ \text{rad/s}\ (2.04\ \text{Hz})\]
+        <p>and the corresponding mode shapes, normalized so that mass 1 has unit amplitude, are</p>
+        \[\boldsymbol{\phi}_1 = \begin{bmatrix} 1 \\ 1.78 \end{bmatrix}, \qquad \boldsymbol{\phi}_2 = \begin{bmatrix} 1 \\ -0.28 \end{bmatrix}\]
+        <p>The first mode is in-phase — both masses move in the same direction, with mass 2 swinging further. The second mode is out-of-phase — the masses move in opposite directions. Any free motion of the system, like the perturbation simulated earlier, is just a blend of these two modes.</p>
+
+        <div class="note block">
+          <h3>Note</h3>
+          <p>A 2DoF system has exactly two natural frequencies and two mode shapes — one pair per degree of freedom. An <em>N</em>-DoF system has <em>N</em> of each.</p>
+        </div>
       </section>
     </article>
 
@@ -339,6 +380,7 @@ def eom(t, y, M, C, K):
         <div class="art-fig"><div class="charta smd-diag-fig"></div></div>
         <div class="figure-numbering" data-fig="smd-diag"><p>A horizontally sliding 2-mass (2DoF) SMD system constrained on both sides. The masses are assumed to slide without friction.</p></div>
 
+        <h3>The Model</h3>
         <p>Applying Newton's second law \(F = ma\) to each mass and summing all forces gives the equations of motion. For mass 1, three forces act: the wall spring and damper on the left, and the shared spring and damper coupling it to mass 2. Taking rightward displacement as positive:</p>
         \[m_1\ddot{x}_1 = -k_1 x_1 - c_1\dot{x}_1 - k_2(x_1 - x_2) - c_2(\dot{x}_1 - \dot{x}_2)\]
         <p>Collecting terms by kinematic quantity:</p>
@@ -386,7 +428,8 @@ K = np.array([
     [-k2,     k2 + k3  ]
 ])</code>
 
-        <p>The initial conditions set mass 1 displaced by 0.1 units while everything else starts from rest:</p>
+        <h3>Simulating Perturbation</h3>
+        <p>The first scenario is a free response: mass 1 is pulled slightly aside, held while everything is still, then released. The initial conditions set mass 1 displaced by 0.1 units while everything else starts from rest:</p>
         <p class="art-code-label">Python</p>
         <code class="art-code">y0 = np.array([0.1, 0.0, 0.0, 0.0])</code>
 
@@ -424,6 +467,45 @@ def eom(t, y, M, C, K):
         <div class="figure-numbering" data-fig="smd-resp"><p>Displacement of both masses over time with mass 1 starting at 0.1 and mass 2 at rest. The coupling transfers energy between the masses while damping dissipates it until both settle back to equilibrium.</p></div>
 
         <p>The graph confirms the initial conditions: mass 1 begins at 0.1 and mass 2 at zero, both with zero velocity — shown by the horizontal tangent of each curve at t = 0. The shared spring and damper couple the two masses so that energy displaced into mass 1 is gradually transferred to mass 2. Both masses oscillate at a blend of the two natural frequencies of the system, and damping steadily drains the energy until both return to rest.</p>
+
+        <h3>Forced Vibration</h3>
+        <p>When a steady oscillating force is applied to the system, it never fully settles — even with damping present, the input keeps feeding energy in. To isolate this behaviour the system now starts from rest, with zero displacement and zero velocity:</p>
+        <p class="art-code-label">Python</p>
+        <code class="art-code">y0 = np.array([0.0, 0.0, 0.0, 0.0])</code>
+
+        <p>A sinusoidal force is applied to mass 1 alone by replacing the zero forcing vector inside <code>eom</code> with a time-dependent one:</p>
+        <p class="art-code-label">Python</p>
+        <code class="art-code">f = np.array([10.0 * np.sin(5.0 * t), 0.0])</code>
+        <p>This drives mass 1 with an amplitude of 10 at an angular frequency of 5 rad/s — about \(5/2\pi \approx 0.80\) Hz. Note that the forcing now depends on \(t\), so the time argument already passed to <code>eom</code> is finally put to use.</p>
+
+        <div class="art-fig"><div class="charta smd-forced-fig"></div></div>
+        <div class="figure-numbering" data-fig="smd-forced"><p>Displacement of both masses with a 5 rad/s (≈0.80 Hz) sinusoidal force applied to mass 1, starting from rest.</p></div>
+
+        <p>The response shows mass 1 reacting to the force first while mass 2 lags behind, dragged along through the shared spring and damper. After the initial transient dies away, both masses settle into a steady-state oscillation at the driving frequency, moving together in the same direction. The natural question is what happens as the driving frequency changes — and that is where the natural frequencies provide great insight.</p>
+
+        <h3>Natural Frequencies and Mode Shapes</h3>
+        <p>Every undamped SMD system has a set of special frequencies at which it naturally prefers to vibrate, each with an associated shape of motion. They are found by setting damping and forcing aside and posing the generalized eigenvalue problem on the mass and stiffness matrices:</p>
+        \[\mathbf{K}\boldsymbol{\phi} = \omega^2\,\mathbf{M}\boldsymbol{\phi}\]
+        <p>Here \(\omega\) is a natural frequency and \(\boldsymbol{\phi}\) its mode shape — the relative amplitudes of the masses when the system oscillates purely at that frequency. SciPy solves this directly with <code>eigh</code>, which is built for symmetric matrix pairs like \(\mathbf{K}\) and \(\mathbf{M}\):</p>
+        <p class="art-code-label">Python</p>
+        <code class="art-code">from scipy.linalg import eigh
+import numpy as np
+
+omega_squared, Phi = eigh(K, M)
+
+omega   = np.sqrt(omega_squared)
+freq_hz = omega / (2 * np.pi)</code>
+
+        <p>For the parameter values used above, the two natural frequencies are</p>
+        \[\omega_1 = 7.81\ \text{rad/s}\ (1.24\ \text{Hz}), \qquad \omega_2 = 12.81\ \text{rad/s}\ (2.04\ \text{Hz})\]
+        <p>and the corresponding mode shapes, normalized so that mass 1 has unit amplitude, are</p>
+        \[\boldsymbol{\phi}_1 = \begin{bmatrix} 1 \\ 1.78 \end{bmatrix}, \qquad \boldsymbol{\phi}_2 = \begin{bmatrix} 1 \\ -0.28 \end{bmatrix}\]
+        <p>The first mode is in-phase — both masses move in the same direction, with mass 2 swinging further. The second mode is out-of-phase — the masses move in opposite directions. Any free motion of the system, like the perturbation simulated earlier, is just a blend of these two modes.</p>
+
+        <div class="note block">
+          <h3>Note</h3>
+          <p>A 2DoF system has exactly two natural frequencies and two mode shapes — one pair per degree of freedom. An <em>N</em>-DoF system has <em>N</em> of each.</p>
+        </div>
       </section>
     </article>
 
@@ -707,6 +789,39 @@ function solve2DoF(m1, m2, k1, k2, k3, c1, c2, c3, x1_0, tMax, nSteps) {
   return data;
 }
 
+// ── 2DoF RK4 solver with time-dependent forcing ──────────────
+// Same EOM as solve2DoF, but with a forcing(t) -> [F1, F2] applied
+// and starting from rest (zero displacement and velocity).
+function solve2DoFForced(m1, m2, k1, k2, k3, c1, c2, c3, forcing, tMax, nSteps) {
+  var h = tMax / nSteps;
+  var y = [0, 0, 0, 0];
+  var data = [{t: 0, x1: 0, x2: 0}];
+
+  function f(t, y) {
+    var x1 = y[0], x2 = y[1], v1 = y[2], v2 = y[3];
+    var F = forcing(t);
+    var a1 = (F[0] - (k1 + k2) * x1 + k2 * x2 - (c1 + c2) * v1 + c2 * v2) / m1;
+    var a2 = (F[1] + k2 * x1 - (k2 + k3) * x2 + c2 * v1 - (c2 + c3) * v2) / m2;
+    return [v1, v2, a1, a2];
+  }
+
+  function step(t, y, h) {
+    var k1v = f(t, y);
+    var k2v = f(t + h / 2, y.map(function(yi, i) { return yi + h / 2 * k1v[i]; }));
+    var k3v = f(t + h / 2, y.map(function(yi, i) { return yi + h / 2 * k2v[i]; }));
+    var k4v = f(t + h, y.map(function(yi, i) { return yi + h * k3v[i]; }));
+    return y.map(function(yi, i) {
+      return yi + h / 6 * (k1v[i] + 2 * k2v[i] + 2 * k3v[i] + k4v[i]);
+    });
+  }
+
+  for (var i = 0; i < nSteps; i++) {
+    y = step(i * h, y, h);
+    data.push({t: (i + 1) * h, x1: y[0], x2: y[1]});
+  }
+  return data;
+}
+
 // ── Figure 1: System diagram ──────────────────────────────────
 function drawSMDDiagram(layerId, isDark) {
   var container = document.querySelector('#' + layerId + ' .smd-diag-fig');
@@ -838,18 +953,13 @@ function drawSMDDiagram(layerId, isDark) {
   drawMass(m2L, m2R, 'm₂', 'x₂');
 }
 
-// ── Figure 2: Displacement response ──────────────────────────
-function drawSMDResponse(layerId, isDark) {
-  var container = document.querySelector('#' + layerId + ' .smd-resp-fig');
-  if (!container) return;
+// ── Displacement-response chart renderer (shared) ────────────
+function renderResponseChart(container, isDark, data, title) {
   container.innerHTML = '';
 
   var m1Col  = isDark ? '#d6ab5e' : '#8a3a13';
   var m2Col  = isDark ? '#9ab7c4' : '#3a6b86';
   var zeroCol = isDark ? 'rgba(236,226,200,0.22)' : 'rgba(28,22,16,0.18)';
-
-  // Solve 2DoF system
-  var data = solve2DoF(1.0, 2.0, 100.0, 50.0, 100.0, 2.0, 1.0, 2.0, 0.1, 10, 2000);
 
   var yAll = data.map(function(d){ return d.x1; }).concat(data.map(function(d){ return d.x2; }));
   var yMin = d3.min(yAll), yMax = d3.max(yAll);
@@ -920,7 +1030,24 @@ function drawSMDResponse(layerId, isDark) {
   // Chart title
   g.append('text').attr('class', 'panel-title')
     .attr('x', 0).attr('y', -12)
-    .text('Displacement  ·  x(t)');
+    .text(title);
+}
+
+// ── Figure 2: Free (perturbation) response ───────────────────
+function drawSMDResponse(layerId, isDark) {
+  var container = document.querySelector('#' + layerId + ' .smd-resp-fig');
+  if (!container) return;
+  var data = solve2DoF(1.0, 2.0, 100.0, 50.0, 100.0, 2.0, 1.0, 2.0, 0.1, 10, 2000);
+  renderResponseChart(container, isDark, data, 'Free response  ·  x(t)');
+}
+
+// ── Figure 3: Forced response ────────────────────────────────
+function drawSMDForced(layerId, isDark) {
+  var container = document.querySelector('#' + layerId + ' .smd-forced-fig');
+  if (!container) return;
+  var forcing = function(t) { return [10 * Math.sin(5 * t), 0]; };
+  var data = solve2DoFForced(1.0, 2.0, 100.0, 50.0, 100.0, 2.0, 1.0, 2.0, forcing, 10, 2000);
+  renderResponseChart(container, isDark, data, 'Forced response  ·  x(t)');
 }
 
 // Detect dark mode to draw correct theme for initial render
@@ -930,6 +1057,7 @@ function drawSMDResponse(layerId, isDark) {
     var isDark = (i === 1) || dark;
     drawSMDDiagram(lid, isDark);
     drawSMDResponse(lid, isDark);
+    drawSMDForced(lid, isDark);
   });
 })();
 </script>

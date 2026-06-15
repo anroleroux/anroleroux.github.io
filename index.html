@@ -9,45 +9,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;1,9..144,300;1,9..144,400&family=Inter+Tight:wght@300;400;500;600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="/home.css" />
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
-  <style>
-    /* ── Auth widget (shared by almanac + cosmos footers) ── */
-    .site-auth {
-      width: 100%;
-      margin-top: 0.8rem;
-      font-size: 0.7rem;
-      letter-spacing: 0.05em;
-      opacity: 0.6;
-    }
-    .site-auth-link {
-      background: none;
-      border: none;
-      padding: 0;
-      cursor: pointer;
-      color: inherit;
-      font: inherit;
-      font-size: inherit;
-      letter-spacing: inherit;
-      text-decoration: underline;
-      text-underline-offset: 2px;
-    }
-    .site-auth-link:hover { opacity: 0.8; }
-    .site-auth-form { display: flex; align-items: baseline; gap: 0.6rem; }
-    .site-auth-input {
-      background: none;
-      border: none;
-      border-bottom: 1px solid currentColor;
-      padding: 0 0 1px;
-      color: inherit;
-      font: inherit;
-      font-size: inherit;
-      letter-spacing: inherit;
-      width: 13rem;
-      outline: none;
-      opacity: 0.8;
-    }
-    .site-auth-input::placeholder { opacity: 0.5; }
-    .site-auth-input:focus { opacity: 1; }
-  </style>
 </head>
 <body>
 
@@ -187,6 +148,15 @@
           <div>
             <h3 class="alm-entry-title">The Beauty of <em>Motion</em></h3>
             <p class="alm-entry-desc">How stiffness, damping, and inertia govern every moving thing — and the energy flows that connect them.</p>
+          </div>
+          <div class="alm-entry-kind">article</div>
+          <div class="alm-entry-arrow">→</div>
+        </a>
+        <a class="alm-entry" href="/bm2.html">
+          <div class="alm-entry-scale">one second<strong>10⁰ s</strong></div>
+          <div>
+            <h3 class="alm-entry-title">The Beauty of Motion 2: <em>2DoF Systems</em></h3>
+            <p class="alm-entry-desc">From single-mass dynamics to coupled multi-degree-of-freedom systems — simulating real mechanical complexity.</p>
           </div>
           <div class="alm-entry-kind">article</div>
           <div class="alm-entry-arrow">→</div>
@@ -379,6 +349,12 @@
             <div class="cos-card-scale"><span>10⁰ s</span><span class="cos-card-kind">article</span></div>
             <h3 class="cos-card-title">The Beauty of <em>Motion</em></h3>
             <p class="cos-card-desc">Stiffness, damping, and inertia — the three interactions that govern every moving thing.</p>
+            <div class="cos-card-foot"><span>one second</span><span class="arrow">→</span></div>
+          </a>
+          <a class="cos-card" href="/bm2.html">
+            <div class="cos-card-scale"><span>10⁰ s</span><span class="cos-card-kind">article</span></div>
+            <h3 class="cos-card-title">The Beauty of Motion 2: <em>2DoF</em></h3>
+            <p class="cos-card-desc">Coupled multi-degree-of-freedom SMD systems — from equations of motion to simulation.</p>
             <div class="cos-card-foot"><span>one second</span><span class="arrow">→</span></div>
           </a>
           <a class="cos-card" href="/pic.html">

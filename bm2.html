@@ -1,0 +1,1124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>The Beauty of Motion 2 — Anro le Roux</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;1,9..144,300;1,9..144,400&family=Inter+Tight:wght@300;400;500;600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/home.css" />
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+  <style>
+    /* ── Auth widget ──────────────────────────────────────────────────── */
+    .site-auth { width: 100%; margin-top: 0.8rem; font-size: 0.7rem; letter-spacing: 0.05em; opacity: 0.6; }
+    .site-auth-link { background: none; border: none; padding: 0; cursor: pointer; color: inherit; font: inherit; font-size: inherit; letter-spacing: inherit; text-decoration: underline; text-underline-offset: 2px; }
+    .site-auth-link:hover { opacity: 0.8; }
+    .site-auth-form { display: flex; align-items: baseline; gap: 0.6rem; }
+    .site-auth-input { background: none; border: none; border-bottom: 1px solid currentColor; padding: 0 0 1px; color: inherit; font: inherit; font-size: inherit; letter-spacing: inherit; width: 13rem; outline: none; opacity: 0.8; }
+    .site-auth-input::placeholder { opacity: 0.5; }
+    .site-auth-input:focus { opacity: 1; }
+
+    /* ── Nav brand as link ────────────────────────────────────────────── */
+    a.alm-brand, a.cos-brand { text-decoration: none; color: inherit; }
+
+    /* ── Article hero ─────────────────────────────────────────────────── */
+    .art-hero { padding: var(--ms6) var(--ms6) var(--ms5); border-bottom: 1px solid var(--rule); }
+    .art-eyebrow { font-family: var(--mono); font-size: var(--ts11); letter-spacing: 1.4px; text-transform: uppercase; color: var(--ink-faint); margin-bottom: var(--ms2); }
+    .art-h1 { font-family: var(--serif); font-weight: 400; font-size: var(--ts56); line-height: 1.05; letter-spacing: -0.02em; margin: 0 0 var(--ms1); max-width: 20ch; }
+    .art-h1 em { font-style: italic; color: var(--accent); }
+    .art-lede { font-family: var(--serif); font-size: var(--ts22); line-height: 1.45; color: var(--ink-muted); max-width: 44ch; margin: 0; font-weight: 400; }
+
+    /* ── Article meta bar ─────────────────────────────────────────────── */
+    .art-meta-bar { display: flex; gap: var(--ms5); align-items: baseline; padding: var(--ms1) var(--ms6); border-bottom: 1px solid var(--rule); font-family: var(--mono); font-size: var(--ts11); letter-spacing: 0.8px; color: var(--ink-faint); text-transform: uppercase; }
+    .art-meta-item { display: flex; gap: var(--ms-2); align-items: baseline; }
+    .art-meta-val { color: var(--ink-muted); font-variant-numeric: tabular-nums; }
+
+    /* ── Article TOC ──────────────────────────────────────────────────── */
+    .art-toc { padding: var(--ms2) var(--ms6); border-bottom: 1px solid var(--rule); }
+    .art-toc ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: var(--ms-2); }
+    .art-toc li { font-family: var(--mono); font-size: var(--ts11); letter-spacing: 0.6px; }
+    .art-toc a { color: var(--ink-faint); text-decoration: none; }
+    .art-toc a:hover { color: var(--accent); }
+
+    /* ── Article body ─────────────────────────────────────────────────── */
+    .art-body section { padding: var(--ms5) var(--ms6); border-top: 1px solid var(--rule); }
+    .art-body section:first-child { padding-top: var(--ms6); }
+    .art-body h2 { font-family: var(--serif); font-weight: 400; font-size: var(--ts36); line-height: 1.1; letter-spacing: -0.01em; margin: 0 0 var(--ms3); color: var(--ink); }
+    .art-body h3 { font-family: var(--serif); font-weight: 400; font-size: var(--ts24); line-height: 1.2; margin: var(--ms3) 0 var(--ms2); color: var(--ink); }
+    .art-body p { font-family: var(--sans); font-size: var(--ts15); line-height: 1.75; color: var(--ink-muted); max-width: 66ch; margin: 0 0 var(--ms0); }
+    .art-body a { color: var(--accent); text-decoration: none; border-bottom: 1px solid rgba(138,58,19,0.3); }
+    .art-body a:hover { border-bottom-color: var(--accent); }
+    .art-body ul { font-family: var(--sans); font-size: var(--ts15); line-height: 1.75; color: var(--ink-muted); max-width: 66ch; margin: 0 0 var(--ms0); padding-left: 1.6em; }
+    .numbering { margin-right: 0.4ch; }
+
+    /* ── Note block ───────────────────────────────────────────────────── */
+    .note.block { border-left: 2px solid var(--accent); padding: var(--ms1) var(--ms3); margin: var(--ms3) 0; background: rgba(28,22,16,0.03); max-width: 66ch; }
+    .note.block h3 { font-family: var(--mono); font-size: var(--ts11); letter-spacing: 1.4px; text-transform: uppercase; color: var(--accent); margin: 0 0 var(--ms-1); font-weight: 500; }
+    .note.block p { font-size: var(--ts14); margin: 0; }
+
+    /* ── Insight block ────────────────────────────────────────────────── */
+    .insight.block { border-left: 2px solid var(--accent); padding: var(--ms1) var(--ms3); margin: var(--ms3) 0; background: rgba(28,22,16,0.03); max-width: 66ch; }
+    .insight.block h3 { font-family: var(--mono); font-size: var(--ts11); letter-spacing: 1.4px; text-transform: uppercase; color: var(--accent); margin: 0 0 var(--ms-1); font-weight: 500; }
+    .insight.block p { font-size: var(--ts14); margin: 0 0 var(--ms-2); }
+    .insight.block p:last-child { margin: 0; }
+
+    /* ── Figure / D3 chart ────────────────────────────────────────────── */
+    .art-fig { margin: var(--ms3) 0; max-width: 66ch; }
+    .charta svg { display: block; width: 100%; height: auto; }
+    .charta .axis-label { fill: var(--ink-muted); font-family: var(--sans); font-size: 12px; }
+    .charta .panel-title { fill: var(--ink); font-family: var(--mono); font-size: 11px; letter-spacing: 0.6px; text-transform: uppercase; }
+    .charta .tick text { fill: var(--ink-faint); font-family: var(--mono); font-size: 10px; }
+    .charta .tick line, .charta .domain { stroke: var(--rule); }
+    .figure-numbering { margin: var(--ms1) 0 0; }
+    .figure-numbering p { font-family: var(--mono); font-size: var(--ts13); color: var(--ink-faint); margin: 0; line-height: 1.5; max-width: 60ch; }
+
+    /* ── Code blocks ──────────────────────────────────────────────────── */
+    .art-code-label { font-family: var(--mono); font-size: var(--ts11); letter-spacing: 1.2px; text-transform: uppercase; color: var(--ink-faint); margin: var(--ms3) 0 var(--ms-2); }
+    .art-code { background: rgba(28,22,16,0.04); border: 1px solid var(--rule); border-radius: 2px; padding: var(--ms1) var(--ms3); margin: 0 0 var(--ms2); font-family: var(--mono); font-size: var(--ts13); line-height: 1.7; color: var(--ink-muted); overflow-x: auto; max-width: 66ch; white-space: pre; display: block; }
+
+    /* ── Cosmos overrides ─────────────────────────────────────────────── */
+    .cos-root .art-hero { border-bottom-color: var(--bone-fainter); }
+    .cos-root .art-eyebrow { color: var(--gold-soft); }
+    .cos-root .art-h1 { font-family: var(--display); font-weight: 300; color: var(--bone); }
+    .cos-root .art-h1 em { color: var(--gold); }
+    .cos-root .art-lede { color: var(--bone-muted); font-family: var(--display); }
+    .cos-root .art-meta-bar { border-bottom-color: var(--bone-fainter); color: var(--bone-faint); }
+    .cos-root .art-meta-val { color: var(--bone-muted); }
+    .cos-root .art-toc { border-bottom-color: var(--bone-fainter); }
+    .cos-root .art-toc a { color: var(--bone-faint); }
+    .cos-root .art-toc a:hover { color: var(--gold); }
+    .cos-root .art-body section { border-top-color: var(--bone-fainter); }
+    .cos-root .art-body h2 { font-family: var(--display); font-weight: 300; color: var(--bone); }
+    .cos-root .art-body h3 { font-family: var(--display); font-weight: 300; color: var(--bone); }
+    .cos-root .art-body p { color: var(--bone-muted); }
+    .cos-root .art-body a { color: var(--gold); border-bottom-color: rgba(214,171,94,0.3); }
+    .cos-root .art-body a:hover { border-bottom-color: var(--gold); }
+    .cos-root .art-body ul { color: var(--bone-muted); }
+    .cos-root .note.block { border-left-color: var(--gold); background: rgba(214,171,94,0.04); }
+    .cos-root .note.block h3 { color: var(--gold); }
+    .cos-root .insight.block { border-left-color: var(--gold); background: rgba(214,171,94,0.04); }
+    .cos-root .insight.block h3 { color: var(--gold); }
+    .cos-root .charta .axis-label { fill: var(--bone-muted); }
+    .cos-root .charta .panel-title { fill: var(--bone); }
+    .cos-root .charta .tick text { fill: var(--bone-faint); }
+    .cos-root .charta .tick line, .cos-root .charta .domain { stroke: var(--bone-fainter); }
+    .cos-root .figure-numbering p { color: var(--bone-faint); }
+    .cos-root .art-code-label { color: var(--bone-faint); }
+    .cos-root .art-code { background: rgba(236,226,200,0.06); border-color: var(--bone-fainter); color: var(--bone-muted); }
+
+    /* ── Responsive ───────────────────────────────────────────────────── */
+    @media (max-width: 800px) {
+      .art-hero { padding: var(--ms4) var(--ms1) var(--ms3); }
+      .art-h1 { font-size: var(--ts36); }
+      .art-lede { font-size: var(--ts18); }
+      .art-meta-bar { padding: var(--ms1) var(--ms1); flex-wrap: wrap; gap: var(--ms2); }
+      .art-toc { padding: var(--ms2) var(--ms1); }
+      .art-body section { padding: var(--ms3) var(--ms1); }
+    }
+  </style>
+</head>
+<body>
+
+<button id="sp-restore" class="day" title="Show sun panel">☀</button>
+
+<div id="sun-panel" class="day">
+  <div class="sp-header">
+    <span class="sp-label">sun · live</span>
+    <span class="sp-phase" id="sp-phase">day</span>
+    <button id="sp-hide-btn" title="Hide sun panel">×</button>
+  </div>
+  <svg id="sp-horizon" viewBox="0 0 220 70" style="width:100%;height:70px;display:block;margin-bottom:10px">
+    <line id="sp-hline" x1="0" y1="50" x2="220" y2="50" stroke-width="0.5" />
+    <path id="sp-arc" d="M 30 50 Q 110 5 190 50" fill="none" stroke-width="0.5" opacity="0.4" stroke-dasharray="2 3" />
+    <circle id="sp-sun" cx="110" cy="30" r="6" />
+    <text id="sp-rise" x="30" y="64" font-size="8" text-anchor="middle" font-family="inherit">rise</text>
+    <text id="sp-set"  x="190" y="64" font-size="8" text-anchor="middle" font-family="inherit">set</text>
+  </svg>
+  <div class="sp-row"><span class="sp-row-label">elevation</span><span class="sp-row-val" id="sp-elev">0.0°</span></div>
+  <div class="sp-row"><span class="sp-row-label">local time</span><span class="sp-row-val" id="sp-time">00:00</span></div>
+  <div class="sp-row" style="align-items:baseline"><span class="sp-row-label">location</span><span class="sp-row-val" id="sp-loc" style="text-align:right;max-width:160px;font-size:10px">detecting…</span></div>
+  <div class="sp-row"><span class="sp-row-label">night mix</span><span class="sp-row-val" id="sp-mix">0%</span></div>
+  <div class="sp-scrub" id="sp-scrub-wrap">
+    <div class="sp-scrub-header">
+      <span class="sp-scrub-label">scrub 24h</span>
+      <button class="sp-scrub-btn" id="sp-live-btn">live</button>
+    </div>
+    <input type="range" min="0" max="24" step="0.05" id="sp-slider" />
+    <div class="sp-ticks"><span>00</span><span>06</span><span>12</span><span>18</span><span>24</span></div>
+  </div>
+  <div class="sp-mode-row" id="sp-mode-wrap">
+    <span class="sp-scrub-label">mode</span>
+    <button class="sp-scrub-btn" id="sp-mode-btn">auto</button>
+  </div>
+</div>
+
+<div id="live-wrapper">
+
+  <!-- ── ALMANAC (day) ─────────────────────────────────────────── -->
+  <div id="alm-layer" class="alm-root">
+
+    <nav class="alm-nav">
+      <a class="alm-brand" href="/">A·lR</a>
+      <div class="alm-edition">
+        <span id="alm-date"></span>
+      </div>
+    </nav>
+
+    <header class="art-hero">
+      <div class="art-eyebrow">§ work · engineering</div>
+      <h1 class="art-h1">The Beauty of Motion <em>2</em></h1>
+      <p class="art-lede">From single-mass dynamics to coupled multi-degree-of-freedom systems — the first step into real mechanical complexity.</p>
+    </header>
+
+    <div class="art-meta-bar">
+      <div class="art-meta-item">
+        <span>published</span>
+        <span class="art-meta-val">2026-06-15</span>
+      </div>
+      <div class="art-meta-item">
+        <span>version</span>
+        <span class="art-meta-val">v0.1.0</span>
+      </div>
+    </div>
+
+    <nav class="art-toc" id="alm-article-index"><ul></ul></nav>
+
+    <article class="art-body">
+      <section>
+        <p>As seen in <a href="/bom2.html">the previous article</a> in this series, everything is a continuous multi-DoF SMD system. However, practical engineering models are usually built by isolating the prominent masses of a structure and identifying the springs and dampers that connect them. This approach — replacing a continuous system with a finite number of discrete masses, springs, and dampers — is called a lumped SMD model.</p>
+      </section>
+      <section>
+        <h2>A Simple Horizontal 2DoF SMD System</h2>
+        <p>To demonstrate the power of simulating SMD systems, consider two masses sliding horizontally on a frictionless surface, each constrained by springs and dampers. Because there are two masses each free to move in one direction, the system has two degrees of freedom — a 2DoF system.</p>
+
+        <div class="art-fig"><div class="charta smd-diag-fig"></div></div>
+        <div class="figure-numbering" data-fig="smd-diag"><p>A horizontally sliding 2-mass (2DoF) SMD system constrained on both sides. The masses are assumed to slide without friction.</p></div>
+
+        <h3>The Model</h3>
+        <p>Applying Newton's second law \(F = ma\) to each mass and summing all forces gives the equations of motion. For mass 1, three forces act: the wall spring and damper on the left, and the shared spring and damper coupling it to mass 2. Taking rightward displacement as positive:</p>
+        \[m_1\ddot{x}_1 = -k_1 x_1 - c_1\dot{x}_1 - k_2(x_1 - x_2) - c_2(\dot{x}_1 - \dot{x}_2)\]
+        <p>Collecting terms by kinematic quantity:</p>
+        \[m_1\ddot{x}_1 + (c_1 + c_2)\dot{x}_1 - c_2\dot{x}_2 + (k_1 + k_2)x_1 - k_2 x_2 = 0\]
+        <p>For mass 2, the shared coupling element pulls it toward mass 1 while the right-side spring and damper restore it toward the fixed wall:</p>
+        \[m_2\ddot{x}_2 = k_2(x_1 - x_2) + c_2(\dot{x}_1 - \dot{x}_2) - k_3 x_2 - c_3\dot{x}_2\]
+        <p>Collecting terms:</p>
+        \[m_2\ddot{x}_2 - c_2\dot{x}_1 + (c_2 + c_3)\dot{x}_2 - k_2 x_1 + (k_2 + k_3)x_2 = 0\]
+
+        <p>These two equations take the same compact matrix form as the single-DoF system from the previous article:</p>
+        \[\mathbf{M}\ddot{\mathbf{x}} + \mathbf{C}\dot{\mathbf{x}} + \mathbf{K}\mathbf{x} = \mathbf{F}\]
+        <p>where the mass, damping, and stiffness matrices are</p>
+        \[\mathbf{M} = \begin{bmatrix} m_1 & 0 \\ 0 & m_2 \end{bmatrix}, \quad \mathbf{C} = \begin{bmatrix} c_1+c_2 & -c_2 \\ -c_2 & c_2+c_3 \end{bmatrix}, \quad \mathbf{K} = \begin{bmatrix} k_1+k_2 & -k_2 \\ -k_2 & k_2+k_3 \end{bmatrix}\]
+
+        <div class="note block">
+          <h3>Note</h3>
+          <p>The off-diagonal terms in \(\mathbf{C}\) and \(\mathbf{K}\) are negative and equal to the shared element values. They encode the coupling: a positive displacement of mass 1 produces a restoring force on mass 1 and an attractive force on mass 2.</p>
+        </div>
+
+        <p>In Python, the matrices are constructed directly from the system parameters:</p>
+        <p class="art-code-label">Python</p>
+        <code class="art-code">m1 = 1.0
+m2 = 2.0
+
+k1 = 100.0
+k2 = 50.0
+k3 = 100.0
+
+c1 = 2.0
+c2 = 1.0
+c3 = 2.0
+
+M = np.array([
+    [m1,      0 ],
+    [0,       m2]
+])
+
+C = np.array([
+    [c1 + c2, -c2      ],
+    [-c2,     c2 + c3  ]
+])
+
+K = np.array([
+    [k1 + k2, -k2      ],
+    [-k2,     k2 + k3  ]
+])</code>
+
+        <h3>Simulating Perturbation</h3>
+        <p>The first scenario is a free response: mass 1 is pulled slightly aside, held while everything is still, then released. The initial conditions set mass 1 displaced by 0.1 units while everything else starts from rest:</p>
+        <p class="art-code-label">Python</p>
+        <code class="art-code">y0 = np.array([0.1, 0.0, 0.0, 0.0])</code>
+
+        <p>The state vector \(\mathbf{y} = [x_1,\, x_2,\, \dot{x}_1,\, \dot{x}_2]\) is integrated over 10 seconds using SciPy's <code>solve_ivp</code>:</p>
+        <p class="art-code-label">Python</p>
+        <code class="art-code">t_eval = np.linspace(0, 10, 1000)
+
+sol = solve_ivp(
+    fun=lambda t, y: eom(t, y, M, C, K),
+    t_span=(0, 10),
+    y0=y0,
+    t_eval=t_eval
+)</code>
+
+        <p>The equation-of-motion function rearranges the matrix form to isolate the acceleration vector:</p>
+        <p class="art-code-label">Python</p>
+        <code class="art-code">import numpy as np
+from scipy.integrate import solve_ivp
+
+def eom(t, y, M, C, K):
+    x = y[0:2]
+    v = y[2:4]
+
+    f = np.array([0.0, 0.0])  # no external forcing
+
+    a = np.linalg.solve(M, f - C @ v - K @ x)
+
+    return np.hstack((v, a))</code>
+
+        <p>The key line evaluates</p>
+        \[\ddot{\mathbf{x}} = \mathbf{M}^{-1}(\mathbf{F} - \mathbf{C}\dot{\mathbf{x}} - \mathbf{K}\mathbf{x})\]
+        <p>by solving the linear system \(\mathbf{M}\ddot{\mathbf{x}} = \mathbf{F} - \mathbf{C}\dot{\mathbf{x}} - \mathbf{K}\mathbf{x}\) directly — passing \(\mathbf{M}\) separately avoids the numerical cost of explicitly inverting it.</p>
+
+        <div class="art-fig"><div class="charta smd-resp-fig"></div></div>
+        <div class="figure-numbering" data-fig="smd-resp"><p>Displacement of both masses over time with mass 1 starting at 0.1 and mass 2 at rest. The coupling transfers energy between the masses while damping dissipates it until both settle back to equilibrium.</p></div>
+
+        <p>The graph confirms the initial conditions: mass 1 begins at 0.1 and mass 2 at zero, both with zero velocity — shown by the horizontal tangent of each curve at t = 0. The shared spring and damper couple the two masses so that energy displaced into mass 1 is gradually transferred to mass 2. Both masses oscillate at a blend of the two natural frequencies of the system, and damping steadily drains the energy until both return to rest.</p>
+
+        <h3>Forced Vibration</h3>
+        <p>When a steady oscillating force is applied to the system, it never fully settles — even with damping present, the input keeps feeding energy in. To isolate this behaviour the system now starts from rest, with zero displacement and zero velocity:</p>
+        <p class="art-code-label">Python</p>
+        <code class="art-code">y0 = np.array([0.0, 0.0, 0.0, 0.0])</code>
+
+        <p>A sinusoidal force is applied to mass 1 alone by replacing the zero forcing vector inside <code>eom</code> with a time-dependent one:</p>
+        <p class="art-code-label">Python</p>
+        <code class="art-code">f = np.array([10.0 * np.sin(5.0 * t), 0.0])</code>
+        <p>This drives mass 1 with an amplitude of 10 at an angular frequency of 5 rad/s — about \(5/2\pi \approx 0.80\) Hz. Note that the forcing now depends on \(t\), so the time argument already passed to <code>eom</code> is finally put to use.</p>
+
+        <div class="art-fig"><div class="charta smd-forced-fig"></div></div>
+        <div class="figure-numbering" data-fig="smd-forced"><p>Displacement of both masses with a 5 rad/s (≈0.80 Hz) sinusoidal force applied to mass 1, starting from rest.</p></div>
+
+        <p>The response shows mass 1 reacting to the force first while mass 2 lags behind, dragged along through the shared spring and damper. After the initial transient dies away, both masses settle into a steady-state oscillation at the driving frequency, moving together in the same direction. The natural question is what happens as the driving frequency changes — and that is where the natural frequencies provide great insight.</p>
+
+        <h3>Natural Frequencies and Mode Shapes</h3>
+        <p>Every undamped SMD system has a set of special frequencies at which it naturally prefers to vibrate, each with an associated shape of motion. They are found by setting damping and forcing aside and posing the generalized eigenvalue problem on the mass and stiffness matrices:</p>
+        \[\mathbf{K}\boldsymbol{\phi} = \omega^2\,\mathbf{M}\boldsymbol{\phi}\]
+        <p>Here \(\omega\) is a natural frequency and \(\boldsymbol{\phi}\) its mode shape — the relative amplitudes of the masses when the system oscillates purely at that frequency. SciPy solves this directly with <code>eigh</code>, which is built for symmetric matrix pairs like \(\mathbf{K}\) and \(\mathbf{M}\):</p>
+        <p class="art-code-label">Python</p>
+        <code class="art-code">from scipy.linalg import eigh
+import numpy as np
+
+omega_squared, Phi = eigh(K, M)
+
+omega   = np.sqrt(omega_squared)
+freq_hz = omega / (2 * np.pi)</code>
+
+        <p>For the parameter values used above, the two natural frequencies are</p>
+        \[\omega_1 = 7.81\ \text{rad/s}\ (1.24\ \text{Hz}), \qquad \omega_2 = 12.81\ \text{rad/s}\ (2.04\ \text{Hz})\]
+        <p>and the corresponding mode shapes, normalized so that mass 1 has unit amplitude, are</p>
+        \[\boldsymbol{\phi}_1 = \begin{bmatrix} 1 \\ 1.78 \end{bmatrix}, \qquad \boldsymbol{\phi}_2 = \begin{bmatrix} 1 \\ -0.28 \end{bmatrix}\]
+        <p>The first mode is in-phase — both masses move in the same direction, with mass 2 swinging further. The second mode is out-of-phase — the masses move in opposite directions. Any free motion of the system, like the perturbation simulated earlier, is just a blend of these two modes.</p>
+
+        <div class="note block">
+          <h3>Note</h3>
+          <p>A 2DoF system has exactly two natural frequencies and two mode shapes — one pair per degree of freedom. An <em>N</em>-DoF system has <em>N</em> of each.</p>
+        </div>
+      </section>
+    </article>
+
+    <footer class="alm-foot">
+      <div>© <span id="alm-year"></span> Anro le Roux</div>
+      <div class="alm-foot-mark">A·lR</div>
+      <div class="alm-foot-links">
+        <a href="https://linkedin.com/in/anroleroux" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="https://github.com/anroleroux" target="_blank" rel="noopener">GitHub</a>
+      </div>
+      <div class="site-auth" id="alm-auth"></div>
+    </footer>
+
+  </div><!-- /alm-layer -->
+
+  <!-- ── COSMOS (night) ────────────────────────────────────────── -->
+  <div id="cos-layer" class="cos-root">
+
+    <svg class="cos-stars" viewBox="0 0 1440 2400" preserveAspectRatio="none" aria-hidden="true"></svg>
+
+    <nav class="cos-nav">
+      <a class="cos-brand" href="/">A · lR</a>
+      <div class="cos-nav-right">
+        <span id="cos-date"></span>
+      </div>
+    </nav>
+
+    <header class="art-hero">
+      <div class="art-eyebrow">§ work · engineering</div>
+      <h1 class="art-h1">The Beauty of Motion <em>2</em></h1>
+      <p class="art-lede">From single-mass dynamics to coupled multi-degree-of-freedom systems — the first step into real mechanical complexity.</p>
+    </header>
+
+    <div class="art-meta-bar">
+      <div class="art-meta-item">
+        <span>published</span>
+        <span class="art-meta-val">2026-06-15</span>
+      </div>
+      <div class="art-meta-item">
+        <span>version</span>
+        <span class="art-meta-val">v0.1.0</span>
+      </div>
+    </div>
+
+    <nav class="art-toc" id="cos-article-index"><ul></ul></nav>
+
+    <article class="art-body">
+      <section>
+        <p>As seen in <a href="/bom2.html">the previous article</a> in this series, everything is a continuous multi-DoF SMD system. However, practical engineering models are usually built by isolating the prominent masses of a structure and identifying the springs and dampers that connect them. This approach — replacing a continuous system with a finite number of discrete masses, springs, and dampers — is called a lumped SMD model.</p>
+      </section>
+      <section>
+        <h2>A Simple Horizontal 2DoF SMD System</h2>
+        <p>To demonstrate the power of simulating SMD systems, consider two masses sliding horizontally on a frictionless surface, each constrained by springs and dampers. Because there are two masses each free to move in one direction, the system has two degrees of freedom — a 2DoF system.</p>
+
+        <div class="art-fig"><div class="charta smd-diag-fig"></div></div>
+        <div class="figure-numbering" data-fig="smd-diag"><p>A horizontally sliding 2-mass (2DoF) SMD system constrained on both sides. The masses are assumed to slide without friction.</p></div>
+
+        <h3>The Model</h3>
+        <p>Applying Newton's second law \(F = ma\) to each mass and summing all forces gives the equations of motion. For mass 1, three forces act: the wall spring and damper on the left, and the shared spring and damper coupling it to mass 2. Taking rightward displacement as positive:</p>
+        \[m_1\ddot{x}_1 = -k_1 x_1 - c_1\dot{x}_1 - k_2(x_1 - x_2) - c_2(\dot{x}_1 - \dot{x}_2)\]
+        <p>Collecting terms by kinematic quantity:</p>
+        \[m_1\ddot{x}_1 + (c_1 + c_2)\dot{x}_1 - c_2\dot{x}_2 + (k_1 + k_2)x_1 - k_2 x_2 = 0\]
+        <p>For mass 2, the shared coupling element pulls it toward mass 1 while the right-side spring and damper restore it toward the fixed wall:</p>
+        \[m_2\ddot{x}_2 = k_2(x_1 - x_2) + c_2(\dot{x}_1 - \dot{x}_2) - k_3 x_2 - c_3\dot{x}_2\]
+        <p>Collecting terms:</p>
+        \[m_2\ddot{x}_2 - c_2\dot{x}_1 + (c_2 + c_3)\dot{x}_2 - k_2 x_1 + (k_2 + k_3)x_2 = 0\]
+
+        <p>These two equations take the same compact matrix form as the single-DoF system from the previous article:</p>
+        \[\mathbf{M}\ddot{\mathbf{x}} + \mathbf{C}\dot{\mathbf{x}} + \mathbf{K}\mathbf{x} = \mathbf{F}\]
+        <p>where the mass, damping, and stiffness matrices are</p>
+        \[\mathbf{M} = \begin{bmatrix} m_1 & 0 \\ 0 & m_2 \end{bmatrix}, \quad \mathbf{C} = \begin{bmatrix} c_1+c_2 & -c_2 \\ -c_2 & c_2+c_3 \end{bmatrix}, \quad \mathbf{K} = \begin{bmatrix} k_1+k_2 & -k_2 \\ -k_2 & k_2+k_3 \end{bmatrix}\]
+
+        <div class="note block">
+          <h3>Note</h3>
+          <p>The off-diagonal terms in \(\mathbf{C}\) and \(\mathbf{K}\) are negative and equal to the shared element values. They encode the coupling: a positive displacement of mass 1 produces a restoring force on mass 1 and an attractive force on mass 2.</p>
+        </div>
+
+        <p>In Python, the matrices are constructed directly from the system parameters:</p>
+        <p class="art-code-label">Python</p>
+        <code class="art-code">m1 = 1.0
+m2 = 2.0
+
+k1 = 100.0
+k2 = 50.0
+k3 = 100.0
+
+c1 = 2.0
+c2 = 1.0
+c3 = 2.0
+
+M = np.array([
+    [m1,      0 ],
+    [0,       m2]
+])
+
+C = np.array([
+    [c1 + c2, -c2      ],
+    [-c2,     c2 + c3  ]
+])
+
+K = np.array([
+    [k1 + k2, -k2      ],
+    [-k2,     k2 + k3  ]
+])</code>
+
+        <h3>Simulating Perturbation</h3>
+        <p>The first scenario is a free response: mass 1 is pulled slightly aside, held while everything is still, then released. The initial conditions set mass 1 displaced by 0.1 units while everything else starts from rest:</p>
+        <p class="art-code-label">Python</p>
+        <code class="art-code">y0 = np.array([0.1, 0.0, 0.0, 0.0])</code>
+
+        <p>The state vector \(\mathbf{y} = [x_1,\, x_2,\, \dot{x}_1,\, \dot{x}_2]\) is integrated over 10 seconds using SciPy's <code>solve_ivp</code>:</p>
+        <p class="art-code-label">Python</p>
+        <code class="art-code">t_eval = np.linspace(0, 10, 1000)
+
+sol = solve_ivp(
+    fun=lambda t, y: eom(t, y, M, C, K),
+    t_span=(0, 10),
+    y0=y0,
+    t_eval=t_eval
+)</code>
+
+        <p>The equation-of-motion function rearranges the matrix form to isolate the acceleration vector:</p>
+        <p class="art-code-label">Python</p>
+        <code class="art-code">import numpy as np
+from scipy.integrate import solve_ivp
+
+def eom(t, y, M, C, K):
+    x = y[0:2]
+    v = y[2:4]
+
+    f = np.array([0.0, 0.0])  # no external forcing
+
+    a = np.linalg.solve(M, f - C @ v - K @ x)
+
+    return np.hstack((v, a))</code>
+
+        <p>The key line evaluates</p>
+        \[\ddot{\mathbf{x}} = \mathbf{M}^{-1}(\mathbf{F} - \mathbf{C}\dot{\mathbf{x}} - \mathbf{K}\mathbf{x})\]
+        <p>by solving the linear system \(\mathbf{M}\ddot{\mathbf{x}} = \mathbf{F} - \mathbf{C}\dot{\mathbf{x}} - \mathbf{K}\mathbf{x}\) directly — passing \(\mathbf{M}\) separately avoids the numerical cost of explicitly inverting it.</p>
+
+        <div class="art-fig"><div class="charta smd-resp-fig"></div></div>
+        <div class="figure-numbering" data-fig="smd-resp"><p>Displacement of both masses over time with mass 1 starting at 0.1 and mass 2 at rest. The coupling transfers energy between the masses while damping dissipates it until both settle back to equilibrium.</p></div>
+
+        <p>The graph confirms the initial conditions: mass 1 begins at 0.1 and mass 2 at zero, both with zero velocity — shown by the horizontal tangent of each curve at t = 0. The shared spring and damper couple the two masses so that energy displaced into mass 1 is gradually transferred to mass 2. Both masses oscillate at a blend of the two natural frequencies of the system, and damping steadily drains the energy until both return to rest.</p>
+
+        <h3>Forced Vibration</h3>
+        <p>When a steady oscillating force is applied to the system, it never fully settles — even with damping present, the input keeps feeding energy in. To isolate this behaviour the system now starts from rest, with zero displacement and zero velocity:</p>
+        <p class="art-code-label">Python</p>
+        <code class="art-code">y0 = np.array([0.0, 0.0, 0.0, 0.0])</code>
+
+        <p>A sinusoidal force is applied to mass 1 alone by replacing the zero forcing vector inside <code>eom</code> with a time-dependent one:</p>
+        <p class="art-code-label">Python</p>
+        <code class="art-code">f = np.array([10.0 * np.sin(5.0 * t), 0.0])</code>
+        <p>This drives mass 1 with an amplitude of 10 at an angular frequency of 5 rad/s — about \(5/2\pi \approx 0.80\) Hz. Note that the forcing now depends on \(t\), so the time argument already passed to <code>eom</code> is finally put to use.</p>
+
+        <div class="art-fig"><div class="charta smd-forced-fig"></div></div>
+        <div class="figure-numbering" data-fig="smd-forced"><p>Displacement of both masses with a 5 rad/s (≈0.80 Hz) sinusoidal force applied to mass 1, starting from rest.</p></div>
+
+        <p>The response shows mass 1 reacting to the force first while mass 2 lags behind, dragged along through the shared spring and damper. After the initial transient dies away, both masses settle into a steady-state oscillation at the driving frequency, moving together in the same direction. The natural question is what happens as the driving frequency changes — and that is where the natural frequencies provide great insight.</p>
+
+        <h3>Natural Frequencies and Mode Shapes</h3>
+        <p>Every undamped SMD system has a set of special frequencies at which it naturally prefers to vibrate, each with an associated shape of motion. They are found by setting damping and forcing aside and posing the generalized eigenvalue problem on the mass and stiffness matrices:</p>
+        \[\mathbf{K}\boldsymbol{\phi} = \omega^2\,\mathbf{M}\boldsymbol{\phi}\]
+        <p>Here \(\omega\) is a natural frequency and \(\boldsymbol{\phi}\) its mode shape — the relative amplitudes of the masses when the system oscillates purely at that frequency. SciPy solves this directly with <code>eigh</code>, which is built for symmetric matrix pairs like \(\mathbf{K}\) and \(\mathbf{M}\):</p>
+        <p class="art-code-label">Python</p>
+        <code class="art-code">from scipy.linalg import eigh
+import numpy as np
+
+omega_squared, Phi = eigh(K, M)
+
+omega   = np.sqrt(omega_squared)
+freq_hz = omega / (2 * np.pi)</code>
+
+        <p>For the parameter values used above, the two natural frequencies are</p>
+        \[\omega_1 = 7.81\ \text{rad/s}\ (1.24\ \text{Hz}), \qquad \omega_2 = 12.81\ \text{rad/s}\ (2.04\ \text{Hz})\]
+        <p>and the corresponding mode shapes, normalized so that mass 1 has unit amplitude, are</p>
+        \[\boldsymbol{\phi}_1 = \begin{bmatrix} 1 \\ 1.78 \end{bmatrix}, \qquad \boldsymbol{\phi}_2 = \begin{bmatrix} 1 \\ -0.28 \end{bmatrix}\]
+        <p>The first mode is in-phase — both masses move in the same direction, with mass 2 swinging further. The second mode is out-of-phase — the masses move in opposite directions. Any free motion of the system, like the perturbation simulated earlier, is just a blend of these two modes.</p>
+
+        <div class="note block">
+          <h3>Note</h3>
+          <p>A 2DoF system has exactly two natural frequencies and two mode shapes — one pair per degree of freedom. An <em>N</em>-DoF system has <em>N</em> of each.</p>
+        </div>
+      </section>
+    </article>
+
+    <footer class="cos-foot">
+      <div>© <span id="cos-year"></span> Anro le Roux</div>
+      <div class="cos-foot-mark">A · lR</div>
+      <div class="cos-foot-links">
+        <a href="https://linkedin.com/in/anroleroux" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="https://github.com/anroleroux" target="_blank" rel="noopener">GitHub</a>
+      </div>
+      <div class="site-auth" id="cos-auth"></div>
+    </footer>
+
+  </div><!-- /cos-layer -->
+
+</div><!-- /live-wrapper -->
+
+<script>
+// ── Solar math ────────────────────────────────────────────────
+function solarElevationDeg(lat, lon, now) {
+  var LAT = lat * Math.PI / 180;
+  var jan1 = Date.UTC(now.getUTCFullYear(), 0, 1);
+  var N = Math.floor((now - jan1) / 86400000) + 1;
+  var G = (2 * Math.PI / 365) * (N - 1);
+  var decl = 0.006918 - 0.399912 * Math.cos(G) + 0.070257 * Math.sin(G)
+           - 0.006758 * Math.cos(2*G) + 0.000907 * Math.sin(2*G)
+           - 0.002697 * Math.cos(3*G) - 0.00148  * Math.sin(3*G);
+  var eot  = (229.18 * (0.000075 + 0.001868 * Math.cos(G) - 0.032077 * Math.sin(G)
+           - 0.014615 * Math.cos(2*G) - 0.04089 * Math.sin(2*G))) / 60;
+  var utcH = now.getUTCHours() + now.getUTCMinutes() / 60 + now.getUTCSeconds() / 3600;
+  var solarTime = utcH + lon / 15 + eot;
+  var ha  = ((solarTime - 12) * 15) * Math.PI / 180;
+  var el  = Math.asin(Math.sin(LAT) * Math.sin(decl) + Math.cos(LAT) * Math.cos(decl) * Math.cos(ha));
+  return el * 180 / Math.PI;
+}
+function smoothstep(a, b, x) {
+  var t = Math.max(0, Math.min(1, (x - a) / (b - a)));
+  return t * t * (3 - 2 * t);
+}
+
+// ── Build starfield ───────────────────────────────────────────
+(function() {
+  var SVG_NS = 'http://www.w3.org/2000/svg';
+  var svg = document.querySelector('.cos-stars');
+  for (var i = 0; i < 90; i++) {
+    var x = (i * 137.508) % 1440;
+    var y = ((i * 73.21) + 47) % 2400;
+    var r = 0.4 + ((i * 31) % 11) / 18;
+    var o = 0.25 + ((i * 19) % 7) / 12;
+    var c = document.createElementNS(SVG_NS, 'circle');
+    c.setAttribute('cx', x.toFixed(1)); c.setAttribute('cy', y.toFixed(1));
+    c.setAttribute('r',  r.toFixed(2)); c.setAttribute('fill', '#ece2c8');
+    c.setAttribute('opacity', o.toFixed(2));
+    svg.appendChild(c);
+  }
+})();
+
+// ── State ─────────────────────────────────────────────────────
+var loc = { lat: 51.5, lon: 0, label: 'Greenwich · UK' };
+var timeOverride = null;
+var modeOverride = localStorage.getItem('sp-mode') || null;
+
+var spPhase    = document.getElementById('sp-phase');
+var spElev     = document.getElementById('sp-elev');
+var spTime     = document.getElementById('sp-time');
+var spLoc      = document.getElementById('sp-loc');
+var spMix      = document.getElementById('sp-mix');
+var spSlider   = document.getElementById('sp-slider');
+var spLiveBtn  = document.getElementById('sp-live-btn');
+var spHline    = document.getElementById('sp-hline');
+var spArc      = document.getElementById('sp-arc');
+var spSun      = document.getElementById('sp-sun');
+var spRise     = document.getElementById('sp-rise');
+var spSet      = document.getElementById('sp-set');
+var spPanel    = document.getElementById('sun-panel');
+var spScrubWrap = document.getElementById('sp-scrub-wrap');
+
+spSlider.addEventListener('input', function(e){ timeOverride = parseFloat(e.target.value); });
+spLiveBtn.addEventListener('click', function(){ timeOverride = null; });
+
+var spModeBtn = document.getElementById('sp-mode-btn');
+spModeBtn.addEventListener('click', function(){
+  if (modeOverride === null) modeOverride = 'day';
+  else if (modeOverride === 'day') modeOverride = 'night';
+  else modeOverride = null;
+  if (modeOverride) localStorage.setItem('sp-mode', modeOverride);
+  else localStorage.removeItem('sp-mode');
+  tick();
+});
+
+var spRestore = document.getElementById('sp-restore');
+document.getElementById('sp-hide-btn').addEventListener('click', function(){
+  spPanel.style.display = 'none';
+  spRestore.style.display = 'flex';
+});
+spRestore.addEventListener('click', function(){
+  spPanel.style.display = 'block';
+  spRestore.style.display = 'none';
+});
+
+function pad2(n){ return String(n).padStart(2, '0'); }
+
+function tick() {
+  var real = new Date();
+  var now;
+  if (timeOverride == null) {
+    now = real;
+    spSlider.value = real.getHours() + real.getMinutes() / 60;
+  } else {
+    now = new Date(real);
+    var h = Math.floor(timeOverride);
+    var m = Math.floor((timeOverride - h) * 60);
+    var s = Math.floor(((timeOverride - h) * 60 - m) * 60);
+    now.setHours(h, m, s, 0);
+  }
+
+  var yr  = now.getFullYear();
+  var mo  = now.toLocaleString('en', { month: 'long' });
+  var moS = now.toLocaleString('en', { month: 'short' });
+  var d   = now.getDate();
+  var hh  = pad2(now.getHours());
+  var mm  = pad2(now.getMinutes());
+
+  var elev     = solarElevationDeg(loc.lat, loc.lon, now);
+  var nightMix = 1 - smoothstep(-6, 10, elev);
+
+  var phase = elev > 10 ? 'day'
+    : elev > 0  ? 'golden hour'
+    : elev > -6 ? 'civil twilight'
+    : elev > -12 ? 'nautical twilight'
+    : 'night';
+
+  var almLayer = document.getElementById('alm-layer');
+  var cosLayer = document.getElementById('cos-layer');
+  var effectiveMix = modeOverride === 'day' ? 0 : modeOverride === 'night' ? 1 : nightMix;
+  almLayer.style.opacity = (1 - effectiveMix);
+  cosLayer.style.opacity = effectiveMix;
+  cosLayer.style.pointerEvents = effectiveMix >= 0.5 ? 'auto' : 'none';
+
+  document.getElementById('alm-date').textContent = mo + ' ' + d + ', ' + yr;
+  document.getElementById('alm-year').textContent = yr;
+  document.getElementById('cos-date').textContent = moS + ' ' + d + ' ' + yr;
+  document.getElementById('cos-year').textContent = yr;
+
+  var dark   = modeOverride === 'day' ? false : modeOverride === 'night' ? true : nightMix > 0.5;
+  var fg     = dark ? 'rgba(236,226,200,0.92)' : 'rgba(28,22,16,0.92)';
+  var fgMute = dark ? 'rgba(236,226,200,0.55)' : 'rgba(28,22,16,0.55)';
+  var accent = dark ? '#d6ab5e' : '#8a3a13';
+  var border = dark ? 'rgba(214,171,94,0.28)' : 'rgba(28,22,16,0.18)';
+
+  spPanel.className   = dark ? 'night' : 'day';
+  spRestore.className = dark ? 'night' : 'day';
+  spPhase.textContent = phase;
+  spPhase.style.color = accent;
+  spElev.textContent  = elev.toFixed(1) + '°';
+  spTime.textContent  = hh + ':' + mm;
+  spLoc.textContent   = loc.label;
+  spMix.textContent   = Math.round(nightMix * 100) + '%';
+
+  var elevC = Math.max(-30, Math.min(60, elev));
+  var sunY  = 50 - (elevC / 60) * 35;
+  spSun.setAttribute('cy', sunY.toFixed(1));
+  spSun.setAttribute('fill', dark ? '#f5d78f' : '#e0a330');
+  spSun.style.filter = dark ? 'drop-shadow(0 0 6px #f5d78f)' : 'none';
+  spHline.setAttribute('stroke', fgMute);
+  spArc.setAttribute('stroke', fgMute);
+  spRise.setAttribute('fill', fgMute);
+  spSet.setAttribute('fill', fgMute);
+
+  document.querySelectorAll('.sp-row-label, .sp-scrub-label').forEach(function(el){ el.style.color = fgMute; });
+  document.querySelectorAll('.sp-row-val, .sp-ticks span').forEach(function(el){ el.style.color = fg; });
+  spScrubWrap.style.borderTopColor = border;
+  spLiveBtn.style.borderColor = border;
+  spLiveBtn.style.color = timeOverride == null ? accent : fgMute;
+  spLiveBtn.textContent = timeOverride == null ? 'live' : 'snap to live';
+  spModeBtn.textContent = modeOverride === null ? 'auto' : modeOverride;
+  spModeBtn.style.color = modeOverride === null ? fgMute : accent;
+  spModeBtn.style.borderColor = border;
+  document.getElementById('sp-mode-wrap').style.borderTopColor = border;
+}
+
+tick();
+setInterval(tick, 1000);
+
+fetch('https://ipapi.co/json/')
+  .then(function(r){ return r.json(); })
+  .then(function(d){
+    if (!d || d.error || d.latitude == null) return;
+    var parts = [d.city, d.country_name].filter(Boolean).join(', ');
+    loc = { lat: d.latitude, lon: d.longitude, label: parts || 'detected' };
+  })
+  .catch(function(){});
+
+// ── Article TOC + section numbering ──────────────────────────
+function initArticle(p) {
+  var article = document.querySelector('#' + p + '-layer article.art-body');
+  if (!article) return;
+  var indexEl = document.getElementById(p + '-article-index');
+  var indexUl = indexEl ? indexEl.querySelector('ul') : null;
+  var h2Count = 0, h3Count = 0, insightCount = 0, figureCount = 0;
+  var refs = {};
+  function slug(str) {
+    return p + '-' + str.toLowerCase().replace(/[^a-z0-9 ]/g, '').trim().split(/\s+/).join('-');
+  }
+  article.querySelectorAll('h2, h3, .insight.block, .figure-numbering').forEach(function(el) {
+    if (el.tagName === 'H2') {
+      h2Count++; h3Count = 0;
+      var text = el.textContent;
+      var id = slug(text);
+      el.id = id;
+      el.innerHTML = '<span class="numbering">' + h2Count + '.</span>' + text;
+      if (indexUl) {
+        var li = document.createElement('li');
+        li.innerHTML = '<a href="#' + id + '">' + h2Count + '. ' + text + '</a>';
+        indexUl.appendChild(li);
+      }
+    } else if (el.tagName === 'H3' && !el.closest('.insight.block') && !el.closest('.note.block')) {
+      h3Count++;
+      var text = el.textContent;
+      var id = slug(text);
+      var num = h2Count > 0 ? h2Count + '.' + h3Count : '' + h3Count;
+      el.id = id;
+      el.innerHTML = '<span class="numbering">' + num + '</span>' + text;
+      if (indexUl && h2Count > 0) {
+        var li = document.createElement('li');
+        li.style.marginLeft = '1rem';
+        li.innerHTML = '<a href="#' + id + '">' + num + ' ' + text + '</a>';
+        indexUl.appendChild(li);
+      }
+    } else if (el.classList.contains('insight') && el.classList.contains('block')) {
+      insightCount++;
+      var h3 = el.querySelector('h3');
+      if (h3) {
+        var orig = h3.textContent.replace(/^Insight\s*\d*\s*:?\s*/i, '').trim();
+        h3.innerHTML = '<span class="numbering">Insight ' + insightCount + '</span>' + (orig ? ': ' + orig : '');
+      }
+    } else if (el.classList.contains('figure-numbering')) {
+      figureCount++;
+      var cap = el.querySelector('p');
+      if (cap) cap.innerHTML = '<span class="numbering">Figure ' + figureCount + '.</span>' + cap.textContent;
+      if (el.dataset.fig) refs[el.dataset.fig] = '' + figureCount;
+    }
+  });
+  article.querySelectorAll('.figure-number').forEach(function(el) {
+    el.textContent = refs[el.dataset.fid] || '';
+  });
+}
+
+initArticle('alm');
+initArticle('cos');
+
+// ── 2DoF RK4 solver ──────────────────────────────────────────
+// State: y = [x1, x2, v1, v2]
+// EOM: M*a = F - C*v - K*x  (M diagonal)
+function solve2DoF(m1, m2, k1, k2, k3, c1, c2, c3, x1_0, tMax, nSteps) {
+  var h = tMax / nSteps;
+  var y = [x1_0, 0, 0, 0];
+  var data = [{t: 0, x1: y[0], x2: y[1]}];
+
+  function f(y) {
+    var x1 = y[0], x2 = y[1], v1 = y[2], v2 = y[3];
+    var a1 = (-(k1 + k2) * x1 + k2 * x2 - (c1 + c2) * v1 + c2 * v2) / m1;
+    var a2 = (k2 * x1 - (k2 + k3) * x2 + c2 * v1 - (c2 + c3) * v2) / m2;
+    return [v1, v2, a1, a2];
+  }
+
+  function step(y, h) {
+    var k1v = f(y);
+    var k2v = f(y.map(function(yi, i) { return yi + h / 2 * k1v[i]; }));
+    var k3v = f(y.map(function(yi, i) { return yi + h / 2 * k2v[i]; }));
+    var k4v = f(y.map(function(yi, i) { return yi + h * k3v[i]; }));
+    return y.map(function(yi, i) {
+      return yi + h / 6 * (k1v[i] + 2 * k2v[i] + 2 * k3v[i] + k4v[i]);
+    });
+  }
+
+  for (var i = 0; i < nSteps; i++) {
+    y = step(y, h);
+    data.push({t: (i + 1) * h, x1: y[0], x2: y[1]});
+  }
+  return data;
+}
+
+// ── 2DoF RK4 solver with time-dependent forcing ──────────────
+// Same EOM as solve2DoF, but with a forcing(t) -> [F1, F2] applied
+// and starting from rest (zero displacement and velocity).
+function solve2DoFForced(m1, m2, k1, k2, k3, c1, c2, c3, forcing, tMax, nSteps) {
+  var h = tMax / nSteps;
+  var y = [0, 0, 0, 0];
+  var data = [{t: 0, x1: 0, x2: 0}];
+
+  function f(t, y) {
+    var x1 = y[0], x2 = y[1], v1 = y[2], v2 = y[3];
+    var F = forcing(t);
+    var a1 = (F[0] - (k1 + k2) * x1 + k2 * x2 - (c1 + c2) * v1 + c2 * v2) / m1;
+    var a2 = (F[1] + k2 * x1 - (k2 + k3) * x2 + c2 * v1 - (c2 + c3) * v2) / m2;
+    return [v1, v2, a1, a2];
+  }
+
+  function step(t, y, h) {
+    var k1v = f(t, y);
+    var k2v = f(t + h / 2, y.map(function(yi, i) { return yi + h / 2 * k1v[i]; }));
+    var k3v = f(t + h / 2, y.map(function(yi, i) { return yi + h / 2 * k2v[i]; }));
+    var k4v = f(t + h, y.map(function(yi, i) { return yi + h * k3v[i]; }));
+    return y.map(function(yi, i) {
+      return yi + h / 6 * (k1v[i] + 2 * k2v[i] + 2 * k3v[i] + k4v[i]);
+    });
+  }
+
+  for (var i = 0; i < nSteps; i++) {
+    y = step(i * h, y, h);
+    data.push({t: (i + 1) * h, x1: y[0], x2: y[1]});
+  }
+  return data;
+}
+
+// ── Figure 1: System diagram ──────────────────────────────────
+function drawSMDDiagram(layerId, isDark) {
+  var container = document.querySelector('#' + layerId + ' .smd-diag-fig');
+  if (!container) return;
+  container.innerHTML = '';
+
+  var inkCol   = isDark ? 'rgba(236,226,200,0.88)' : 'rgba(28,22,16,0.88)';
+  var inkMute  = isDark ? 'rgba(236,226,200,0.45)' : 'rgba(28,22,16,0.45)';
+  var accentCol = isDark ? '#d6ab5e' : '#8a3a13';
+  var fillMass = isDark ? 'rgba(200,163,93,0.12)' : 'rgba(138,58,19,0.08)';
+
+  var W = 620, H = 210;
+  var svg = d3.select(container).append('svg')
+    .attr('viewBox', '0 0 ' + W + ' ' + H)
+    .attr('preserveAspectRatio', 'xMidYMid meet');
+
+  // Layout
+  var springY = 72, damperY = 128;
+  var blockTop = 50, blockBot = 150;
+  var midY = (blockTop + blockBot) / 2;
+  var wallTop = blockTop - 12, wallBot = blockBot + 12;
+
+  var lWallR = 38;
+  var sdW    = 108;
+  var m1W    = 72, m2W = 88;
+  var m1L = lWallR + sdW;
+  var m1R = m1L + m1W;
+  var m2L = m1R + sdW;
+  var m2R = m2L + m2W;
+  var rWallL = m2R + sdW;
+
+  // ── Walls ──────────────────────────────────────────────────
+  function drawWall(xEdge, hatchDir) {
+    svg.append('line')
+      .attr('x1', xEdge).attr('y1', wallTop)
+      .attr('x2', xEdge).attr('y2', wallBot)
+      .attr('stroke', inkCol).attr('stroke-width', 2.5);
+    for (var i = 0; i < 7; i++) {
+      var hy = wallTop + (wallBot - wallTop) * i / 6;
+      svg.append('line')
+        .attr('x1', xEdge).attr('y1', hy)
+        .attr('x2', xEdge + hatchDir * 11).attr('y2', hy + 10)
+        .attr('stroke', inkMute).attr('stroke-width', 1);
+    }
+  }
+  drawWall(lWallR, -1);
+  drawWall(rWallL,  1);
+
+  // ── Spring (zigzag) ────────────────────────────────────────
+  function drawSpring(x1, x2, y) {
+    var span  = x2 - x1;
+    var lead  = span * 0.18;
+    var coilX = x1 + lead;
+    var coilE = x2 - lead;
+    var n = 6, amp = 9;
+    var pts = [[x1, y], [coilX, y]];
+    var segW = (coilE - coilX) / n;
+    for (var i = 0; i < n; i++) {
+      pts.push([coilX + (i + 0.5) * segW, y + (i % 2 === 0 ? -amp : amp)]);
+    }
+    pts.push([coilE, y]);
+    pts.push([x2, y]);
+    var line = d3.line().x(function(d){ return d[0]; }).y(function(d){ return d[1]; });
+    svg.append('path').datum(pts).attr('fill', 'none')
+      .attr('stroke', inkCol).attr('stroke-width', 1.8)
+      .attr('stroke-linejoin', 'round').attr('d', line);
+  }
+
+  // ── Damper (dashpot) ───────────────────────────────────────
+  function drawDamper(x1, x2, y) {
+    var cx = (x1 + x2) / 2;
+    var bW = 32, bH = 18;
+    // left lead
+    svg.append('line').attr('x1', x1).attr('y1', y).attr('x2', cx - bW / 2).attr('y2', y)
+      .attr('stroke', inkCol).attr('stroke-width', 1.8);
+    // box
+    svg.append('rect')
+      .attr('x', cx - bW / 2).attr('y', y - bH / 2)
+      .attr('width', bW).attr('height', bH)
+      .attr('fill', 'none').attr('stroke', inkCol).attr('stroke-width', 1.8);
+    // piston rod inside right half of box
+    svg.append('line').attr('x1', cx).attr('y1', y).attr('x2', cx + bW / 2).attr('y2', y)
+      .attr('stroke', inkCol).attr('stroke-width', 1.8);
+    // right lead
+    svg.append('line').attr('x1', cx + bW / 2).attr('y1', y).attr('x2', x2).attr('y2', y)
+      .attr('stroke', inkCol).attr('stroke-width', 1.8);
+  }
+
+  // ── SD element (parallel spring + damper + end connectors) ─
+  function drawSD(x1, x2, label) {
+    svg.append('line').attr('x1', x1).attr('y1', springY).attr('x2', x1).attr('y2', damperY)
+      .attr('stroke', inkCol).attr('stroke-width', 1.8);
+    svg.append('line').attr('x1', x2).attr('y1', springY).attr('x2', x2).attr('y2', damperY)
+      .attr('stroke', inkCol).attr('stroke-width', 1.8);
+    drawSpring(x1, x2, springY);
+    drawDamper(x1, x2, damperY);
+    svg.append('text')
+      .attr('x', (x1 + x2) / 2).attr('y', 192)
+      .attr('text-anchor', 'middle').attr('fill', inkMute)
+      .attr('font-family', 'JetBrains Mono, monospace').attr('font-size', 10.5)
+      .text(label);
+  }
+
+  // ── Mass block ─────────────────────────────────────────────
+  function drawMass(x1, x2, mLabel, xLabel) {
+    var cx = (x1 + x2) / 2;
+    svg.append('rect')
+      .attr('x', x1).attr('y', blockTop)
+      .attr('width', x2 - x1).attr('height', blockBot - blockTop)
+      .attr('fill', fillMass).attr('stroke', accentCol).attr('stroke-width', 2);
+    svg.append('text')
+      .attr('x', cx).attr('y', midY - 6)
+      .attr('text-anchor', 'middle').attr('dominant-baseline', 'middle')
+      .attr('fill', accentCol)
+      .attr('font-family', 'Cormorant Garamond, serif').attr('font-size', 17).attr('font-style', 'italic')
+      .text(mLabel);
+    svg.append('text')
+      .attr('x', cx).attr('y', midY + 14)
+      .attr('text-anchor', 'middle').attr('dominant-baseline', 'middle')
+      .attr('fill', inkMute)
+      .attr('font-family', 'JetBrains Mono, monospace').attr('font-size', 10)
+      .text(xLabel);
+  }
+
+  drawSD(lWallR, m1L, 'k₁,  c₁');
+  drawSD(m1R,    m2L, 'k₂,  c₂');
+  drawSD(m2R,    rWallL, 'k₃,  c₃');
+  drawMass(m1L, m1R, 'm₁', 'x₁');
+  drawMass(m2L, m2R, 'm₂', 'x₂');
+}
+
+// ── Displacement-response chart renderer (shared) ────────────
+function renderResponseChart(container, isDark, data, title) {
+  container.innerHTML = '';
+
+  var m1Col  = isDark ? '#d6ab5e' : '#8a3a13';
+  var m2Col  = isDark ? '#9ab7c4' : '#3a6b86';
+  var zeroCol = isDark ? 'rgba(236,226,200,0.22)' : 'rgba(28,22,16,0.18)';
+
+  var yAll = data.map(function(d){ return d.x1; }).concat(data.map(function(d){ return d.x2; }));
+  var yMin = d3.min(yAll), yMax = d3.max(yAll);
+  var pad  = (yMax - yMin) * 0.12 || 0.02;
+  var yLo  = yMin - pad, yHi = yMax + pad;
+
+  var W = 640, H = 300;
+  var mg = { top: 30, right: 110, bottom: 40, left: 56 };
+  var innerW = W - mg.left - mg.right;
+  var innerH = H - mg.top - mg.bottom;
+
+  var xScale = d3.scaleLinear().domain([0, 10]).range([0, innerW]);
+  var yScale = d3.scaleLinear().domain([yLo, yHi]).range([innerH, 0]);
+
+  var svg = d3.select(container).append('svg')
+    .attr('viewBox', '0 0 ' + W + ' ' + H)
+    .attr('preserveAspectRatio', 'xMidYMid meet');
+
+  var g = svg.append('g').attr('transform', 'translate(' + mg.left + ',' + mg.top + ')');
+
+  // Zero line
+  g.append('line')
+    .attr('x1', 0).attr('x2', innerW)
+    .attr('y1', yScale(0)).attr('y2', yScale(0))
+    .attr('stroke', zeroCol).attr('stroke-width', 1);
+
+  // Axes
+  g.append('g').attr('transform', 'translate(0,' + innerH + ')')
+    .call(d3.axisBottom(xScale).ticks(10).tickFormat(function(d){ return d + 's'; }));
+  g.append('g').call(d3.axisLeft(yScale).ticks(6));
+
+  // Lines
+  var line1 = d3.line().x(function(d){ return xScale(d.t); }).y(function(d){ return yScale(d.x1); });
+  var line2 = d3.line().x(function(d){ return xScale(d.t); }).y(function(d){ return yScale(d.x2); });
+
+  g.append('path').datum(data).attr('fill', 'none')
+    .attr('stroke', m1Col).attr('stroke-width', 2).attr('d', line1);
+  g.append('path').datum(data).attr('fill', 'none')
+    .attr('stroke', m2Col).attr('stroke-width', 2).attr('stroke-dasharray', '6 3').attr('d', line2);
+
+  // Legend
+  var legX = innerW + 14, legY = 10;
+  [
+    { col: m1Col, dash: null, label: 'x₁ (m₁)' },
+    { col: m2Col, dash: '6 3', label: 'x₂ (m₂)' }
+  ].forEach(function(item, i) {
+    var ly = legY + i * 22;
+    g.append('line')
+      .attr('x1', legX).attr('y1', ly + 5).attr('x2', legX + 22).attr('y2', ly + 5)
+      .attr('stroke', item.col).attr('stroke-width', 2)
+      .attr('stroke-dasharray', item.dash || null);
+    g.append('text')
+      .attr('x', legX + 28).attr('y', ly + 9)
+      .attr('fill', item.col)
+      .attr('font-family', 'JetBrains Mono, monospace').attr('font-size', 10.5)
+      .text(item.label);
+  });
+
+  // Axis labels
+  g.append('text').attr('class', 'axis-label')
+    .attr('transform', 'rotate(-90)')
+    .attr('x', -innerH / 2).attr('y', -42).attr('text-anchor', 'middle')
+    .text('displacement');
+  svg.append('text').attr('class', 'axis-label')
+    .attr('x', mg.left + innerW / 2).attr('y', H - 4).attr('text-anchor', 'middle')
+    .text('time (s)');
+
+  // Chart title
+  g.append('text').attr('class', 'panel-title')
+    .attr('x', 0).attr('y', -12)
+    .text(title);
+}
+
+// ── Figure 2: Free (perturbation) response ───────────────────
+function drawSMDResponse(layerId, isDark) {
+  var container = document.querySelector('#' + layerId + ' .smd-resp-fig');
+  if (!container) return;
+  var data = solve2DoF(1.0, 2.0, 100.0, 50.0, 100.0, 2.0, 1.0, 2.0, 0.1, 10, 2000);
+  renderResponseChart(container, isDark, data, 'Free response  ·  x(t)');
+}
+
+// ── Figure 3: Forced response ────────────────────────────────
+function drawSMDForced(layerId, isDark) {
+  var container = document.querySelector('#' + layerId + ' .smd-forced-fig');
+  if (!container) return;
+  var forcing = function(t) { return [10 * Math.sin(5 * t), 0]; };
+  var data = solve2DoFForced(1.0, 2.0, 100.0, 50.0, 100.0, 2.0, 1.0, 2.0, forcing, 10, 2000);
+  renderResponseChart(container, isDark, data, 'Forced response  ·  x(t)');
+}
+
+// Detect dark mode to draw correct theme for initial render
+(function() {
+  var dark = (localStorage.getItem('sp-mode') === 'night');
+  ['alm-layer', 'cos-layer'].forEach(function(lid, i) {
+    var isDark = (i === 1) || dark;
+    drawSMDDiagram(lid, isDark);
+    drawSMDResponse(lid, isDark);
+    drawSMDForced(lid, isDark);
+  });
+})();
+</script>
+
+<script>
+// ── Supabase auth ─────────────────────────────────────────────
+(function() {
+  var SUPABASE_URL  = 'https://hbiyyreqmliesghdclpg.supabase.co';
+  var SUPABASE_ANON = 'sb_publishable_OsrWXMOvvDm0PluzQE6-6g_zb2yaaP7';
+  var SESSION_KEY   = 'alr_sid';
+
+  var sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+
+  var trackToken = localStorage.getItem(SESSION_KEY);
+  if (!trackToken) { trackToken = crypto.randomUUID(); localStorage.setItem(SESSION_KEY, trackToken); }
+
+  function trackVisit(authSession) {
+    var bearer = authSession ? authSession.access_token : SUPABASE_ANON;
+    fetch(SUPABASE_URL + '/functions/v1/track-visit', {
+      method: 'POST', keepalive: true,
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + bearer },
+      body: JSON.stringify({ session_token: trackToken, page: location.pathname, referrer: document.referrer || null }),
+    }).catch(function(){});
+  }
+
+  var authStatus = 'loading', authSession = null, tracked = false;
+
+  function renderAuth() {
+    var html = authHTML();
+    ['alm-auth', 'cos-auth'].forEach(function(id) {
+      var el = document.getElementById(id);
+      if (el) el.innerHTML = html;
+    });
+  }
+
+  function authHTML() {
+    if (authStatus === 'loading') return '';
+    if (authStatus === 'signed-in') return 'signed in as ' + authSession.user.email + ' &middot; <button class="site-auth-link" onclick="authSignOut()">sign out</button>';
+    if (authStatus === 'sent') return 'magic link sent — check your email';
+    if (authStatus === 'form') return '<form class="site-auth-form" onsubmit="authSendLink(event)"><input class="site-auth-input" type="email" placeholder="your@email.com" required autofocus /><button class="site-auth-link" type="submit">send link</button><button class="site-auth-link" type="button" onclick="authCancel()">×</button></form>';
+    return '<button class="site-auth-link" onclick="authShowForm()">sign in</button>';
+  }
+
+  function authShowForm() { authStatus = 'form'; renderAuth(); }
+  function authCancel()   { authStatus = 'idle'; renderAuth(); }
+  function authSendLink(e) {
+    e.preventDefault();
+    sb.auth.signInWithOtp({ email: e.target.querySelector('input').value, options: { emailRedirectTo: window.location.origin } })
+      .then(function(res) { if (res.error) { alert(res.error.message); return; } authStatus = 'sent'; renderAuth(); });
+  }
+  function authSignOut() {
+    sb.auth.signOut().then(function() { authStatus = 'idle'; authSession = null; renderAuth(); });
+  }
+
+  sb.auth.onAuthStateChange(function(event, session) {
+    authSession = session;
+    authStatus  = session ? 'signed-in' : (authStatus === 'sent' ? 'sent' : 'idle');
+    renderAuth();
+    if (event === 'INITIAL_SESSION' && !tracked) { tracked = true; trackVisit(session); }
+  });
+})();
+</script>
+</body>
+</html>

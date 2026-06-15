@@ -388,20 +388,21 @@ body { margin: 0; padding: 0; width: 100%; font-family: 'Inter', system-ui, sans
 
 /* ── Responsive ──────────────────────────────────────────────── */
 @media (max-width: 1100px) {
-  html {font-size: 16px;}
+  html { font-size: 16px; }
   .alm-h1 { font-size: var(--ts64); }
   .cos-h1 { font-size: var(--ts72); }
   .alm-hero { padding: var(--ms5) var(--ms4) var(--ms6); gap: var(--ms4); }
   .cos-rings-side { display: none; }
   .alm-entry {
-    grid-template-columns: 1var(--ms5) 1fr 1var(--ms5) var(--ms5);
+    grid-template-columns: 150px 1fr 160px var(--ms5);
     gap: var(--ms1);
   }
 }
+
 @media (max-width: 800px) {
-  html {font-size: 16px;}
-  .alm-nav, .cos-nav { padding: var(--ms1) var(--ms1); padding-right: var(--ms6); }
-  .alm-nav { flex-direction: column; align-items: baseline; }
+  html { font-size: 16px; }
+  .alm-nav { padding: var(--ms1) var(--ms1); flex-direction: column; align-items: baseline; }
+  .cos-nav { padding: var(--ms1) var(--ms1); }
   .alm-hero { grid-template-columns: 1fr; padding: var(--ms3) var(--ms1) var(--ms6); }
   .alm-rings-wrap { margin-top: var(--ms3); }
   .alm-h1 { font-size: var(--ts48); }
@@ -422,9 +423,58 @@ body { margin: 0; padding: 0; width: 100%; font-family: 'Inter', system-ui, sans
 }
 
 @media (max-width: 500px) {
+  html { font-size: 14px; }
   .cos-nav { flex-direction: column; align-items: baseline; }
-  html {font-size: 14px;}
+  .alm-h1 { font-size: var(--ts36); }
+  .cos-h1 { font-size: var(--ts36); }
+  .alm-lede { font-size: var(--ts18); }
+  .alm-section-title { font-size: var(--ts36); }
+  .cos-section-h { font-size: var(--ts36); }
+  .alm-disciplines { grid-template-columns: 1fr; }
+  .cos-disc-grid { grid-template-columns: 1fr; }
+  .alm-foot { grid-template-columns: 1fr; }
+  .alm-foot-links { justify-content: flex-start; }
+  .cos-foot { grid-template-columns: 1fr; }
+  .cos-foot-links { justify-content: flex-start; }
 }
+
+/* ── Auth widget (shared by almanac + cosmos footers) ──────────── */
+.site-auth {
+  width: 100%;
+  margin-top: 0.8rem;
+  font-size: 0.7rem;
+  letter-spacing: 0.05em;
+  opacity: 0.6;
+}
+.site-auth-link {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  color: inherit;
+  font: inherit;
+  font-size: inherit;
+  letter-spacing: inherit;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.site-auth-link:hover { opacity: 0.8; }
+.site-auth-form { display: flex; align-items: baseline; gap: 0.6rem; }
+.site-auth-input {
+  background: none;
+  border: none;
+  border-bottom: 1px solid currentColor;
+  padding: 0 0 1px;
+  color: inherit;
+  font: inherit;
+  font-size: inherit;
+  letter-spacing: inherit;
+  width: 13rem;
+  outline: none;
+  opacity: 0.8;
+}
+.site-auth-input::placeholder { opacity: 0.5; }
+.site-auth-input:focus { opacity: 1; }
 
 /* ── CTA buttons ─────────────────────────────────────────────── */
 .alm-cta-btn {

@@ -9,6 +9,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;1,9..144,300;1,9..144,400&family=Inter+Tight:wght@300;400;500;600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="/home.css" />
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+  
 </head>
 <body>
 
@@ -116,7 +117,7 @@
         </div>
       </div>
       <div class="alm-work">
-        <a class="alm-entry" href="https://github.com/aleroux85/twitcher" target="_blank" rel="noopener">
+        <a class="alm-entry" href="https://github.com/anroleroux/neograph" target="_blank" rel="noopener">
           <div class="alm-entry-scale">milliseconds<strong>10⁻³ s</strong></div>
           <div>
             <h3 class="alm-entry-title"><em>neo</em>Graph Controller</h3>
@@ -143,7 +144,7 @@
           <div class="alm-entry-kind">article</div>
           <div class="alm-entry-arrow">→</div>
         </a>
-        <a class="alm-entry" href="/bom2.html">
+        <a class="alm-entry" href="/bm1.html">
           <div class="alm-entry-scale">one second<strong>10⁰ s</strong></div>
           <div>
             <h3 class="alm-entry-title">The Beauty of <em>Motion</em></h3>
@@ -246,6 +247,10 @@
 
   </div><!-- /alm-layer -->
 
+
+
+
+
   <!-- ── COSMOS (night) ────────────────────────────────────── -->
   <div id="cos-layer" class="cos-root">
 
@@ -314,20 +319,11 @@
     </header>
 
     <section class="cos-section">
-      <div class="cos-section-eyebrow">§ services · work with me</div>
-      <h2 class="cos-section-h">Build your skills <em>faster</em>.</h2>
-      <p style="font-family: var(--display); font-style: italic; font-size: var(--ts18); color: var(--bone-muted); max-width: 52ch; line-height: 1.55; margin: 0 0 var(--ms1);">
-        A course on AI-assisted development and focused mentoring sessions — practical paths to compounding faster.
-      </p>
-      <a href="/services.html" class="cos-cta-btn">View services →</a>
-    </section>
-
-    <section class="cos-section">
       <div class="cos-section-eyebrow">§ work · placed on the time axis</div>
       <h2 class="cos-section-h">Things made, <em>and the time each holds.</em></h2>
       <div class="cos-timeline">
         <div class="cos-tl-row">
-          <a class="cos-card" href="https://github.com/aleroux85/twitcher" target="_blank" rel="noopener">
+          <a class="cos-card" href="https://github.com/anroleroux/neograph" target="_blank" rel="noopener">
             <div class="cos-card-scale"><span>10⁻³ s</span><span class="cos-card-kind">code</span></div>
             <h3 class="cos-card-title"><em>neo</em>Graph<br>Controller</h3>
             <p class="cos-card-desc">Drop-in software turning affordable Wi-Fi micro-controllers into a meshable, customisable control system.</p>
@@ -345,7 +341,7 @@
             <p class="cos-card-desc">Adding programming to a professional toolkit — and where the compounding actually starts.</p>
             <div class="cos-card-foot"><span>a career</span><span class="arrow">→</span></div>
           </a>
-          <a class="cos-card" href="/bom2.html">
+          <a class="cos-card" href="/bm1.html">
             <div class="cos-card-scale"><span>10⁰ s</span><span class="cos-card-kind">article</span></div>
             <h3 class="cos-card-title">The Beauty of <em>Motion</em></h3>
             <p class="cos-card-desc">Stiffness, damping, and inertia — the three interactions that govern every moving thing.</p>
@@ -375,6 +371,15 @@
       </div>
     </section>
 
+    <section class="cos-section">
+      <div class="cos-section-eyebrow">§ services · work with me</div>
+      <h2 class="cos-section-h">Build your skills <em>faster</em>.</h2>
+      <p style="font-family: var(--display); font-style: italic; font-size: var(--ts18); color: var(--bone-muted); max-width: 52ch; line-height: 1.55; margin: 0 0 var(--ms1);">
+        A course on AI-assisted development and focused mentoring sessions — practical paths to compounding faster.
+      </p>
+      <a href="/services.html" class="cos-cta-btn">View services →</a>
+    </section>
+    
     <section class="cos-section">
       <div class="cos-section-eyebrow">§ disciplines · four crafts, one horizon</div>
       <h2 class="cos-section-h">Technical excellence is built on <em>human interaction</em>.</h2>
@@ -432,7 +437,7 @@
       <div class="cos-foot-mark">A · lR</div>
       <div class="cos-foot-links">
         <a href="https://linkedin.com/in/anroleroux" target="_blank" rel="noopener">LinkedIn</a>
-        <a href="https://github.com/aleroux85" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://github.com/anroleroux" target="_blank" rel="noopener">GitHub</a>
       </div>
       <div class="site-auth" id="cos-auth"></div>
     </footer>
@@ -441,33 +446,13 @@
 
 </div><!-- /live-wrapper -->
 
-<script>
-// ── Solar math ────────────────────────────────────────────────
-function solarElevationDeg(lat, lon, now) {
-  var LAT = lat * Math.PI / 180;
-  var jan1 = Date.UTC(now.getUTCFullYear(), 0, 1);
-  var N = Math.floor((now - jan1) / 86400000) + 1;
-  var G = (2 * Math.PI / 365) * (N - 1);
-  var decl = 0.006918 - 0.399912 * Math.cos(G) + 0.070257 * Math.sin(G)
-           - 0.006758 * Math.cos(2*G) + 0.000907 * Math.sin(2*G)
-           - 0.002697 * Math.cos(3*G) - 0.00148  * Math.sin(3*G);
-  var eot  = (229.18 * (0.000075 + 0.001868 * Math.cos(G) - 0.032077 * Math.sin(G)
-           - 0.014615 * Math.cos(2*G) - 0.04089 * Math.sin(2*G))) / 60;
-  var utcH = now.getUTCHours() + now.getUTCMinutes() / 60 + now.getUTCSeconds() / 3600;
-  var solarTime = utcH + lon / 15 + eot;
-  var ha  = ((solarTime - 12) * 15) * Math.PI / 180;
-  var el  = Math.asin(Math.sin(LAT) * Math.sin(decl) + Math.cos(LAT) * Math.cos(decl) * Math.cos(ha));
-  return el * 180 / Math.PI;
-}
-function smoothstep(a, b, x) {
-  var t = Math.max(0, Math.min(1, (x - a) / (b - a)));
-  return t * t * (3 - 2 * t);
-}
+<script src="index.js"></script>
 
+<script>
 // ── Rings ─────────────────────────────────────────────────────
 var MOON_REF = Date.UTC(2000, 0, 6, 18, 14);
 var MOON_SYN_MS = 29.53058867 * 86400000;
-var SVG_NS = 'http://www.w3.org/2000/svg';
+
 var RADII = [240, 204, 168, 134, 102, 72, 44];
 
 // Smihula wave: chirp model — frequency linearly interpolated from previous
@@ -600,81 +585,29 @@ function makeRings(containerId, palette, size) {
   };
 }
 
-// ── Build starfield ───────────────────────────────────────────
-(function() {
-  var svg = document.querySelector('.cos-stars');
-  svg.innerHTML = '';
-  for (var i = 0; i < 90; i++) {
-    var x = (i * 137.508) % 1440;
-    var y = ((i * 73.21) + 47) % 2400;
-    var r = 0.4 + ((i * 31) % 11) / 18;
-    var o = 0.25 + ((i * 19) % 7) / 12;
-    var c = document.createElementNS(SVG_NS, 'circle');
-    c.setAttribute('cx', x.toFixed(1)); c.setAttribute('cy', y.toFixed(1));
-    c.setAttribute('r',  r.toFixed(2)); c.setAttribute('fill', '#ece2c8');
-    c.setAttribute('opacity', o.toFixed(2));
-    svg.appendChild(c);
-  }
-})();
+// Cosmos side panels
+var smT = Math.max(0, (now - new Date(SMIHULA_START)) / (365.25 * 86400000));
+document.getElementById('cos-mill').textContent = 'year ' + smT.toFixed(1) + ' / 25';
+document.getElementById('cos-cent').textContent = 'year ' + Math.floor(yr % 100)  + ' / 100';
+document.getElementById('cos-dec').textContent  = 'year ' + Math.floor(yr % 10)   + ' / 10';
+document.getElementById('cos-yr').textContent   = 'day '  + doy;
+document.getElementById('cos-day').textContent  = hh + ':' + mm;
+document.getElementById('cos-hb').textContent   = ss + '″';
 
 // ── State ─────────────────────────────────────────────────────
-var loc = { lat: 51.5, lon: 0, label: 'Greenwich · UK' };
-var timeOverride = null;
-var modeOverride = localStorage.getItem('sp-mode') || null; // null = auto, 'day' = forced light, 'night' = forced dark
-
 var updateAlmRings = makeRings('alm-rings', 'almanac', 520);
 var updateCosRings = makeRings('cos-rings',  'cosmos',  640);
 
-fetch('https://ipapi.co/json/')
-  .then(function(r){ return r.json(); })
-  .then(function(d){
-    if (!d || d.error || d.latitude == null) return;
-    var parts = [d.city, d.country_name].filter(Boolean).join(', ');
-    loc = { lat: d.latitude, lon: d.longitude, label: parts || 'detected' };
-  })
-  .catch(function(){});
+runUpdates = function(){
+  // Update rings
+  updateAlmRings(now);
+  updateCosRings(now);
+  // updateCosSmihula(now);
+}
 
 var cosSmihulPath = document.getElementById('cos-smihula-path');
 
-var spPhase    = document.getElementById('sp-phase');
-var spElev     = document.getElementById('sp-elev');
-var spTime     = document.getElementById('sp-time');
-var spLoc      = document.getElementById('sp-loc');
-var spMix      = document.getElementById('sp-mix');
-var spSlider   = document.getElementById('sp-slider');
-var spLiveBtn  = document.getElementById('sp-live-btn');
-var spHline    = document.getElementById('sp-hline');
-var spArc      = document.getElementById('sp-arc');
-var spSun      = document.getElementById('sp-sun');
-var spRise     = document.getElementById('sp-rise');
-var spSet      = document.getElementById('sp-set');
-var spPanel    = document.getElementById('sun-panel');
-var spScrubWrap = document.getElementById('sp-scrub-wrap');
 
-spSlider.addEventListener('input', function(e){ timeOverride = parseFloat(e.target.value); });
-spLiveBtn.addEventListener('click', function(){ timeOverride = null; });
-
-var spModeBtn = document.getElementById('sp-mode-btn');
-spModeBtn.addEventListener('click', function(){
-  if (modeOverride === null) modeOverride = 'day';
-  else if (modeOverride === 'day') modeOverride = 'night';
-  else modeOverride = null;
-  if (modeOverride) localStorage.setItem('sp-mode', modeOverride);
-  else localStorage.removeItem('sp-mode');
-  tick();
-});
-
-var spRestore = document.getElementById('sp-restore');
-document.getElementById('sp-hide-btn').addEventListener('click', function(){
-  spPanel.style.display = 'none';
-  spRestore.style.display = 'flex';
-});
-spRestore.addEventListener('click', function(){
-  spPanel.style.display = 'block';
-  spRestore.style.display = 'none';
-});
-
-function pad2(n){ return String(n).padStart(2, '0'); }
 
 function updateCosSmihula(now) {
   if (!cosSmihulPath) return;
@@ -719,221 +652,6 @@ function updateCosSmihula(now) {
   }
   cosSmihulPath.setAttribute('d', d);
 }
-
-function tick() {
-  var real = new Date();
-  var now;
-  if (timeOverride == null) {
-    now = real;
-    spSlider.value = real.getHours() + real.getMinutes() / 60;
-  } else {
-    now = new Date(real);
-    var h = Math.floor(timeOverride);
-    var m = Math.floor((timeOverride - h) * 60);
-    var s = Math.floor(((timeOverride - h) * 60 - m) * 60);
-    now.setHours(h, m, s, 0);
-  }
-
-  var yr   = now.getFullYear();
-  var mo   = now.toLocaleString('en', { month: 'long' });
-  var moS  = now.toLocaleString('en', { month: 'short' });
-  var d    = now.getDate();
-  var hh   = pad2(now.getHours());
-  var mm   = pad2(now.getMinutes());
-  var ss   = pad2(now.getSeconds());
-  var y0   = new Date(yr, 0, 1);
-  var doy  = Math.floor((now - y0) / 86400000) + 1;
-
-  var elev     = solarElevationDeg(loc.lat, loc.lon, now);
-  var nightMix = 1 - smoothstep(-6, 10, elev);
-
-  var phase = elev > 10 ? 'day'
-    : elev > 0  ? 'golden hour'
-    : elev > -6 ? 'civil twilight'
-    : elev > -12 ? 'nautical twilight'
-    : 'night';
-
-  // Crossfade layers
-  var almLayer = document.getElementById('alm-layer');
-  var cosLayer = document.getElementById('cos-layer');
-  var effectiveMix = modeOverride === 'day' ? 0 : modeOverride === 'night' ? 1 : nightMix;
-  almLayer.style.opacity = (1 - effectiveMix);
-  cosLayer.style.opacity = effectiveMix;
-  cosLayer.style.pointerEvents = effectiveMix >= 0.5 ? 'auto' : 'none';
-
-  // Almanac nav
-  // document.getElementById('alm-vol').textContent  = 'Vol. ' + (yr - 1999);
-  // document.getElementById('alm-num').textContent  = '№ ' + Math.ceil(d / 7);
-  document.getElementById('alm-date').textContent = mo + ' ' + d + ', ' + yr;
-  document.getElementById('alm-year').textContent = yr;
-  // document.getElementById('alm-month').textContent = mo.toLowerCase();
-
-  // Cosmos nav
-  document.getElementById('cos-time').textContent = hh + ':' + mm + ':' + ss;
-  document.getElementById('cos-date').textContent = moS + ' ' + d + ' ' + yr;
-  document.getElementById('cos-year').textContent = yr;
-
-  // Cosmos side panels
-  var smT = Math.max(0, (now - new Date(SMIHULA_START)) / (365.25 * 86400000));
-  document.getElementById('cos-mill').textContent = 'year ' + smT.toFixed(1) + ' / 25';
-  document.getElementById('cos-cent').textContent = 'year ' + Math.floor(yr % 100)  + ' / 100';
-  document.getElementById('cos-dec').textContent  = 'year ' + Math.floor(yr % 10)   + ' / 10';
-  document.getElementById('cos-yr').textContent   = 'day '  + doy;
-  document.getElementById('cos-day').textContent  = hh + ':' + mm;
-  document.getElementById('cos-hb').textContent   = ss + '″';
-
-  // Update rings
-  updateAlmRings(now);
-  updateCosRings(now);
-  // updateCosSmihula(now);
-
-  // Sun panel
-  var dark   = modeOverride === 'day' ? false : modeOverride === 'night' ? true : nightMix > 0.5;
-  var fg     = dark ? 'rgba(236,226,200,0.92)' : 'rgba(28,22,16,0.92)';
-  var fgMute = dark ? 'rgba(236,226,200,0.55)' : 'rgba(28,22,16,0.55)';
-  var accent = dark ? '#d6ab5e' : '#8a3a13';
-  var border = dark ? 'rgba(214,171,94,0.28)' : 'rgba(28,22,16,0.18)';
-
-  spPanel.className   = dark ? 'night' : 'day';
-  spRestore.className = dark ? 'night' : 'day';
-  spPhase.textContent = phase;
-  spPhase.style.color = accent;
-  spElev.textContent  = elev.toFixed(1) + '°';
-  spTime.textContent  = hh + ':' + mm;
-  spLoc.textContent   = loc.label;
-  spMix.textContent   = Math.round(nightMix * 100) + '%';
-
-  var elevC = Math.max(-30, Math.min(60, elev));
-  var sunY  = 50 - (elevC / 60) * 35;
-  spSun.setAttribute('cy', sunY.toFixed(1));
-  spSun.setAttribute('fill', dark ? '#f5d78f' : '#e0a330');
-  spSun.style.filter = dark ? 'drop-shadow(0 0 6px #f5d78f)' : 'none';
-  spHline.setAttribute('stroke', fgMute);
-  spArc.setAttribute('stroke', fgMute);
-  spRise.setAttribute('fill', fgMute);
-  spSet.setAttribute('fill', fgMute);
-
-  document.querySelectorAll('.sp-row-label, .sp-scrub-label').forEach(function(el){ el.style.color = fgMute; });
-  document.querySelectorAll('.sp-row-val, .sp-ticks span').forEach(function(el){ el.style.color = fg; });
-  spScrubWrap.style.borderTopColor = border;
-  spLiveBtn.style.borderColor = border;
-  spLiveBtn.style.color = timeOverride == null ? accent : fgMute;
-  spLiveBtn.textContent = timeOverride == null ? 'live' : 'snap to live';
-
-  spModeBtn.textContent = modeOverride === null ? 'auto' : modeOverride;
-  spModeBtn.style.color = modeOverride === null ? fgMute : accent;
-  spModeBtn.style.borderColor = border;
-  document.getElementById('sp-mode-wrap').style.borderTopColor = border;
-}
-
-tick();
-setInterval(tick, 1000);
-</script>
-
-<script>
-// ── Supabase (shared by auth + tracking) ──────────────────────
-var SUPABASE_URL  = 'https://hbiyyreqmliesghdclpg.supabase.co';
-var SUPABASE_ANON = 'sb_publishable_OsrWXMOvvDm0PluzQE6-6g_zb2yaaP7';
-var SESSION_KEY   = 'alr_sid';
-
-var sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
-
-// ── Visit tracking ────────────────────────────────────────────
-var trackToken = localStorage.getItem(SESSION_KEY);
-if (!trackToken) {
-  trackToken = crypto.randomUUID();
-  localStorage.setItem(SESSION_KEY, trackToken);
-}
-
-function trackVisit(authSession) {
-  // Pass user JWT when authenticated so the edge function can record user_id;
-  // fall back to anon key for unauthenticated visits.
-  var bearer = authSession ? authSession.access_token : SUPABASE_ANON;
-  fetch(SUPABASE_URL + '/functions/v1/track-visit', {
-    method:    'POST',
-    keepalive: true,
-    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + bearer },
-    body: JSON.stringify({
-      session_token: trackToken,
-      page:          location.pathname,
-      referrer:      document.referrer || null,
-    }),
-  }).catch(function () {});
-}
-
-// ── Auth UI ───────────────────────────────────────────────────
-var authStatus = 'loading'; // loading | idle | form | sent | signed-in
-var authSession = null;
-var tracked = false;
-
-function renderAuth() {
-  var html = authHTML();
-  ['alm-auth', 'cos-auth'].forEach(function (id) {
-    var el = document.getElementById(id);
-    if (el) el.innerHTML = html;
-  });
-}
-
-function authHTML() {
-  if (authStatus === 'loading') return '';
-
-  if (authStatus === 'signed-in') {
-    var email = authSession.user.email;
-    return 'signed in as ' + email +
-      ' &middot; <button class="site-auth-link" onclick="authSignOut()">sign out</button>';
-  }
-
-  if (authStatus === 'sent') {
-    return 'magic link sent — check your email';
-  }
-
-  if (authStatus === 'form') {
-    return '<form class="site-auth-form" onsubmit="authSendLink(event)">' +
-      '<input class="site-auth-input" type="email" placeholder="your@email.com" required autofocus />' +
-      '<button class="site-auth-link" type="submit">send link</button>' +
-      '<button class="site-auth-link" type="button" onclick="authCancel()">×</button>' +
-      '</form>';
-  }
-
-  // idle
-  return '<button class="site-auth-link" onclick="authShowForm()">sign in</button>';
-}
-
-function authShowForm()  { authStatus = 'form'; renderAuth(); }
-function authCancel()    { authStatus = 'idle'; renderAuth(); }
-
-function authSendLink(e) {
-  e.preventDefault();
-  var email = e.target.querySelector('input').value;
-  sb.auth.signInWithOtp({
-    email: email,
-    options: { emailRedirectTo: window.location.origin },
-  }).then(function (res) {
-    if (res.error) { alert(res.error.message); return; }
-    authStatus = 'sent';
-    renderAuth();
-  });
-}
-
-function authSignOut() {
-  sb.auth.signOut().then(function () {
-    authStatus = 'idle';
-    authSession = null;
-    renderAuth();
-  });
-}
-
-// Auth state drives both UI and tracking — track exactly once on INITIAL_SESSION.
-sb.auth.onAuthStateChange(function (event, session) {
-  authSession = session;
-  authStatus  = session ? 'signed-in' : (authStatus === 'sent' ? 'sent' : 'idle');
-  renderAuth();
-
-  if (event === 'INITIAL_SESSION' && !tracked) {
-    tracked = true;
-    trackVisit(session);
-  }
-});
 </script>
 </body>
 </html>

@@ -427,8 +427,12 @@
     <nav class="cos-nav">
       <a class="cos-brand" href="/">A · lR</a>
       <div class="cos-nav-right">
-        <span id="cos-date"></span>
+        <span><span class="dot">●</span> now <span id="cos-time">00:00:00</span></span>
+        <span id="cos-date">Jan 1 2026</span>
       </div>
+      <!-- <div class="cos-nav-right">
+        <span id="cos-date"></span>
+      </div> -->
     </nav>
 
     <header class="art-hero">
@@ -650,244 +654,14 @@
 
 </div><!-- /live-wrapper -->
 
+<script src="index.js"></script>
 <script src="pic-mod.js"></script>
 <script>
-// ── Solar math ────────────────────────────────────────────────
-function solarElevationDeg(lat, lon, now) {
-  var LAT = lat * Math.PI / 180;
-  var jan1 = Date.UTC(now.getUTCFullYear(), 0, 1);
-  var N = Math.floor((now - jan1) / 86400000) + 1;
-  var G = (2 * Math.PI / 365) * (N - 1);
-  var decl = 0.006918 - 0.399912 * Math.cos(G) + 0.070257 * Math.sin(G)
-           - 0.006758 * Math.cos(2*G) + 0.000907 * Math.sin(2*G)
-           - 0.002697 * Math.cos(3*G) - 0.00148  * Math.sin(3*G);
-  var eot  = (229.18 * (0.000075 + 0.001868 * Math.cos(G) - 0.032077 * Math.sin(G)
-           - 0.014615 * Math.cos(2*G) - 0.04089 * Math.sin(2*G))) / 60;
-  var utcH = now.getUTCHours() + now.getUTCMinutes() / 60 + now.getUTCSeconds() / 3600;
-  var solarTime = utcH + lon / 15 + eot;
-  var ha  = ((solarTime - 12) * 15) * Math.PI / 180;
-  var el  = Math.asin(Math.sin(LAT) * Math.sin(decl) + Math.cos(LAT) * Math.cos(decl) * Math.cos(ha));
-  return el * 180 / Math.PI;
-}
-function smoothstep(a, b, x) {
-  var t = Math.max(0, Math.min(1, (x - a) / (b - a)));
-  return t * t * (3 - 2 * t);
-}
-
-// ── Build starfield ───────────────────────────────────────────
-(function() {
-  var SVG_NS = 'http://www.w3.org/2000/svg';
-  var svg = document.querySelector('.cos-stars');
-  for (var i = 0; i < 90; i++) {
-    var x = (i * 137.508) % 1440;
-    var y = ((i * 73.21) + 47) % 2400;
-    var r = 0.4 + ((i * 31) % 11) / 18;
-    var o = 0.25 + ((i * 19) % 7) / 12;
-    var c = document.createElementNS(SVG_NS, 'circle');
-    c.setAttribute('cx', x.toFixed(1)); c.setAttribute('cy', y.toFixed(1));
-    c.setAttribute('r',  r.toFixed(2)); c.setAttribute('fill', '#ece2c8');
-    c.setAttribute('opacity', o.toFixed(2));
-    svg.appendChild(c);
-  }
-})();
-
-// ── State ─────────────────────────────────────────────────────
-var loc = { lat: 51.5, lon: 0, label: 'Greenwich · UK' };
-var timeOverride = null;
-var modeOverride = localStorage.getItem('sp-mode') || null;
-
-var spPhase    = document.getElementById('sp-phase');
-var spElev     = document.getElementById('sp-elev');
-var spTime     = document.getElementById('sp-time');
-var spLoc      = document.getElementById('sp-loc');
-var spMix      = document.getElementById('sp-mix');
-var spSlider   = document.getElementById('sp-slider');
-var spLiveBtn  = document.getElementById('sp-live-btn');
-var spHline    = document.getElementById('sp-hline');
-var spArc      = document.getElementById('sp-arc');
-var spSun      = document.getElementById('sp-sun');
-var spRise     = document.getElementById('sp-rise');
-var spSet      = document.getElementById('sp-set');
-var spPanel    = document.getElementById('sun-panel');
-var spScrubWrap = document.getElementById('sp-scrub-wrap');
-
-spSlider.addEventListener('input', function(e){ timeOverride = parseFloat(e.target.value); });
-spLiveBtn.addEventListener('click', function(){ timeOverride = null; });
-
-var spModeBtn = document.getElementById('sp-mode-btn');
-spModeBtn.addEventListener('click', function(){
-  if (modeOverride === null) modeOverride = 'day';
-  else if (modeOverride === 'day') modeOverride = 'night';
-  else modeOverride = null;
-  if (modeOverride) localStorage.setItem('sp-mode', modeOverride);
-  else localStorage.removeItem('sp-mode');
-  tick();
-});
-
-var spRestore = document.getElementById('sp-restore');
-document.getElementById('sp-hide-btn').addEventListener('click', function(){
-  spPanel.style.display = 'none';
-  spRestore.style.display = 'flex';
-});
-spRestore.addEventListener('click', function(){
-  spPanel.style.display = 'block';
-  spRestore.style.display = 'none';
-});
-
-function pad2(n){ return String(n).padStart(2, '0'); }
-
-function tick() {
-  var real = new Date();
-  var now;
-  if (timeOverride == null) {
-    now = real;
-    spSlider.value = real.getHours() + real.getMinutes() / 60;
-  } else {
-    now = new Date(real);
-    var h = Math.floor(timeOverride);
-    var m = Math.floor((timeOverride - h) * 60);
-    var s = Math.floor(((timeOverride - h) * 60 - m) * 60);
-    now.setHours(h, m, s, 0);
-  }
-
-  var yr  = now.getFullYear();
-  var mo  = now.toLocaleString('en', { month: 'long' });
-  var moS = now.toLocaleString('en', { month: 'short' });
-  var d   = now.getDate();
-  var hh  = pad2(now.getHours());
-  var mm  = pad2(now.getMinutes());
-
-  var elev     = solarElevationDeg(loc.lat, loc.lon, now);
-  var nightMix = 1 - smoothstep(-6, 10, elev);
-
-  var phase = elev > 10 ? 'day'
-    : elev > 0  ? 'golden hour'
-    : elev > -6 ? 'civil twilight'
-    : elev > -12 ? 'nautical twilight'
-    : 'night';
-
-  var almLayer = document.getElementById('alm-layer');
-  var cosLayer = document.getElementById('cos-layer');
-  var effectiveMix = modeOverride === 'day' ? 0 : modeOverride === 'night' ? 1 : nightMix;
-  almLayer.style.opacity = (1 - effectiveMix);
-  cosLayer.style.opacity = effectiveMix;
-  cosLayer.style.pointerEvents = effectiveMix >= 0.5 ? 'auto' : 'none';
-
-  document.getElementById('alm-date').textContent = mo + ' ' + d + ', ' + yr;
-  document.getElementById('alm-year').textContent = yr;
-  document.getElementById('cos-date').textContent = moS + ' ' + d + ' ' + yr;
-  document.getElementById('cos-year').textContent = yr;
-
-  var dark   = modeOverride === 'day' ? false : modeOverride === 'night' ? true : nightMix > 0.5;
-  var fg     = dark ? 'rgba(236,226,200,0.92)' : 'rgba(28,22,16,0.92)';
-  var fgMute = dark ? 'rgba(236,226,200,0.55)' : 'rgba(28,22,16,0.55)';
-  var accent = dark ? '#d6ab5e' : '#8a3a13';
-  var border = dark ? 'rgba(214,171,94,0.28)' : 'rgba(28,22,16,0.18)';
-
-  spPanel.className   = dark ? 'night' : 'day';
-  spRestore.className = dark ? 'night' : 'day';
-  spPhase.textContent = phase;
-  spPhase.style.color = accent;
-  spElev.textContent  = elev.toFixed(1) + '°';
-  spTime.textContent  = hh + ':' + mm;
-  spLoc.textContent   = loc.label;
-  spMix.textContent   = Math.round(nightMix * 100) + '%';
-
-  var elevC = Math.max(-30, Math.min(60, elev));
-  var sunY  = 50 - (elevC / 60) * 35;
-  spSun.setAttribute('cy', sunY.toFixed(1));
-  spSun.setAttribute('fill', dark ? '#f5d78f' : '#e0a330');
-  spSun.style.filter = dark ? 'drop-shadow(0 0 6px #f5d78f)' : 'none';
-  spHline.setAttribute('stroke', fgMute);
-  spArc.setAttribute('stroke', fgMute);
-  spRise.setAttribute('fill', fgMute);
-  spSet.setAttribute('fill', fgMute);
-
-  document.querySelectorAll('.sp-row-label, .sp-scrub-label').forEach(function(el){ el.style.color = fgMute; });
-  document.querySelectorAll('.sp-row-val, .sp-ticks span').forEach(function(el){ el.style.color = fg; });
-  spScrubWrap.style.borderTopColor = border;
-  spLiveBtn.style.borderColor = border;
-  spLiveBtn.style.color = timeOverride == null ? accent : fgMute;
-  spLiveBtn.textContent = timeOverride == null ? 'live' : 'snap to live';
-  spModeBtn.textContent = modeOverride === null ? 'auto' : modeOverride;
-  spModeBtn.style.color = modeOverride === null ? fgMute : accent;
-  spModeBtn.style.borderColor = border;
-  document.getElementById('sp-mode-wrap').style.borderTopColor = border;
-}
-
-tick();
-setInterval(tick, 1000);
-
-fetch('https://ipapi.co/json/')
-  .then(function(r){ return r.json(); })
-  .then(function(d){
-    if (!d || d.error || d.latitude == null) return;
-    var parts = [d.city, d.country_name].filter(Boolean).join(', ');
-    loc = { lat: d.latitude, lon: d.longitude, label: parts || 'detected' };
-  })
-  .catch(function(){});
 
 // ── Article init ──────────────────────────────────────────────
 function initArticle(p) {
   function $id(id) { return document.getElementById(p + '-' + id); }
   function $all(sel) { return document.querySelectorAll('#' + p + '-layer ' + sel); }
-
-  // Section / figure numbering
-  var refs = {};
-  (function() {
-    var article = document.querySelector('#' + p + '-layer article.art-body');
-    if (!article) return;
-    var elements = article.querySelectorAll('h2, h3, .insight.block, .figure-numbering');
-    var indexEl  = $id('article-index');
-    var indexUl  = indexEl ? indexEl.querySelector('ul') : null;
-    var h2Count = 0, h3Count = 0, insightCount = 0, figureCount = 0;
-    function slug(str) {
-      return p + '-' + str.toLowerCase().replace(/[^a-z0-9 ]/g, '').trim().split(/\s+/).join('-');
-    }
-    elements.forEach(function(el) {
-      if (el.tagName === 'H2') {
-        h2Count++; h3Count = 0;
-        var text = el.textContent;
-        var id = slug(text);
-        el.id = id;
-        el.innerHTML = '<span class="numbering">' + h2Count + '.</span>' + text;
-        if (indexUl) {
-          var li = document.createElement('li');
-          li.innerHTML = '<a href="#' + id + '">' + h2Count + '. ' + text + '</a>';
-          indexUl.appendChild(li);
-        }
-      } else if (el.tagName === 'H3' && !el.closest('.insight.block')) {
-        h3Count++;
-        var text = el.textContent;
-        var id = slug(text);
-        var num = h2Count > 0 ? h2Count + '.' + h3Count : '' + h3Count;
-        el.id = id;
-        el.innerHTML = '<span class="numbering">' + num + '</span>' + text;
-        if (indexUl && h2Count > 0) {
-          var li = document.createElement('li');
-          li.style.marginLeft = '1rem';
-          li.innerHTML = '<a href="#' + id + '">' + num + ' ' + text + '</a>';
-          indexUl.appendChild(li);
-        }
-      } else if (el.classList.contains('insight') && el.classList.contains('block')) {
-        insightCount++;
-        var h3 = el.querySelector('h3');
-        if (h3) {
-          var orig = h3.textContent.replace(/^Insight\s*\d*\s*:?\s*/i, '').trim();
-          h3.innerHTML = '<span class="numbering">Insight ' + insightCount + '</span>' + (orig ? ': ' + orig : '');
-        }
-      } else if (el.classList.contains('figure-numbering')) {
-        figureCount++;
-        var p2 = el.querySelector('p');
-        var t = p2.textContent;
-        p2.innerHTML = '<span class="numbering">Figure ' + figureCount + '.</span>' + t;
-        refs[el.id] = '' + figureCount;
-      }
-    });
-    article.querySelectorAll('.figure-number').forEach(function(el) {
-      el.textContent = refs[el.dataset.fid] || '';
-    });
-  })();
 
   // Clock drawing
   var nDHInput = $id('in-n');
@@ -1038,49 +812,5 @@ initArticle('alm');
 initArticle('cos');
 </script>
 
-<script>
-// ── Supabase auth ─────────────────────────────────────────────
-(function() {
-  var SB_URL = 'https://eqjifddwulodynzwkxhk.supabase.co';
-  var SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVxamlmZGR3dWxvZHluenpreGhrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDM2MDI4OTgsImV4cCI6MjA1OTE3ODg5OH0.fPOjFxGVMGBi6aFYFRjWbRysJGIJ0axJq-LxRzPVOxI';
-  var sb = supabase.createClient(SB_URL, SB_KEY);
-
-  var VISIT_FN = SB_URL + '/functions/v1/track-visit';
-  var TOKEN_KEY = 'anon_token';
-  var token = localStorage.getItem(TOKEN_KEY);
-  if (!token) { token = crypto.randomUUID(); localStorage.setItem(TOKEN_KEY, token); }
-  fetch(VISIT_FN, { method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + SB_KEY }, body: JSON.stringify({ token: token, page: location.pathname }) }).catch(function(){});
-
-  function renderAuth(el, session) {
-    if (!el) return;
-    if (session) {
-      el.innerHTML = '<span>' + session.user.email + ' · <button class="site-auth-link" id="signout-' + el.id + '">sign out</button></span>';
-      document.getElementById('signout-' + el.id).addEventListener('click', function(){ sb.auth.signOut(); });
-    } else {
-      el.innerHTML = '<span><button class="site-auth-link" id="signin-' + el.id + '">sign in</button></span>';
-      document.getElementById('signin-' + el.id).addEventListener('click', function(){
-        el.innerHTML = '<form class="site-auth-form" id="form-' + el.id + '"><input class="site-auth-input" type="email" placeholder="your@email.com" /><button class="site-auth-link" type="submit">send link</button></form>';
-        document.getElementById('form-' + el.id).addEventListener('submit', function(e){
-          e.preventDefault();
-          var email = e.target.querySelector('input').value;
-          sb.auth.signInWithOtp({ email: email }).then(function(){ el.innerHTML = '<span>check your email</span>'; });
-        });
-      });
-    }
-  }
-
-  var almAuth = document.getElementById('alm-auth');
-  var cosAuth = document.getElementById('cos-auth');
-
-  sb.auth.getSession().then(function(r){
-    renderAuth(almAuth, r.data.session);
-    renderAuth(cosAuth, r.data.session);
-  });
-  sb.auth.onAuthStateChange(function(_, session){
-    renderAuth(almAuth, session);
-    renderAuth(cosAuth, session);
-  });
-})();
-</script>
 </body>
 </html>

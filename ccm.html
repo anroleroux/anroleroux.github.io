@@ -11,71 +11,13 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
   <script src="https://d3js.org/d3.v7.min.js"></script>
   <style>
-    /* ── Auth widget ──────────────────────────────────────────────── */
-    .site-auth { width: 100%; margin-top: 0.8rem; font-size: 0.7rem; letter-spacing: 0.05em; opacity: 0.6; }
-    .site-auth-link { background: none; border: none; padding: 0; cursor: pointer; color: inherit; font: inherit; font-size: inherit; letter-spacing: inherit; text-decoration: underline; text-underline-offset: 2px; }
-    .site-auth-link:hover { opacity: 0.8; }
-    .site-auth-form { display: flex; align-items: baseline; gap: 0.6rem; }
-    .site-auth-input { background: none; border: none; border-bottom: 1px solid currentColor; padding: 0 0 1px; color: inherit; font: inherit; font-size: inherit; letter-spacing: inherit; width: 13rem; outline: none; opacity: 0.8; }
-    .site-auth-input::placeholder { opacity: 0.5; }
-    .site-auth-input:focus { opacity: 1; }
-
-    /* ── Nav brand as link ────────────────────────────────────────── */
-    a.alm-brand, a.cos-brand { text-decoration: none; color: inherit; }
-
-    /* ── Article hero ─────────────────────────────────────────────── */
-    .art-hero {
-      padding: var(--ms6) var(--ms6) var(--ms5);
-      border-bottom: 1px solid var(--rule);
-    }
-    .art-eyebrow {
-      font-family: var(--mono); font-size: var(--ts11); letter-spacing: 1.4px;
-      text-transform: uppercase; color: var(--ink-faint); margin-bottom: var(--ms2);
-    }
-    .art-h1 {
-      font-family: var(--serif); font-weight: 400; font-size: var(--ts56);
-      line-height: 1.05; letter-spacing: -0.02em; margin: 0 0 var(--ms1); max-width: 20ch;
-    }
-    .art-h1 em { font-style: italic; color: var(--accent); }
-    .art-lede {
-      font-family: var(--serif); font-size: var(--ts22); line-height: 1.45;
-      color: var(--ink-muted); max-width: 44ch; margin: 0; font-weight: 400;
-    }
-
     /* ── Article meta bar ─────────────────────────────────────────── */
-    .art-meta-bar {
-      display: flex; gap: var(--ms5); align-items: baseline;
-      padding: var(--ms1) var(--ms6); border-bottom: 1px solid var(--rule);
-      font-family: var(--mono); font-size: var(--ts11); letter-spacing: 0.8px;
-      color: var(--ink-faint); text-transform: uppercase;
-    }
-    .art-meta-item { display: flex; gap: var(--ms-2); align-items: baseline; }
-    .art-meta-val { color: var(--ink-muted); font-variant-numeric: tabular-nums; }
     .art-version-select {
       background: none; border: none; font-family: var(--mono); font-size: var(--ts11);
       letter-spacing: 0.8px; text-transform: uppercase; color: var(--ink-muted);
       cursor: pointer; padding: 0; appearance: none;
     }
     .art-version-select:focus { outline: none; }
-
-    /* ── Article body ─────────────────────────────────────────────── */
-    .art-body section { padding: var(--ms5) var(--ms6); border-top: 1px solid var(--rule); }
-    .art-body section:first-child { padding-top: var(--ms6); }
-    .art-body h2 {
-      font-family: var(--serif); font-weight: 400; font-size: var(--ts36);
-      line-height: 1.1; letter-spacing: -0.01em; margin: 0 0 var(--ms3); color: var(--ink);
-    }
-    .art-body p {
-      font-family: var(--sans); font-size: var(--ts15); line-height: 1.75;
-      color: var(--ink-muted); max-width: 66ch; margin: 0 0 var(--ms0);
-    }
-    .art-body a { color: var(--accent); text-decoration: none; border-bottom: 1px solid rgba(138,58,19,0.3); }
-    .art-body a:hover { border-bottom-color: var(--accent); }
-    .art-body ul {
-      font-family: var(--sans); font-size: var(--ts15); line-height: 1.75;
-      color: var(--ink-muted); max-width: 66ch; margin: 0 0 var(--ms0); padding-left: 1.6em;
-    }
-    .cos-root .art-body ul { color: var(--bone-muted); }
 
     /* ── Note block ───────────────────────────────────────────────── */
     .note.block {
@@ -120,19 +62,7 @@
     }
 
     /* ── Cosmos overrides for art-* classes ───────────────────────── */
-    .cos-root .art-hero { border-bottom-color: var(--bone-fainter); }
-    .cos-root .art-eyebrow { color: var(--gold-soft); }
-    .cos-root .art-h1 { font-family: var(--display); font-weight: 300; color: var(--bone); }
-    .cos-root .art-h1 em { color: var(--gold); }
-    .cos-root .art-lede { color: var(--bone-muted); font-family: var(--display); }
-    .cos-root .art-meta-bar { border-bottom-color: var(--bone-fainter); color: var(--bone-faint); }
-    .cos-root .art-meta-val { color: var(--bone-muted); }
     .cos-root .art-version-select { color: var(--bone-muted); }
-    .cos-root .art-body section { border-top-color: var(--bone-fainter); }
-    .cos-root .art-body h2 { font-family: var(--display); font-weight: 300; color: var(--bone); }
-    .cos-root .art-body p { color: var(--bone-muted); }
-    .cos-root .art-body a { color: var(--gold); border-bottom-color: rgba(214,171,94,0.3); }
-    .cos-root .art-body a:hover { border-bottom-color: var(--gold); }
     .cos-root .note.block { border-left-color: var(--gold); background: rgba(214,171,94,0.04); }
     .cos-root .note.block h3 { color: var(--gold); }
     .cos-root .art-graph-wrap { border-color: var(--bone-fainter); background: rgba(236,226,200,0.02); }
@@ -144,26 +74,9 @@
     .cos-root .art-connections-list a:hover { border-bottom-color: var(--gold); }
     .cos-root .art-detail-content p { color: var(--bone-muted); }
 
-    /* ── Article TOC ──────────────────────────────────────────────── */
-    .art-toc { padding: var(--ms2) var(--ms6); border-bottom: 1px solid var(--rule); }
-    .art-toc ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: var(--ms-2); }
-    .art-toc li { font-family: var(--mono); font-size: var(--ts11); letter-spacing: 0.6px; }
-    .art-toc a { color: var(--ink-faint); text-decoration: none; }
-    .art-toc a:hover { color: var(--accent); }
-    .numbering { margin-right: 0.4ch; }
-    .cos-root .art-toc { border-bottom-color: var(--bone-fainter); }
-    .cos-root .art-toc a { color: var(--bone-faint); }
-    .cos-root .art-toc a:hover { color: var(--gold); }
-
     /* ── Responsive ───────────────────────────────────────────────── */
     @media (max-width: 800px) {
-      .art-hero { padding: var(--ms4) var(--ms1) var(--ms3); }
-      .art-h1 { font-size: var(--ts36); }
-      .art-lede { font-size: var(--ts18); }
-      .art-meta-bar { padding: var(--ms1) var(--ms1); flex-wrap: wrap; gap: var(--ms2); }
-      .art-body section { padding: var(--ms3) var(--ms1); }
       .note.block { padding: var(--ms0) var(--ms2); }
-      .art-toc { padding: var(--ms2) var(--ms1); }
     }
   </style>
 </head>

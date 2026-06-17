@@ -24,7 +24,7 @@
       border-left: 2px solid var(--accent); padding: var(--ms1) var(--ms3);
       margin: var(--ms3) 0; background: rgba(28,22,16,0.03); max-width: 66ch;
     }
-    .note.block h3 {
+    .note.block h4 {
       font-family: var(--mono); font-size: var(--ts11); letter-spacing: 1.4px;
       text-transform: uppercase; color: var(--accent); margin: 0 0 var(--ms-1); font-weight: 500;
     }
@@ -64,7 +64,7 @@
     /* ── Cosmos overrides for art-* classes ───────────────────────── */
     .cos-root .art-version-select { color: var(--bone-muted); }
     .cos-root .note.block { border-left-color: var(--gold); background: rgba(214,171,94,0.04); }
-    .cos-root .note.block h3 { color: var(--gold); }
+    .cos-root .note.block h4 { color: var(--gold); }
     .cos-root .art-graph-wrap { border-color: var(--bone-fainter); background: rgba(236,226,200,0.02); }
     .cos-root .art-node-details { border-top-color: var(--bone-fainter); }
     .cos-root .art-detail-title { font-family: var(--display); font-weight: 300; color: var(--bone); }
@@ -155,7 +155,7 @@
         <p>The goal, however, is to not just give the reader a list of tips or things to learn. There is a very unique mindset that fulltime software developers need to adopt in order to fulfil their responsibilities. While civil engineers construct a bridge the requirements are not changed as is the case in software development. One is not good and the other bad. Different professions are just different in nature, and so are their ways of thinking. Learning to think like a software developer while writing code for a different domain can result in software that can reliably solve a real world problem in a powerful way.</p>
         <p>Once important paradigms are presented the article will continue to present fundamental tools and technologies that receive little official coverage but are vital for effective development. Although it falls outside the scope of this article a few words will be shared on programming languages. The article ends with a broader overview of practices and disciples the reader simply needs to know of.</p>
         <div class="note block">
-          <h3>Note</h3>
+          <h4>Note</h4>
           <p>The nature of this article leans more toward the subjective side. These are topics that spark a variety of opinions in a discipline that evolves rapidly. Points in this article may change. However, the goal remains cultivating a way of thinking instead of a checklist to follow. The reader is encouraged to critique these topics and disagree where necessary.</p>
         </div>
         <h2>Paradigms</h2>
@@ -262,7 +262,7 @@
         <p>The goal, however, is to not just give the reader a list of tips or things to learn. There is a very unique mindset that fulltime software developers need to adopt in order to fulfil their responsibilities. While civil engineers construct a bridge the requirements are not changed as is the case in software development. One is not good and the other bad. Different professions are just different in nature, and so are their ways of thinking. Learning to think like a software developer while writing code for a different domain can result in software that can reliably solve a real world problem in a powerful way.</p>
         <p>Once important paradigms are presented the article will continue to present fundamental tools and technologies that receive little official coverage but are vital for effective development. Although it falls outside the scope of this article a few words will be shared on programming languages. The article ends with a broader overview of practices and disciples the reader simply needs to know of.</p>
         <div class="note block">
-          <h3>Note</h3>
+          <h4>Note</h4>
           <p>The nature of this article leans more toward the subjective side. These are topics that spark a variety of opinions in a discipline that evolves rapidly. Points in this article may change. However, the goal remains cultivating a way of thinking instead of a checklist to follow. The reader is encouraged to critique these topics and disagree where necessary.</p>
         </div>
         <h2>Paradigms</h2>
@@ -325,82 +325,82 @@
 <script>
 // ── Graph data ────────────────────────────────────────────────
 var nodes = [
-  { id: 1, name: "1. Small Programs", abbrev: "SP", label: "1 Small\nprograms", group: "arch", paragraphs: [
+  { id: 1, name: "Small Programs", abbrev: "SP", label: "1 Small\nprograms", group: "arch", paragraphs: [
     "Compose-ability over complexity. Do one thing well.",
     "The best software does one thing well. This is not a guideline to consider when convenient — it is a foundational principle that shapes every architectural decision. A program that does one thing well is easier to test, easier to replace, easier to understand, and easier to compose with other programs. Complexity is not a sign of capability; it is usually a sign of unclear thinking.",
     "Composability is the payoff. When the mesher, the analyser, and the visual editor of a finite element analysis suite are separate programs, any one of them can be swapped out, reused in a different context, or improved in isolation. The whole becomes greater than the sum of its parts precisely because the parts are honest about what they are. This philosophy aligns with the Unix principle of building simple, modular tools that can be combined to solve complex problems through pipes and scripting."
   ] },
-  { id: 2, name: "2. Open Interfaces", abbrev: "OI", label: "2 Open\ninterfaces", group: "arch", paragraphs: [
+  { id: 2, name: "Open Interfaces", abbrev: "OI", label: "2 Open\ninterfaces", group: "arch", paragraphs: [
     "APIs, CLIs, standard formats. Contract-first design.",
     "A program that cannot be spoken to is a dead end. Open interfaces — APIs, CLIs, standard formats like JSON, SVG, and Markdown — are the grammar that allows programs to talk to each other and to the humans and systems that depend on them. Contract-first design means agreeing on the language before writing the implementation, which forces clarity and prevents the interface from becoming an afterthought.",
     "Semantic versioning and backward compatibility are acts of respect toward everyone downstream. When no standard exists, the right move is to create one and publish it. Contributing a mesh data format to the public domain is worth more in the long run than a proprietary format that locks users in and limits adoption. Open interfaces enable interoperability and allow components to be swapped or upgraded without breaking the systems that depend on them."
   ] },
-  { id: 3, name: "3. Interface / Implementation Separation", abbrev: "SII", label: "3 Interface /\nimpl sep.", group: "arch", paragraphs: [
+  { id: 3, name: "Interface / Implementation Separation", abbrev: "SII", label: "3 Interface /\nimpl sep.", group: "arch", paragraphs: [
     "What vs how. Decouple contract from mechanism.",
     "What a system does must be defined independently of how it does it. This separation is what makes it possible to improve, replace, or swap an implementation without breaking the world around it. It is also what makes parallel development possible — one team can build against a contract while another fulfils it.",
     "This principle runs deeper than API design. It is a habit of mind: always ask what the contract is before asking how to honour it. When interface and implementation are tangled together, change becomes expensive and risk accumulates quietly. This decoupling is essential for long-term flexibility, leading to cleaner architectural designs and more robust software systems."
   ] },
-  { id: 4, name: "4. Automation & Virtualisation", abbrev: "AV", label: "4 Automation &\nvirt.", group: "prag", paragraphs: [
+  { id: 4, name: "Automation & Virtualisation", abbrev: "AV", label: "4 Automation &\nvirt.", group: "prag", paragraphs: [
     "CI/CD, observability: metrics, alerts, logs.",
     "Manual deployment is a liability. Every step that requires a human to intervene is a step that can be skipped, forgotten, or done differently by a different person on a different day. CI/CD pipelines are not a luxury — they are the backbone of a system that can be trusted to behave consistently across environments and over time.",
     "Observability is the other side of that coin. Metrics, alerts, and logs must not be hidden in dashboards that nobody opens. They must be visible, actionable, and tied to the behaviour of the system in production. A system you cannot observe is a system you cannot understand, and a system you cannot understand is a system you cannot improve."
   ] },
-  { id: 5, name: "5. Testing", abbrev: "T", label: "5 Testing", group: "prag", paragraphs: [
+  { id: 5, name: "Testing", abbrev: "T", label: "5 Testing", group: "prag", paragraphs: [
     "Unit to integration, security, load testing.",
     "Untested software is a hypothesis, not a product. Automated testing across multiple levels — unit, integration, security, and load — is what transforms confidence from a feeling into a measurement. Each layer of testing catches a different class of problem, and none of them can substitute for the others.",
     "Testing is not a phase that happens before release. It is a continuous activity that is woven into the definition of done. A feature that works but has no tests is unfinished work that leaves a debt for whoever touches it next. Automated tests act as a safety net, allowing developers to refactor code with confidence, knowing that regressions will be caught immediately."
   ] },
-  { id: 6, name: "6. CLI First", abbrev: "CLI", label: "6 CLI\nfirst", group: "arch", paragraphs: [
+  { id: 6, name: "CLI First", abbrev: "CLI", label: "6 CLI\nfirst", group: "arch", paragraphs: [
     "Fully operable without a human in the loop.",
     "A system that can only be operated by a human sitting in front of a UI is fragile. The CLI is the most honest interface a system can have — it exposes exactly what the system can do, without ceremony, and it can be scripted, piped, and automated by anything. Building CLI-first means building a system that can participate in larger workflows without requiring human supervision.",
     "Configuration files, structured logs, and observability systems replace the human in the loop. The UI, when it exists, should be a layer on top of a fully functional headless system — not the only way in. Designing with a CLI-first approach is a prerequisite for modern DevOps practices and continuous integration pipelines, making every function of the software automatable."
   ] },
-  { id: 7, name: "7. Open Access", abbrev: "OA", label: "7 Open\naccess", group: "oss", paragraphs: [
+  { id: 7, name: "Open Access", abbrev: "OA", label: "7 Open\naccess", group: "oss", paragraphs: [
     "No licenses needed. Better automation.",
     "Open source software removes the friction that closed licensing creates. No license negotiations, no per-seat costs, no legal review before spinning up a CI instance on a new machine. It allows teams to experiment and scale without worrying about seat counts or license renewals.",
     "This freedom is not just about cost — it is about the ability to move quickly, to fork when necessary, and to build on a foundation that the whole community can inspect and improve. Open access also aligns naturally with the other paradigms: open interfaces, composability, and automation all benefit from a culture that defaults to openness rather than restriction."
   ] },
-  { id: 8, name: "8. Multi-language Comfort", abbrev: "MLC", label: "8 Multi-lang\ncomfort", group: "cult", paragraphs: [
+  { id: 8, name: "Multi-language Comfort", abbrev: "MLC", label: "8 Multi-lang\ncomfort", group: "cult", paragraphs: [
     "Work fluently across languages, formats, standards.",
     "Modern software development often requires working with multiple languages — perhaps Python for data processing, JavaScript for the UI, and SQL for the database. A developer who is loyal to a single language is limited by that language's strengths and blind to its weaknesses. The best tool for a given problem is rarely the most familiar one — it is the one that fits the problem's shape.",
     "Multi-language comfort is not about knowing every language superficially; it is about being genuinely at ease moving between paradigms, idioms, and ecosystems. This requires managing the real risk of distraction. New languages and frameworks are worth exploring, but curiosity must be disciplined. The goal is to expand the palette without losing focus on the work."
   ] },
-  { id: 9, name: "9. Non-sentimental Code", abbrev: "NS", label: "9 Non-sentimental\ncode", group: "cult", paragraphs: [
+  { id: 9, name: "Non-sentimental Code", abbrev: "NS", label: "9 Non-sentimental\ncode", group: "cult", paragraphs: [
     "Rewrite freely. It's about performance, not attachment.",
     "Code is not an achievement to be preserved — it is a means to an end. The willingness to rewrite, replace, or discard code is a sign of maturity, not carelessness. Software that cannot be replaced becomes a trap: it accumulates complexity, resists improvement, and eventually becomes the thing that holds the whole system hostage.",
     "Products should move from prototype to pilot to powerhouse. Each stage demands different code, different tradeoffs, and different priorities. Lessons learned in the prototype should be applied ruthlessly in the rewrite. What matters is how the system performs, how maintainable it is, and how secure it is — not how long it took to write or how clever it is. Non-sentimentality prevents sunk-cost thinking, where teams stick with bad architectural decisions simply because they have already invested time in them."
   ] },
-  { id: 10, name: "10. Use Existing Technology", abbrev: "ET", label: "10 Use existing\ntech", group: "prag", paragraphs: [
+  { id: 10, name: "Use Existing Technology", abbrev: "ET", label: "10 Use existing\ntech", group: "prag", paragraphs: [
     "Don't build your own DB, regex, config. Learn first.",
     "One of the most important skills in software development is knowing when not to write code. Building something that already exists is usually a mistake. Databases, visualisation libraries, regular expression engines, configuration formats — these are solved problems, and solving them again consumes time that could be spent on the actual problem.",
     "The discipline here is breadth of knowledge. Spinning up an unfamiliar technology in Docker to understand what it does is a small investment with a large return. The developer who knows what exists can reach for the right tool and focus their energy on the unique problems their software is actually trying to solve."
   ] },
-  { id: 11, name: "11. Security", abbrev: "S", label: "11 Security", group: "oss", paragraphs: [
+  { id: 11, name: "Security", abbrev: "S", label: "11 Security", group: "oss", paragraphs: [
     "Open source prevents backdoors. Secrets management.",
     "Security is not a feature to be added at the end — it is a cross-cutting concern that touches every layer of a system. Open source is a natural ally here: transparent code is harder to hide backdoors in, and more eyes on a codebase means more chances to catch vulnerabilities before they are exploited. Security through obscurity is a known anti-pattern.",
     "Beyond openness, security requires active practice: secrets management so that credentials never live in source code, dependency auditing so that the supply chain is understood and monitored, and threat modelling so that risks are identified before they are realised. Security is a habit, not a checklist."
   ] },
-  { id: 12, name: "12. Larger Development Teams", abbrev: "LDT", label: "12 Larger\ndev teams", group: "oss", paragraphs: [
+  { id: 12, name: "Larger Development Teams", abbrev: "LDT", label: "12 Larger\ndev teams", group: "oss", paragraphs: [
     "Open source expands the talent pool globally.",
     "Open source changes the economics of talent. A codebase that is public can attract contributors from anywhere in the world, across time zones and institutions, each bringing different experience and perspective. The talent pool is no longer bounded by geography or headcount. Such diversity of perspective often leads to more robust and feature-rich software, but requires strong leadership and well-defined contribution guidelines.",
     "This scale also distributes knowledge. When many people understand a system, the risk of a single point of failure in the team is reduced. The codebase becomes a shared asset rather than the private domain of a small group."
   ] },
-  { id: 13, name: "13. Community Support", abbrev: "CS", label: "13 Community\nsupport", group: "oss", paragraphs: [
+  { id: 13, name: "Community Support", abbrev: "CS", label: "13 Community\nsupport", group: "oss", paragraphs: [
     "More people to answer questions and review code.",
     "The community surrounding a piece of technology is often as important as the code itself. A healthy open source community is a support system that no internal team can replicate — questions get answered by people who have faced the same problems, and bugs get reported by users who encounter edge cases the original developers never imagined. The collective knowledge of a community compounds over time in a way that isolated teams cannot match.",
     "Community support also creates accountability. Code that is visible to the public tends to be written with more care. The knowledge that others will read, use, and critique the work raises the standard naturally."
   ] },
-  { id: 14, name: "14. Iterative Development", abbrev: "ID", label: "14 Iterative\ndev", group: "cult", paragraphs: [
+  { id: 14, name: "Iterative Development", abbrev: "ID", label: "14 Iterative\ndev", group: "cult", paragraphs: [
     "Agile, lean, smallest deliverable tasks.",
     "Large batches of work are the enemy of predictability. Breaking work into the smallest possible tasks that still deliver presentable value keeps feedback loops short, keeps the team oriented toward outcomes, and makes it possible to measure progress in a way that supports honest forecasting. Separate bins for development, maintenance, and support work prevent each from crowding out the others.",
     "Testing and documentation updates are not optional additions to a task — they are part of the definition of done. A feature that is built but not tested and not documented is not finished; it is deferred cost waiting to be paid. By breaking large projects into smaller, manageable tasks, teams can reduce risk and maintain a steady, predictable pace of delivery."
   ] },
-  { id: 15, name: "15. Products, Not Projects", abbrev: "PNP", label: "15 Products\nnot projects", group: "cult", paragraphs: [
+  { id: 15, name: "Products, Not Projects", abbrev: "PNP", label: "15 Products\nnot projects", group: "cult", paragraphs: [
     "Software grows and adapts continuously.",
     "A project has an end date. A product does not. Software that is treated as a project gets built, delivered, and abandoned — left running in a corner, untouched and unmaintained, until it becomes a liability. Software that is treated as a product is expected to adapt, grow, and respond to the changing needs of its users.",
     "This distinction shapes everything: how work is prioritised, how teams are structured, how success is measured. Products invite continuous improvement; projects invite avoidance. A product mindset focuses on long-term value and user experience, rather than just checking off a list of requirements. The goal is software that people want to keep working on — not software that everyone is afraid to touch."
   ] },
-  { id: 16, name: "16. Work as a Team", abbrev: "WT", label: "16 Work as\na team", group: "cult", paragraphs: [
+  { id: 16, name: "Work as a Team", abbrev: "WT", label: "16 Work as\na team", group: "cult", paragraphs: [
     "Transparency, overlap, pair programming.",
     "Software is a team sport. Individual brilliance is worth far less than a team where knowledge is shared, work is visible, and any member can pick up where another left off. Pair programming, transparent task management, and deliberate overlap between focus areas are the practices that make this real. The hidden cost of isolated developers is enormous — duplicated work, knowledge silos, and the catastrophic risk of a single person being the only one who understands a critical system.",
     "Documentation should serve the team, not satisfy an audit. Dependency diagrams, flow diagrams, and system diagrams are functional tools that help new and existing members understand how things fit together. The code itself should be the primary explanation of what it does — clear naming, small functions, and honest structure — with comments reserved for the rare cases where intent cannot be made obvious from the code alone. Transparency in communication and decision-making builds trust within the team and allows everyone to contribute to the project's success."

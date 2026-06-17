@@ -449,7 +449,11 @@ a.alm-brand, a.cos-brand { text-decoration: none; color: inherit; }
 .cos-tl-tick { position: relative; text-align: center; flex: 0 0 auto; }
 .cos-tl-tick::before { content: ''; position: absolute; left: 50%; bottom: 100%; transform: translateX(-50%); width: 1px; height: var(--ms0); background: var(--gold-faint); margin-bottom: var(--ms-2); }
 
-.cos-tl-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: var(--ms1); align-items: stretch; }
+.cos-tl-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: var(--ms1); align-items: stretch;
+}
 .cos-card {
   background: linear-gradient(180deg, rgba(214,171,94,0.04), rgba(214,171,94,0.01));
   border: 1px solid var(--bone-fainter); border-radius: var(--ms-1); padding: var(--ms2) var(--ms2) var(--ms2);

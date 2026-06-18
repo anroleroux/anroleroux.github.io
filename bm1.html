@@ -46,22 +46,22 @@
     .figure-numbering p { font-family: var(--mono); font-size: var(--ts13); color: var(--ink-faint); margin: 0; line-height: 1.5; max-width: 60ch; }
 
     /* ── Cosmos overrides ─────────────────────────────────────────── */
-    .cos-root .note.block { border-left-color: var(--gold); background: rgba(214,171,94,0.04); }
-    .cos-root .note.block h3 { color: var(--gold); }
-    .cos-root .insight.block { border-left-color: var(--gold); background: rgba(214,171,94,0.04); }
-    .cos-root .insight.block h3 { color: var(--gold); }
-    .cos-root .gov-table th { color: var(--bone-faint); border-bottom-color: var(--bone-fainter); }
-    .cos-root .gov-table td { border-bottom-color: var(--bone-fainter); color: var(--bone-muted); }
-    .cos-root .gov-table td:first-child { font-family: var(--display); color: var(--bone); }
-    .cos-root .gov-mob-row { border-bottom-color: var(--bone-fainter); }
-    .cos-root .gov-mob-row dt { font-family: var(--display); color: var(--bone); }
-    .cos-root .gov-mob-row dd { color: var(--bone-muted); }
-    .cos-root .gov-mob-label { color: var(--bone-faint); }
-    .cos-root .charta .axis-label { fill: var(--bone-muted); }
-    .cos-root .charta .panel-title { fill: var(--bone); }
-    .cos-root .charta .tick text { fill: var(--bone-faint); }
-    .cos-root .charta .tick line, .cos-root .charta .domain { stroke: var(--bone-fainter); }
-    .cos-root .figure-numbering p { color: var(--bone-faint); }
+    .cosmos .note.block { border-left-color: var(--gold); background: rgba(214,171,94,0.04); }
+    .cosmos .note.block h3 { color: var(--gold); }
+    .cosmos .insight.block { border-left-color: var(--gold); background: rgba(214,171,94,0.04); }
+    .cosmos .insight.block h3 { color: var(--gold); }
+    .cosmos .gov-table th { color: var(--bone-faint); border-bottom-color: var(--bone-fainter); }
+    .cosmos .gov-table td { border-bottom-color: var(--bone-fainter); color: var(--bone-muted); }
+    .cosmos .gov-table td:first-child { font-family: var(--display); color: var(--bone); }
+    .cosmos .gov-mob-row { border-bottom-color: var(--bone-fainter); }
+    .cosmos .gov-mob-row dt { font-family: var(--display); color: var(--bone); }
+    .cosmos .gov-mob-row dd { color: var(--bone-muted); }
+    .cosmos .gov-mob-label { color: var(--bone-faint); }
+    .cosmos .charta .axis-label { fill: var(--bone-muted); }
+    .cosmos .charta .panel-title { fill: var(--bone); }
+    .cosmos .charta .tick text { fill: var(--bone-faint); }
+    .cosmos .charta .tick line, .cosmos .charta .domain { stroke: var(--bone-fainter); }
+    .cosmos .figure-numbering p { color: var(--bone-faint); }
 
     /* ── Responsive ───────────────────────────────────────────────── */
     @media (max-width: 1099px) {
@@ -111,7 +111,7 @@
 <div id="live-wrapper">
 
   <!-- ── ALMANAC (day) ─────────────────────────────────────────── -->
-  <div id="alm-layer" class="alm-root">
+  <div id="alm-layer" class="almanac">
 
     <nav class="alm-nav">
       <a class="alm-brand" href="/">A·lR</a>
@@ -266,7 +266,7 @@
   </div><!-- /alm-layer -->
 
   <!-- ── COSMOS (night) ────────────────────────────────────────── -->
-  <div id="cos-layer" class="cos-root">
+  <div id="cos-layer" class="cosmos">
 
     <svg class="cos-stars" viewBox="0 0 1440 2400" preserveAspectRatio="none" aria-hidden="true"></svg>
 

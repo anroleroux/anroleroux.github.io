@@ -212,7 +212,7 @@ a.alm-brand, a.cos-brand { text-decoration: none; color: inherit; }
 .app-cta-btn.primary:hover { background: var(--accent); border-color: var(--accent); color: var(--paper); }
 
 /* ── ALMANAC ─────────────────────────────────────────────────── */
-.alm-root {
+.almanac {
   --paper: #f3ecd9;
   --ink: #1c1610;
   --ink-muted: #5b4e3b;
@@ -227,7 +227,7 @@ a.alm-brand, a.cos-brand { text-decoration: none; color: inherit; }
   font-family: var(--sans);
   position: relative;
 }
-.alm-root::before {
+.almanac::before {
   content: '';
   position: absolute; inset: 0;
   background:
@@ -236,7 +236,7 @@ a.alm-brand, a.cos-brand { text-decoration: none; color: inherit; }
   pointer-events: none;
   z-index: 0;
 }
-.alm-root > * { position: relative; z-index: 1; }
+.almanac > * { position: relative; z-index: 1; }
 
 .alm-nav {
   display: flex; justify-content: space-between; align-items: center;
@@ -360,7 +360,7 @@ a.alm-brand, a.cos-brand { text-decoration: none; color: inherit; }
 .alm-features li::before { content: '—'; color: var(--accent); flex-shrink: 0; }
 
 /* ── COSMOS ──────────────────────────────────────────────────── */
-.cos-root {
+.cosmos {
   --ink: #07080d;
   --bone: #ece2c8;
   --bone-muted: rgba(236,226,200,0.65);
@@ -377,7 +377,7 @@ a.alm-brand, a.cos-brand { text-decoration: none; color: inherit; }
   font-family: var(--sans);
   position: relative;
 }
-.cos-root::before {
+.cosmos::before {
   content: '';
   position: absolute; inset: 0;
   background:
@@ -385,7 +385,7 @@ a.alm-brand, a.cos-brand { text-decoration: none; color: inherit; }
     radial-gradient(ellipse at 50% 100%, rgba(214,171,94,0.04), transparent 60%);
   pointer-events: none; z-index: 0;
 }
-.cos-root > * { position: relative; z-index: 1; }
+.cosmos > * { position: relative; z-index: 1; }
 
 .cos-stars { position: absolute; inset: 0; pointer-events: none; opacity: 0.5; z-index: 0; }
 
@@ -515,27 +515,27 @@ a.alm-brand, a.cos-brand { text-decoration: none; color: inherit; }
 .cos-features li::before { content: '·'; color: var(--gold); flex-shrink: 0; }
 
 /* ── Cosmos article overrides ─────────────────────────────────── */
-.cos-root .art-hero { border-bottom-color: var(--bone-fainter); }
-.cos-root .art-eyebrow { color: var(--gold-soft); }
-.cos-root .art-h1 { font-family: var(--display); font-weight: 300; color: var(--bone); }
-.cos-root .art-h1 em { color: var(--gold); }
-.cos-root .art-lede { color: var(--bone-muted); font-family: var(--display); }
-.cos-root .art-meta-bar { border-bottom-color: var(--bone-fainter); color: var(--bone-faint); }
-.cos-root .art-meta-val { color: var(--bone-muted); }
-.cos-root .art-toc { border-bottom-color: var(--bone-fainter); }
-.cos-root .art-toc a { color: var(--bone-faint); }
-.cos-root .art-toc a:hover { color: var(--gold); }
-.cos-root .art-body section { border-top-color: var(--bone-fainter); }
-.cos-root .art-body h2 { font-family: var(--display); font-weight: 300; color: var(--bone); }
-.cos-root .art-body h3 { font-family: var(--display); font-weight: 300; color: var(--bone); }
-.cos-root .art-body p { color: var(--bone-muted); }
-.cos-root .art-body ul { color: var(--bone-muted); }
-.cos-root .art-body a { color: var(--gold); border-bottom-color: rgba(214,171,94,0.3); }
-.cos-root .art-body a:hover { border-bottom-color: var(--gold); }
-.cos-root .app-cta-btn { border-color: var(--bone-fainter); color: var(--bone-muted); }
-.cos-root .app-cta-btn:hover { border-color: var(--gold); color: var(--gold); }
-.cos-root .app-cta-btn.primary { border-color: var(--gold); background: var(--gold); color: var(--ink); }
-.cos-root .app-cta-btn.primary:hover { background: var(--gold); border-color: var(--gold); opacity: 0.82; }
+.cosmos .art-hero { border-bottom-color: var(--bone-fainter); }
+.cosmos .art-eyebrow { color: var(--gold-soft); }
+.cosmos .art-h1 { font-family: var(--display); font-weight: 300; color: var(--bone); }
+.cosmos .art-h1 em { color: var(--gold); }
+.cosmos .art-lede { color: var(--bone-muted); font-family: var(--display); }
+.cosmos .art-meta-bar { border-bottom-color: var(--bone-fainter); color: var(--bone-faint); }
+.cosmos .art-meta-val { color: var(--bone-muted); }
+.cosmos .art-toc { border-bottom-color: var(--bone-fainter); }
+.cosmos .art-toc a { color: var(--bone-faint); }
+.cosmos .art-toc a:hover { color: var(--gold); }
+.cosmos .art-body section { border-top-color: var(--bone-fainter); }
+.cosmos .art-body h2 { font-family: var(--display); font-weight: 300; color: var(--bone); }
+.cosmos .art-body h3 { font-family: var(--display); font-weight: 300; color: var(--bone); }
+.cosmos .art-body p { color: var(--bone-muted); }
+.cosmos .art-body ul { color: var(--bone-muted); }
+.cosmos .art-body a { color: var(--gold); border-bottom-color: rgba(214,171,94,0.3); }
+.cosmos .art-body a:hover { border-bottom-color: var(--gold); }
+.cosmos .app-cta-btn { border-color: var(--bone-fainter); color: var(--bone-muted); }
+.cosmos .app-cta-btn:hover { border-color: var(--gold); color: var(--gold); }
+.cosmos .app-cta-btn.primary { border-color: var(--gold); background: var(--gold); color: var(--ink); }
+.cosmos .app-cta-btn.primary:hover { background: var(--gold); border-color: var(--gold); opacity: 0.82; }
 
 /* ── RESPONSIVE ──────────────────────────────────────────────── */
 @media (max-width: 1100px) {

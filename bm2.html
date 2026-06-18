@@ -38,17 +38,17 @@
     .art-code { background: rgba(28,22,16,0.04); border: 1px solid var(--rule); border-radius: 2px; padding: var(--ms1) var(--ms3); margin: 0 0 var(--ms2); font-family: var(--mono); font-size: var(--ts13); line-height: 1.7; color: var(--ink-muted); overflow-x: auto; max-width: 66ch; white-space: pre; display: block; }
 
     /* ── Cosmos overrides ─────────────────────────────────────────────── */
-    .cos-root .note.block { border-left-color: var(--gold); background: rgba(214,171,94,0.04); }
-    .cos-root .note.block h3 { color: var(--gold); }
-    .cos-root .insight.block { border-left-color: var(--gold); background: rgba(214,171,94,0.04); }
-    .cos-root .insight.block h3 { color: var(--gold); }
-    .cos-root .charta .axis-label { fill: var(--bone-muted); }
-    .cos-root .charta .panel-title { fill: var(--bone); }
-    .cos-root .charta .tick text { fill: var(--bone-faint); }
-    .cos-root .charta .tick line, .cos-root .charta .domain { stroke: var(--bone-fainter); }
-    .cos-root .figure-numbering p { color: var(--bone-faint); }
-    .cos-root .art-code-label { color: var(--bone-faint); }
-    .cos-root .art-code { background: rgba(236,226,200,0.06); border-color: var(--bone-fainter); color: var(--bone-muted); }
+    .cosmos .note.block { border-left-color: var(--gold); background: rgba(214,171,94,0.04); }
+    .cosmos .note.block h3 { color: var(--gold); }
+    .cosmos .insight.block { border-left-color: var(--gold); background: rgba(214,171,94,0.04); }
+    .cosmos .insight.block h3 { color: var(--gold); }
+    .cosmos .charta .axis-label { fill: var(--bone-muted); }
+    .cosmos .charta .panel-title { fill: var(--bone); }
+    .cosmos .charta .tick text { fill: var(--bone-faint); }
+    .cosmos .charta .tick line, .cosmos .charta .domain { stroke: var(--bone-fainter); }
+    .cosmos .figure-numbering p { color: var(--bone-faint); }
+    .cosmos .art-code-label { color: var(--bone-faint); }
+    .cosmos .art-code { background: rgba(236,226,200,0.06); border-color: var(--bone-fainter); color: var(--bone-muted); }
   </style>
 </head>
 <body>
@@ -89,7 +89,7 @@
 <div id="live-wrapper">
 
   <!-- ── ALMANAC (day) ─────────────────────────────────────────── -->
-  <div id="alm-layer" class="alm-root">
+  <div id="alm-layer" class="almanac">
 
     <nav class="alm-nav">
       <a class="alm-brand" href="/">A·lR</a>
@@ -276,7 +276,7 @@ freq_hz = omega / (2 * np.pi)</code>
 
 
   <!-- ── COSMOS (night) ────────────────────────────────────────── -->
-  <div id="cos-layer" class="cos-root">
+  <div id="cos-layer" class="cosmos">
 
     <svg class="cos-stars" viewBox="0 0 1440 2400" preserveAspectRatio="none" aria-hidden="true"></svg>
 

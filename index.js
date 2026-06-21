@@ -217,65 +217,121 @@ function tick() {
 tick();
 setInterval(tick, 1000);
 
-// Section / figure numbering
+// ── Table of contents, numbering & cross-references ────────────
+//
+// Everything is driven by classes on elements inside `article.art-body`:
+//
+//   h2 / h3      build the table of contents (h2 = top level, h3 nested).
+//   .ref         a referenceable element — its number is stored in `refs`
+//                so that cross-references can point at it.
+//   .num         the element shows a number (1, 2, 3 …).
+//   .num.rom     that number is rendered in roman numerals (i, ii, iii …).
+//
+// `.num` / `.rom` apply to headings and `.ref` elements alike: a heading
+// without `.num` still appears in the contents, just unnumbered.
+//
+// A `.ref` element's counter is grouped by its *type* class — the class that
+// is not `ref` / `num` / `rom` / `block` — so figures and insights count
+// independently. Its prefix label comes from `data-label` (e.g. "Figure").
+//
+// Cross-references: a `.figure-number` span carrying `data-fid` is filled with
+// the stored number of the `.ref` whose base key matches, within the same
+// layer. Ids are namespaced with the layer prefix so the duplicated almanac /
+// cosmos content never collides.
 let refs = {};
+
+function toRoman(n) {
+    let map = [[1000,'m'],[900,'cm'],[500,'d'],[400,'cd'],[100,'c'],[90,'xc'],
+               [50,'l'],[40,'xl'],[10,'x'],[9,'ix'],[5,'v'],[4,'iv'],[1,'i']];
+    let out = '';
+    map.forEach(function (pair) { while (n >= pair[0]) { out += pair[1]; n -= pair[0]; } });
+    return out;
+}
+
 function initRef(p) {
     let article = document.querySelector('#' + p + '-layer article.art-body');
     if (!article) return;
-    let elements = article.querySelectorAll('h2, h3, .insight.block, .figure-numbering');
-    let indexEl  = document.getElementById(p + '-article-index');
-    let indexUl  = indexEl ? indexEl.querySelector('ul') : null;
 
-    let h2Count = 0, h3Count = 0, insightCount = 0, figureCount = 0;
+    let indexEl = document.getElementById(p + '-article-index');
+    let tocUl   = indexEl ? indexEl.querySelector('ul') : null;
+
+    let h2Count = 0, h3Display = '', groups = {};
 
     function slug(str) {
         return p + '-' + str.toLowerCase().replace(/[^a-z0-9 ]/g, '').trim().split(/\s+/).join('-');
     }
 
-    elements.forEach(function(el) {
+    // A number formatted per the element's own `.num` / `.rom` classes.
+    function fmt(n, el) {
+        return el.classList.contains('rom') ? toRoman(n) : String(n);
+    }
+
+    function addToc(text, id, prefix, level) {
+        if (!tocUl) return;
+        let li = document.createElement('li');
+        if (level > 0) li.style.marginLeft = 'var(--ms2)';
+        li.innerHTML = '<a href="#' + id + '">' + (prefix ? prefix + ' ' : '') + text + '</a>';
+        tocUl.appendChild(li);
+    }
+
+    article.querySelectorAll('h2, h3, .ref').forEach(function (el) {
         if (el.tagName === 'H2') {
-            h2Count++; h3Count = 0;
             let text = el.textContent;
             let id = slug(text);
             el.id = id;
-            el.innerHTML = '<span class="numbering">' + h2Count + '.</span>' + text;
-            if (indexUl) {
-                let li = document.createElement('li');
-                li.innerHTML = '<a href="#' + id + '">' + h2Count + '. ' + text + '</a>';
-                indexUl.appendChild(li);
+            let display = '';
+            if (el.classList.contains('num')) {
+                h2Count++;
+                display = fmt(h2Count, el);
+                el.insertAdjacentHTML('afterbegin', '<span class="numbering">' + display + '.</span>');
             }
-        } else if (el.tagName === 'H3' && !el.closest('.insight.block')) {
-            h3Count++;
+            h3Display = display;            // remember for nested h3 numbering
+            if (el.classList.contains('ref')) refs[id] = display;
+            addToc(text, id, display ? display + '.' : '', 0);
+
+        } else if (el.tagName === 'H3') {
             let text = el.textContent;
             let id = slug(text);
-            let num = h2Count > 0 ? h2Count + '.' + h3Count : '' + h3Count;
             el.id = id;
-            el.innerHTML = '<span class="numbering">' + num + '</span>' + text;
-            if (indexUl && h2Count > 0) {
-                let li = document.createElement('li');
-                li.style.marginLeft = '1rem';
-                li.innerHTML = '<a href="#' + id + '">' + num + ' ' + text + '</a>';
-                indexUl.appendChild(li);
+            let prefix = '';
+            if (el.classList.contains('num')) {
+                groups.h3 = (groups.h3 || 0) + 1;
+                let self = fmt(groups.h3, el);
+                prefix = h3Display ? h3Display + '.' + self : self;
+                el.insertAdjacentHTML('afterbegin', '<span class="numbering">' + prefix + '</span>');
             }
-        } else if (el.classList.contains('insight') && el.classList.contains('block')) {
-            insightCount++;
-            let h3 = el.querySelector('h3');
-            if (h3) {
-                let orig = h3.textContent.replace(/^Insight\s*\d*\s*:?\s*/i, '').trim();
-                h3.innerHTML = '<span class="numbering">Insight ' + insightCount + '</span>' + (orig ? ': ' + orig : '');
+            if (el.classList.contains('ref')) refs[id] = prefix;
+            addToc(text, id, prefix, 1);
+
+        } else {
+            // Generic referenceable element (figure, insight, …).
+            if (!el.classList.contains('num')) return;
+
+            let type = Array.prototype.find.call(el.classList, function (c) {
+                return c !== 'ref' && c !== 'num' && c !== 'rom' && c !== 'block';
+            }) || 'ref';
+            groups[type] = (groups[type] || 0) + 1;
+            let number = fmt(groups[type], el);
+
+            let baseKey = el.dataset.ref || el.dataset.fig || el.id;
+            if (baseKey) {
+                el.id = p + '-' + baseKey;
+                refs[el.id] = number;
             }
-        } else if (el.classList.contains('figure-numbering')) {
-            figureCount++;
-            let p2 = el.querySelector('p');
-            let t = p2.textContent;
-            p2.innerHTML = '<span class="numbering">Figure ' + figureCount + '.</span>' + t;
-            refs[el.id] = '' + figureCount;
+
+            let label  = el.dataset.label || (type !== 'ref' ? type[0].toUpperCase() + type.slice(1) : '');
+            let target = el.querySelector('h2, h3, h4, p') || el;
+            target.insertAdjacentHTML('afterbegin',
+                '<span class="numbering">' + (label ? label + ' ' : '') + number + '.</span>');
         }
     });
-    article.querySelectorAll('.figure-number').forEach(function(el) {
-        el.textContent = refs[el.dataset.fid] || '';
+
+    // Resolve cross-reference spans against the refs collected above.
+    article.querySelectorAll('.figure-number').forEach(function (el) {
+        let key = el.dataset.fid || el.dataset.ref;
+        el.textContent = key ? (refs[p + '-' + key] || '') : '';
     });
-};
+}
 
 initRef('alm');
 initRef('cos');

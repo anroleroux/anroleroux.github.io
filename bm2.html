@@ -130,18 +130,18 @@
 
         <h3>The Model</h3>
         <p>Applying Newton's second law \(F = ma\) to each mass and summing all forces gives the equations of motion. For mass 1, three forces act: the wall spring and damper on the left, and the shared spring and damper coupling it to mass 2. Taking rightward displacement as positive:</p>
-        \[m_1\ddot{x}_1 = -k_1 x_1 - c_1\dot{x}_1 - k_2(x_1 - x_2) - c_2(\dot{x}_1 - \dot{x}_2)\]
+        <p>\[m_1\ddot{x}_1 = -k_1 x_1 - c_1\dot{x}_1 - k_2(x_1 - x_2) - c_2(\dot{x}_1 - \dot{x}_2)\]</p>
         <p>Collecting terms by kinematic quantity:</p>
-        \[m_1\ddot{x}_1 + (c_1 + c_2)\dot{x}_1 - c_2\dot{x}_2 + (k_1 + k_2)x_1 - k_2 x_2 = 0\]
+        <p>\[m_1\ddot{x}_1 + (c_1 + c_2)\dot{x}_1 - c_2\dot{x}_2 + (k_1 + k_2)x_1 - k_2 x_2 = 0\]</p>
         <p>For mass 2, the shared coupling element pulls it toward mass 1 while the right-side spring and damper restore it toward the fixed wall:</p>
-        \[m_2\ddot{x}_2 = k_2(x_1 - x_2) + c_2(\dot{x}_1 - \dot{x}_2) - k_3 x_2 - c_3\dot{x}_2\]
+        <p>\[m_2\ddot{x}_2 = k_2(x_1 - x_2) + c_2(\dot{x}_1 - \dot{x}_2) - k_3 x_2 - c_3\dot{x}_2\]</p>
         <p>Collecting terms:</p>
-        \[m_2\ddot{x}_2 - c_2\dot{x}_1 + (c_2 + c_3)\dot{x}_2 - k_2 x_1 + (k_2 + k_3)x_2 = 0\]
+        <p>\[m_2\ddot{x}_2 - c_2\dot{x}_1 + (c_2 + c_3)\dot{x}_2 - k_2 x_1 + (k_2 + k_3)x_2 = 0\]</p>
 
         <p>These two equations take the same compact matrix form as the single-DoF system from the previous article:</p>
-        \[\mathbf{M}\ddot{\mathbf{x}} + \mathbf{C}\dot{\mathbf{x}} + \mathbf{K}\mathbf{x} = \mathbf{F}\]
+        <p>\[\mathbf{M}\ddot{\mathbf{x}} + \mathbf{C}\dot{\mathbf{x}} + \mathbf{K}\mathbf{x} = \mathbf{F}\]</p>
         <p>where the mass, damping, and stiffness matrices are</p>
-        \[\mathbf{M} = \begin{bmatrix} m_1 & 0 \\ 0 & m_2 \end{bmatrix}, \quad \mathbf{C} = \begin{bmatrix} c_1+c_2 & -c_2 \\ -c_2 & c_2+c_3 \end{bmatrix}, \quad \mathbf{K} = \begin{bmatrix} k_1+k_2 & -k_2 \\ -k_2 & k_2+k_3 \end{bmatrix}\]
+        <p>\[\mathbf{M} = \begin{bmatrix} m_1 & 0 \\ 0 & m_2 \end{bmatrix}, \quad \mathbf{C} = \begin{bmatrix} c_1+c_2 & -c_2 \\ -c_2 & c_2+c_3 \end{bmatrix}, \quad \mathbf{K} = \begin{bmatrix} k_1+k_2 & -k_2 \\ -k_2 & k_2+k_3 \end{bmatrix}\]</p>
 
         <div class="note block">
           <h3>Note</h3>
@@ -208,7 +208,7 @@ def eom(t, y, M, C, K):
     return np.hstack((v, a))</code>
 
         <p>The key line evaluates</p>
-        \[\ddot{\mathbf{x}} = \mathbf{M}^{-1}(\mathbf{F} - \mathbf{C}\dot{\mathbf{x}} - \mathbf{K}\mathbf{x})\]
+        <p>\[\ddot{\mathbf{x}} = \mathbf{M}^{-1}(\mathbf{F} - \mathbf{C}\dot{\mathbf{x}} - \mathbf{K}\mathbf{x})\]</p>
         <p>by solving the linear system \(\mathbf{M}\ddot{\mathbf{x}} = \mathbf{F} - \mathbf{C}\dot{\mathbf{x}} - \mathbf{K}\mathbf{x}\) directly — passing \(\mathbf{M}\) separately avoids the numerical cost of explicitly inverting it.</p>
 
         <div class="art-fig"><div class="charta smd-resp-fig"></div></div>
@@ -233,7 +233,7 @@ def eom(t, y, M, C, K):
 
         <h3>Natural Frequencies and Mode Shapes</h3>
         <p>Every undamped SMD system has a set of special frequencies at which it naturally prefers to vibrate, each with an associated shape of motion. They are found by setting damping and forcing aside and posing the generalized eigenvalue problem on the mass and stiffness matrices:</p>
-        \[\mathbf{K}\boldsymbol{\phi} = \omega^2\,\mathbf{M}\boldsymbol{\phi}\]
+        <p>\[\mathbf{K}\boldsymbol{\phi} = \omega^2\,\mathbf{M}\boldsymbol{\phi}\]</p>
         <p>Here \(\omega\) is a natural frequency and \(\boldsymbol{\phi}\) its mode shape — the relative amplitudes of the masses when the system oscillates purely at that frequency. SciPy solves this directly with <code>eigh</code>, which is built for symmetric matrix pairs like \(\mathbf{K}\) and \(\mathbf{M}\):</p>
         <p class="art-code-label">Python</p>
         <code class="art-code">from scipy.linalg import eigh
@@ -245,9 +245,9 @@ omega   = np.sqrt(omega_squared)
 freq_hz = omega / (2 * np.pi)</code>
 
         <p>For the parameter values used above, the two natural frequencies are</p>
-        \[\omega_1 = 7.81\ \text{rad/s}\ (1.24\ \text{Hz}), \qquad \omega_2 = 12.81\ \text{rad/s}\ (2.04\ \text{Hz})\]
+        <p>\[\omega_1 = 7.81\ \text{rad/s}\ (1.24\ \text{Hz}), \qquad \omega_2 = 12.81\ \text{rad/s}\ (2.04\ \text{Hz})\]</p>
         <p>and the corresponding mode shapes, normalized so that mass 1 has unit amplitude, are</p>
-        \[\boldsymbol{\phi}_1 = \begin{bmatrix} 1 \\ 1.78 \end{bmatrix}, \qquad \boldsymbol{\phi}_2 = \begin{bmatrix} 1 \\ -0.28 \end{bmatrix}\]
+        <p>\[\boldsymbol{\phi}_1 = \begin{bmatrix} 1 \\ 1.78 \end{bmatrix}, \qquad \boldsymbol{\phi}_2 = \begin{bmatrix} 1 \\ -0.28 \end{bmatrix}\]</p>
         <p>The first mode is in-phase — both masses move in the same direction, with mass 2 swinging further. The second mode is out-of-phase — the masses move in opposite directions. Any free motion of the system, like the perturbation simulated earlier, is just a blend of these two modes.</p>
 
         <div class="note block">
@@ -323,18 +323,18 @@ freq_hz = omega / (2 * np.pi)</code>
 
         <h3>The Model</h3>
         <p>Applying Newton's second law \(F = ma\) to each mass and summing all forces gives the equations of motion. For mass 1, three forces act: the wall spring and damper on the left, and the shared spring and damper coupling it to mass 2. Taking rightward displacement as positive:</p>
-        \[m_1\ddot{x}_1 = -k_1 x_1 - c_1\dot{x}_1 - k_2(x_1 - x_2) - c_2(\dot{x}_1 - \dot{x}_2)\]
+        <p>\[m_1\ddot{x}_1 = -k_1 x_1 - c_1\dot{x}_1 - k_2(x_1 - x_2) - c_2(\dot{x}_1 - \dot{x}_2)\]</p>
         <p>Collecting terms by kinematic quantity:</p>
-        \[m_1\ddot{x}_1 + (c_1 + c_2)\dot{x}_1 - c_2\dot{x}_2 + (k_1 + k_2)x_1 - k_2 x_2 = 0\]
+        <p>\[m_1\ddot{x}_1 + (c_1 + c_2)\dot{x}_1 - c_2\dot{x}_2 + (k_1 + k_2)x_1 - k_2 x_2 = 0\]</p>
         <p>For mass 2, the shared coupling element pulls it toward mass 1 while the right-side spring and damper restore it toward the fixed wall:</p>
-        \[m_2\ddot{x}_2 = k_2(x_1 - x_2) + c_2(\dot{x}_1 - \dot{x}_2) - k_3 x_2 - c_3\dot{x}_2\]
+        <p>\[m_2\ddot{x}_2 = k_2(x_1 - x_2) + c_2(\dot{x}_1 - \dot{x}_2) - k_3 x_2 - c_3\dot{x}_2\]</p>
         <p>Collecting terms:</p>
-        \[m_2\ddot{x}_2 - c_2\dot{x}_1 + (c_2 + c_3)\dot{x}_2 - k_2 x_1 + (k_2 + k_3)x_2 = 0\]
+        <p>\[m_2\ddot{x}_2 - c_2\dot{x}_1 + (c_2 + c_3)\dot{x}_2 - k_2 x_1 + (k_2 + k_3)x_2 = 0\]</p>
 
         <p>These two equations take the same compact matrix form as the single-DoF system from the previous article:</p>
-        \[\mathbf{M}\ddot{\mathbf{x}} + \mathbf{C}\dot{\mathbf{x}} + \mathbf{K}\mathbf{x} = \mathbf{F}\]
+        <p>\[\mathbf{M}\ddot{\mathbf{x}} + \mathbf{C}\dot{\mathbf{x}} + \mathbf{K}\mathbf{x} = \mathbf{F}\]</p>
         <p>where the mass, damping, and stiffness matrices are</p>
-        \[\mathbf{M} = \begin{bmatrix} m_1 & 0 \\ 0 & m_2 \end{bmatrix}, \quad \mathbf{C} = \begin{bmatrix} c_1+c_2 & -c_2 \\ -c_2 & c_2+c_3 \end{bmatrix}, \quad \mathbf{K} = \begin{bmatrix} k_1+k_2 & -k_2 \\ -k_2 & k_2+k_3 \end{bmatrix}\]
+        <p>\[\mathbf{M} = \begin{bmatrix} m_1 & 0 \\ 0 & m_2 \end{bmatrix}, \quad \mathbf{C} = \begin{bmatrix} c_1+c_2 & -c_2 \\ -c_2 & c_2+c_3 \end{bmatrix}, \quad \mathbf{K} = \begin{bmatrix} k_1+k_2 & -k_2 \\ -k_2 & k_2+k_3 \end{bmatrix}\]</p>
 
         <div class="note block">
           <h3>Note</h3>
@@ -401,7 +401,7 @@ def eom(t, y, M, C, K):
     return np.hstack((v, a))</code>
 
         <p>The key line evaluates</p>
-        \[\ddot{\mathbf{x}} = \mathbf{M}^{-1}(\mathbf{F} - \mathbf{C}\dot{\mathbf{x}} - \mathbf{K}\mathbf{x})\]
+        <p>\[\ddot{\mathbf{x}} = \mathbf{M}^{-1}(\mathbf{F} - \mathbf{C}\dot{\mathbf{x}} - \mathbf{K}\mathbf{x})\]</p>
         <p>by solving the linear system \(\mathbf{M}\ddot{\mathbf{x}} = \mathbf{F} - \mathbf{C}\dot{\mathbf{x}} - \mathbf{K}\mathbf{x}\) directly — passing \(\mathbf{M}\) separately avoids the numerical cost of explicitly inverting it.</p>
 
         <div class="art-fig"><div class="charta smd-resp-fig"></div></div>
@@ -426,7 +426,7 @@ def eom(t, y, M, C, K):
 
         <h3>Natural Frequencies and Mode Shapes</h3>
         <p>Every undamped SMD system has a set of special frequencies at which it naturally prefers to vibrate, each with an associated shape of motion. They are found by setting damping and forcing aside and posing the generalized eigenvalue problem on the mass and stiffness matrices:</p>
-        \[\mathbf{K}\boldsymbol{\phi} = \omega^2\,\mathbf{M}\boldsymbol{\phi}\]
+        <p>\[\mathbf{K}\boldsymbol{\phi} = \omega^2\,\mathbf{M}\boldsymbol{\phi}\]</p>
         <p>Here \(\omega\) is a natural frequency and \(\boldsymbol{\phi}\) its mode shape — the relative amplitudes of the masses when the system oscillates purely at that frequency. SciPy solves this directly with <code>eigh</code>, which is built for symmetric matrix pairs like \(\mathbf{K}\) and \(\mathbf{M}\):</p>
         <p class="art-code-label">Python</p>
         <code class="art-code">from scipy.linalg import eigh
@@ -438,9 +438,9 @@ omega   = np.sqrt(omega_squared)
 freq_hz = omega / (2 * np.pi)</code>
 
         <p>For the parameter values used above, the two natural frequencies are</p>
-        \[\omega_1 = 7.81\ \text{rad/s}\ (1.24\ \text{Hz}), \qquad \omega_2 = 12.81\ \text{rad/s}\ (2.04\ \text{Hz})\]
+        <p>\[\omega_1 = 7.81\ \text{rad/s}\ (1.24\ \text{Hz}), \qquad \omega_2 = 12.81\ \text{rad/s}\ (2.04\ \text{Hz})\]</p>
         <p>and the corresponding mode shapes, normalized so that mass 1 has unit amplitude, are</p>
-        \[\boldsymbol{\phi}_1 = \begin{bmatrix} 1 \\ 1.78 \end{bmatrix}, \qquad \boldsymbol{\phi}_2 = \begin{bmatrix} 1 \\ -0.28 \end{bmatrix}\]
+        <p>\[\boldsymbol{\phi}_1 = \begin{bmatrix} 1 \\ 1.78 \end{bmatrix}, \qquad \boldsymbol{\phi}_2 = \begin{bmatrix} 1 \\ -0.28 \end{bmatrix}\]</p>
         <p>The first mode is in-phase — both masses move in the same direction, with mass 2 swinging further. The second mode is out-of-phase — the masses move in opposite directions. Any free motion of the system, like the perturbation simulated earlier, is just a blend of these two modes.</p>
 
         <div class="note block">

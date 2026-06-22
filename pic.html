@@ -173,7 +173,7 @@
         <p>There are two types of cryptography, symmetric where the same key is used for encryption and decryption, and asymmetric where each person has a key that is publicly accessible and a key that stays private/secret. Symmetric cryptography immediately raises the question of how a secret key can be shared over an insecure network.</p>
       </section>
       <section>
-        <h2>Key Exchange</h2>
+        <h2 class="num">Key Exchange</h2>
         <p>Diffie-Hellman (DH) key exchange was published in 1967 as a method to exchange a secret key over an insecure channel. It uses the hardness of the discrete logarithm problem to calculate an irreversible representation of a secret key. The representation can be publicly accessible since the secret cannot be obtained from it.</p>
         <p>Consider a secret key \(a\) and its public representation \(A\) that will be owned by Alice. \(A\) can be obtained with \[A = g^a \bmod{n}\]</p>
         <p>where \(g\) is a base (usually 2 or 5) and \(n\) is a large number that makes it hard to reverse the calculation and get back to \(a\) from \(A\).</p>
@@ -218,7 +218,7 @@
         <p>Figure <span class="figure-number" data-fid="alm-gamma-n-plot"></span> shows a graph of \(\gamma\) over a range of \(n\) values. Even numbers of \(n\) are omitted and prime \(n\) numbers are highlighted with green vertical lines. Click on the points to set \(n\) and \(g\) above and see how each pattern look in the modular clock diagram.</p>
       </section>
       <section>
-        <h2>The Atoms of Math</h2>
+        <h2 class="num">The Atoms of Math</h2>
         <p>If asked to find the factors of 5040, a sensible strategy might be to start from the lowest numbers and see what can divide 5040.
           \[\begin{align}
             5040/1 &= 5040 && \text{(no effect, use 2)} \\
@@ -248,7 +248,7 @@
         </div>
       </section>
       <section>
-        <h2>Inventing RSA</h2>
+        <h2 class="num">Inventing RSA</h2>
         <p>With asymmetric cryptography each person has a public key (\(S\), \(R\)) and a private key (\(s\), \(r\)). Anyone can see the public keys but only the owners ever know the private keys. The sender can encrypt a message with the recipient's public key (\(R\)) and only the recipient can decrypt the message with the matching private key (\(r\)). Encryption is established without exchanging any secret keys.</p>
         <p>The method in Insight 1 can also be used to encrypt messages. The message \(m\) is used instead of the base \(g\) and raised to the power of an encryption key \(e\). The encrypted message \(M\) is thus \[M=m^e \bmod{n}\] However, it will be convenient to also be able to decrypt \(M\) in the same way by applying a decryption key as another power to get back to \(m\) \[m=M^d \bmod{n}\] which is equivalent to \[\begin{equation} m \equiv m^{e d} \pmod{n} \tag{eq 1} \end{equation}\]</p>
         <p>Rivest, Shamir and Adleman published RSA in 1977 in which they derived \(e\) and \(d\) to encrypt and decrypt messages. The RSA authors build on math discovered three centuries earlier. The initial version of Euler's theorem was first published in 1736 as a proof of Fermat's little theorem (published without proof in 1640).</p>
@@ -263,7 +263,7 @@
         <p>that can be transformed into modulo form (this is why the multiple \(k\) was required earlier): \[ed \equiv 1 \pmod{\varphi(n)}\]</p>
       </section>
       <section>
-        <h2>Encryption and Decryption</h2>
+        <h2 class="num">Encryption and Decryption</h2>
         <p>Two primes are required to produce the modulus \(n\) and Euler's Totient \(\varphi(n)\).</p>
         <p>\[n = p q\] \[\varphi(n) = (p-1)(q-1)\]</p>
         <div class="interactions">
@@ -295,7 +295,7 @@
           <p>\(e\):<span id="alm-out-e"></span></p>
           <p>\(d\):<span id="alm-out-d"></span></p>
         </div>
-        <h3>Encryption on a Single Number</h3>
+        <h3 class="num">Encryption on a Single Number</h3>
         <p>The public key consists of \(e\) and \(n\). Anyone can use a recipient's public key to encrypt a number \(x\) with \(c = x^e \bmod{n}\).</p>
         <div class="interactions">
           <p>\(x\):
@@ -313,7 +313,7 @@
         <div class="interactions">
           <p>\(x\):<span id="alm-out-x"></span></p>
         </div>
-        <h3>Encryption on a String</h3>
+        <h3 class="num">Encryption on a String</h3>
         <p>The number \(x\) is probably only 4 bytes. To encrypt strings of bytes a padding scheme is used that first converts the string into a 4 byte sequence of padded numbers that can be passed through encryption. The padding scheme is reversed after decoding to obtain the original message.</p>
         <div class="interactions">
           <p>Original message:<input id="alm-in-orig-msg" value="Testing. Does this work? Great!" type="text" /></p>
@@ -324,7 +324,7 @@
         </div>
       </section>
       <section>
-        <h2>Authentication</h2>
+        <h2 class="num">Authentication</h2>
         <p>Notice that only two of the original goals were covered thus far. The receiver still needs to know that the sender is in fact the sender. With RSA this can be done by simply encrypting a string with the sender's private key. The receiver can then use the sender's public key to decrypt it and see if it makes sense. The only problem is that everyone can decrypt that message.</p>
         <p>A popular solution to get both encryption and authentication is to run the message content through a hashing function like SHA-256 prior to encryption. The hashing is an irreversible function that takes in data and produces an unpredictable digest (number) that's unique. Hashing the message and encrypting the hash with the private key is called signing the message or creating a digital signature.</p>
         <p>Anyone that decrypts the signature only gets the hash digest. However, the recipient can apply the same hashing on the private-key-decoded message and compare it with the hash. If it matches, the recipient knows that the message is signed by the sender. Authentication is established together with secure encryption. The RSA encryption-decryption flow with authentication can be seen in the following diagram.</p>
@@ -333,7 +333,7 @@
         </div>
       </section>
       <section>
-        <h2>Conclusion</h2>
+        <h2 class="num">Conclusion</h2>
         <p>This article shows how prime numbers are used to secure DH key exchange and RSA. Even SHA-256 hash algorithms used in authentication rely on prime numbers for randomization. This junction in math and cryptography is such a contested topic that there are two Millennium Prize Problems, the P vs NP Problem and the Riemann Hypothesis, that relates to it. Proving them is important because if any two of these prove different than what is assumed, current cryptography standards are in trouble.</p>
         <p>People often fall ignorant of the role of mathematics. Prime numbers get far less attention than they should be since they are the atoms of the numbers we use everyday. Euler and Fermat probably did not realise how important their theories would become centuries later. Mathematics is a deep, slow form of knowledge that should not be discarded if its value cannot immediately be realised.</p>
         <p>The beauty and genius with which the key-exchange, encryption and authentication problems were solved is astonishing. But as always, it was made possible by many discoveries and innovations that came before it. Big or small, don't stop exploring and don't despise small contributions.</p>
@@ -412,7 +412,7 @@
         <p>There are two types of cryptography, symmetric where the same key is used for encryption and decryption, and asymmetric where each person has a key that is publicly accessible and a key that stays private/secret. Symmetric cryptography immediately raises the question of how a secret key can be shared over an insecure network.</p>
       </section>
       <section>
-        <h2>Key Exchange</h2>
+        <h2 class="num">Key Exchange</h2>
         <p>Diffie-Hellman (DH) key exchange was published in 1967 as a method to exchange a secret key over an insecure channel. It uses the hardness of the discrete logarithm problem to calculate an irreversible representation of a secret key. The representation can be publicly accessible since the secret cannot be obtained from it.</p>
         <p>Consider a secret key \(a\) and its public representation \(A\) that will be owned by Alice. \(A\) can be obtained with \[A = g^a \bmod{n}\]</p>
         <p>where \(g\) is a base (usually 2 or 5) and \(n\) is a large number that makes it hard to reverse the calculation and get back to \(a\) from \(A\).</p>
@@ -457,7 +457,7 @@
         <p>Figure <span class="figure-number" data-fid="cos-gamma-n-plot"></span> shows a graph of \(\gamma\) over a range of \(n\) values. Even numbers of \(n\) are omitted and prime \(n\) numbers are highlighted with green vertical lines. Click on the points to set \(n\) and \(g\) above and see how each pattern look in the modular clock diagram.</p>
       </section>
       <section>
-        <h2>The Atoms of Math</h2>
+        <h2 class="num">The Atoms of Math</h2>
         <p>If asked to find the factors of 5040, a sensible strategy might be to start from the lowest numbers and see what can divide 5040.
           \[\begin{align}
             5040/1 &= 5040 && \text{(no effect, use 2)} \\
@@ -487,7 +487,7 @@
         </div>
       </section>
       <section>
-        <h2>Inventing RSA</h2>
+        <h2 class="num">Inventing RSA</h2>
         <p>With asymmetric cryptography each person has a public key (\(S\), \(R\)) and a private key (\(s\), \(r\)). Anyone can see the public keys but only the owners ever know the private keys. The sender can encrypt a message with the recipient's public key (\(R\)) and only the recipient can decrypt the message with the matching private key (\(r\)). Encryption is established without exchanging any secret keys.</p>
         <p>The method in Insight 1 can also be used to encrypt messages. The message \(m\) is used instead of the base \(g\) and raised to the power of an encryption key \(e\). The encrypted message \(M\) is thus \[M=m^e \bmod{n}\] However, it will be convenient to also be able to decrypt \(M\) in the same way by applying a decryption key as another power to get back to \(m\) \[m=M^d \bmod{n}\] which is equivalent to \[\begin{equation} m \equiv m^{e d} \pmod{n} \tag{eq 1} \end{equation}\]</p>
         <p>Rivest, Shamir and Adleman published RSA in 1977 in which they derived \(e\) and \(d\) to encrypt and decrypt messages. The RSA authors build on math discovered three centuries earlier. The initial version of Euler's theorem was first published in 1736 as a proof of Fermat's little theorem (published without proof in 1640).</p>
@@ -502,7 +502,7 @@
         <p>that can be transformed into modulo form (this is why the multiple \(k\) was required earlier): \[ed \equiv 1 \pmod{\varphi(n)}\]</p>
       </section>
       <section>
-        <h2>Encryption and Decryption</h2>
+        <h2 class="num">Encryption and Decryption</h2>
         <p>Two primes are required to produce the modulus \(n\) and Euler's Totient \(\varphi(n)\).</p>
         <p>\[n = p q\] \[\varphi(n) = (p-1)(q-1)\]</p>
         <div class="interactions">
@@ -534,7 +534,7 @@
           <p>\(e\):<span id="cos-out-e"></span></p>
           <p>\(d\):<span id="cos-out-d"></span></p>
         </div>
-        <h3>Encryption on a Single Number</h3>
+        <h3 class="num">Encryption on a Single Number</h3>
         <p>The public key consists of \(e\) and \(n\). Anyone can use a recipient's public key to encrypt a number \(x\) with \(c = x^e \bmod{n}\).</p>
         <div class="interactions">
           <p>\(x\):
@@ -552,7 +552,7 @@
         <div class="interactions">
           <p>\(x\):<span id="cos-out-x"></span></p>
         </div>
-        <h3>Encryption on a String</h3>
+        <h3 class="num">Encryption on a String</h3>
         <p>The number \(x\) is probably only 4 bytes. To encrypt strings of bytes a padding scheme is used that first converts the string into a 4 byte sequence of padded numbers that can be passed through encryption. The padding scheme is reversed after decoding to obtain the original message.</p>
         <div class="interactions">
           <p>Original message:<input id="cos-in-orig-msg" value="Testing. Does this work? Great!" type="text" /></p>
@@ -563,7 +563,7 @@
         </div>
       </section>
       <section>
-        <h2>Authentication</h2>
+        <h2 class="num">Authentication</h2>
         <p>Notice that only two of the original goals were covered thus far. The receiver still needs to know that the sender is in fact the sender. With RSA this can be done by simply encrypting a string with the sender's private key. The receiver can then use the sender's public key to decrypt it and see if it makes sense. The only problem is that everyone can decrypt that message.</p>
         <p>A popular solution to get both encryption and authentication is to run the message content through a hashing function like SHA-256 prior to encryption. The hashing is an irreversible function that takes in data and produces an unpredictable digest (number) that's unique. Hashing the message and encrypting the hash with the private key is called signing the message or creating a digital signature.</p>
         <p>Anyone that decrypts the signature only gets the hash digest. However, the recipient can apply the same hashing on the private-key-decoded message and compare it with the hash. If it matches, the recipient knows that the message is signed by the sender. Authentication is established together with secure encryption. The RSA encryption-decryption flow with authentication can be seen in the following diagram.</p>
@@ -572,7 +572,7 @@
         </div>
       </section>
       <section>
-        <h2>Conclusion</h2>
+        <h2 class="num">Conclusion</h2>
         <p>This article shows how prime numbers are used to secure DH key exchange and RSA. Even SHA-256 hash algorithms used in authentication rely on prime numbers for randomization. This junction in math and cryptography is such a contested topic that there are two Millennium Prize Problems, the P vs NP Problem and the Riemann Hypothesis, that relates to it. Proving them is important because if any two of these prove different than what is assumed, current cryptography standards are in trouble.</p>
         <p>People often fall ignorant of the role of mathematics. Prime numbers get far less attention than they should be since they are the atoms of the numbers we use everyday. Euler and Fermat probably did not realise how important their theories would become centuries later. Mathematics is a deep, slow form of knowledge that should not be discarded if its value cannot immediately be realised.</p>
         <p>The beauty and genius with which the key-exchange, encryption and authentication problems were solved is astonishing. But as always, it was made possible by many discoveries and innovations that came before it. Big or small, don't stop exploring and don't despise small contributions.</p>

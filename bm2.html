@@ -331,6 +331,13 @@ freq_hz = omega / (2 * np.pi)</code>
         <div class="figure-numbering ref num" data-fig="smd-nat2" data-label="Figure"><p>Response to a sinusoidal force on mass 1 at the second natural frequency (ω₂ ≈ <span class="nat2-val"></span>), starting from rest. The masses move in opposition, tracing the second mode shape.</p></div>
 
         <p>Each driving frequency excites its own mode: at \(\omega_1\) the masses move together, and at \(\omega_2\) they move in opposition — exactly the mode shapes found above. This selective amplification is why natural frequencies matter so much in practice, where an unintended resonance can drive a structure to failure.</p>
+
+        <p>Sweeping the driving frequency across a whole range and recording the steady-state amplitude of each mass traces out the system's <em>frequency response function</em> (FRF). For a harmonic force \(\mathbf{F}e^{i\omega t}\) the steady-state amplitude follows directly from the dynamic stiffness matrix:</p>
+        <p>\[\mathbf{X}(\omega) = \left(\mathbf{K} - \omega^2\mathbf{M} + i\omega\mathbf{C}\right)^{-1}\mathbf{F}\]</p>
+        <p>Plotting \(|\mathbf{X}(\omega)|\) for each mass reveals two sharp peaks — one at every natural frequency — separated by a dip where the masses barely respond at all.</p>
+
+        <div class="art-fig"><div class="charta smd-frf-fig"></div></div>
+        <div class="figure-numbering ref num" data-fig="smd-frf" data-label="Figure"><p>Frequency response function: steady-state amplitude of each mass against driving frequency, with the two natural frequencies marked. Both masses peak at the natural frequencies and fall away in between.</p></div>
       </section>
     </article>
 
@@ -589,6 +596,13 @@ freq_hz = omega / (2 * np.pi)</code>
         <div class="figure-numbering ref num" data-fig="smd-nat2" data-label="Figure"><p>Response to a sinusoidal force on mass 1 at the second natural frequency (ω₂ ≈ <span class="nat2-val"></span>), starting from rest. The masses move in opposition, tracing the second mode shape.</p></div>
 
         <p>Each driving frequency excites its own mode: at \(\omega_1\) the masses move together, and at \(\omega_2\) they move in opposition — exactly the mode shapes found above. This selective amplification is why natural frequencies matter so much in practice, where an unintended resonance can drive a structure to failure.</p>
+
+        <p>Sweeping the driving frequency across a whole range and recording the steady-state amplitude of each mass traces out the system's <em>frequency response function</em> (FRF). For a harmonic force \(\mathbf{F}e^{i\omega t}\) the steady-state amplitude follows directly from the dynamic stiffness matrix:</p>
+        <p>\[\mathbf{X}(\omega) = \left(\mathbf{K} - \omega^2\mathbf{M} + i\omega\mathbf{C}\right)^{-1}\mathbf{F}\]</p>
+        <p>Plotting \(|\mathbf{X}(\omega)|\) for each mass reveals two sharp peaks — one at every natural frequency — separated by a dip where the masses barely respond at all.</p>
+
+        <div class="art-fig"><div class="charta smd-frf-fig"></div></div>
+        <div class="figure-numbering ref num" data-fig="smd-frf" data-label="Figure"><p>Frequency response function: steady-state amplitude of each mass against driving frequency, with the two natural frequencies marked. Both masses peak at the natural frequencies and fall away in between.</p></div>
       </section>
     </article>
 
@@ -770,6 +784,135 @@ function drawSMDForced(layerId, isDark) {
   renderResponseChart(container, isDark, data, 'Forced response  ·  x(t)');
 }
 
+// ── Frequency response function: steady-state amplitude vs ω ──
+// For a harmonic force F·e^{iωt} on mass 1, the steady-state amplitude is
+// X(ω) = Z(ω)^{-1} F with Z(ω) = K − ω²M + iωC. For the 2×2 symmetric system
+// Cramer's rule gives |X1| = F0·|d|/|det| and |X2| = F0·|c|/|det|, where
+// Z = [[a, b], [c, d]] and c = b.
+function computeFRF(m1, m2, k1, k2, k3, c1, c2, c3, F0, wMax, nPts) {
+  var K11 = k1 + k2, K12 = -k2, K22 = k2 + k3;
+  var C11 = c1 + c2, C12 = -c2, C22 = c2 + c3;
+
+  var data = [];
+  for (var p = 0; p <= nPts; p++) {
+    var w = wMax * p / nPts;
+
+    var aRe = K11 - w * w * m1, aIm = w * C11;  // Z11
+    var bRe = K12,              bIm = w * C12;  // Z12 = Z21
+    var dRe = K22 - w * w * m2, dIm = w * C22;  // Z22
+
+    // det = a*d − b²  (complex)
+    var detRe = (aRe * dRe - aIm * dIm) - (bRe * bRe - bIm * bIm);
+    var detIm = (aRe * dIm + aIm * dRe) - (2 * bRe * bIm);
+    var detMag = Math.sqrt(detRe * detRe + detIm * detIm);
+
+    var a1 = F0 * Math.sqrt(dRe * dRe + dIm * dIm) / detMag;
+    var a2 = F0 * Math.sqrt(bRe * bRe + bIm * bIm) / detMag;
+
+    data.push({ w: w, a1: a1, a2: a2 });
+  }
+  return data;
+}
+
+// ── FRF chart renderer ───────────────────────────────────────
+function renderFRFChart(container, isDark, data, marks) {
+  container.innerHTML = '';
+
+  var m1Col   = isDark ? '#d6ab5e' : '#8a3a13';
+  var m2Col   = isDark ? '#9ab7c4' : '#3a6b86';
+  var markCol = isDark ? 'rgba(236,226,200,0.35)' : 'rgba(28,22,16,0.3)';
+
+  var wMax = data[data.length - 1].w;
+  var yAll = data.map(function(d){ return d.a1; }).concat(data.map(function(d){ return d.a2; }));
+  var yHi = d3.max(yAll) * 1.12;
+
+  var W = 640, H = 300;
+  var mg = { top: 30, right: 110, bottom: 40, left: 56 };
+  var innerW = W - mg.left - mg.right;
+  var innerH = H - mg.top - mg.bottom;
+
+  var xScale = d3.scaleLinear().domain([0, wMax]).range([0, innerW]);
+  var yScale = d3.scaleLinear().domain([0, yHi]).range([innerH, 0]);
+
+  var svg = d3.select(container).append('svg')
+    .attr('viewBox', '0 0 ' + W + ' ' + H)
+    .attr('preserveAspectRatio', 'xMidYMid meet');
+
+  var g = svg.append('g').attr('transform', 'translate(' + mg.left + ',' + mg.top + ')');
+
+  // Natural-frequency markers
+  marks.forEach(function(mk) {
+    var mx = xScale(mk.w);
+    g.append('line')
+      .attr('x1', mx).attr('x2', mx).attr('y1', 0).attr('y2', innerH)
+      .attr('stroke', markCol).attr('stroke-width', 1).attr('stroke-dasharray', '4 3');
+    g.append('text')
+      .attr('x', mx + 4).attr('y', 12)
+      .attr('fill', markCol)
+      .attr('font-family', 'JetBrains Mono, monospace').attr('font-size', 10.5)
+      .text(mk.label);
+  });
+
+  // Axes
+  g.append('g').attr('transform', 'translate(0,' + innerH + ')')
+    .call(d3.axisBottom(xScale).ticks(10));
+  g.append('g').call(d3.axisLeft(yScale).ticks(6));
+
+  // Lines
+  var line1 = d3.line().x(function(d){ return xScale(d.w); }).y(function(d){ return yScale(d.a1); });
+  var line2 = d3.line().x(function(d){ return xScale(d.w); }).y(function(d){ return yScale(d.a2); });
+
+  g.append('path').datum(data).attr('fill', 'none')
+    .attr('stroke', m1Col).attr('stroke-width', 2).attr('d', line1);
+  g.append('path').datum(data).attr('fill', 'none')
+    .attr('stroke', m2Col).attr('stroke-width', 2).attr('stroke-dasharray', '6 3').attr('d', line2);
+
+  // Legend
+  var legX = innerW + 14, legY = 10;
+  [
+    { col: m1Col, dash: null, label: '|X₁| (m₁)' },
+    { col: m2Col, dash: '6 3', label: '|X₂| (m₂)' }
+  ].forEach(function(item, i) {
+    var ly = legY + i * 22;
+    g.append('line')
+      .attr('x1', legX).attr('y1', ly + 5).attr('x2', legX + 22).attr('y2', ly + 5)
+      .attr('stroke', item.col).attr('stroke-width', 2)
+      .attr('stroke-dasharray', item.dash || null);
+    g.append('text')
+      .attr('x', legX + 28).attr('y', ly + 9)
+      .attr('fill', item.col)
+      .attr('font-family', 'JetBrains Mono, monospace').attr('font-size', 10.5)
+      .text(item.label);
+  });
+
+  // Axis labels
+  g.append('text').attr('class', 'axis-label')
+    .attr('transform', 'rotate(-90)')
+    .attr('x', -innerH / 2).attr('y', -42).attr('text-anchor', 'middle')
+    .text('amplitude');
+  svg.append('text').attr('class', 'axis-label')
+    .attr('x', mg.left + innerW / 2).attr('y', H - 4).attr('text-anchor', 'middle')
+    .text('driving frequency (rad/s)');
+
+  // Chart title
+  g.append('text').attr('class', 'panel-title')
+    .attr('x', 0).attr('y', -12)
+    .text('Frequency response  ·  |X(ω)|');
+}
+
+// ── Figure: frequency response function ──────────────────────
+function drawSMDFRF(layerId, isDark) {
+  var container = document.querySelector('#' + layerId + ' .smd-frf-fig');
+  if (!container) return;
+  var data = computeFRF(1.0, 2.0, 100.0, 50.0, 100.0, 2.0, 1.0, 2.0, 10, 20, 600);
+  var modes = getNatModes();
+  var marks = [
+    { w: modes[0].omega, label: 'ω₁' },
+    { w: modes[1].omega, label: 'ω₂' }
+  ];
+  renderFRFChart(container, isDark, data, marks);
+}
+
 // ── Figure: response driven at a natural frequency ───────────
 function drawSMDNatMode(layerId, isDark, modeIndex, figClass, title) {
   var container = document.querySelector('#' + layerId + ' .' + figClass);
@@ -802,6 +945,7 @@ function setTextAll(cls, text) {
     drawSMDForced(lid, isDark);
     drawSMDNatMode(lid, isDark, 0, 'smd-nat1-fig', 'Response at ω₁  ·  x(t)');
     drawSMDNatMode(lid, isDark, 1, 'smd-nat2-fig', 'Response at ω₂  ·  x(t)');
+    drawSMDFRF(lid, isDark);
   });
   fillNatFreqLabels();
 })();

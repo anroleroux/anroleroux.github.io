@@ -23,7 +23,7 @@
 
     /* ── Insight block ────────────────────────────────────────────── */
     .insight.block { border-left: 2px solid var(--accent); padding: var(--ms1) var(--ms3); margin: var(--ms3) 0; background: rgba(28,22,16,0.03); max-width: 66ch; }
-    .insight.block h3 { font-family: var(--mono); font-size: var(--ts11); letter-spacing: 1.4px; text-transform: uppercase; color: var(--accent); margin: 0 0 var(--ms-1); font-weight: 500; }
+    .insight.block h4 { font-family: var(--mono); font-size: var(--ts11); letter-spacing: 1.4px; text-transform: uppercase; color: var(--accent); margin: 0 0 var(--ms-1); font-weight: 500; }
     .insight.block p { font-size: var(--ts14); margin: 0 0 var(--ms-2); }
     .insight.block p:last-child { margin: 0; }
 
@@ -73,7 +73,7 @@
     .cosmos .warning.block { border-left-color: #d4855a; background: rgba(212,133,90,0.06); }
     .cosmos .warning.block h4 { color: #d4855a; }
     .cosmos .insight.block { border-left-color: var(--gold); background: rgba(214,171,94,0.04); }
-    .cosmos .insight.block h3 { color: var(--gold); }
+    .cosmos .insight.block h4 { color: var(--gold); }
     .cosmos .interactions p { color: var(--bone-muted); }
     .cosmos .interactions input[type=number],
     .cosmos .interactions input[type=text] { border-color: var(--bone-fainter); background: rgba(236,226,200,0.04); color: var(--bone); }
@@ -173,12 +173,12 @@
         <p>There are two types of cryptography, symmetric where the same key is used for encryption and decryption, and asymmetric where each person has a key that is publicly accessible and a key that stays private/secret. Symmetric cryptography immediately raises the question of how a secret key can be shared over an insecure network.</p>
       </section>
       <section>
-        <h2>Key Exchange</h2>
+        <h2 class="num">Key Exchange</h2>
         <p>Diffie-Hellman (DH) key exchange was published in 1967 as a method to exchange a secret key over an insecure channel. It uses the hardness of the discrete logarithm problem to calculate an irreversible representation of a secret key. The representation can be publicly accessible since the secret cannot be obtained from it.</p>
         <p>Consider a secret key \(a\) and its public representation \(A\) that will be owned by Alice. \(A\) can be obtained with \[A = g^a \bmod{n}\]</p>
         <p>where \(g\) is a base (usually 2 or 5) and \(n\) is a large number that makes it hard to reverse the calculation and get back to \(a\) from \(A\).</p>
-        <div class="insight block">
-          <h3>Insight</h3>
+        <div class="insight block ref num" data-label="Insight">
+          <h4></h4>
           <p>It is easy to calculate the modulo of an exponential function \[X = g^x \bmod{n}\] if the base \(g\), the power \(x\) and the modulus \(n\) is known, but it is hard to calculate \(x\) from \(X\) if \(n\) is a large prime number.</p>
         </div>
         <p>Bob does the same to obtain \(B\) with his secret key \(b\) and sends it to Alice to compute \(z\) with</p>
@@ -186,7 +186,7 @@
         <p>Bob can also compute the same \(z\) by using \(A\) and \(b\).</p>
         <p>\[A^b \bmod{n} = g^{a b} \bmod{n} = z\]</p>
         <p>Note that a shared key (\(z\)) was established without ever exposing secret keys \(a\) or \(b\) and no one can compute \(z\) with only \(g\), \(n\), \(A\) and \(B\). Still, one may wonder why \(n\) must be specifically prime.</p>
-        <p>If \(n=15\) and \(g=2\), then \(z\) only falls within the set of \(\zeta = \{1,2,4,8\}\), instead of utilizing the entire possible range \(\{1,...,n-1\}\). A utilization ratio, \(\gamma\), can thus be expressed as the number of elements utilized, \(|\zeta|\), divided by \(n-1\). Thus, when \(n=15\) and \(g=2\), the utilization ratio, \[\gamma = \frac{|\zeta|}{n-1}=\frac{4}{14}\] is approximately 0.286. In this case \(A\), \(B\) and \(z\) only cycle through 28.6% of the numbers making it easier to guess the shared key \(z\). Figure <span class="figure-number" data-fid="alm-mod-clock"></span> shows how much numbers are utilised. With \(n=19\) and \(g=2\) it cycles through all the numbers \(\{1,...,n-1\}\). Thus \(\gamma = 1\), which is usually the case when \(n\) is prime.</p>
+        <p>If \(n=15\) and \(g=2\), then \(z\) only falls within the set of \(\zeta = \{1,2,4,8\}\), instead of utilizing the entire possible range \(\{1,...,n-1\}\). A utilization ratio, \(\gamma\), can thus be expressed as the number of elements utilized, \(|\zeta|\), divided by \(n-1\). Thus, when \(n=15\) and \(g=2\), the utilization ratio, \[\gamma = \frac{|\zeta|}{n-1}=\frac{4}{14}\] is approximately 0.286. In this case \(A\), \(B\) and \(z\) only cycle through 28.6% of the numbers making it easier to guess the shared key \(z\). Figure <span class="figure-number" data-fid="mod-clock"></span> shows how much numbers are utilised. With \(n=19\) and \(g=2\) it cycles through all the numbers \(\{1,...,n-1\}\). Thus \(\gamma = 1\), which is usually the case when \(n\) is prime.</p>
         <div class="interactions">
           <p>\(n\):
             <span class="number-input-wrapper">
@@ -208,17 +208,17 @@
             </span>
           </p>
           <svg id="alm-clock-svg" class="art-clock-svg" viewBox="0 0 400 400" width="400" height="400"></svg>
-          <div id="alm-mod-clock" class="figure-numbering"><p>Modular clock diagram.</p></div>
+          <div class="figure-numbering ref num" data-fig="mod-clock" data-label="Figure"><p>Modular clock diagram.</p></div>
           <p class="mod-seq">Sequence:</p>
           <div id="alm-out-sequence" class="mod-seq-box"></div>
         </div>
         <div id="alm-gammanplot" class="charta"></div>
         <div id="alm-tooltip" class="gamman tooltip"></div>
-        <div id="alm-gamma-n-plot" class="figure-numbering"><p>Plot of \(\gamma\) against \(n\) with prime \(n\) values highlighted with green lines.</p></div>
-        <p>Figure <span class="figure-number" data-fid="alm-gamma-n-plot"></span> shows a graph of \(\gamma\) over a range of \(n\) values. Even numbers of \(n\) are omitted and prime \(n\) numbers are highlighted with green vertical lines. Click on the points to set \(n\) and \(g\) above and see how each pattern look in the modular clock diagram.</p>
+        <div class="figure-numbering ref num" data-fig="gamma-n-plot" data-label="Figure"><p>Plot of \(\gamma\) against \(n\) with prime \(n\) values highlighted with green lines.</p></div>
+        <p>Figure <span class="figure-number" data-fid="gamma-n-plot"></span> shows a graph of \(\gamma\) over a range of \(n\) values. Even numbers of \(n\) are omitted and prime \(n\) numbers are highlighted with green vertical lines. Click on the points to set \(n\) and \(g\) above and see how each pattern look in the modular clock diagram.</p>
       </section>
       <section>
-        <h2>The Atoms of Math</h2>
+        <h2 class="num">The Atoms of Math</h2>
         <p>If asked to find the factors of 5040, a sensible strategy might be to start from the lowest numbers and see what can divide 5040.
           \[\begin{align}
             5040/1 &= 5040 && \text{(no effect, use 2)} \\
@@ -242,13 +242,13 @@
         </p>
         <p>Notice that all the factors are prime numbers. In fact, every number has only one list of factors that is all prime. This is called the Fundamental Theorem of Arithmetic and was detailed by Carl Friedrich Gauss in 1801. Admittedly, I was embarrassed to only learn this now, especially after using words like peculiar and quirky.</p>
         <p>Prime numbers are not just weird numbers in everyday counting numbers, they are actually the atoms of which all numbers are made up of. This also means that two prime numbers can be selected, and the product of them will only have those two numbers as factors. When asked to find the factors of 679, only 17 will be found to divide it together with 41. When asked about 22790237 one will have to go up to 3187. It becomes apparent that factoring products of two large primes is difficult.</p>
-        <div class="insight block">
-          <h3>Insight</h3>
+        <div class="insight block ref num" data-label="Insight">
+          <h4></h4>
           <p>Multiplying two large prime numbers results in a new prime number with only the two prime factors. The multiplication (forward) is easy, but factoring it (backwards) into the two original primes is hard.</p>
         </div>
       </section>
       <section>
-        <h2>Inventing RSA</h2>
+        <h2 class="num">Inventing RSA</h2>
         <p>With asymmetric cryptography each person has a public key (\(S\), \(R\)) and a private key (\(s\), \(r\)). Anyone can see the public keys but only the owners ever know the private keys. The sender can encrypt a message with the recipient's public key (\(R\)) and only the recipient can decrypt the message with the matching private key (\(r\)). Encryption is established without exchanging any secret keys.</p>
         <p>The method in Insight 1 can also be used to encrypt messages. The message \(m\) is used instead of the base \(g\) and raised to the power of an encryption key \(e\). The encrypted message \(M\) is thus \[M=m^e \bmod{n}\] However, it will be convenient to also be able to decrypt \(M\) in the same way by applying a decryption key as another power to get back to \(m\) \[m=M^d \bmod{n}\] which is equivalent to \[\begin{equation} m \equiv m^{e d} \pmod{n} \tag{eq 1} \end{equation}\]</p>
         <p>Rivest, Shamir and Adleman published RSA in 1977 in which they derived \(e\) and \(d\) to encrypt and decrypt messages. The RSA authors build on math discovered three centuries earlier. The initial version of Euler's theorem was first published in 1736 as a proof of Fermat's little theorem (published without proof in 1640).</p>
@@ -263,7 +263,7 @@
         <p>that can be transformed into modulo form (this is why the multiple \(k\) was required earlier): \[ed \equiv 1 \pmod{\varphi(n)}\]</p>
       </section>
       <section>
-        <h2>Encryption and Decryption</h2>
+        <h2 class="num">Encryption and Decryption</h2>
         <p>Two primes are required to produce the modulus \(n\) and Euler's Totient \(\varphi(n)\).</p>
         <p>\[n = p q\] \[\varphi(n) = (p-1)(q-1)\]</p>
         <div class="interactions">
@@ -295,7 +295,7 @@
           <p>\(e\):<span id="alm-out-e"></span></p>
           <p>\(d\):<span id="alm-out-d"></span></p>
         </div>
-        <h3>Encryption on a Single Number</h3>
+        <h3 class="num">Encryption on a Single Number</h3>
         <p>The public key consists of \(e\) and \(n\). Anyone can use a recipient's public key to encrypt a number \(x\) with \(c = x^e \bmod{n}\).</p>
         <div class="interactions">
           <p>\(x\):
@@ -313,7 +313,7 @@
         <div class="interactions">
           <p>\(x\):<span id="alm-out-x"></span></p>
         </div>
-        <h3>Encryption on a String</h3>
+        <h3 class="num">Encryption on a String</h3>
         <p>The number \(x\) is probably only 4 bytes. To encrypt strings of bytes a padding scheme is used that first converts the string into a 4 byte sequence of padded numbers that can be passed through encryption. The padding scheme is reversed after decoding to obtain the original message.</p>
         <div class="interactions">
           <p>Original message:<input id="alm-in-orig-msg" value="Testing. Does this work? Great!" type="text" /></p>
@@ -324,7 +324,7 @@
         </div>
       </section>
       <section>
-        <h2>Authentication</h2>
+        <h2 class="num">Authentication</h2>
         <p>Notice that only two of the original goals were covered thus far. The receiver still needs to know that the sender is in fact the sender. With RSA this can be done by simply encrypting a string with the sender's private key. The receiver can then use the sender's public key to decrypt it and see if it makes sense. The only problem is that everyone can decrypt that message.</p>
         <p>A popular solution to get both encryption and authentication is to run the message content through a hashing function like SHA-256 prior to encryption. The hashing is an irreversible function that takes in data and produces an unpredictable digest (number) that's unique. Hashing the message and encrypting the hash with the private key is called signing the message or creating a digital signature.</p>
         <p>Anyone that decrypts the signature only gets the hash digest. However, the recipient can apply the same hashing on the private-key-decoded message and compare it with the hash. If it matches, the recipient knows that the message is signed by the sender. Authentication is established together with secure encryption. The RSA encryption-decryption flow with authentication can be seen in the following diagram.</p>
@@ -333,7 +333,7 @@
         </div>
       </section>
       <section>
-        <h2>Conclusion</h2>
+        <h2 class="num">Conclusion</h2>
         <p>This article shows how prime numbers are used to secure DH key exchange and RSA. Even SHA-256 hash algorithms used in authentication rely on prime numbers for randomization. This junction in math and cryptography is such a contested topic that there are two Millennium Prize Problems, the P vs NP Problem and the Riemann Hypothesis, that relates to it. Proving them is important because if any two of these prove different than what is assumed, current cryptography standards are in trouble.</p>
         <p>People often fall ignorant of the role of mathematics. Prime numbers get far less attention than they should be since they are the atoms of the numbers we use everyday. Euler and Fermat probably did not realise how important their theories would become centuries later. Mathematics is a deep, slow form of knowledge that should not be discarded if its value cannot immediately be realised.</p>
         <p>The beauty and genius with which the key-exchange, encryption and authentication problems were solved is astonishing. But as always, it was made possible by many discoveries and innovations that came before it. Big or small, don't stop exploring and don't despise small contributions.</p>
@@ -412,12 +412,12 @@
         <p>There are two types of cryptography, symmetric where the same key is used for encryption and decryption, and asymmetric where each person has a key that is publicly accessible and a key that stays private/secret. Symmetric cryptography immediately raises the question of how a secret key can be shared over an insecure network.</p>
       </section>
       <section>
-        <h2>Key Exchange</h2>
+        <h2 class="num">Key Exchange</h2>
         <p>Diffie-Hellman (DH) key exchange was published in 1967 as a method to exchange a secret key over an insecure channel. It uses the hardness of the discrete logarithm problem to calculate an irreversible representation of a secret key. The representation can be publicly accessible since the secret cannot be obtained from it.</p>
         <p>Consider a secret key \(a\) and its public representation \(A\) that will be owned by Alice. \(A\) can be obtained with \[A = g^a \bmod{n}\]</p>
         <p>where \(g\) is a base (usually 2 or 5) and \(n\) is a large number that makes it hard to reverse the calculation and get back to \(a\) from \(A\).</p>
-        <div class="insight block">
-          <h3>Insight</h3>
+        <div class="insight block ref num" data-label="Insight">
+          <h4></h4>
           <p>It is easy to calculate the modulo of an exponential function \[X = g^x \bmod{n}\] if the base \(g\), the power \(x\) and the modulus \(n\) is known, but it is hard to calculate \(x\) from \(X\) if \(n\) is a large prime number.</p>
         </div>
         <p>Bob does the same to obtain \(B\) with his secret key \(b\) and sends it to Alice to compute \(z\) with</p>
@@ -425,7 +425,7 @@
         <p>Bob can also compute the same \(z\) by using \(A\) and \(b\).</p>
         <p>\[A^b \bmod{n} = g^{a b} \bmod{n} = z\]</p>
         <p>Note that a shared key (\(z\)) was established without ever exposing secret keys \(a\) or \(b\) and no one can compute \(z\) with only \(g\), \(n\), \(A\) and \(B\). Still, one may wonder why \(n\) must be specifically prime.</p>
-        <p>If \(n=15\) and \(g=2\), then \(z\) only falls within the set of \(\zeta = \{1,2,4,8\}\), instead of utilizing the entire possible range \(\{1,...,n-1\}\). A utilization ratio, \(\gamma\), can thus be expressed as the number of elements utilized, \(|\zeta|\), divided by \(n-1\). Thus, when \(n=15\) and \(g=2\), the utilization ratio, \[\gamma = \frac{|\zeta|}{n-1}=\frac{4}{14}\] is approximately 0.286. In this case \(A\), \(B\) and \(z\) only cycle through 28.6% of the numbers making it easier to guess the shared key \(z\). Figure <span class="figure-number" data-fid="cos-mod-clock"></span> shows how much numbers are utilised. With \(n=19\) and \(g=2\) it cycles through all the numbers \(\{1,...,n-1\}\). Thus \(\gamma = 1\), which is usually the case when \(n\) is prime.</p>
+        <p>If \(n=15\) and \(g=2\), then \(z\) only falls within the set of \(\zeta = \{1,2,4,8\}\), instead of utilizing the entire possible range \(\{1,...,n-1\}\). A utilization ratio, \(\gamma\), can thus be expressed as the number of elements utilized, \(|\zeta|\), divided by \(n-1\). Thus, when \(n=15\) and \(g=2\), the utilization ratio, \[\gamma = \frac{|\zeta|}{n-1}=\frac{4}{14}\] is approximately 0.286. In this case \(A\), \(B\) and \(z\) only cycle through 28.6% of the numbers making it easier to guess the shared key \(z\). Figure <span class="figure-number" data-fid="mod-clock"></span> shows how much numbers are utilised. With \(n=19\) and \(g=2\) it cycles through all the numbers \(\{1,...,n-1\}\). Thus \(\gamma = 1\), which is usually the case when \(n\) is prime.</p>
         <div class="interactions">
           <p>\(n\):
             <span class="number-input-wrapper">
@@ -447,17 +447,17 @@
             </span>
           </p>
           <svg id="cos-clock-svg" class="art-clock-svg" viewBox="0 0 400 400" width="400" height="400"></svg>
-          <div id="cos-mod-clock" class="figure-numbering"><p>Modular clock diagram.</p></div>
+          <div class="figure-numbering ref num" data-fig="mod-clock" data-label="Figure"><p>Modular clock diagram.</p></div>
           <p class="mod-seq">Sequence:</p>
           <div id="cos-out-sequence" class="mod-seq-box"></div>
         </div>
         <div id="cos-gammanplot" class="charta"></div>
         <div id="cos-tooltip" class="gamman tooltip"></div>
-        <div id="cos-gamma-n-plot" class="figure-numbering"><p>Plot of \(\gamma\) against \(n\) with prime \(n\) values highlighted with green lines.</p></div>
-        <p>Figure <span class="figure-number" data-fid="cos-gamma-n-plot"></span> shows a graph of \(\gamma\) over a range of \(n\) values. Even numbers of \(n\) are omitted and prime \(n\) numbers are highlighted with green vertical lines. Click on the points to set \(n\) and \(g\) above and see how each pattern look in the modular clock diagram.</p>
+        <div class="figure-numbering ref num" data-fig="gamma-n-plot" data-label="Figure"><p>Plot of \(\gamma\) against \(n\) with prime \(n\) values highlighted with green lines.</p></div>
+        <p>Figure <span class="figure-number" data-fid="gamma-n-plot"></span> shows a graph of \(\gamma\) over a range of \(n\) values. Even numbers of \(n\) are omitted and prime \(n\) numbers are highlighted with green vertical lines. Click on the points to set \(n\) and \(g\) above and see how each pattern look in the modular clock diagram.</p>
       </section>
       <section>
-        <h2>The Atoms of Math</h2>
+        <h2 class="num">The Atoms of Math</h2>
         <p>If asked to find the factors of 5040, a sensible strategy might be to start from the lowest numbers and see what can divide 5040.
           \[\begin{align}
             5040/1 &= 5040 && \text{(no effect, use 2)} \\
@@ -481,13 +481,13 @@
         </p>
         <p>Notice that all the factors are prime numbers. In fact, every number has only one list of factors that is all prime. This is called the Fundamental Theorem of Arithmetic and was detailed by Carl Friedrich Gauss in 1801. Admittedly, I was embarrassed to only learn this now, especially after using words like peculiar and quirky.</p>
         <p>Prime numbers are not just weird numbers in everyday counting numbers, they are actually the atoms of which all numbers are made up of. This also means that two prime numbers can be selected, and the product of them will only have those two numbers as factors. When asked to find the factors of 679, only 17 will be found to divide it together with 41. When asked about 22790237 one will have to go up to 3187. It becomes apparent that factoring products of two large primes is difficult.</p>
-        <div class="insight block">
-          <h3>Insight</h3>
+        <div class="insight block ref num" data-label="Insight">
+          <h4></h4>
           <p>Multiplying two large prime numbers results in a new prime number with only the two prime factors. The multiplication (forward) is easy, but factoring it (backwards) into the two original primes is hard.</p>
         </div>
       </section>
       <section>
-        <h2>Inventing RSA</h2>
+        <h2 class="num">Inventing RSA</h2>
         <p>With asymmetric cryptography each person has a public key (\(S\), \(R\)) and a private key (\(s\), \(r\)). Anyone can see the public keys but only the owners ever know the private keys. The sender can encrypt a message with the recipient's public key (\(R\)) and only the recipient can decrypt the message with the matching private key (\(r\)). Encryption is established without exchanging any secret keys.</p>
         <p>The method in Insight 1 can also be used to encrypt messages. The message \(m\) is used instead of the base \(g\) and raised to the power of an encryption key \(e\). The encrypted message \(M\) is thus \[M=m^e \bmod{n}\] However, it will be convenient to also be able to decrypt \(M\) in the same way by applying a decryption key as another power to get back to \(m\) \[m=M^d \bmod{n}\] which is equivalent to \[\begin{equation} m \equiv m^{e d} \pmod{n} \tag{eq 1} \end{equation}\]</p>
         <p>Rivest, Shamir and Adleman published RSA in 1977 in which they derived \(e\) and \(d\) to encrypt and decrypt messages. The RSA authors build on math discovered three centuries earlier. The initial version of Euler's theorem was first published in 1736 as a proof of Fermat's little theorem (published without proof in 1640).</p>
@@ -502,7 +502,7 @@
         <p>that can be transformed into modulo form (this is why the multiple \(k\) was required earlier): \[ed \equiv 1 \pmod{\varphi(n)}\]</p>
       </section>
       <section>
-        <h2>Encryption and Decryption</h2>
+        <h2 class="num">Encryption and Decryption</h2>
         <p>Two primes are required to produce the modulus \(n\) and Euler's Totient \(\varphi(n)\).</p>
         <p>\[n = p q\] \[\varphi(n) = (p-1)(q-1)\]</p>
         <div class="interactions">
@@ -534,7 +534,7 @@
           <p>\(e\):<span id="cos-out-e"></span></p>
           <p>\(d\):<span id="cos-out-d"></span></p>
         </div>
-        <h3>Encryption on a Single Number</h3>
+        <h3 class="num">Encryption on a Single Number</h3>
         <p>The public key consists of \(e\) and \(n\). Anyone can use a recipient's public key to encrypt a number \(x\) with \(c = x^e \bmod{n}\).</p>
         <div class="interactions">
           <p>\(x\):
@@ -552,7 +552,7 @@
         <div class="interactions">
           <p>\(x\):<span id="cos-out-x"></span></p>
         </div>
-        <h3>Encryption on a String</h3>
+        <h3 class="num">Encryption on a String</h3>
         <p>The number \(x\) is probably only 4 bytes. To encrypt strings of bytes a padding scheme is used that first converts the string into a 4 byte sequence of padded numbers that can be passed through encryption. The padding scheme is reversed after decoding to obtain the original message.</p>
         <div class="interactions">
           <p>Original message:<input id="cos-in-orig-msg" value="Testing. Does this work? Great!" type="text" /></p>
@@ -563,7 +563,7 @@
         </div>
       </section>
       <section>
-        <h2>Authentication</h2>
+        <h2 class="num">Authentication</h2>
         <p>Notice that only two of the original goals were covered thus far. The receiver still needs to know that the sender is in fact the sender. With RSA this can be done by simply encrypting a string with the sender's private key. The receiver can then use the sender's public key to decrypt it and see if it makes sense. The only problem is that everyone can decrypt that message.</p>
         <p>A popular solution to get both encryption and authentication is to run the message content through a hashing function like SHA-256 prior to encryption. The hashing is an irreversible function that takes in data and produces an unpredictable digest (number) that's unique. Hashing the message and encrypting the hash with the private key is called signing the message or creating a digital signature.</p>
         <p>Anyone that decrypts the signature only gets the hash digest. However, the recipient can apply the same hashing on the private-key-decoded message and compare it with the hash. If it matches, the recipient knows that the message is signed by the sender. Authentication is established together with secure encryption. The RSA encryption-decryption flow with authentication can be seen in the following diagram.</p>
@@ -572,7 +572,7 @@
         </div>
       </section>
       <section>
-        <h2>Conclusion</h2>
+        <h2 class="num">Conclusion</h2>
         <p>This article shows how prime numbers are used to secure DH key exchange and RSA. Even SHA-256 hash algorithms used in authentication rely on prime numbers for randomization. This junction in math and cryptography is such a contested topic that there are two Millennium Prize Problems, the P vs NP Problem and the Riemann Hypothesis, that relates to it. Proving them is important because if any two of these prove different than what is assumed, current cryptography standards are in trouble.</p>
         <p>People often fall ignorant of the role of mathematics. Prime numbers get far less attention than they should be since they are the atoms of the numbers we use everyday. Euler and Fermat probably did not realise how important their theories would become centuries later. Mathematics is a deep, slow form of knowledge that should not be discarded if its value cannot immediately be realised.</p>
         <p>The beauty and genius with which the key-exchange, encryption and authentication problems were solved is astonishing. But as always, it was made possible by many discoveries and innovations that came before it. Big or small, don't stop exploring and don't despise small contributions.</p>

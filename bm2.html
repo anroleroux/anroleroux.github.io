@@ -33,6 +33,13 @@
     .figure-numbering { margin: var(--ms1) 0 0; }
     .figure-numbering p { font-family: var(--mono); font-size: var(--ts13); color: var(--ink-faint); margin: 0; line-height: 1.5; max-width: 60ch; }
 
+    /* ── SMD system diagram (static) ──────────────────────────────────── */
+    .smd-diag .smd-ink    { stroke: rgba(28,22,16,0.88); }
+    .smd-diag .smd-mute   { stroke: rgba(28,22,16,0.45); }
+    .smd-diag .smd-mass   { fill: rgba(138,58,19,0.08); stroke: var(--accent); }
+    .smd-diag .smd-label  { fill: rgba(28,22,16,0.45); }
+    .smd-diag .smd-mlabel { fill: var(--accent); }
+
     /* ── Code blocks ──────────────────────────────────────────────────── */
     .art-code-label { font-family: var(--mono); font-size: var(--ts11); letter-spacing: 1.2px; text-transform: uppercase; color: var(--ink-faint); margin: var(--ms3) 0 var(--ms-2); }
     .art-code { background: rgba(28,22,16,0.04); border: 1px solid var(--rule); border-radius: 2px; padding: var(--ms1) var(--ms3); margin: 0 0 var(--ms2); font-family: var(--mono); font-size: var(--ts13); line-height: 1.7; color: var(--ink-muted); overflow-x: auto; max-width: 66ch; white-space: pre; display: block; }
@@ -47,6 +54,11 @@
     .cosmos .charta .tick text { fill: var(--bone-faint); }
     .cosmos .charta .tick line, .cosmos .charta .domain { stroke: var(--bone-fainter); }
     .cosmos .figure-numbering p { color: var(--bone-faint); }
+    .cosmos .smd-diag .smd-ink    { stroke: rgba(236,226,200,0.88); }
+    .cosmos .smd-diag .smd-mute   { stroke: rgba(236,226,200,0.45); }
+    .cosmos .smd-diag .smd-mass   { fill: rgba(200,163,93,0.12); stroke: var(--gold); }
+    .cosmos .smd-diag .smd-label  { fill: rgba(236,226,200,0.45); }
+    .cosmos .smd-diag .smd-mlabel { fill: var(--gold); }
     .cosmos .art-code-label { color: var(--bone-faint); }
     .cosmos .art-code { background: rgba(236,226,200,0.06); border-color: var(--bone-fainter); color: var(--bone-muted); }
   </style>
@@ -125,7 +137,61 @@
         <h2 class="num">A Simple Horizontal 2DoF SMD System</h2>
         <p>To demonstrate the power of simulating SMD systems, consider two masses sliding horizontally on a frictionless surface, each constrained by springs and dampers. Because there are two masses each free to move in one direction, the system has two degrees of freedom — a 2DoF system.</p>
 
-        <div class="art-fig"><div class="charta smd-diag-fig"></div></div>
+        <div class="art-fig"><div class="charta smd-diag-fig"><svg class="smd-diag" viewBox="0 0 620 210" preserveAspectRatio="xMidYMid meet" role="img" aria-label="A horizontally sliding 2-mass (2DoF) SMD system constrained between two walls by springs and dampers.">
+          <!-- Left wall -->
+          <line class="smd-ink" x1="38" y1="38" x2="38" y2="162" stroke-width="2.5"/>
+          <line class="smd-mute" x1="38" y1="38" x2="27" y2="48" stroke-width="1"/>
+          <line class="smd-mute" x1="38" y1="58.67" x2="27" y2="68.67" stroke-width="1"/>
+          <line class="smd-mute" x1="38" y1="79.33" x2="27" y2="89.33" stroke-width="1"/>
+          <line class="smd-mute" x1="38" y1="100" x2="27" y2="110" stroke-width="1"/>
+          <line class="smd-mute" x1="38" y1="120.67" x2="27" y2="130.67" stroke-width="1"/>
+          <line class="smd-mute" x1="38" y1="141.33" x2="27" y2="151.33" stroke-width="1"/>
+          <line class="smd-mute" x1="38" y1="162" x2="27" y2="172" stroke-width="1"/>
+          <!-- Right wall -->
+          <line class="smd-ink" x1="522" y1="38" x2="522" y2="162" stroke-width="2.5"/>
+          <line class="smd-mute" x1="522" y1="38" x2="533" y2="48" stroke-width="1"/>
+          <line class="smd-mute" x1="522" y1="58.67" x2="533" y2="68.67" stroke-width="1"/>
+          <line class="smd-mute" x1="522" y1="79.33" x2="533" y2="89.33" stroke-width="1"/>
+          <line class="smd-mute" x1="522" y1="100" x2="533" y2="110" stroke-width="1"/>
+          <line class="smd-mute" x1="522" y1="120.67" x2="533" y2="130.67" stroke-width="1"/>
+          <line class="smd-mute" x1="522" y1="141.33" x2="533" y2="151.33" stroke-width="1"/>
+          <line class="smd-mute" x1="522" y1="162" x2="533" y2="172" stroke-width="1"/>
+          <!-- SD element 1 (k1, c1): left wall -> m1 -->
+          <line class="smd-ink" x1="38" y1="72" x2="38" y2="128" stroke-width="1.8"/>
+          <line class="smd-ink" x1="146" y1="72" x2="146" y2="128" stroke-width="1.8"/>
+          <path class="smd-ink" fill="none" stroke-width="1.8" stroke-linejoin="round" d="M38,72L57.44,72L63.2,63L74.72,81L86.24,63L97.76,81L109.28,63L120.8,81L126.56,72L146,72"/>
+          <line class="smd-ink" x1="38" y1="128" x2="76" y2="128" stroke-width="1.8"/>
+          <rect class="smd-ink" x="76" y="119" width="32" height="18" fill="none" stroke-width="1.8"/>
+          <line class="smd-ink" x1="92" y1="128" x2="108" y2="128" stroke-width="1.8"/>
+          <line class="smd-ink" x1="108" y1="128" x2="146" y2="128" stroke-width="1.8"/>
+          <text class="smd-label" x="92" y="192" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10.5">k₁,  c₁</text>
+          <!-- SD element 2 (k2, c2): m1 -> m2 -->
+          <line class="smd-ink" x1="218" y1="72" x2="218" y2="128" stroke-width="1.8"/>
+          <line class="smd-ink" x1="326" y1="72" x2="326" y2="128" stroke-width="1.8"/>
+          <path class="smd-ink" fill="none" stroke-width="1.8" stroke-linejoin="round" d="M218,72L237.44,72L243.2,63L254.72,81L266.24,63L277.76,81L289.28,63L300.8,81L306.56,72L326,72"/>
+          <line class="smd-ink" x1="218" y1="128" x2="256" y2="128" stroke-width="1.8"/>
+          <rect class="smd-ink" x="256" y="119" width="32" height="18" fill="none" stroke-width="1.8"/>
+          <line class="smd-ink" x1="272" y1="128" x2="288" y2="128" stroke-width="1.8"/>
+          <line class="smd-ink" x1="288" y1="128" x2="326" y2="128" stroke-width="1.8"/>
+          <text class="smd-label" x="272" y="192" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10.5">k₂,  c₂</text>
+          <!-- SD element 3 (k3, c3): m2 -> right wall -->
+          <line class="smd-ink" x1="414" y1="72" x2="414" y2="128" stroke-width="1.8"/>
+          <line class="smd-ink" x1="522" y1="72" x2="522" y2="128" stroke-width="1.8"/>
+          <path class="smd-ink" fill="none" stroke-width="1.8" stroke-linejoin="round" d="M414,72L433.44,72L439.2,63L450.72,81L462.24,63L473.76,81L485.28,63L496.8,81L502.56,72L522,72"/>
+          <line class="smd-ink" x1="414" y1="128" x2="452" y2="128" stroke-width="1.8"/>
+          <rect class="smd-ink" x="452" y="119" width="32" height="18" fill="none" stroke-width="1.8"/>
+          <line class="smd-ink" x1="468" y1="128" x2="484" y2="128" stroke-width="1.8"/>
+          <line class="smd-ink" x1="484" y1="128" x2="522" y2="128" stroke-width="1.8"/>
+          <text class="smd-label" x="468" y="192" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10.5">k₃,  c₃</text>
+          <!-- Mass 1 -->
+          <rect class="smd-mass" x="146" y="50" width="72" height="100" stroke-width="2"/>
+          <text class="smd-mlabel" x="182" y="94" text-anchor="middle" dominant-baseline="middle" font-family="Cormorant Garamond, serif" font-size="17" font-style="italic">m₁</text>
+          <text class="smd-label" x="182" y="114" text-anchor="middle" dominant-baseline="middle" font-family="JetBrains Mono, monospace" font-size="10">x₁</text>
+          <!-- Mass 2 -->
+          <rect class="smd-mass" x="326" y="50" width="88" height="100" stroke-width="2"/>
+          <text class="smd-mlabel" x="370" y="94" text-anchor="middle" dominant-baseline="middle" font-family="Cormorant Garamond, serif" font-size="17" font-style="italic">m₂</text>
+          <text class="smd-label" x="370" y="114" text-anchor="middle" dominant-baseline="middle" font-family="JetBrains Mono, monospace" font-size="10">x₂</text>
+        </svg></div></div>
         <div class="figure-numbering ref num" data-fig="smd-diag" data-label="Figure"><p>A horizontally sliding 2-mass (2DoF) SMD system constrained on both sides. The masses are assumed to slide without friction.</p></div>
 
         <h3 class="num">The Model</h3>
@@ -318,7 +384,61 @@ freq_hz = omega / (2 * np.pi)</code>
         <h2 class="num">A Simple Horizontal 2DoF SMD System</h2>
         <p>To demonstrate the power of simulating SMD systems, consider two masses sliding horizontally on a frictionless surface, each constrained by springs and dampers. Because there are two masses each free to move in one direction, the system has two degrees of freedom — a 2DoF system.</p>
 
-        <div class="art-fig"><div class="charta smd-diag-fig"></div></div>
+        <div class="art-fig"><div class="charta smd-diag-fig"><svg class="smd-diag" viewBox="0 0 620 210" preserveAspectRatio="xMidYMid meet" role="img" aria-label="A horizontally sliding 2-mass (2DoF) SMD system constrained between two walls by springs and dampers.">
+          <!-- Left wall -->
+          <line class="smd-ink" x1="38" y1="38" x2="38" y2="162" stroke-width="2.5"/>
+          <line class="smd-mute" x1="38" y1="38" x2="27" y2="48" stroke-width="1"/>
+          <line class="smd-mute" x1="38" y1="58.67" x2="27" y2="68.67" stroke-width="1"/>
+          <line class="smd-mute" x1="38" y1="79.33" x2="27" y2="89.33" stroke-width="1"/>
+          <line class="smd-mute" x1="38" y1="100" x2="27" y2="110" stroke-width="1"/>
+          <line class="smd-mute" x1="38" y1="120.67" x2="27" y2="130.67" stroke-width="1"/>
+          <line class="smd-mute" x1="38" y1="141.33" x2="27" y2="151.33" stroke-width="1"/>
+          <line class="smd-mute" x1="38" y1="162" x2="27" y2="172" stroke-width="1"/>
+          <!-- Right wall -->
+          <line class="smd-ink" x1="522" y1="38" x2="522" y2="162" stroke-width="2.5"/>
+          <line class="smd-mute" x1="522" y1="38" x2="533" y2="48" stroke-width="1"/>
+          <line class="smd-mute" x1="522" y1="58.67" x2="533" y2="68.67" stroke-width="1"/>
+          <line class="smd-mute" x1="522" y1="79.33" x2="533" y2="89.33" stroke-width="1"/>
+          <line class="smd-mute" x1="522" y1="100" x2="533" y2="110" stroke-width="1"/>
+          <line class="smd-mute" x1="522" y1="120.67" x2="533" y2="130.67" stroke-width="1"/>
+          <line class="smd-mute" x1="522" y1="141.33" x2="533" y2="151.33" stroke-width="1"/>
+          <line class="smd-mute" x1="522" y1="162" x2="533" y2="172" stroke-width="1"/>
+          <!-- SD element 1 (k1, c1): left wall -> m1 -->
+          <line class="smd-ink" x1="38" y1="72" x2="38" y2="128" stroke-width="1.8"/>
+          <line class="smd-ink" x1="146" y1="72" x2="146" y2="128" stroke-width="1.8"/>
+          <path class="smd-ink" fill="none" stroke-width="1.8" stroke-linejoin="round" d="M38,72L57.44,72L63.2,63L74.72,81L86.24,63L97.76,81L109.28,63L120.8,81L126.56,72L146,72"/>
+          <line class="smd-ink" x1="38" y1="128" x2="76" y2="128" stroke-width="1.8"/>
+          <rect class="smd-ink" x="76" y="119" width="32" height="18" fill="none" stroke-width="1.8"/>
+          <line class="smd-ink" x1="92" y1="128" x2="108" y2="128" stroke-width="1.8"/>
+          <line class="smd-ink" x1="108" y1="128" x2="146" y2="128" stroke-width="1.8"/>
+          <text class="smd-label" x="92" y="192" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10.5">k₁,  c₁</text>
+          <!-- SD element 2 (k2, c2): m1 -> m2 -->
+          <line class="smd-ink" x1="218" y1="72" x2="218" y2="128" stroke-width="1.8"/>
+          <line class="smd-ink" x1="326" y1="72" x2="326" y2="128" stroke-width="1.8"/>
+          <path class="smd-ink" fill="none" stroke-width="1.8" stroke-linejoin="round" d="M218,72L237.44,72L243.2,63L254.72,81L266.24,63L277.76,81L289.28,63L300.8,81L306.56,72L326,72"/>
+          <line class="smd-ink" x1="218" y1="128" x2="256" y2="128" stroke-width="1.8"/>
+          <rect class="smd-ink" x="256" y="119" width="32" height="18" fill="none" stroke-width="1.8"/>
+          <line class="smd-ink" x1="272" y1="128" x2="288" y2="128" stroke-width="1.8"/>
+          <line class="smd-ink" x1="288" y1="128" x2="326" y2="128" stroke-width="1.8"/>
+          <text class="smd-label" x="272" y="192" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10.5">k₂,  c₂</text>
+          <!-- SD element 3 (k3, c3): m2 -> right wall -->
+          <line class="smd-ink" x1="414" y1="72" x2="414" y2="128" stroke-width="1.8"/>
+          <line class="smd-ink" x1="522" y1="72" x2="522" y2="128" stroke-width="1.8"/>
+          <path class="smd-ink" fill="none" stroke-width="1.8" stroke-linejoin="round" d="M414,72L433.44,72L439.2,63L450.72,81L462.24,63L473.76,81L485.28,63L496.8,81L502.56,72L522,72"/>
+          <line class="smd-ink" x1="414" y1="128" x2="452" y2="128" stroke-width="1.8"/>
+          <rect class="smd-ink" x="452" y="119" width="32" height="18" fill="none" stroke-width="1.8"/>
+          <line class="smd-ink" x1="468" y1="128" x2="484" y2="128" stroke-width="1.8"/>
+          <line class="smd-ink" x1="484" y1="128" x2="522" y2="128" stroke-width="1.8"/>
+          <text class="smd-label" x="468" y="192" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10.5">k₃,  c₃</text>
+          <!-- Mass 1 -->
+          <rect class="smd-mass" x="146" y="50" width="72" height="100" stroke-width="2"/>
+          <text class="smd-mlabel" x="182" y="94" text-anchor="middle" dominant-baseline="middle" font-family="Cormorant Garamond, serif" font-size="17" font-style="italic">m₁</text>
+          <text class="smd-label" x="182" y="114" text-anchor="middle" dominant-baseline="middle" font-family="JetBrains Mono, monospace" font-size="10">x₁</text>
+          <!-- Mass 2 -->
+          <rect class="smd-mass" x="326" y="50" width="88" height="100" stroke-width="2"/>
+          <text class="smd-mlabel" x="370" y="94" text-anchor="middle" dominant-baseline="middle" font-family="Cormorant Garamond, serif" font-size="17" font-style="italic">m₂</text>
+          <text class="smd-label" x="370" y="114" text-anchor="middle" dominant-baseline="middle" font-family="JetBrains Mono, monospace" font-size="10">x₂</text>
+        </svg></div></div>
         <div class="figure-numbering ref num" data-fig="smd-diag" data-label="Figure"><p>A horizontally sliding 2-mass (2DoF) SMD system constrained on both sides. The masses are assumed to slide without friction.</p></div>
 
         <h3 class="num">The Model</h3>
@@ -531,137 +651,6 @@ function solve2DoFForced(m1, m2, k1, k2, k3, c1, c2, c3, forcing, tMax, nSteps) 
   return data;
 }
 
-// ── Figure 1: System diagram ──────────────────────────────────
-function drawSMDDiagram(layerId, isDark) {
-  var container = document.querySelector('#' + layerId + ' .smd-diag-fig');
-  if (!container) return;
-  container.innerHTML = '';
-
-  var inkCol   = isDark ? 'rgba(236,226,200,0.88)' : 'rgba(28,22,16,0.88)';
-  var inkMute  = isDark ? 'rgba(236,226,200,0.45)' : 'rgba(28,22,16,0.45)';
-  var accentCol = isDark ? '#d6ab5e' : '#8a3a13';
-  var fillMass = isDark ? 'rgba(200,163,93,0.12)' : 'rgba(138,58,19,0.08)';
-
-  var W = 620, H = 210;
-  var svg = d3.select(container).append('svg')
-    .attr('viewBox', '0 0 ' + W + ' ' + H)
-    .attr('preserveAspectRatio', 'xMidYMid meet');
-
-  // Layout
-  var springY = 72, damperY = 128;
-  var blockTop = 50, blockBot = 150;
-  var midY = (blockTop + blockBot) / 2;
-  var wallTop = blockTop - 12, wallBot = blockBot + 12;
-
-  var lWallR = 38;
-  var sdW    = 108;
-  var m1W    = 72, m2W = 88;
-  var m1L = lWallR + sdW;
-  var m1R = m1L + m1W;
-  var m2L = m1R + sdW;
-  var m2R = m2L + m2W;
-  var rWallL = m2R + sdW;
-
-  // ── Walls ──────────────────────────────────────────────────
-  function drawWall(xEdge, hatchDir) {
-    svg.append('line')
-      .attr('x1', xEdge).attr('y1', wallTop)
-      .attr('x2', xEdge).attr('y2', wallBot)
-      .attr('stroke', inkCol).attr('stroke-width', 2.5);
-    for (var i = 0; i < 7; i++) {
-      var hy = wallTop + (wallBot - wallTop) * i / 6;
-      svg.append('line')
-        .attr('x1', xEdge).attr('y1', hy)
-        .attr('x2', xEdge + hatchDir * 11).attr('y2', hy + 10)
-        .attr('stroke', inkMute).attr('stroke-width', 1);
-    }
-  }
-  drawWall(lWallR, -1);
-  drawWall(rWallL,  1);
-
-  // ── Spring (zigzag) ────────────────────────────────────────
-  function drawSpring(x1, x2, y) {
-    var span  = x2 - x1;
-    var lead  = span * 0.18;
-    var coilX = x1 + lead;
-    var coilE = x2 - lead;
-    var n = 6, amp = 9;
-    var pts = [[x1, y], [coilX, y]];
-    var segW = (coilE - coilX) / n;
-    for (var i = 0; i < n; i++) {
-      pts.push([coilX + (i + 0.5) * segW, y + (i % 2 === 0 ? -amp : amp)]);
-    }
-    pts.push([coilE, y]);
-    pts.push([x2, y]);
-    var line = d3.line().x(function(d){ return d[0]; }).y(function(d){ return d[1]; });
-    svg.append('path').datum(pts).attr('fill', 'none')
-      .attr('stroke', inkCol).attr('stroke-width', 1.8)
-      .attr('stroke-linejoin', 'round').attr('d', line);
-  }
-
-  // ── Damper (dashpot) ───────────────────────────────────────
-  function drawDamper(x1, x2, y) {
-    var cx = (x1 + x2) / 2;
-    var bW = 32, bH = 18;
-    // left lead
-    svg.append('line').attr('x1', x1).attr('y1', y).attr('x2', cx - bW / 2).attr('y2', y)
-      .attr('stroke', inkCol).attr('stroke-width', 1.8);
-    // box
-    svg.append('rect')
-      .attr('x', cx - bW / 2).attr('y', y - bH / 2)
-      .attr('width', bW).attr('height', bH)
-      .attr('fill', 'none').attr('stroke', inkCol).attr('stroke-width', 1.8);
-    // piston rod inside right half of box
-    svg.append('line').attr('x1', cx).attr('y1', y).attr('x2', cx + bW / 2).attr('y2', y)
-      .attr('stroke', inkCol).attr('stroke-width', 1.8);
-    // right lead
-    svg.append('line').attr('x1', cx + bW / 2).attr('y1', y).attr('x2', x2).attr('y2', y)
-      .attr('stroke', inkCol).attr('stroke-width', 1.8);
-  }
-
-  // ── SD element (parallel spring + damper + end connectors) ─
-  function drawSD(x1, x2, label) {
-    svg.append('line').attr('x1', x1).attr('y1', springY).attr('x2', x1).attr('y2', damperY)
-      .attr('stroke', inkCol).attr('stroke-width', 1.8);
-    svg.append('line').attr('x1', x2).attr('y1', springY).attr('x2', x2).attr('y2', damperY)
-      .attr('stroke', inkCol).attr('stroke-width', 1.8);
-    drawSpring(x1, x2, springY);
-    drawDamper(x1, x2, damperY);
-    svg.append('text')
-      .attr('x', (x1 + x2) / 2).attr('y', 192)
-      .attr('text-anchor', 'middle').attr('fill', inkMute)
-      .attr('font-family', 'JetBrains Mono, monospace').attr('font-size', 10.5)
-      .text(label);
-  }
-
-  // ── Mass block ─────────────────────────────────────────────
-  function drawMass(x1, x2, mLabel, xLabel) {
-    var cx = (x1 + x2) / 2;
-    svg.append('rect')
-      .attr('x', x1).attr('y', blockTop)
-      .attr('width', x2 - x1).attr('height', blockBot - blockTop)
-      .attr('fill', fillMass).attr('stroke', accentCol).attr('stroke-width', 2);
-    svg.append('text')
-      .attr('x', cx).attr('y', midY - 6)
-      .attr('text-anchor', 'middle').attr('dominant-baseline', 'middle')
-      .attr('fill', accentCol)
-      .attr('font-family', 'Cormorant Garamond, serif').attr('font-size', 17).attr('font-style', 'italic')
-      .text(mLabel);
-    svg.append('text')
-      .attr('x', cx).attr('y', midY + 14)
-      .attr('text-anchor', 'middle').attr('dominant-baseline', 'middle')
-      .attr('fill', inkMute)
-      .attr('font-family', 'JetBrains Mono, monospace').attr('font-size', 10)
-      .text(xLabel);
-  }
-
-  drawSD(lWallR, m1L, 'k₁,  c₁');
-  drawSD(m1R,    m2L, 'k₂,  c₂');
-  drawSD(m2R,    rWallL, 'k₃,  c₃');
-  drawMass(m1L, m1R, 'm₁', 'x₁');
-  drawMass(m2L, m2R, 'm₂', 'x₂');
-}
-
 // ── Displacement-response chart renderer (shared) ────────────
 function renderResponseChart(container, isDark, data, title) {
   container.innerHTML = '';
@@ -764,7 +753,6 @@ function drawSMDForced(layerId, isDark) {
   var dark = (localStorage.getItem('sp-mode') === 'night');
   ['alm-layer', 'cos-layer'].forEach(function(lid, i) {
     var isDark = (i === 1) || dark;
-    drawSMDDiagram(lid, isDark);
     drawSMDResponse(lid, isDark);
     drawSMDForced(lid, isDark);
   });

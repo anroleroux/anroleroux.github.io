@@ -283,7 +283,7 @@ function initRef(p) {
             if (el.classList.contains('num')) {
                 h2Count++;
                 display = fmt(h2Count, el);
-                el.insertAdjacentHTML('afterbegin', '<span class="numbering">' + display + '.</span>');
+                el.insertAdjacentHTML('afterbegin', '<span class="numbering">' + display + '.</span> ');
             }
             h3Display = display;            // remember for nested h3 numbering
             if (el.classList.contains('ref')) refs[id] = display;
@@ -298,7 +298,7 @@ function initRef(p) {
                 groups.h3 = (groups.h3 || 0) + 1;
                 let self = fmt(groups.h3, el);
                 prefix = h3Display ? h3Display + '.' + self : self;
-                el.insertAdjacentHTML('afterbegin', '<span class="numbering">' + prefix + '</span>');
+                el.insertAdjacentHTML('afterbegin', '<span class="numbering">' + prefix + '</span> ');
             }
             if (el.classList.contains('ref')) refs[id] = prefix;
             addToc(text, id, prefix, 1);
@@ -322,7 +322,7 @@ function initRef(p) {
             let label  = el.dataset.label || (type !== 'ref' ? type[0].toUpperCase() + type.slice(1) : '');
             let target = el.querySelector('h2, h3, h4, p') || el;
             target.insertAdjacentHTML('afterbegin',
-                '<span class="numbering">' + (label ? label + ' ' : '') + number + '.</span>');
+                '<span class="numbering">' + (label ? label + ' ' : '') + number + '.</span> ');
         }
     });
 

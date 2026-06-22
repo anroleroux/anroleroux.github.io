@@ -338,6 +338,11 @@ freq_hz = omega / (2 * np.pi)</code>
 
         <div class="art-fig"><div class="charta smd-frf-fig"></div></div>
         <div class="figure-numbering ref num" data-fig="smd-frf" data-label="Figure"><p>Frequency response function: steady-state amplitude of each mass against driving frequency, with the two natural frequencies marked. Both masses peak at the natural frequencies and fall away in between.</p></div>
+
+        <p>The amplitude tells only half the story. The phase records how far each mass lags the driving force: near zero at low frequencies, then dropping by roughly 180° as the sweep passes through each resonance — the signature of a mass crossing over from moving <em>with</em> the force to moving <em>against</em> it.</p>
+
+        <div class="art-fig"><div class="charta smd-phase-fig"></div></div>
+        <div class="figure-numbering ref num" data-fig="smd-phase" data-label="Figure"><p>Phase of each mass's steady-state response relative to the driving force. Every resonance adds about 180° of lag, so mass 2 — which responds strongly to both modes — accumulates close to 360° across the sweep.</p></div>
       </section>
     </article>
 
@@ -603,6 +608,11 @@ freq_hz = omega / (2 * np.pi)</code>
 
         <div class="art-fig"><div class="charta smd-frf-fig"></div></div>
         <div class="figure-numbering ref num" data-fig="smd-frf" data-label="Figure"><p>Frequency response function: steady-state amplitude of each mass against driving frequency, with the two natural frequencies marked. Both masses peak at the natural frequencies and fall away in between.</p></div>
+
+        <p>The amplitude tells only half the story. The phase records how far each mass lags the driving force: near zero at low frequencies, then dropping by roughly 180° as the sweep passes through each resonance — the signature of a mass crossing over from moving <em>with</em> the force to moving <em>against</em> it.</p>
+
+        <div class="art-fig"><div class="charta smd-phase-fig"></div></div>
+        <div class="figure-numbering ref num" data-fig="smd-phase" data-label="Figure"><p>Phase of each mass's steady-state response relative to the driving force. Every resonance adds about 180° of lag, so mass 2 — which responds strongly to both modes — accumulates close to 360° across the sweep.</p></div>
       </section>
     </article>
 
@@ -784,16 +794,19 @@ function drawSMDForced(layerId, isDark) {
   renderResponseChart(container, isDark, data, 'Forced response  ·  x(t)');
 }
 
-// ── Frequency response function: steady-state amplitude vs ω ──
-// For a harmonic force F·e^{iωt} on mass 1, the steady-state amplitude is
+// ── Frequency response function: amplitude & phase vs ω ──────
+// For a harmonic force F·e^{iωt} on mass 1, the steady-state response is
 // X(ω) = Z(ω)^{-1} F with Z(ω) = K − ω²M + iωC. For the 2×2 symmetric system
-// Cramer's rule gives |X1| = F0·|d|/|det| and |X2| = F0·|c|/|det|, where
-// Z = [[a, b], [c, d]] and c = b.
+// Cramer's rule gives X1 = F0·d/det and X2 = −F0·b/det, where Z = [[a, b],
+// [c, d]] and c = b. Phases are unwrapped to stay continuous across ±180°.
 function computeFRF(m1, m2, k1, k2, k3, c1, c2, c3, F0, wMax, nPts) {
   var K11 = k1 + k2, K12 = -k2, K22 = k2 + k3;
   var C11 = c1 + c2, C12 = -c2, C22 = c2 + c3;
+  var DEG = 180 / Math.PI;
 
   var data = [];
+  var off1 = 0, off2 = 0, prev1 = 0, prev2 = 0;
+
   for (var p = 0; p <= nPts; p++) {
     var w = wMax * p / nPts;
 
@@ -809,22 +822,43 @@ function computeFRF(m1, m2, k1, k2, k3, c1, c2, c3, F0, wMax, nPts) {
     var a1 = F0 * Math.sqrt(dRe * dRe + dIm * dIm) / detMag;
     var a2 = F0 * Math.sqrt(bRe * bRe + bIm * bIm) / detMag;
 
-    data.push({ w: w, a1: a1, a2: a2 });
+    // Phase of X1 = arg(d) − arg(det); X2 numerator is −b
+    var r1 = Math.atan2(dIm * detRe - dRe * detIm, dRe * detRe + dIm * detIm) * DEG;
+    var r2 = Math.atan2(-bIm * detRe + bRe * detIm, -bRe * detRe - bIm * detIm) * DEG;
+
+    if (p > 0) {
+      if (r1 - prev1 > 180) off1 -= 360; else if (r1 - prev1 < -180) off1 += 360;
+      if (r2 - prev2 > 180) off2 -= 360; else if (r2 - prev2 < -180) off2 += 360;
+    }
+    prev1 = r1; prev2 = r2;
+
+    data.push({ w: w, a1: a1, a2: a2, p1: r1 + off1, p2: r2 + off2 });
   }
   return data;
 }
 
-// ── FRF chart renderer ───────────────────────────────────────
-function renderFRFChart(container, isDark, data, marks) {
+// ── Frequency-domain chart renderer (amplitude or phase) ─────
+// opts: { y1, y2, leg1, leg2, yLabel, title, marks, yFromZero, zeroLine, yTickSuffix }
+function renderFreqChart(container, isDark, data, opts) {
   container.innerHTML = '';
 
   var m1Col   = isDark ? '#d6ab5e' : '#8a3a13';
   var m2Col   = isDark ? '#9ab7c4' : '#3a6b86';
   var markCol = isDark ? 'rgba(236,226,200,0.35)' : 'rgba(28,22,16,0.3)';
+  var zeroCol = isDark ? 'rgba(236,226,200,0.22)' : 'rgba(28,22,16,0.18)';
 
+  var k1 = opts.y1, k2 = opts.y2;
   var wMax = data[data.length - 1].w;
-  var yAll = data.map(function(d){ return d.a1; }).concat(data.map(function(d){ return d.a2; }));
-  var yHi = d3.max(yAll) * 1.12;
+  var yAll = data.map(function(d){ return d[k1]; }).concat(data.map(function(d){ return d[k2]; }));
+  var yMin = d3.min(yAll), yMax = d3.max(yAll);
+
+  var yLo, yHi;
+  if (opts.yFromZero) {
+    yLo = 0; yHi = yMax * 1.12;
+  } else {
+    var pad = (yMax - yMin) * 0.08 || 1;
+    yLo = yMin - pad; yHi = yMax + pad;
+  }
 
   var W = 640, H = 300;
   var mg = { top: 30, right: 110, bottom: 40, left: 56 };
@@ -832,7 +866,7 @@ function renderFRFChart(container, isDark, data, marks) {
   var innerH = H - mg.top - mg.bottom;
 
   var xScale = d3.scaleLinear().domain([0, wMax]).range([0, innerW]);
-  var yScale = d3.scaleLinear().domain([0, yHi]).range([innerH, 0]);
+  var yScale = d3.scaleLinear().domain([yLo, yHi]).range([innerH, 0]);
 
   var svg = d3.select(container).append('svg')
     .attr('viewBox', '0 0 ' + W + ' ' + H)
@@ -840,8 +874,16 @@ function renderFRFChart(container, isDark, data, marks) {
 
   var g = svg.append('g').attr('transform', 'translate(' + mg.left + ',' + mg.top + ')');
 
+  // Optional zero line (phase plot)
+  if (opts.zeroLine && yLo < 0 && yHi > 0) {
+    g.append('line')
+      .attr('x1', 0).attr('x2', innerW)
+      .attr('y1', yScale(0)).attr('y2', yScale(0))
+      .attr('stroke', zeroCol).attr('stroke-width', 1);
+  }
+
   // Natural-frequency markers
-  marks.forEach(function(mk) {
+  opts.marks.forEach(function(mk) {
     var mx = xScale(mk.w);
     g.append('line')
       .attr('x1', mx).attr('x2', mx).attr('y1', 0).attr('y2', innerH)
@@ -854,13 +896,17 @@ function renderFRFChart(container, isDark, data, marks) {
   });
 
   // Axes
+  var yAxis = d3.axisLeft(yScale).ticks(6);
+  if (opts.yTickSuffix) {
+    yAxis.tickFormat(function(d){ return d + opts.yTickSuffix; });
+  }
   g.append('g').attr('transform', 'translate(0,' + innerH + ')')
     .call(d3.axisBottom(xScale).ticks(10));
-  g.append('g').call(d3.axisLeft(yScale).ticks(6));
+  g.append('g').call(yAxis);
 
   // Lines
-  var line1 = d3.line().x(function(d){ return xScale(d.w); }).y(function(d){ return yScale(d.a1); });
-  var line2 = d3.line().x(function(d){ return xScale(d.w); }).y(function(d){ return yScale(d.a2); });
+  var line1 = d3.line().x(function(d){ return xScale(d.w); }).y(function(d){ return yScale(d[k1]); });
+  var line2 = d3.line().x(function(d){ return xScale(d.w); }).y(function(d){ return yScale(d[k2]); });
 
   g.append('path').datum(data).attr('fill', 'none')
     .attr('stroke', m1Col).attr('stroke-width', 2).attr('d', line1);
@@ -870,8 +916,8 @@ function renderFRFChart(container, isDark, data, marks) {
   // Legend
   var legX = innerW + 14, legY = 10;
   [
-    { col: m1Col, dash: null, label: '|X₁| (m₁)' },
-    { col: m2Col, dash: '6 3', label: '|X₂| (m₂)' }
+    { col: m1Col, dash: null, label: opts.leg1 },
+    { col: m2Col, dash: '6 3', label: opts.leg2 }
   ].forEach(function(item, i) {
     var ly = legY + i * 22;
     g.append('line')
@@ -889,7 +935,7 @@ function renderFRFChart(container, isDark, data, marks) {
   g.append('text').attr('class', 'axis-label')
     .attr('transform', 'rotate(-90)')
     .attr('x', -innerH / 2).attr('y', -42).attr('text-anchor', 'middle')
-    .text('amplitude');
+    .text(opts.yLabel);
   svg.append('text').attr('class', 'axis-label')
     .attr('x', mg.left + innerW / 2).attr('y', H - 4).attr('text-anchor', 'middle')
     .text('driving frequency (rad/s)');
@@ -897,20 +943,46 @@ function renderFRFChart(container, isDark, data, marks) {
   // Chart title
   g.append('text').attr('class', 'panel-title')
     .attr('x', 0).attr('y', -12)
-    .text('Frequency response  ·  |X(ω)|');
+    .text(opts.title);
 }
 
-// ── Figure: frequency response function ──────────────────────
+function natFreqMarks() {
+  var modes = getNatModes();
+  return [
+    { w: modes[0].omega, label: 'ω₁' },
+    { w: modes[1].omega, label: 'ω₂' }
+  ];
+}
+
+// ── Figure: FRF amplitude ────────────────────────────────────
 function drawSMDFRF(layerId, isDark) {
   var container = document.querySelector('#' + layerId + ' .smd-frf-fig');
   if (!container) return;
   var data = computeFRF(1.0, 2.0, 100.0, 50.0, 100.0, 2.0, 1.0, 2.0, 10, 20, 600);
-  var modes = getNatModes();
-  var marks = [
-    { w: modes[0].omega, label: 'ω₁' },
-    { w: modes[1].omega, label: 'ω₂' }
-  ];
-  renderFRFChart(container, isDark, data, marks);
+  renderFreqChart(container, isDark, data, {
+    y1: 'a1', y2: 'a2',
+    leg1: '|X₁| (m₁)', leg2: '|X₂| (m₂)',
+    yLabel: 'amplitude',
+    title: 'Frequency response  ·  |X(ω)|',
+    marks: natFreqMarks(),
+    yFromZero: true
+  });
+}
+
+// ── Figure: FRF phase ────────────────────────────────────────
+function drawSMDPhase(layerId, isDark) {
+  var container = document.querySelector('#' + layerId + ' .smd-phase-fig');
+  if (!container) return;
+  var data = computeFRF(1.0, 2.0, 100.0, 50.0, 100.0, 2.0, 1.0, 2.0, 10, 20, 600);
+  renderFreqChart(container, isDark, data, {
+    y1: 'p1', y2: 'p2',
+    leg1: '∠X₁ (m₁)', leg2: '∠X₂ (m₂)',
+    yLabel: 'phase (deg)',
+    title: 'Phase  ·  ∠X(ω)',
+    marks: natFreqMarks(),
+    zeroLine: true,
+    yTickSuffix: '°'
+  });
 }
 
 // ── Figure: response driven at a natural frequency ───────────
@@ -946,6 +1018,7 @@ function setTextAll(cls, text) {
     drawSMDNatMode(lid, isDark, 0, 'smd-nat1-fig', 'Response at ω₁  ·  x(t)');
     drawSMDNatMode(lid, isDark, 1, 'smd-nat2-fig', 'Response at ω₂  ·  x(t)');
     drawSMDFRF(lid, isDark);
+    drawSMDPhase(lid, isDark);
   });
   fillNatFreqLabels();
 })();

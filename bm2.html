@@ -33,6 +33,13 @@
     .figure-numbering { margin: var(--ms1) 0 0; }
     .figure-numbering p { font-family: var(--mono); font-size: var(--ts13); color: var(--ink-faint); margin: 0; line-height: 1.5; max-width: 60ch; }
 
+    /* ── SMD system diagram (static) ──────────────────────────────────── */
+    .smd-diag .smd-ink    { stroke: rgba(28,22,16,0.88); }
+    .smd-diag .smd-mute   { stroke: rgba(28,22,16,0.45); }
+    .smd-diag .smd-mass   { fill: rgba(138,58,19,0.08); stroke: var(--accent); }
+    .smd-diag .smd-label  { fill: rgba(28,22,16,0.45); }
+    .smd-diag .smd-mlabel { fill: var(--accent); }
+
     /* ── Code blocks ──────────────────────────────────────────────────── */
     .art-code-label { font-family: var(--mono); font-size: var(--ts11); letter-spacing: 1.2px; text-transform: uppercase; color: var(--ink-faint); margin: var(--ms3) 0 var(--ms-2); }
     .art-code { background: rgba(28,22,16,0.04); border: 1px solid var(--rule); border-radius: 2px; padding: var(--ms1) var(--ms3); margin: 0 0 var(--ms2); font-family: var(--mono); font-size: var(--ts13); line-height: 1.7; color: var(--ink-muted); overflow-x: auto; max-width: 66ch; white-space: pre; display: block; }
@@ -47,6 +54,11 @@
     .cosmos .charta .tick text { fill: var(--bone-faint); }
     .cosmos .charta .tick line, .cosmos .charta .domain { stroke: var(--bone-fainter); }
     .cosmos .figure-numbering p { color: var(--bone-faint); }
+    .cosmos .smd-diag .smd-ink    { stroke: rgba(236,226,200,0.88); }
+    .cosmos .smd-diag .smd-mute   { stroke: rgba(236,226,200,0.45); }
+    .cosmos .smd-diag .smd-mass   { fill: rgba(200,163,93,0.12); stroke: var(--gold); }
+    .cosmos .smd-diag .smd-label  { fill: rgba(236,226,200,0.45); }
+    .cosmos .smd-diag .smd-mlabel { fill: var(--gold); }
     .cosmos .art-code-label { color: var(--bone-faint); }
     .cosmos .art-code { background: rgba(236,226,200,0.06); border-color: var(--bone-fainter); color: var(--bone-muted); }
   </style>
@@ -125,7 +137,61 @@
         <h2 class="num">A Simple Horizontal 2DoF SMD System</h2>
         <p>To demonstrate the power of simulating SMD systems, consider two masses sliding horizontally on a frictionless surface, each constrained by springs and dampers. Because there are two masses each free to move in one direction, the system has two degrees of freedom — a 2DoF system.</p>
 
-        <div class="art-fig"><div class="charta smd-diag-fig"></div></div>
+        <div class="art-fig"><div class="charta smd-diag-fig"><svg class="smd-diag" viewBox="0 0 620 210" preserveAspectRatio="xMidYMid meet" role="img" aria-label="A horizontally sliding 2-mass (2DoF) SMD system constrained between two walls by springs and dampers.">
+          <!-- Left wall -->
+          <line class="smd-ink" x1="38" y1="38" x2="38" y2="162" stroke-width="2.5"/>
+          <line class="smd-mute" x1="38" y1="38" x2="27" y2="48" stroke-width="1"/>
+          <line class="smd-mute" x1="38" y1="58.67" x2="27" y2="68.67" stroke-width="1"/>
+          <line class="smd-mute" x1="38" y1="79.33" x2="27" y2="89.33" stroke-width="1"/>
+          <line class="smd-mute" x1="38" y1="100" x2="27" y2="110" stroke-width="1"/>
+          <line class="smd-mute" x1="38" y1="120.67" x2="27" y2="130.67" stroke-width="1"/>
+          <line class="smd-mute" x1="38" y1="141.33" x2="27" y2="151.33" stroke-width="1"/>
+          <line class="smd-mute" x1="38" y1="162" x2="27" y2="172" stroke-width="1"/>
+          <!-- Right wall -->
+          <line class="smd-ink" x1="522" y1="38" x2="522" y2="162" stroke-width="2.5"/>
+          <line class="smd-mute" x1="522" y1="38" x2="533" y2="48" stroke-width="1"/>
+          <line class="smd-mute" x1="522" y1="58.67" x2="533" y2="68.67" stroke-width="1"/>
+          <line class="smd-mute" x1="522" y1="79.33" x2="533" y2="89.33" stroke-width="1"/>
+          <line class="smd-mute" x1="522" y1="100" x2="533" y2="110" stroke-width="1"/>
+          <line class="smd-mute" x1="522" y1="120.67" x2="533" y2="130.67" stroke-width="1"/>
+          <line class="smd-mute" x1="522" y1="141.33" x2="533" y2="151.33" stroke-width="1"/>
+          <line class="smd-mute" x1="522" y1="162" x2="533" y2="172" stroke-width="1"/>
+          <!-- SD element 1 (k1, c1): left wall -> m1 -->
+          <line class="smd-ink" x1="38" y1="72" x2="38" y2="128" stroke-width="1.8"/>
+          <line class="smd-ink" x1="146" y1="72" x2="146" y2="128" stroke-width="1.8"/>
+          <path class="smd-ink" fill="none" stroke-width="1.8" stroke-linejoin="round" d="M38,72L57.44,72L63.2,63L74.72,81L86.24,63L97.76,81L109.28,63L120.8,81L126.56,72L146,72"/>
+          <line class="smd-ink" x1="38" y1="128" x2="76" y2="128" stroke-width="1.8"/>
+          <rect class="smd-ink" x="76" y="119" width="32" height="18" fill="none" stroke-width="1.8"/>
+          <line class="smd-ink" x1="92" y1="128" x2="108" y2="128" stroke-width="1.8"/>
+          <line class="smd-ink" x1="108" y1="128" x2="146" y2="128" stroke-width="1.8"/>
+          <text class="smd-label" x="92" y="192" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10.5">k₁,  c₁</text>
+          <!-- SD element 2 (k2, c2): m1 -> m2 -->
+          <line class="smd-ink" x1="218" y1="72" x2="218" y2="128" stroke-width="1.8"/>
+          <line class="smd-ink" x1="326" y1="72" x2="326" y2="128" stroke-width="1.8"/>
+          <path class="smd-ink" fill="none" stroke-width="1.8" stroke-linejoin="round" d="M218,72L237.44,72L243.2,63L254.72,81L266.24,63L277.76,81L289.28,63L300.8,81L306.56,72L326,72"/>
+          <line class="smd-ink" x1="218" y1="128" x2="256" y2="128" stroke-width="1.8"/>
+          <rect class="smd-ink" x="256" y="119" width="32" height="18" fill="none" stroke-width="1.8"/>
+          <line class="smd-ink" x1="272" y1="128" x2="288" y2="128" stroke-width="1.8"/>
+          <line class="smd-ink" x1="288" y1="128" x2="326" y2="128" stroke-width="1.8"/>
+          <text class="smd-label" x="272" y="192" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10.5">k₂,  c₂</text>
+          <!-- SD element 3 (k3, c3): m2 -> right wall -->
+          <line class="smd-ink" x1="414" y1="72" x2="414" y2="128" stroke-width="1.8"/>
+          <line class="smd-ink" x1="522" y1="72" x2="522" y2="128" stroke-width="1.8"/>
+          <path class="smd-ink" fill="none" stroke-width="1.8" stroke-linejoin="round" d="M414,72L433.44,72L439.2,63L450.72,81L462.24,63L473.76,81L485.28,63L496.8,81L502.56,72L522,72"/>
+          <line class="smd-ink" x1="414" y1="128" x2="452" y2="128" stroke-width="1.8"/>
+          <rect class="smd-ink" x="452" y="119" width="32" height="18" fill="none" stroke-width="1.8"/>
+          <line class="smd-ink" x1="468" y1="128" x2="484" y2="128" stroke-width="1.8"/>
+          <line class="smd-ink" x1="484" y1="128" x2="522" y2="128" stroke-width="1.8"/>
+          <text class="smd-label" x="468" y="192" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10.5">k₃,  c₃</text>
+          <!-- Mass 1 -->
+          <rect class="smd-mass" x="146" y="50" width="72" height="100" stroke-width="2"/>
+          <text class="smd-mlabel" x="182" y="94" text-anchor="middle" dominant-baseline="middle" font-family="Cormorant Garamond, serif" font-size="17" font-style="italic">m₁</text>
+          <text class="smd-label" x="182" y="114" text-anchor="middle" dominant-baseline="middle" font-family="JetBrains Mono, monospace" font-size="10">x₁</text>
+          <!-- Mass 2 -->
+          <rect class="smd-mass" x="326" y="50" width="88" height="100" stroke-width="2"/>
+          <text class="smd-mlabel" x="370" y="94" text-anchor="middle" dominant-baseline="middle" font-family="Cormorant Garamond, serif" font-size="17" font-style="italic">m₂</text>
+          <text class="smd-label" x="370" y="114" text-anchor="middle" dominant-baseline="middle" font-family="JetBrains Mono, monospace" font-size="10">x₂</text>
+        </svg></div></div>
         <div class="figure-numbering ref num" data-fig="smd-diag" data-label="Figure"><p>A horizontally sliding 2-mass (2DoF) SMD system constrained on both sides. The masses are assumed to slide without friction.</p></div>
 
         <h3 class="num">The Model</h3>
@@ -245,15 +311,38 @@ omega   = np.sqrt(omega_squared)
 freq_hz = omega / (2 * np.pi)</code>
 
         <p>For the parameter values used above, the two natural frequencies are</p>
-        <p>\[\omega_1 = 7.81\ \text{rad/s}\ (1.24\ \text{Hz}), \qquad \omega_2 = 12.81\ \text{rad/s}\ (2.04\ \text{Hz})\]</p>
+        <p class="nat-freq-eq"></p>
         <p>and the corresponding mode shapes, normalized so that mass 1 has unit amplitude, are</p>
-        <p>\[\boldsymbol{\phi}_1 = \begin{bmatrix} 1 \\ 1.78 \end{bmatrix}, \qquad \boldsymbol{\phi}_2 = \begin{bmatrix} 1 \\ -0.28 \end{bmatrix}\]</p>
+        <p class="mode-shape-eq"></p>
         <p>The first mode is in-phase — both masses move in the same direction, with mass 2 swinging further. The second mode is out-of-phase — the masses move in opposite directions. Any free motion of the system, like the perturbation simulated earlier, is just a blend of these two modes.</p>
 
         <div class="note block">
           <h4>Note</h4>
           <p>A 2DoF system has exactly two natural frequencies and two mode shapes — one pair per degree of freedom. An <em>N</em>-DoF system has <em>N</em> of each.</p>
         </div>
+
+        <h3 class="num">Resonance at the Natural Frequencies</h3>
+        <p>The natural frequencies are more than abstract eigenvalues — they are the frequencies at which the system is most responsive. Driving mass 1 with a sinusoidal force tuned to a natural frequency feeds energy in step with the system's preferred motion, so the amplitude builds over several cycles before the damping caps it at a large steady-state swing. The two figures below apply the same forcing as before, but now tuned to each natural frequency in turn.</p>
+
+        <div class="art-fig"><div class="charta smd-nat1-fig"></div></div>
+        <div class="figure-numbering ref num" data-fig="smd-nat1" data-label="Figure"><p>Response to a sinusoidal force on mass 1 at the first natural frequency (ω₁ ≈ <span class="nat1-val"></span>), starting from rest. The masses swing in phase, tracing the first mode shape, and the amplitude grows well beyond the off-resonance forced response.</p></div>
+
+        <div class="art-fig"><div class="charta smd-nat2-fig"></div></div>
+        <div class="figure-numbering ref num" data-fig="smd-nat2" data-label="Figure"><p>Response to a sinusoidal force on mass 1 at the second natural frequency (ω₂ ≈ <span class="nat2-val"></span>), starting from rest. The masses move in opposition, tracing the second mode shape.</p></div>
+
+        <p>Each driving frequency excites its own mode: at \(\omega_1\) the masses move together, and at \(\omega_2\) they move in opposition — exactly the mode shapes found above. This selective amplification is why natural frequencies matter so much in practice, where an unintended resonance can drive a structure to failure.</p>
+
+        <p>Sweeping the driving frequency across a whole range and recording the steady-state amplitude of each mass traces out the system's <em>frequency response function</em> (FRF). For a harmonic force \(\mathbf{F}e^{i\omega t}\) the steady-state amplitude follows directly from the dynamic stiffness matrix:</p>
+        <p>\[\mathbf{X}(\omega) = \left(\mathbf{K} - \omega^2\mathbf{M} + i\omega\mathbf{C}\right)^{-1}\mathbf{F}\]</p>
+        <p>Plotting \(|\mathbf{X}(\omega)|\) for each mass reveals two sharp peaks — one at every natural frequency — separated by a dip where the masses barely respond at all.</p>
+
+        <div class="art-fig"><div class="charta smd-frf-fig"></div></div>
+        <div class="figure-numbering ref num" data-fig="smd-frf" data-label="Figure"><p>Frequency response function: steady-state amplitude of each mass against driving frequency, with the two natural frequencies marked. Both masses peak at the natural frequencies and fall away in between.</p></div>
+
+        <p>The amplitude tells only half the story. The phase records how far each mass lags the driving force: near zero at low frequencies, then dropping by roughly 180° as the sweep passes through each resonance — the signature of a mass crossing over from moving <em>with</em> the force to moving <em>against</em> it.</p>
+
+        <div class="art-fig"><div class="charta smd-phase-fig"></div></div>
+        <div class="figure-numbering ref num" data-fig="smd-phase" data-label="Figure"><p>Phase of each mass's steady-state response relative to the driving force. Every resonance adds about 180° of lag, so mass 2 — which responds strongly to both modes — accumulates close to 360° across the sweep.</p></div>
       </section>
     </article>
 
@@ -318,7 +407,61 @@ freq_hz = omega / (2 * np.pi)</code>
         <h2 class="num">A Simple Horizontal 2DoF SMD System</h2>
         <p>To demonstrate the power of simulating SMD systems, consider two masses sliding horizontally on a frictionless surface, each constrained by springs and dampers. Because there are two masses each free to move in one direction, the system has two degrees of freedom — a 2DoF system.</p>
 
-        <div class="art-fig"><div class="charta smd-diag-fig"></div></div>
+        <div class="art-fig"><div class="charta smd-diag-fig"><svg class="smd-diag" viewBox="0 0 620 210" preserveAspectRatio="xMidYMid meet" role="img" aria-label="A horizontally sliding 2-mass (2DoF) SMD system constrained between two walls by springs and dampers.">
+          <!-- Left wall -->
+          <line class="smd-ink" x1="38" y1="38" x2="38" y2="162" stroke-width="2.5"/>
+          <line class="smd-mute" x1="38" y1="38" x2="27" y2="48" stroke-width="1"/>
+          <line class="smd-mute" x1="38" y1="58.67" x2="27" y2="68.67" stroke-width="1"/>
+          <line class="smd-mute" x1="38" y1="79.33" x2="27" y2="89.33" stroke-width="1"/>
+          <line class="smd-mute" x1="38" y1="100" x2="27" y2="110" stroke-width="1"/>
+          <line class="smd-mute" x1="38" y1="120.67" x2="27" y2="130.67" stroke-width="1"/>
+          <line class="smd-mute" x1="38" y1="141.33" x2="27" y2="151.33" stroke-width="1"/>
+          <line class="smd-mute" x1="38" y1="162" x2="27" y2="172" stroke-width="1"/>
+          <!-- Right wall -->
+          <line class="smd-ink" x1="522" y1="38" x2="522" y2="162" stroke-width="2.5"/>
+          <line class="smd-mute" x1="522" y1="38" x2="533" y2="48" stroke-width="1"/>
+          <line class="smd-mute" x1="522" y1="58.67" x2="533" y2="68.67" stroke-width="1"/>
+          <line class="smd-mute" x1="522" y1="79.33" x2="533" y2="89.33" stroke-width="1"/>
+          <line class="smd-mute" x1="522" y1="100" x2="533" y2="110" stroke-width="1"/>
+          <line class="smd-mute" x1="522" y1="120.67" x2="533" y2="130.67" stroke-width="1"/>
+          <line class="smd-mute" x1="522" y1="141.33" x2="533" y2="151.33" stroke-width="1"/>
+          <line class="smd-mute" x1="522" y1="162" x2="533" y2="172" stroke-width="1"/>
+          <!-- SD element 1 (k1, c1): left wall -> m1 -->
+          <line class="smd-ink" x1="38" y1="72" x2="38" y2="128" stroke-width="1.8"/>
+          <line class="smd-ink" x1="146" y1="72" x2="146" y2="128" stroke-width="1.8"/>
+          <path class="smd-ink" fill="none" stroke-width="1.8" stroke-linejoin="round" d="M38,72L57.44,72L63.2,63L74.72,81L86.24,63L97.76,81L109.28,63L120.8,81L126.56,72L146,72"/>
+          <line class="smd-ink" x1="38" y1="128" x2="76" y2="128" stroke-width="1.8"/>
+          <rect class="smd-ink" x="76" y="119" width="32" height="18" fill="none" stroke-width="1.8"/>
+          <line class="smd-ink" x1="92" y1="128" x2="108" y2="128" stroke-width="1.8"/>
+          <line class="smd-ink" x1="108" y1="128" x2="146" y2="128" stroke-width="1.8"/>
+          <text class="smd-label" x="92" y="192" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10.5">k₁,  c₁</text>
+          <!-- SD element 2 (k2, c2): m1 -> m2 -->
+          <line class="smd-ink" x1="218" y1="72" x2="218" y2="128" stroke-width="1.8"/>
+          <line class="smd-ink" x1="326" y1="72" x2="326" y2="128" stroke-width="1.8"/>
+          <path class="smd-ink" fill="none" stroke-width="1.8" stroke-linejoin="round" d="M218,72L237.44,72L243.2,63L254.72,81L266.24,63L277.76,81L289.28,63L300.8,81L306.56,72L326,72"/>
+          <line class="smd-ink" x1="218" y1="128" x2="256" y2="128" stroke-width="1.8"/>
+          <rect class="smd-ink" x="256" y="119" width="32" height="18" fill="none" stroke-width="1.8"/>
+          <line class="smd-ink" x1="272" y1="128" x2="288" y2="128" stroke-width="1.8"/>
+          <line class="smd-ink" x1="288" y1="128" x2="326" y2="128" stroke-width="1.8"/>
+          <text class="smd-label" x="272" y="192" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10.5">k₂,  c₂</text>
+          <!-- SD element 3 (k3, c3): m2 -> right wall -->
+          <line class="smd-ink" x1="414" y1="72" x2="414" y2="128" stroke-width="1.8"/>
+          <line class="smd-ink" x1="522" y1="72" x2="522" y2="128" stroke-width="1.8"/>
+          <path class="smd-ink" fill="none" stroke-width="1.8" stroke-linejoin="round" d="M414,72L433.44,72L439.2,63L450.72,81L462.24,63L473.76,81L485.28,63L496.8,81L502.56,72L522,72"/>
+          <line class="smd-ink" x1="414" y1="128" x2="452" y2="128" stroke-width="1.8"/>
+          <rect class="smd-ink" x="452" y="119" width="32" height="18" fill="none" stroke-width="1.8"/>
+          <line class="smd-ink" x1="468" y1="128" x2="484" y2="128" stroke-width="1.8"/>
+          <line class="smd-ink" x1="484" y1="128" x2="522" y2="128" stroke-width="1.8"/>
+          <text class="smd-label" x="468" y="192" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10.5">k₃,  c₃</text>
+          <!-- Mass 1 -->
+          <rect class="smd-mass" x="146" y="50" width="72" height="100" stroke-width="2"/>
+          <text class="smd-mlabel" x="182" y="94" text-anchor="middle" dominant-baseline="middle" font-family="Cormorant Garamond, serif" font-size="17" font-style="italic">m₁</text>
+          <text class="smd-label" x="182" y="114" text-anchor="middle" dominant-baseline="middle" font-family="JetBrains Mono, monospace" font-size="10">x₁</text>
+          <!-- Mass 2 -->
+          <rect class="smd-mass" x="326" y="50" width="88" height="100" stroke-width="2"/>
+          <text class="smd-mlabel" x="370" y="94" text-anchor="middle" dominant-baseline="middle" font-family="Cormorant Garamond, serif" font-size="17" font-style="italic">m₂</text>
+          <text class="smd-label" x="370" y="114" text-anchor="middle" dominant-baseline="middle" font-family="JetBrains Mono, monospace" font-size="10">x₂</text>
+        </svg></div></div>
         <div class="figure-numbering ref num" data-fig="smd-diag" data-label="Figure"><p>A horizontally sliding 2-mass (2DoF) SMD system constrained on both sides. The masses are assumed to slide without friction.</p></div>
 
         <h3 class="num">The Model</h3>
@@ -438,15 +581,38 @@ omega   = np.sqrt(omega_squared)
 freq_hz = omega / (2 * np.pi)</code>
 
         <p>For the parameter values used above, the two natural frequencies are</p>
-        <p>\[\omega_1 = 7.81\ \text{rad/s}\ (1.24\ \text{Hz}), \qquad \omega_2 = 12.81\ \text{rad/s}\ (2.04\ \text{Hz})\]</p>
+        <p class="nat-freq-eq"></p>
         <p>and the corresponding mode shapes, normalized so that mass 1 has unit amplitude, are</p>
-        <p>\[\boldsymbol{\phi}_1 = \begin{bmatrix} 1 \\ 1.78 \end{bmatrix}, \qquad \boldsymbol{\phi}_2 = \begin{bmatrix} 1 \\ -0.28 \end{bmatrix}\]</p>
+        <p class="mode-shape-eq"></p>
         <p>The first mode is in-phase — both masses move in the same direction, with mass 2 swinging further. The second mode is out-of-phase — the masses move in opposite directions. Any free motion of the system, like the perturbation simulated earlier, is just a blend of these two modes.</p>
 
         <div class="note block">
           <h4>Note</h4>
           <p>A 2DoF system has exactly two natural frequencies and two mode shapes — one pair per degree of freedom. An <em>N</em>-DoF system has <em>N</em> of each.</p>
         </div>
+
+        <h3 class="num">Resonance at the Natural Frequencies</h3>
+        <p>The natural frequencies are more than abstract eigenvalues — they are the frequencies at which the system is most responsive. Driving mass 1 with a sinusoidal force tuned to a natural frequency feeds energy in step with the system's preferred motion, so the amplitude builds over several cycles before the damping caps it at a large steady-state swing. The two figures below apply the same forcing as before, but now tuned to each natural frequency in turn.</p>
+
+        <div class="art-fig"><div class="charta smd-nat1-fig"></div></div>
+        <div class="figure-numbering ref num" data-fig="smd-nat1" data-label="Figure"><p>Response to a sinusoidal force on mass 1 at the first natural frequency (ω₁ ≈ <span class="nat1-val"></span>), starting from rest. The masses swing in phase, tracing the first mode shape, and the amplitude grows well beyond the off-resonance forced response.</p></div>
+
+        <div class="art-fig"><div class="charta smd-nat2-fig"></div></div>
+        <div class="figure-numbering ref num" data-fig="smd-nat2" data-label="Figure"><p>Response to a sinusoidal force on mass 1 at the second natural frequency (ω₂ ≈ <span class="nat2-val"></span>), starting from rest. The masses move in opposition, tracing the second mode shape.</p></div>
+
+        <p>Each driving frequency excites its own mode: at \(\omega_1\) the masses move together, and at \(\omega_2\) they move in opposition — exactly the mode shapes found above. This selective amplification is why natural frequencies matter so much in practice, where an unintended resonance can drive a structure to failure.</p>
+
+        <p>Sweeping the driving frequency across a whole range and recording the steady-state amplitude of each mass traces out the system's <em>frequency response function</em> (FRF). For a harmonic force \(\mathbf{F}e^{i\omega t}\) the steady-state amplitude follows directly from the dynamic stiffness matrix:</p>
+        <p>\[\mathbf{X}(\omega) = \left(\mathbf{K} - \omega^2\mathbf{M} + i\omega\mathbf{C}\right)^{-1}\mathbf{F}\]</p>
+        <p>Plotting \(|\mathbf{X}(\omega)|\) for each mass reveals two sharp peaks — one at every natural frequency — separated by a dip where the masses barely respond at all.</p>
+
+        <div class="art-fig"><div class="charta smd-frf-fig"></div></div>
+        <div class="figure-numbering ref num" data-fig="smd-frf" data-label="Figure"><p>Frequency response function: steady-state amplitude of each mass against driving frequency, with the two natural frequencies marked. Both masses peak at the natural frequencies and fall away in between.</p></div>
+
+        <p>The amplitude tells only half the story. The phase records how far each mass lags the driving force: near zero at low frequencies, then dropping by roughly 180° as the sweep passes through each resonance — the signature of a mass crossing over from moving <em>with</em> the force to moving <em>against</em> it.</p>
+
+        <div class="art-fig"><div class="charta smd-phase-fig"></div></div>
+        <div class="figure-numbering ref num" data-fig="smd-phase" data-label="Figure"><p>Phase of each mass's steady-state response relative to the driving force. Every resonance adds about 180° of lag, so mass 2 — which responds strongly to both modes — accumulates close to 360° across the sweep.</p></div>
       </section>
     </article>
 
@@ -529,137 +695,6 @@ function solve2DoFForced(m1, m2, k1, k2, k3, c1, c2, c3, forcing, tMax, nSteps) 
     data.push({t: (i + 1) * h, x1: y[0], x2: y[1]});
   }
   return data;
-}
-
-// ── Figure 1: System diagram ──────────────────────────────────
-function drawSMDDiagram(layerId, isDark) {
-  var container = document.querySelector('#' + layerId + ' .smd-diag-fig');
-  if (!container) return;
-  container.innerHTML = '';
-
-  var inkCol   = isDark ? 'rgba(236,226,200,0.88)' : 'rgba(28,22,16,0.88)';
-  var inkMute  = isDark ? 'rgba(236,226,200,0.45)' : 'rgba(28,22,16,0.45)';
-  var accentCol = isDark ? '#d6ab5e' : '#8a3a13';
-  var fillMass = isDark ? 'rgba(200,163,93,0.12)' : 'rgba(138,58,19,0.08)';
-
-  var W = 620, H = 210;
-  var svg = d3.select(container).append('svg')
-    .attr('viewBox', '0 0 ' + W + ' ' + H)
-    .attr('preserveAspectRatio', 'xMidYMid meet');
-
-  // Layout
-  var springY = 72, damperY = 128;
-  var blockTop = 50, blockBot = 150;
-  var midY = (blockTop + blockBot) / 2;
-  var wallTop = blockTop - 12, wallBot = blockBot + 12;
-
-  var lWallR = 38;
-  var sdW    = 108;
-  var m1W    = 72, m2W = 88;
-  var m1L = lWallR + sdW;
-  var m1R = m1L + m1W;
-  var m2L = m1R + sdW;
-  var m2R = m2L + m2W;
-  var rWallL = m2R + sdW;
-
-  // ── Walls ──────────────────────────────────────────────────
-  function drawWall(xEdge, hatchDir) {
-    svg.append('line')
-      .attr('x1', xEdge).attr('y1', wallTop)
-      .attr('x2', xEdge).attr('y2', wallBot)
-      .attr('stroke', inkCol).attr('stroke-width', 2.5);
-    for (var i = 0; i < 7; i++) {
-      var hy = wallTop + (wallBot - wallTop) * i / 6;
-      svg.append('line')
-        .attr('x1', xEdge).attr('y1', hy)
-        .attr('x2', xEdge + hatchDir * 11).attr('y2', hy + 10)
-        .attr('stroke', inkMute).attr('stroke-width', 1);
-    }
-  }
-  drawWall(lWallR, -1);
-  drawWall(rWallL,  1);
-
-  // ── Spring (zigzag) ────────────────────────────────────────
-  function drawSpring(x1, x2, y) {
-    var span  = x2 - x1;
-    var lead  = span * 0.18;
-    var coilX = x1 + lead;
-    var coilE = x2 - lead;
-    var n = 6, amp = 9;
-    var pts = [[x1, y], [coilX, y]];
-    var segW = (coilE - coilX) / n;
-    for (var i = 0; i < n; i++) {
-      pts.push([coilX + (i + 0.5) * segW, y + (i % 2 === 0 ? -amp : amp)]);
-    }
-    pts.push([coilE, y]);
-    pts.push([x2, y]);
-    var line = d3.line().x(function(d){ return d[0]; }).y(function(d){ return d[1]; });
-    svg.append('path').datum(pts).attr('fill', 'none')
-      .attr('stroke', inkCol).attr('stroke-width', 1.8)
-      .attr('stroke-linejoin', 'round').attr('d', line);
-  }
-
-  // ── Damper (dashpot) ───────────────────────────────────────
-  function drawDamper(x1, x2, y) {
-    var cx = (x1 + x2) / 2;
-    var bW = 32, bH = 18;
-    // left lead
-    svg.append('line').attr('x1', x1).attr('y1', y).attr('x2', cx - bW / 2).attr('y2', y)
-      .attr('stroke', inkCol).attr('stroke-width', 1.8);
-    // box
-    svg.append('rect')
-      .attr('x', cx - bW / 2).attr('y', y - bH / 2)
-      .attr('width', bW).attr('height', bH)
-      .attr('fill', 'none').attr('stroke', inkCol).attr('stroke-width', 1.8);
-    // piston rod inside right half of box
-    svg.append('line').attr('x1', cx).attr('y1', y).attr('x2', cx + bW / 2).attr('y2', y)
-      .attr('stroke', inkCol).attr('stroke-width', 1.8);
-    // right lead
-    svg.append('line').attr('x1', cx + bW / 2).attr('y1', y).attr('x2', x2).attr('y2', y)
-      .attr('stroke', inkCol).attr('stroke-width', 1.8);
-  }
-
-  // ── SD element (parallel spring + damper + end connectors) ─
-  function drawSD(x1, x2, label) {
-    svg.append('line').attr('x1', x1).attr('y1', springY).attr('x2', x1).attr('y2', damperY)
-      .attr('stroke', inkCol).attr('stroke-width', 1.8);
-    svg.append('line').attr('x1', x2).attr('y1', springY).attr('x2', x2).attr('y2', damperY)
-      .attr('stroke', inkCol).attr('stroke-width', 1.8);
-    drawSpring(x1, x2, springY);
-    drawDamper(x1, x2, damperY);
-    svg.append('text')
-      .attr('x', (x1 + x2) / 2).attr('y', 192)
-      .attr('text-anchor', 'middle').attr('fill', inkMute)
-      .attr('font-family', 'JetBrains Mono, monospace').attr('font-size', 10.5)
-      .text(label);
-  }
-
-  // ── Mass block ─────────────────────────────────────────────
-  function drawMass(x1, x2, mLabel, xLabel) {
-    var cx = (x1 + x2) / 2;
-    svg.append('rect')
-      .attr('x', x1).attr('y', blockTop)
-      .attr('width', x2 - x1).attr('height', blockBot - blockTop)
-      .attr('fill', fillMass).attr('stroke', accentCol).attr('stroke-width', 2);
-    svg.append('text')
-      .attr('x', cx).attr('y', midY - 6)
-      .attr('text-anchor', 'middle').attr('dominant-baseline', 'middle')
-      .attr('fill', accentCol)
-      .attr('font-family', 'Cormorant Garamond, serif').attr('font-size', 17).attr('font-style', 'italic')
-      .text(mLabel);
-    svg.append('text')
-      .attr('x', cx).attr('y', midY + 14)
-      .attr('text-anchor', 'middle').attr('dominant-baseline', 'middle')
-      .attr('fill', inkMute)
-      .attr('font-family', 'JetBrains Mono, monospace').attr('font-size', 10)
-      .text(xLabel);
-  }
-
-  drawSD(lWallR, m1L, 'k₁,  c₁');
-  drawSD(m1R,    m2L, 'k₂,  c₂');
-  drawSD(m2R,    rWallL, 'k₃,  c₃');
-  drawMass(m1L, m1R, 'm₁', 'x₁');
-  drawMass(m2L, m2R, 'm₂', 'x₂');
 }
 
 // ── Displacement-response chart renderer (shared) ────────────
@@ -759,15 +794,568 @@ function drawSMDForced(layerId, isDark) {
   renderResponseChart(container, isDark, data, 'Forced response  ·  x(t)');
 }
 
+// ── Frequency response function: amplitude & phase vs ω ──────
+// For a harmonic force F·e^{iωt} on mass 1, the steady-state response is
+// X(ω) = Z(ω)^{-1} F with Z(ω) = K − ω²M + iωC. For the 2×2 symmetric system
+// Cramer's rule gives X1 = F0·d/det and X2 = −F0·b/det, where Z = [[a, b],
+// [c, d]] and c = b. Phases are unwrapped to stay continuous across ±180°.
+function computeFRF(m1, m2, k1, k2, k3, c1, c2, c3, F0, wMax, nPts) {
+  var K11 = k1 + k2, K12 = -k2, K22 = k2 + k3;
+  var C11 = c1 + c2, C12 = -c2, C22 = c2 + c3;
+  var DEG = 180 / Math.PI;
+
+  var data = [];
+  var off1 = 0, off2 = 0, prev1 = 0, prev2 = 0;
+
+  for (var p = 0; p <= nPts; p++) {
+    var w = wMax * p / nPts;
+
+    var aRe = K11 - w * w * m1, aIm = w * C11;  // Z11
+    var bRe = K12,              bIm = w * C12;  // Z12 = Z21
+    var dRe = K22 - w * w * m2, dIm = w * C22;  // Z22
+
+    // det = a*d − b²  (complex)
+    var detRe = (aRe * dRe - aIm * dIm) - (bRe * bRe - bIm * bIm);
+    var detIm = (aRe * dIm + aIm * dRe) - (2 * bRe * bIm);
+    var detMag = Math.sqrt(detRe * detRe + detIm * detIm);
+
+    var a1 = F0 * Math.sqrt(dRe * dRe + dIm * dIm) / detMag;
+    var a2 = F0 * Math.sqrt(bRe * bRe + bIm * bIm) / detMag;
+
+    // Phase of X1 = arg(d) − arg(det); X2 numerator is −b
+    var r1 = Math.atan2(dIm * detRe - dRe * detIm, dRe * detRe + dIm * detIm) * DEG;
+    var r2 = Math.atan2(-bIm * detRe + bRe * detIm, -bRe * detRe - bIm * detIm) * DEG;
+
+    if (p > 0) {
+      if (r1 - prev1 > 180) off1 -= 360; else if (r1 - prev1 < -180) off1 += 360;
+      if (r2 - prev2 > 180) off2 -= 360; else if (r2 - prev2 < -180) off2 += 360;
+    }
+    prev1 = r1; prev2 = r2;
+
+    data.push({ w: w, a1: a1, a2: a2, p1: r1 + off1, p2: r2 + off2 });
+  }
+  return data;
+}
+
+// ── Frequency-domain chart renderer (amplitude or phase) ─────
+// opts: { y1, y2, leg1, leg2, yLabel, title, marks, yFromZero, zeroLine, yTickSuffix }
+function renderFreqChart(container, isDark, data, opts) {
+  container.innerHTML = '';
+
+  var m1Col   = isDark ? '#d6ab5e' : '#8a3a13';
+  var m2Col   = isDark ? '#9ab7c4' : '#3a6b86';
+  var markCol = isDark ? 'rgba(236,226,200,0.35)' : 'rgba(28,22,16,0.3)';
+  var zeroCol = isDark ? 'rgba(236,226,200,0.22)' : 'rgba(28,22,16,0.18)';
+
+  var k1 = opts.y1, k2 = opts.y2;
+  var wMax = data[data.length - 1].w;
+  var yAll = data.map(function(d){ return d[k1]; }).concat(data.map(function(d){ return d[k2]; }));
+  var yMin = d3.min(yAll), yMax = d3.max(yAll);
+
+  var yLo, yHi;
+  if (opts.yFromZero) {
+    yLo = 0; yHi = yMax * 1.12;
+  } else {
+    var pad = (yMax - yMin) * 0.08 || 1;
+    yLo = yMin - pad; yHi = yMax + pad;
+  }
+
+  var W = 640, H = 300;
+  var mg = { top: 30, right: 110, bottom: 40, left: 56 };
+  var innerW = W - mg.left - mg.right;
+  var innerH = H - mg.top - mg.bottom;
+
+  var xScale = d3.scaleLinear().domain([0, wMax]).range([0, innerW]);
+  var yScale = d3.scaleLinear().domain([yLo, yHi]).range([innerH, 0]);
+
+  var svg = d3.select(container).append('svg')
+    .attr('viewBox', '0 0 ' + W + ' ' + H)
+    .attr('preserveAspectRatio', 'xMidYMid meet');
+
+  var g = svg.append('g').attr('transform', 'translate(' + mg.left + ',' + mg.top + ')');
+
+  // Optional zero line (phase plot)
+  if (opts.zeroLine && yLo < 0 && yHi > 0) {
+    g.append('line')
+      .attr('x1', 0).attr('x2', innerW)
+      .attr('y1', yScale(0)).attr('y2', yScale(0))
+      .attr('stroke', zeroCol).attr('stroke-width', 1);
+  }
+
+  // Natural-frequency markers
+  opts.marks.forEach(function(mk) {
+    var mx = xScale(mk.w);
+    g.append('line')
+      .attr('x1', mx).attr('x2', mx).attr('y1', 0).attr('y2', innerH)
+      .attr('stroke', markCol).attr('stroke-width', 1).attr('stroke-dasharray', '4 3');
+    g.append('text')
+      .attr('x', mx + 4).attr('y', 12)
+      .attr('fill', markCol)
+      .attr('font-family', 'JetBrains Mono, monospace').attr('font-size', 10.5)
+      .text(mk.label);
+  });
+
+  // Axes
+  var yAxis = d3.axisLeft(yScale).ticks(6);
+  if (opts.yTickSuffix) {
+    yAxis.tickFormat(function(d){ return d + opts.yTickSuffix; });
+  }
+  g.append('g').attr('transform', 'translate(0,' + innerH + ')')
+    .call(d3.axisBottom(xScale).ticks(10));
+  g.append('g').call(yAxis);
+
+  // Lines
+  var line1 = d3.line().x(function(d){ return xScale(d.w); }).y(function(d){ return yScale(d[k1]); });
+  var line2 = d3.line().x(function(d){ return xScale(d.w); }).y(function(d){ return yScale(d[k2]); });
+
+  g.append('path').datum(data).attr('fill', 'none')
+    .attr('stroke', m1Col).attr('stroke-width', 2).attr('d', line1);
+  g.append('path').datum(data).attr('fill', 'none')
+    .attr('stroke', m2Col).attr('stroke-width', 2).attr('stroke-dasharray', '6 3').attr('d', line2);
+
+  // Legend
+  var legX = innerW + 14, legY = 10;
+  [
+    { col: m1Col, dash: null, label: opts.leg1 },
+    { col: m2Col, dash: '6 3', label: opts.leg2 }
+  ].forEach(function(item, i) {
+    var ly = legY + i * 22;
+    g.append('line')
+      .attr('x1', legX).attr('y1', ly + 5).attr('x2', legX + 22).attr('y2', ly + 5)
+      .attr('stroke', item.col).attr('stroke-width', 2)
+      .attr('stroke-dasharray', item.dash || null);
+    g.append('text')
+      .attr('x', legX + 28).attr('y', ly + 9)
+      .attr('fill', item.col)
+      .attr('font-family', 'JetBrains Mono, monospace').attr('font-size', 10.5)
+      .text(item.label);
+  });
+
+  // Axis labels
+  g.append('text').attr('class', 'axis-label')
+    .attr('transform', 'rotate(-90)')
+    .attr('x', -innerH / 2).attr('y', -42).attr('text-anchor', 'middle')
+    .text(opts.yLabel);
+  svg.append('text').attr('class', 'axis-label')
+    .attr('x', mg.left + innerW / 2).attr('y', H - 4).attr('text-anchor', 'middle')
+    .text('driving frequency (rad/s)');
+
+  // Chart title
+  g.append('text').attr('class', 'panel-title')
+    .attr('x', 0).attr('y', -12)
+    .text(opts.title);
+}
+
+function natFreqMarks() {
+  var modes = getNatModes();
+  return [
+    { w: modes[0].omega, label: 'ω₁' },
+    { w: modes[1].omega, label: 'ω₂' }
+  ];
+}
+
+// ── Figure: FRF amplitude ────────────────────────────────────
+function drawSMDFRF(layerId, isDark) {
+  var container = document.querySelector('#' + layerId + ' .smd-frf-fig');
+  if (!container) return;
+  var data = computeFRF(1.0, 2.0, 100.0, 50.0, 100.0, 2.0, 1.0, 2.0, 10, 20, 600);
+  renderFreqChart(container, isDark, data, {
+    y1: 'a1', y2: 'a2',
+    leg1: '|X₁| (m₁)', leg2: '|X₂| (m₂)',
+    yLabel: 'amplitude',
+    title: 'Frequency response  ·  |X(ω)|',
+    marks: natFreqMarks(),
+    yFromZero: true
+  });
+}
+
+// ── Figure: FRF phase ────────────────────────────────────────
+function drawSMDPhase(layerId, isDark) {
+  var container = document.querySelector('#' + layerId + ' .smd-phase-fig');
+  if (!container) return;
+  var data = computeFRF(1.0, 2.0, 100.0, 50.0, 100.0, 2.0, 1.0, 2.0, 10, 20, 600);
+  renderFreqChart(container, isDark, data, {
+    y1: 'p1', y2: 'p2',
+    leg1: '∠X₁ (m₁)', leg2: '∠X₂ (m₂)',
+    yLabel: 'phase (deg)',
+    title: 'Phase  ·  ∠X(ω)',
+    marks: natFreqMarks(),
+    zeroLine: true,
+    yTickSuffix: '°'
+  });
+}
+
+// ── Figure: response driven at a natural frequency ───────────
+function drawSMDNatMode(layerId, isDark, modeIndex, figClass, title) {
+  var container = document.querySelector('#' + layerId + ' .' + figClass);
+  if (!container) return;
+  var omega = getNatModes()[modeIndex].omega;
+  var forcing = function(t) { return [10 * Math.sin(omega * t), 0]; };
+  var data = solve2DoFForced(1.0, 2.0, 100.0, 50.0, 100.0, 2.0, 1.0, 2.0, forcing, 10, 2000);
+  renderResponseChart(container, isDark, data, title);
+}
+
+// Fill the plain-text natural-frequency values in the resonance captions
+function fillNatFreqLabels() {
+  var modes = getNatModes();
+  setTextAll('nat1-val', modes[0].omega.toFixed(2) + ' rad/s, ' + modes[0].hz.toFixed(2) + ' Hz');
+  setTextAll('nat2-val', modes[1].omega.toFixed(2) + ' rad/s, ' + modes[1].hz.toFixed(2) + ' Hz');
+}
+function setTextAll(cls, text) {
+  var nodes = document.querySelectorAll('.' + cls);
+  for (var i = 0; i < nodes.length; i++) {
+    nodes[i].textContent = text;
+  }
+}
+
 // Detect dark mode to draw correct theme for initial render
 (function() {
   var dark = (localStorage.getItem('sp-mode') === 'night');
   ['alm-layer', 'cos-layer'].forEach(function(lid, i) {
     var isDark = (i === 1) || dark;
-    drawSMDDiagram(lid, isDark);
     drawSMDResponse(lid, isDark);
     drawSMDForced(lid, isDark);
+    drawSMDNatMode(lid, isDark, 0, 'smd-nat1-fig', 'Response at ω₁  ·  x(t)');
+    drawSMDNatMode(lid, isDark, 1, 'smd-nat2-fig', 'Response at ω₂  ·  x(t)');
+    drawSMDFRF(lid, isDark);
+    drawSMDPhase(lid, isDark);
   });
+  fillNatFreqLabels();
+})();
+
+// ── Natural frequencies & mode shapes (normal-mode analysis) ──
+// Solves the generalized eigenproblem K φ = ω² M φ for a chain of
+// masses connected by springs to two walls:
+//   wall — k1 — m1 — k2 — m2 — … — mn — k(n+1) — wall
+function normalModesChain(masses, springs) {
+  var n = masses.length;
+
+  if (springs.length !== n + 1) {
+    throw new Error("For n masses, expected n + 1 springs.");
+  }
+
+  for (var i = 0; i < n; i++) {
+    if (masses[i] <= 0) {
+      throw new Error("Masses must be positive.");
+    }
+  }
+
+  for (var j = 0; j < springs.length; j++) {
+    if (springs[j] < 0) {
+      throw new Error("Spring constants must be non-negative.");
+    }
+  }
+
+  // Build stiffness matrix K
+  var K = [];
+
+  for (var r = 0; r < n; r++) {
+    K[r] = [];
+    for (var c = 0; c < n; c++) {
+      K[r][c] = 0;
+    }
+  }
+
+  for (var i2 = 0; i2 < n; i2++) {
+    K[i2][i2] = springs[i2] + springs[i2 + 1];
+
+    if (i2 > 0) {
+      K[i2][i2 - 1] = -springs[i2];
+    }
+
+    if (i2 < n - 1) {
+      K[i2][i2 + 1] = -springs[i2 + 1];
+    }
+  }
+
+  // Convert the generalized eigenproblem K φ = λ M φ into an ordinary
+  // symmetric one A q = λ q, with A = M^(-1/2) K M^(-1/2) and φ = M^(-1/2) q.
+  var A = [];
+
+  for (var r2 = 0; r2 < n; r2++) {
+    A[r2] = [];
+    for (var c2 = 0; c2 < n; c2++) {
+      A[r2][c2] = K[r2][c2] / Math.sqrt(masses[r2] * masses[c2]);
+    }
+  }
+
+  var eig = jacobiEigenDecompositionSymmetric(A);
+
+  var modes = [];
+
+  for (var modeIndex = 0; modeIndex < n; modeIndex++) {
+    var lambda = eig.values[modeIndex];
+
+    if (Math.abs(lambda) < 1e-10) {
+      lambda = 0;
+    }
+
+    if (lambda < 0) {
+      throw new Error("Negative eigenvalue found. Check stiffness and mass values.");
+    }
+
+    var omega = Math.sqrt(lambda);
+    var hz = omega / (2 * Math.PI);
+
+    var q = eig.vectors[modeIndex];
+
+    // Convert q back to physical displacement mode shape φ
+    var phi = [];
+
+    for (var p = 0; p < n; p++) {
+      phi[p] = q[p] / Math.sqrt(masses[p]);
+    }
+
+    // Mass-normalize the mode: φ^T M φ = 1
+    var modalMass = 0;
+
+    for (var p2 = 0; p2 < n; p2++) {
+      modalMass += masses[p2] * phi[p2] * phi[p2];
+    }
+
+    var scale = Math.sqrt(modalMass);
+
+    for (var p3 = 0; p3 < n; p3++) {
+      phi[p3] = phi[p3] / scale;
+    }
+
+    // Make sign consistent: largest component is positive
+    phi = makeLargestComponentPositive(phi);
+
+    // Display-friendly mode shape where largest component = 1
+    var displayShape = normalizeLargestToOne(phi);
+
+    modes.push({
+      mode: modeIndex + 1,
+      lambda: lambda,
+      omega: omega,
+      hz: hz,
+      massNormalizedShape: phi,
+      displayShape: displayShape
+    });
+  }
+
+  return {
+    stiffnessMatrix: K,
+    modes: modes
+  };
+}
+
+function jacobiEigenDecompositionSymmetric(inputMatrix) {
+  var n = inputMatrix.length;
+
+  var A = [];
+  var V = [];
+
+  for (var i = 0; i < n; i++) {
+    A[i] = inputMatrix[i].slice();
+
+    V[i] = [];
+    for (var j = 0; j < n; j++) {
+      V[i][j] = i === j ? 1 : 0;
+    }
+  }
+
+  var maxIterations = 100 * n * n;
+  var tolerance = 1e-12;
+
+  for (var iter = 0; iter < maxIterations; iter++) {
+    var p = 0;
+    var q = 1;
+    var maxOffDiagonal = 0;
+
+    for (var r = 0; r < n; r++) {
+      for (var c = r + 1; c < n; c++) {
+        var value = Math.abs(A[r][c]);
+        if (value > maxOffDiagonal) {
+          maxOffDiagonal = value;
+          p = r;
+          q = c;
+        }
+      }
+    }
+
+    if (maxOffDiagonal < tolerance) {
+      break;
+    }
+
+    var app = A[p][p];
+    var aqq = A[q][q];
+    var apq = A[p][q];
+
+    var tau = (aqq - app) / (2 * apq);
+    var t;
+
+    if (tau >= 0) {
+      t = 1 / (tau + Math.sqrt(1 + tau * tau));
+    } else {
+      t = -1 / (-tau + Math.sqrt(1 + tau * tau));
+    }
+
+    var cos = 1 / Math.sqrt(1 + t * t);
+    var sin = t * cos;
+
+    for (var i2 = 0; i2 < n; i2++) {
+      if (i2 !== p && i2 !== q) {
+        var aip = A[i2][p];
+        var aiq = A[i2][q];
+
+        A[i2][p] = cos * aip - sin * aiq;
+        A[p][i2] = A[i2][p];
+
+        A[i2][q] = sin * aip + cos * aiq;
+        A[q][i2] = A[i2][q];
+      }
+    }
+
+    A[p][p] = cos * cos * app - 2 * sin * cos * apq + sin * sin * aqq;
+    A[q][q] = sin * sin * app + 2 * sin * cos * apq + cos * cos * aqq;
+
+    A[p][q] = 0;
+    A[q][p] = 0;
+
+    // Update eigenvector matrix
+    for (var i3 = 0; i3 < n; i3++) {
+      var vip = V[i3][p];
+      var viq = V[i3][q];
+
+      V[i3][p] = cos * vip - sin * viq;
+      V[i3][q] = sin * vip + cos * viq;
+    }
+  }
+
+  var pairs = [];
+
+  for (var d = 0; d < n; d++) {
+    var vector = [];
+
+    for (var r2 = 0; r2 < n; r2++) {
+      vector.push(V[r2][d]);
+    }
+
+    pairs.push({
+      value: A[d][d],
+      vector: vector
+    });
+  }
+
+  pairs.sort(function(a, b) {
+    return a.value - b.value;
+  });
+
+  return {
+    values: pairs.map(function(pair) {
+      return pair.value;
+    }),
+    vectors: pairs.map(function(pair) {
+      return pair.vector;
+    })
+  };
+}
+
+function makeLargestComponentPositive(vec) {
+  var maxIndex = 0;
+  var maxValue = 0;
+
+  for (var i = 0; i < vec.length; i++) {
+    if (Math.abs(vec[i]) > maxValue) {
+      maxValue = Math.abs(vec[i]);
+      maxIndex = i;
+    }
+  }
+
+  if (vec[maxIndex] < 0) {
+    return vec.map(function(x) {
+      return -x;
+    });
+  }
+
+  return vec.slice();
+}
+
+function normalizeLargestToOne(vec) {
+  var maxIndex = 0;
+  var maxValue = 0;
+
+  for (var i = 0; i < vec.length; i++) {
+    if (Math.abs(vec[i]) > maxValue) {
+      maxValue = Math.abs(vec[i]);
+      maxIndex = i;
+    }
+  }
+
+  if (maxValue === 0) {
+    return vec.slice();
+  }
+
+  var scale = vec[maxIndex];
+
+  return vec.map(function(x) {
+    return x / scale;
+  });
+}
+
+// Format a mode-shape component: 2 decimals, trailing zeros trimmed (1.00 → "1")
+function fmtComp(x) {
+  if (Math.abs(x) < 0.005) x = 0;
+  var s = x.toFixed(2).replace(/\.?0+$/, '');
+  return s === '-0' ? '0' : s;
+}
+
+// The 2DoF system used throughout the article (computed once, shared).
+var NAT_MODES = null;
+function getNatModes() {
+  if (!NAT_MODES) {
+    var masses  = [1.0, 2.0];           // m1, m2
+    var springs = [100.0, 50.0, 100.0]; // k1, k2, k3
+    NAT_MODES = normalModesChain(masses, springs).modes;
+  }
+  return NAT_MODES;
+}
+
+// Compute the natural frequencies and mode shapes for the 2DoF system used
+// throughout the article and write them, as TeX, into the article placeholders.
+function renderNatFreqModes() {
+  var modes = getNatModes();
+
+  // Natural frequencies: ω in rad/s with the equivalent in Hz
+  var freqTex = '\\[' + modes.map(function(m, i) {
+    return '\\omega_' + (i + 1) + ' = ' + m.omega.toFixed(2) +
+      '\\ \\text{rad/s}\\ (' + m.hz.toFixed(2) + '\\ \\text{Hz})';
+  }).join(', \\qquad ') + '\\]';
+
+  // Mode shapes, normalized so that mass 1 has unit amplitude
+  var shapeTex = '\\[' + modes.map(function(m, i) {
+    var phi = m.massNormalizedShape;
+    var ref = Math.abs(phi[0]) < 1e-9 ? 1 : phi[0];
+    var rows = phi.map(function(v) { return fmtComp(v / ref); });
+    return '\\boldsymbol{\\phi}_' + (i + 1) +
+      ' = \\begin{bmatrix} ' + rows.join(' \\\\ ') + ' \\end{bmatrix}';
+  }).join(', \\qquad ') + '\\]';
+
+  setModeTex('nat-freq-eq', freqTex);
+  setModeTex('mode-shape-eq', shapeTex);
+}
+
+function setModeTex(cls, tex) {
+  var nodes = document.querySelectorAll('.' + cls);
+  var typeset = [];
+  for (var i = 0; i < nodes.length; i++) {
+    nodes[i].textContent = tex;
+    typeset.push(nodes[i]);
+  }
+  if (window.MathJax && MathJax.typesetPromise) {
+    MathJax.typesetPromise(typeset);
+  }
+}
+
+// Wait for MathJax's initial typeset before injecting, so the new TeX renders.
+(function() {
+  if (window.MathJax && MathJax.startup && MathJax.startup.promise) {
+    MathJax.startup.promise.then(renderNatFreqModes);
+  } else {
+    renderNatFreqModes();
+  }
 })();
 </script>
 </body>

@@ -160,10 +160,10 @@
             <span class="matrix-bracket right"></span>
           </div>
         </div>
-        <p>To see what \(\mathbf{A}\) does, take a few example vectors pointing in different directions (the faint dashed arrows) and apply the matrix to each one with \(\mathbf{A}\mathbf{v}\). The solid arrows are the results. Notice that most of them swing to a new direction — the transformation rotates and shears them, not just stretches them. The faint loop is the unit circle and the heavier loop is its image, an ellipse, showing how the whole plane is squashed and stretched.</p>
+        <p>To see what \(\mathbf{A}\) does, lay down a grid of points across the plane and apply the matrix to each one. Every arrow runs from a point to where the matrix sends it, \(\mathbf{v} \to \mathbf{A}\mathbf{v}\). Notice that most arrows swing off to the side — the transformation rotates and shears the points, not just stretches them. The faint dashed loop is the unit circle and the heavier loop is its image, an ellipse, showing how the whole plane is squashed and stretched.</p>
         <div class="art-fig"><div class="charta eig-fig"></div></div>
-        <div class="figure-numbering ref num" data-fig="eig-plane" data-label="Figure"><p>The matrix \(\mathbf{A}\) acting on the plane. Dashed arrows are example input vectors, solid arrows their transforms. The two highlighted lines are the eigen-directions; along them the input and its transform stay collinear — pure scaling.</p></div>
-        <p>Now look at the two highlighted lines. Pick a vector lying exactly along one of them and its transform lands right back on the same line — it is only made longer, shorter, or flipped. Those are the eigen-directions, and the next section computes them.</p>
+        <div class="figure-numbering ref num" data-fig="eig-plane" data-label="Figure"><p>The matrix \(\mathbf{A}\) acting on a grid of points. Each arrow carries a point to its image \(\mathbf{A}\mathbf{v}\). The two highlighted lines are the eigen-directions; the arrows that begin on them stay collinear with the line — pure scaling.</p></div>
+        <p>Now look at the two highlighted lines. Pick a point lying exactly on one of them and its arrow points straight along the line — the point is only pushed outward or inward (or flipped through the origin), never knocked off the line. Those are the eigen-directions, and the next section computes them.</p>
       </section>
 
       <section>
@@ -188,7 +188,7 @@
           <p>eigenvector \(\mathbf{v}_1\): <span class="eig-val" id="alm-out-v1"></span></p>
           <p>eigenvector \(\mathbf{v}_2\): <span class="eig-val" id="alm-out-v2"></span></p>
         </div>
-        <p>These are exactly the highlighted lines drawn on Figure <span class="figure-number" data-fid="eig-plane"></span>. Each eigenvector is drawn together with its transform \(\mathbf{A}\mathbf{v} = \lambda\mathbf{v}\): the two arrows sit on the same line and differ only in length, the factor being \(\lambda\). That collinearity, holding for every choice of matrix, is the whole point — eigenvectors are the directions of pure scaling.</p>
+        <p>These are exactly the highlighted lines drawn on Figure <span class="figure-number" data-fid="eig-plane"></span>. On that figure, every grid point sitting on a highlighted line is sent straight along the same line, to \(\lambda\) times its distance from the origin — its arrow never veers sideways. That collinearity, holding for every choice of matrix, is the whole point — eigenvectors are the directions of pure scaling.</p>
         <div class="insight block ref num" data-label="Insight">
           <h4></h4>
           <p>When the discriminant \(T^2 - 4D\) is negative, the square root is imaginary and the eigenvalues are complex. Geometrically the matrix is rotating the plane, so <em>no</em> real direction is left pointing the same way — there are no real eigen-directions to draw. Try \(\mathbf{A} = \begin{bmatrix} 0 & -1 \\ 1 & 0\end{bmatrix}\), a 90° rotation, to see this.</p>
@@ -279,10 +279,10 @@
             <span class="matrix-bracket right"></span>
           </div>
         </div>
-        <p>To see what \(\mathbf{A}\) does, take a few example vectors pointing in different directions (the faint dashed arrows) and apply the matrix to each one with \(\mathbf{A}\mathbf{v}\). The solid arrows are the results. Notice that most of them swing to a new direction — the transformation rotates and shears them, not just stretches them. The faint loop is the unit circle and the heavier loop is its image, an ellipse, showing how the whole plane is squashed and stretched.</p>
+        <p>To see what \(\mathbf{A}\) does, lay down a grid of points across the plane and apply the matrix to each one. Every arrow runs from a point to where the matrix sends it, \(\mathbf{v} \to \mathbf{A}\mathbf{v}\). Notice that most arrows swing off to the side — the transformation rotates and shears the points, not just stretches them. The faint dashed loop is the unit circle and the heavier loop is its image, an ellipse, showing how the whole plane is squashed and stretched.</p>
         <div class="art-fig"><div class="charta eig-fig"></div></div>
-        <div class="figure-numbering ref num" data-fig="eig-plane" data-label="Figure"><p>The matrix \(\mathbf{A}\) acting on the plane. Dashed arrows are example input vectors, solid arrows their transforms. The two highlighted lines are the eigen-directions; along them the input and its transform stay collinear — pure scaling.</p></div>
-        <p>Now look at the two highlighted lines. Pick a vector lying exactly along one of them and its transform lands right back on the same line — it is only made longer, shorter, or flipped. Those are the eigen-directions, and the next section computes them.</p>
+        <div class="figure-numbering ref num" data-fig="eig-plane" data-label="Figure"><p>The matrix \(\mathbf{A}\) acting on a grid of points. Each arrow carries a point to its image \(\mathbf{A}\mathbf{v}\). The two highlighted lines are the eigen-directions; the arrows that begin on them stay collinear with the line — pure scaling.</p></div>
+        <p>Now look at the two highlighted lines. Pick a point lying exactly on one of them and its arrow points straight along the line — the point is only pushed outward or inward (or flipped through the origin), never knocked off the line. Those are the eigen-directions, and the next section computes them.</p>
       </section>
 
       <section>
@@ -307,7 +307,7 @@
           <p>eigenvector \(\mathbf{v}_1\): <span class="eig-val" id="cos-out-v1"></span></p>
           <p>eigenvector \(\mathbf{v}_2\): <span class="eig-val" id="cos-out-v2"></span></p>
         </div>
-        <p>These are exactly the highlighted lines drawn on Figure <span class="figure-number" data-fid="eig-plane"></span>. Each eigenvector is drawn together with its transform \(\mathbf{A}\mathbf{v} = \lambda\mathbf{v}\): the two arrows sit on the same line and differ only in length, the factor being \(\lambda\). That collinearity, holding for every choice of matrix, is the whole point — eigenvectors are the directions of pure scaling.</p>
+        <p>These are exactly the highlighted lines drawn on Figure <span class="figure-number" data-fid="eig-plane"></span>. On that figure, every grid point sitting on a highlighted line is sent straight along the same line, to \(\lambda\) times its distance from the origin — its arrow never veers sideways. That collinearity, holding for every choice of matrix, is the whole point — eigenvectors are the directions of pure scaling.</p>
         <div class="insight block ref num" data-label="Insight">
           <h4></h4>
           <p>When the discriminant \(T^2 - 4D\) is negative, the square root is imaginary and the eigenvalues are complex. Geometrically the matrix is rotating the plane, so <em>no</em> real direction is left pointing the same way — there are no real eigen-directions to draw. Try \(\mathbf{A} = \begin{bmatrix} 0 & -1 \\ 1 & 0\end{bmatrix}\), a 90° rotation, to see this.</p>
@@ -378,7 +378,6 @@ function renderEigPlane(container, isDark, a, b, c, d) {
   var axisCol   = isDark ? 'rgba(236,226,200,0.40)' : 'rgba(28,22,16,0.35)';
   var circleCol = isDark ? 'rgba(236,226,200,0.28)' : 'rgba(28,22,16,0.22)';
   var ellipseCol= isDark ? 'rgba(154,183,196,0.55)' : 'rgba(58,107,134,0.55)';
-  var inCol     = isDark ? 'rgba(236,226,200,0.45)' : 'rgba(28,22,16,0.40)';
   var outCol    = isDark ? '#9ab7c4' : '#3a6b86';
   var evCols    = isDark ? ['#d6ab5e', '#c98f6a'] : ['#8a3a13', '#1c6b4a'];
   var textCol   = isDark ? 'rgba(236,226,200,0.80)' : 'rgba(28,22,16,0.70)';
@@ -444,39 +443,34 @@ function renderEigPlane(container, isDark, a, b, c, d) {
   polyline(circlePts, circleCol, 1.2, '3 3');
   polyline(imagePts, ellipseCol, 1.8);
 
-  // A few example vectors (chosen off the default eigen-directions)
-  var angles = [18, 78, 165, 250];
-  angles.forEach(function (deg) {
-    var th = deg * Math.PI / 180, ux = Math.cos(th), uy = Math.sin(th);
-    var tx = a * ux + b * uy, ty = c * ux + d * uy;
-    arrow(0, 0, ux, uy, inCol, 1.6, '4 3');   // input (dashed, faint)
-    arrow(0, 0, tx, ty, outCol, 2);            // output (solid)
-  });
+  // A grid of sample points, each carried by the matrix: an arrow runs from
+  // the point to where A sends it (v → A·v).
+  var span = 3, stepG = 1.5;
+  for (var gx = -span; gx <= span + 1e-9; gx += stepG) {
+    for (var gy = -span; gy <= span + 1e-9; gy += stepG) {
+      if (Math.abs(gx) < 1e-9 && Math.abs(gy) < 1e-9) continue;
+      var mx = a * gx + b * gy, my = c * gx + d * gy;
+      arrow(gx, gy, mx, my, outCol, 1.8);
+    }
+  }
 
-  // Eigen-directions + their pure-scaling demonstration
+  // Eigen-directions: highlighted lines through the origin. The field arrows
+  // that begin on one of these lines stay collinear with it — pure scaling.
   var eig = eigen2x2(a, b, c, d);
   if (eig.complex) {
-    label(0, R - 0.5, 'complex eigenvalues — rotation, no real', textCol, 'middle');
-    label(0, R - 1.1, 'eigen-direction to draw', textCol, 'middle');
+    label(0, R - 0.5, 'complex eigenvalues — rotation,', textCol, 'middle');
+    label(0, R - 1.1, 'no real eigen-direction', textCol, 'middle');
   } else {
     eig.pairs.forEach(function (p, idx) {
       var col = evCols[idx];
-      // Invariant line through the origin
-      seg(-p.vx * R, -p.vy * R, p.vx * R, p.vy * R, col, 1.4, '7 4', 0.7);
-      // Eigenvector (unit) and its transform λ·v on the same line
-      arrow(0, 0, p.vx, p.vy, col, 1.8, '4 3');
-      arrow(0, 0, p.lambda * p.vx, p.lambda * p.vy, col, 2.6);
-      var lx = p.lambda * p.vx, ly = p.lambda * p.vy;
-      var off = 0.32;
-      label(lx + off * Math.sign(lx || 1), ly + off * Math.sign(ly || 1),
-            'λ' + (idx === 0 ? '₁' : '₂') + '=' + fmtNum(p.lambda), col);
+      seg(-p.vx * R, -p.vy * R, p.vx * R, p.vy * R, col, 2);
+      label(p.vx * (R - 0.8), p.vy * (R - 0.8),
+            'λ' + (idx === 0 ? '₁' : '₂') + '=' + fmtNum(p.lambda), col, 'middle');
     });
   }
 
   // Legend
-  var lyTop = R - 0.4, lx0 = -R + 0.3;
-  label(lx0, lyTop, 'input', inCol);
-  label(lx0, lyTop - 0.62, 'output  A·v', outCol);
+  label(-R + 0.3, R - 0.4, 'arrows: v → A·v', outCol);
 }
 
 // ── Wire one layer ────────────────────────────────────────────

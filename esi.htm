@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>The Complex Exponential — Anro le Roux</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;1,9..144,300;1,9..144,400&family=Inter+Tight:wght@300;400;500;600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/home.css" />
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+  <style>
+    /* ── Insight block ────────────────────────────────────────────────── */
+    .insight.block { border-left: 2px solid var(--accent); padding: var(--ms1) var(--ms3); margin: var(--ms3) 0; background: rgba(28,22,16,0.03); max-width: 66ch; }
+    .insight.block h4 { font-family: var(--mono); font-size: var(--ts11); letter-spacing: 1.4px; text-transform: uppercase; color: var(--accent); margin: 0 0 var(--ms-1); font-weight: 500; }
+    .insight.block p { font-size: var(--ts14); margin: 0 0 var(--ms-2); }
+    .insight.block p:last-child { margin: 0; }
+
+    /* ── Note block ───────────────────────────────────────────────────── */
+    .note.block { border-left: 2px solid var(--accent); padding: var(--ms1) var(--ms3); margin: var(--ms3) 0; background: rgba(28,22,16,0.03); max-width: 66ch; }
+    .note.block h4 { font-family: var(--mono); font-size: var(--ts11); letter-spacing: 1.4px; text-transform: uppercase; color: var(--accent); margin: 0 0 var(--ms-1); font-weight: 500; }
+    .note.block p { font-size: var(--ts14); margin: 0; }
+
+    /* ── Interactions ─────────────────────────────────────────────────── */
+    .interactions { margin: var(--ms3) 0; }
+    .interactions p { font-family: var(--sans); font-size: var(--ts15); line-height: 1.75; color: var(--ink-muted); margin: 0 0 var(--ms-1); }
+    .esi-val { font-family: var(--mono); font-size: var(--ts14); color: var(--ink); margin-left: var(--ms-1); }
+    .esi-val.muted { color: var(--ink-muted); }
+
+    /* ── Figure / interactive stage ───────────────────────────────────── */
+    .art-fig { margin: var(--ms3) 0; max-width: 66ch; }
+    .esi-stage { display: flex; flex-wrap: wrap; gap: var(--ms2); align-items: flex-start; justify-content: center; }
+    .esi-stage .charta { flex: 1 1 280px; min-width: 240px; }
+    .esi-stage .charta svg { display: block; width: 100%; height: auto; margin: 0 auto; }
+    .charta-cap { font-family: var(--mono); font-size: var(--ts11); letter-spacing: 1.2px; text-transform: uppercase; color: var(--ink-faint); text-align: center; margin: var(--ms-2) 0 0; }
+    .splane-fig svg { cursor: grab; touch-action: none; max-width: 360px; }
+    .splane-fig svg:active { cursor: grabbing; }
+    .spiral-fig svg { max-width: 440px; }
+    .figure-numbering { margin: var(--ms1) 0 0; }
+    .figure-numbering p { font-family: var(--mono); font-size: var(--ts13); color: var(--ink-faint); margin: 0; line-height: 1.5; max-width: 60ch; }
+
+    /* ── Cosmos overrides ─────────────────────────────────────────────── */
+    .cosmos .insight.block { border-left-color: var(--gold); background: rgba(214,171,94,0.04); }
+    .cosmos .insight.block h4 { color: var(--gold); }
+    .cosmos .note.block { border-left-color: var(--gold); background: rgba(214,171,94,0.04); }
+    .cosmos .note.block h4 { color: var(--gold); }
+    .cosmos .interactions p { color: var(--bone-muted); }
+    .cosmos .esi-val { color: var(--bone); }
+    .cosmos .esi-val.muted { color: var(--bone-muted); }
+    .cosmos .charta-cap { color: var(--bone-faint); }
+    .cosmos .figure-numbering p { color: var(--bone-faint); }
+  </style>
+</head>
+<body>
+
+<button id="sp-restore" class="day" title="Show sun panel">☀</button>
+
+<div id="sun-panel" class="day">
+  <div class="sp-header">
+    <span class="sp-label">sun · live</span>
+    <span class="sp-phase" id="sp-phase">day</span>
+    <button id="sp-hide-btn" title="Hide sun panel">×</button>
+  </div>
+  <svg id="sp-horizon" viewBox="0 0 220 70" style="width:100%;height:70px;display:block;margin-bottom:10px">
+    <line id="sp-hline" x1="0" y1="50" x2="220" y2="50" stroke-width="0.5" />
+    <path id="sp-arc" d="M 30 50 Q 110 5 190 50" fill="none" stroke-width="0.5" opacity="0.4" stroke-dasharray="2 3" />
+    <circle id="sp-sun" cx="110" cy="30" r="6" />
+    <text id="sp-rise" x="30" y="64" font-size="8" text-anchor="middle" font-family="inherit">rise</text>
+    <text id="sp-set"  x="190" y="64" font-size="8" text-anchor="middle" font-family="inherit">set</text>
+  </svg>
+  <div class="sp-row"><span class="sp-row-label">elevation</span><span class="sp-row-val" id="sp-elev">0.0°</span></div>
+  <div class="sp-row"><span class="sp-row-label">local time</span><span class="sp-row-val" id="sp-time">00:00</span></div>
+  <div class="sp-row" style="align-items:baseline"><span class="sp-row-label">location</span><span class="sp-row-val" id="sp-loc" style="text-align:right;max-width:160px;font-size:10px">detecting…</span></div>
+  <div class="sp-row"><span class="sp-row-label">night mix</span><span class="sp-row-val" id="sp-mix">0%</span></div>
+  <div class="sp-scrub" id="sp-scrub-wrap">
+    <div class="sp-scrub-header">
+      <span class="sp-scrub-label">scrub 24h</span>
+      <button class="sp-scrub-btn" id="sp-live-btn">live</button>
+    </div>
+    <input type="range" min="0" max="24" step="0.05" id="sp-slider" />
+    <div class="sp-ticks"><span>00</span><span>06</span><span>12</span><span>18</span><span>24</span></div>
+  </div>
+  <div class="sp-mode-row" id="sp-mode-wrap">
+    <span class="sp-scrub-label">mode</span>
+    <button class="sp-scrub-btn" id="sp-mode-btn">auto</button>
+  </div>
+</div>
+
+<div id="live-wrapper">
+
+  <!-- ── ALMANAC (day) ─────────────────────────────────────────── -->
+  <div id="alm-layer" class="almanac">
+
+    <nav class="alm-nav">
+      <a class="alm-brand" href="/">A·lR</a>
+      <div class="alm-edition">
+        <span id="alm-date"></span>
+      </div>
+    </nav>
+
+    <header class="art-hero">
+      <div class="art-eyebrow">§ work · mathematics</div>
+      <h1 class="art-h1">The Complex <em>Exponential</em></h1>
+      <p class="art-lede">A single function, \(e^{st}\), carries both oscillation and growth at once. That is why it solves almost every linear differential equation — and why every equation of motion is written in its language.</p>
+    </header>
+
+    <div class="art-meta-bar">
+      <div class="art-meta-item">
+        <span>published</span>
+        <span class="art-meta-val">2026-06-23</span>
+      </div>
+      <div class="art-meta-item">
+        <span>version</span>
+        <span class="art-meta-val">v0.1.0</span>
+      </div>
+    </div>
+
+    <nav class="art-toc" id="alm-article-index"><ul></ul></nav>
+
+    <article class="art-body">
+      <section>
+        <p>Almost every linear system in physics — a mass on a spring, a swinging pendulum, an RLC circuit, a building swaying in the wind — obeys a differential equation that relates a quantity to its own rate of change. Solving those equations could be a thicket of trigonometry and calculus. Instead, almost all of it collapses onto a single function: \(e^{st}\), the complex exponential. Its secret is that it folds two seemingly unrelated behaviours — steady oscillation and runaway growth or decay — into one tidy expression governed by a single complex number \(s\).</p>
+      </section>
+
+      <section>
+        <h2 class="num">One Number, Two Behaviours</h2>
+        <p>Let the exponent \(s\) be a complex number, \(s = \sigma + i\omega\). Split the exponential along its real and imaginary parts and Euler's formula does the rest:</p>
+        <p>\[e^{st} = e^{(\sigma + i\omega)t} = \underbrace{e^{\sigma t}}_{\text{envelope}}\,\bigl(\underbrace{\cos\omega t + i\sin\omega t}_{\text{rotation}}\bigr)\]</p>
+        <p>Two knobs, two jobs. The <em>real part</em> \(\sigma\) drives the real exponential \(e^{\sigma t}\) — a pure envelope that swells when \(\sigma>0\), shrinks when \(\sigma<0\), and holds steady when \(\sigma=0\). The <em>imaginary part</em> \(\omega\) drives \(\cos\omega t + i\sin\omega t\) — a point spinning around the unit circle at angular rate \(\omega\). Multiply them and you get a vector whose length follows the envelope while its phase rotates: a spiral.</p>
+        <div class="insight block ref num" data-label="Insight">
+          <h4></h4>
+          <p>The whole of \(s\) lives in one picture, the <em>complex \(s\)-plane</em>. Horizontal position is \(\sigma\) (growth or decay); vertical position is \(\omega\) (rate of oscillation). Slide \(s\) right and the response runs away; slide it left and the response dies out; sit it on the vertical axis and you get a pure, undying oscillation. Every distinct motion of a linear system is just a point — or a pair of points — somewhere on this plane.</p>
+        </div>
+      </section>
+
+      <section>
+        <h2 class="num">Watch It Circle the Time Axis</h2>
+        <p>The clearest way to feel this is to plot \(e^{st}\) in three dimensions. Run time \(t\) along the longitudinal axis, and let the real and imaginary parts of \(e^{st}\) spread out into the two transverse directions. The curve \(\bigl(t,\ e^{\sigma t}\cos\omega t,\ e^{\sigma t}\sin\omega t\bigr)\) corkscrews around the time axis — rotating because of \(\omega\), while its distance from the axis is the exponential envelope \(e^{\sigma t}\) (drawn dashed).</p>
+        <p>Drag the point \(s\) around the plane on the left and watch the spiral on the right respond. Push it right to make the spiral flare open; pull it left to make it wind down to nothing; raise or lower it to wind the turns tighter or looser; drop it onto the real axis to kill the rotation entirely.</p>
+        <div class="art-fig">
+          <div class="esi-stage">
+            <div class="charta splane-fig"></div>
+            <div class="charta spiral-fig"></div>
+          </div>
+        </div>
+        <div class="figure-numbering ref num" data-fig="esi-spiral" data-label="Figure"><p>Left: the complex \(s\)-plane — drag \(s = \sigma + i\omega\) anywhere. Right: the resulting \(e^{st}\) spiralling around the time axis, its radius tracing the exponential envelope \(e^{\sigma t}\) (dashed).</p></div>
+        <div class="interactions">
+          <p>real part \(\sigma\): <span class="esi-val" id="alm-out-sigma"></span></p>
+          <p>imaginary part \(\omega\): <span class="esi-val" id="alm-out-omega"></span></p>
+          <p>envelope: <span class="esi-val" id="alm-out-env"></span></p>
+          <p>rotation: <span class="esi-val" id="alm-out-rot"></span></p>
+        </div>
+      </section>
+
+      <section>
+        <h2 class="num">Why Differential Equations Love It</h2>
+        <p>The reason \(e^{st}\) is everywhere is one line of calculus: differentiating it just multiplies it by \(s\).</p>
+        <p>\[\frac{d}{dt}\,e^{st} = s\,e^{st}\]</p>
+        <p>The function is its own derivative, up to a constant — it is an <em>eigenfunction</em> of the derivative. So when you feed \(e^{st}\) into any linear constant-coefficient differential equation, every derivative turns into a power of \(s\), and the calculus collapses into ordinary algebra. The equation of motion of a damped spring–mass system,</p>
+        <p>\[m\ddot{x} + c\dot{x} + kx = 0,\]</p>
+        <p>becomes, on substituting \(x = e^{st}\), the simple polynomial \(\,ms^2 + cs + k = 0\). Its roots are exactly the values of \(s\) the system is allowed to move at — the points you have been dragging on the plane. A negative real part means the motion decays; an imaginary part means it rings; together they describe every free response the system can have.</p>
+      </section>
+    </article>
+
+    <footer class="alm-foot">
+      <div>© <span id="alm-year"></span> Anro le Roux</div>
+      <div class="alm-foot-mark">A·lR</div>
+      <div class="alm-foot-links">
+        <a href="https://linkedin.com/in/anroleroux" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="https://github.com/anroleroux" target="_blank" rel="noopener">GitHub</a>
+      </div>
+      <div class="site-auth" id="alm-auth"></div>
+    </footer>
+
+  </div><!-- /alm-layer -->
+
+
+  <!-- ── COSMOS (night) ────────────────────────────────────────── -->
+  <div id="cos-layer" class="cosmos">
+
+    <svg class="cos-stars" viewBox="0 0 1440 2400" preserveAspectRatio="none" aria-hidden="true"></svg>
+
+    <nav class="cos-nav">
+      <a class="cos-brand" href="/">A · lR</a>
+      <div class="cos-nav-right">
+        <span><span class="dot">●</span> now <span id="cos-time">00:00:00</span></span>
+        <span id="cos-date">Jan 1 2026</span>
+      </div>
+    </nav>
+
+    <header class="art-hero">
+      <div class="art-eyebrow">§ work · mathematics</div>
+      <h1 class="art-h1">The Complex <em>Exponential</em></h1>
+      <p class="art-lede">A single function, \(e^{st}\), carries both oscillation and growth at once. That is why it solves almost every linear differential equation — and why every equation of motion is written in its language.</p>
+    </header>
+
+    <div class="art-meta-bar">
+      <div class="art-meta-item">
+        <span>published</span>
+        <span class="art-meta-val">2026-06-23</span>
+      </div>
+      <div class="art-meta-item">
+        <span>version</span>
+        <span class="art-meta-val">v0.1.0</span>
+      </div>
+    </div>
+
+    <nav class="art-toc" id="cos-article-index"><ul></ul></nav>
+
+    <article class="art-body">
+      <section>
+        <p>Almost every linear system in physics — a mass on a spring, a swinging pendulum, an RLC circuit, a building swaying in the wind — obeys a differential equation that relates a quantity to its own rate of change. Solving those equations could be a thicket of trigonometry and calculus. Instead, almost all of it collapses onto a single function: \(e^{st}\), the complex exponential. Its secret is that it folds two seemingly unrelated behaviours — steady oscillation and runaway growth or decay — into one tidy expression governed by a single complex number \(s\).</p>
+      </section>
+
+      <section>
+        <h2 class="num">One Number, Two Behaviours</h2>
+        <p>Let the exponent \(s\) be a complex number, \(s = \sigma + i\omega\). Split the exponential along its real and imaginary parts and Euler's formula does the rest:</p>
+        <p>\[e^{st} = e^{(\sigma + i\omega)t} = \underbrace{e^{\sigma t}}_{\text{envelope}}\,\bigl(\underbrace{\cos\omega t + i\sin\omega t}_{\text{rotation}}\bigr)\]</p>
+        <p>Two knobs, two jobs. The <em>real part</em> \(\sigma\) drives the real exponential \(e^{\sigma t}\) — a pure envelope that swells when \(\sigma>0\), shrinks when \(\sigma<0\), and holds steady when \(\sigma=0\). The <em>imaginary part</em> \(\omega\) drives \(\cos\omega t + i\sin\omega t\) — a point spinning around the unit circle at angular rate \(\omega\). Multiply them and you get a vector whose length follows the envelope while its phase rotates: a spiral.</p>
+        <div class="insight block ref num" data-label="Insight">
+          <h4></h4>
+          <p>The whole of \(s\) lives in one picture, the <em>complex \(s\)-plane</em>. Horizontal position is \(\sigma\) (growth or decay); vertical position is \(\omega\) (rate of oscillation). Slide \(s\) right and the response runs away; slide it left and the response dies out; sit it on the vertical axis and you get a pure, undying oscillation. Every distinct motion of a linear system is just a point — or a pair of points — somewhere on this plane.</p>
+        </div>
+      </section>
+
+      <section>
+        <h2 class="num">Watch It Circle the Time Axis</h2>
+        <p>The clearest way to feel this is to plot \(e^{st}\) in three dimensions. Run time \(t\) along the longitudinal axis, and let the real and imaginary parts of \(e^{st}\) spread out into the two transverse directions. The curve \(\bigl(t,\ e^{\sigma t}\cos\omega t,\ e^{\sigma t}\sin\omega t\bigr)\) corkscrews around the time axis — rotating because of \(\omega\), while its distance from the axis is the exponential envelope \(e^{\sigma t}\) (drawn dashed).</p>
+        <p>Drag the point \(s\) around the plane on the left and watch the spiral on the right respond. Push it right to make the spiral flare open; pull it left to make it wind down to nothing; raise or lower it to wind the turns tighter or looser; drop it onto the real axis to kill the rotation entirely.</p>
+        <div class="art-fig">
+          <div class="esi-stage">
+            <div class="charta splane-fig"></div>
+            <div class="charta spiral-fig"></div>
+          </div>
+        </div>
+        <div class="figure-numbering ref num" data-fig="esi-spiral" data-label="Figure"><p>Left: the complex \(s\)-plane — drag \(s = \sigma + i\omega\) anywhere. Right: the resulting \(e^{st}\) spiralling around the time axis, its radius tracing the exponential envelope \(e^{\sigma t}\) (dashed).</p></div>
+        <div class="interactions">
+          <p>real part \(\sigma\): <span class="esi-val" id="cos-out-sigma"></span></p>
+          <p>imaginary part \(\omega\): <span class="esi-val" id="cos-out-omega"></span></p>
+          <p>envelope: <span class="esi-val" id="cos-out-env"></span></p>
+          <p>rotation: <span class="esi-val" id="cos-out-rot"></span></p>
+        </div>
+      </section>
+
+      <section>
+        <h2 class="num">Why Differential Equations Love It</h2>
+        <p>The reason \(e^{st}\) is everywhere is one line of calculus: differentiating it just multiplies it by \(s\).</p>
+        <p>\[\frac{d}{dt}\,e^{st} = s\,e^{st}\]</p>
+        <p>The function is its own derivative, up to a constant — it is an <em>eigenfunction</em> of the derivative. So when you feed \(e^{st}\) into any linear constant-coefficient differential equation, every derivative turns into a power of \(s\), and the calculus collapses into ordinary algebra. The equation of motion of a damped spring–mass system,</p>
+        <p>\[m\ddot{x} + c\dot{x} + kx = 0,\]</p>
+        <p>becomes, on substituting \(x = e^{st}\), the simple polynomial \(\,ms^2 + cs + k = 0\). Its roots are exactly the values of \(s\) the system is allowed to move at — the points you have been dragging on the plane. A negative real part means the motion decays; an imaginary part means it rings; together they describe every free response the system can have.</p>
+      </section>
+    </article>
+
+    <footer class="cos-foot">
+      <div>© <span id="cos-year"></span> Anro le Roux</div>
+      <div class="cos-foot-mark">A · lR</div>
+      <div class="cos-foot-links">
+        <a href="https://linkedin.com/in/anroleroux" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="https://github.com/anroleroux" target="_blank" rel="noopener">GitHub</a>
+      </div>
+      <div class="site-auth" id="cos-auth"></div>
+    </footer>
+
+  </div><!-- /cos-layer -->
+
+</div><!-- /live-wrapper -->
+
+<script src="index.js"></script>
+<script>
+// ── e^{st} : draggable s-plane + 3D spiral around the time axis ──────
+var NS = 'http://www.w3.org/2000/svg';
+
+// World ranges shared by both panels.
+var SIG_MAX = 0.8;     // σ slides over [-SIG_MAX, SIG_MAX]
+var OMG_MAX = 4.0;     // ω slides over [-OMG_MAX, OMG_MAX]
+var T_MAX   = 5.0;     // time runs 0 … T_MAX along the longitudinal axis
+
+function fmt(x, d) {
+  var p = Math.pow(10, d == null ? 2 : d);
+  var r = Math.round(x * p) / p;
+  if (Object.is(r, -0)) r = 0;
+  return r.toFixed(d == null ? 2 : d);
+}
+
+function themeColors(isDark) {
+  return isDark ? {
+    grid:   'rgba(236,226,200,0.10)',
+    axis:   'rgba(236,226,200,0.45)',
+    text:   'rgba(236,226,200,0.78)',
+    faint:  'rgba(236,226,200,0.30)',
+    curve:  '#d6ab5e',
+    accent: '#d6ab5e',
+    stable: 'rgba(154,183,196,0.10)',
+    osc:    'rgba(154,183,196,0.55)'
+  } : {
+    grid:   'rgba(28,22,16,0.08)',
+    axis:   'rgba(28,22,16,0.40)',
+    text:   'rgba(28,22,16,0.68)',
+    faint:  'rgba(28,22,16,0.30)',
+    curve:  '#8a3a13',
+    accent: '#8a3a13',
+    stable: 'rgba(58,107,134,0.08)',
+    osc:    'rgba(58,107,134,0.55)'
+  };
+}
+
+function makeSvg(container, W, H) {
+  container.innerHTML = '';
+  var svg = document.createElementNS(NS, 'svg');
+  svg.setAttribute('viewBox', '0 0 ' + W + ' ' + H);
+  svg.setAttribute('preserveAspectRatio', 'xMidYMid meet');
+  container.appendChild(svg);
+  return svg;
+}
+function mk(svg, name, attrs) {
+  var e = document.createElementNS(NS, name);
+  for (var k in attrs) e.setAttribute(k, attrs[k]);
+  svg.appendChild(e);
+  return e;
+}
+function txt(svg, x, y, s, color, anchor, size) {
+  var t = mk(svg, 'text', { x: x, y: y, fill: color, 'font-family': 'JetBrains Mono, monospace', 'font-size': size || 12, 'text-anchor': anchor || 'start' });
+  t.textContent = s;
+  return t;
+}
+
+// ── s-plane ─────────────────────────────────────────────────────────
+var SP_W = 360, SP_H = 360, SP_PAD = 34;
+function spX(sig) { return SP_PAD + (sig + SIG_MAX) / (2 * SIG_MAX) * (SP_W - 2 * SP_PAD); }
+function spY(omg) { return SP_PAD + (OMG_MAX - omg) / (2 * OMG_MAX) * (SP_H - 2 * SP_PAD); }
+function spInvX(px) { return (px - SP_PAD) / (SP_W - 2 * SP_PAD) * 2 * SIG_MAX - SIG_MAX; }
+function spInvY(py) { return OMG_MAX - (py - SP_PAD) / (SP_H - 2 * SP_PAD) * 2 * OMG_MAX; }
+
+function renderSPlane(container, c, sig, omg) {
+  var svg = makeSvg(container, SP_W, SP_H);
+
+  // Stable (left) half-plane shading — decaying region.
+  mk(svg, 'rect', { x: SP_PAD, y: SP_PAD, width: spX(0) - SP_PAD, height: SP_H - 2 * SP_PAD, fill: c.stable });
+
+  // Grid.
+  for (var gi = -1; gi <= 1; gi++) {
+    if (gi !== 0) mk(svg, 'line', { x1: spX(gi * SIG_MAX / 2), y1: SP_PAD, x2: spX(gi * SIG_MAX / 2), y2: SP_H - SP_PAD, stroke: c.grid, 'stroke-width': 1 });
+  }
+  for (var gj = -1; gj <= 1; gj++) {
+    if (gj !== 0) mk(svg, 'line', { x1: SP_PAD, y1: spY(gj * OMG_MAX / 2), x2: SP_W - SP_PAD, y2: spY(gj * OMG_MAX / 2), stroke: c.grid, 'stroke-width': 1 });
+  }
+
+  // Imaginary axis (σ = 0): the line of pure oscillation — highlighted.
+  mk(svg, 'line', { x1: spX(0), y1: SP_PAD, x2: spX(0), y2: SP_H - SP_PAD, stroke: c.osc, 'stroke-width': 2 });
+  // Real axis (ω = 0).
+  mk(svg, 'line', { x1: SP_PAD, y1: spY(0), x2: SP_W - SP_PAD, y2: spY(0), stroke: c.axis, 'stroke-width': 1.4 });
+
+  // Axis labels.
+  txt(svg, SP_W - SP_PAD + 4, spY(0) - 6, 'σ', c.text, 'start', 13);
+  txt(svg, spX(0) + 6, SP_PAD - 8, 'iω', c.text, 'start', 13);
+  txt(svg, SP_PAD - 4, SP_H - 10, 'decay', c.faint, 'start', 10);
+  txt(svg, SP_W - SP_PAD + 4, SP_H - 10, 'grow', c.faint, 'end', 10);
+
+  // Guide lines from the handle to each axis.
+  mk(svg, 'line', { x1: spX(sig), y1: spY(omg), x2: spX(sig), y2: spY(0), stroke: c.accent, 'stroke-width': 1, 'stroke-dasharray': '2 3', opacity: 0.6 });
+  mk(svg, 'line', { x1: spX(sig), y1: spY(omg), x2: spX(0), y2: spY(omg), stroke: c.accent, 'stroke-width': 1, 'stroke-dasharray': '2 3', opacity: 0.6 });
+
+  // Complex-conjugate partner (real signals always pair s with s̄).
+  mk(svg, 'circle', { cx: spX(sig), cy: spY(-omg), r: 4, fill: 'none', stroke: c.accent, 'stroke-width': 1.3, opacity: 0.5 });
+
+  // The draggable handle.
+  mk(svg, 'circle', { cx: spX(sig), cy: spY(omg), r: 7, fill: c.accent, stroke: c.text, 'stroke-width': 1 });
+
+  var cap = document.createElement('p');
+  cap.className = 'charta-cap';
+  cap.textContent = 'drag  s = σ + iω';
+  container.appendChild(cap);
+}
+
+// ── 3D spiral ───────────────────────────────────────────────────────
+var SR_W = 440, SR_H = 360, SR_PAD = 30;
+var YAW = 0.42, PITCH = 0.50;          // a fixed three-quarter view
+
+// Project a world point (t along axis, re & im transverse) to plain 2D.
+function project(t, re, im) {
+  var ca = Math.cos(YAW), sa = Math.sin(YAW);
+  var cb = Math.cos(PITCH), sb = Math.sin(PITCH);
+  var x1 = t * ca + im * sa;            // yaw about the vertical (Re) axis
+  var z1 = -t * sa + im * ca;
+  var y1 = re;
+  var y2 = y1 * cb - z1 * sb;           // pitch about the horizontal axis
+  return { x: x1, y: y2 };
+}
+
+function renderSpiral(container, c, sig, omg) {
+  var svg = makeSvg(container, SR_W, SR_H);
+
+  // Build every world point first, project, then fit to the box.
+  var N = 640;
+  var spiral = [], envTop = [], envBot = [];
+  var k, t, env;
+  for (k = 0; k <= N; k++) {
+    t = (k / N) * T_MAX;
+    env = Math.exp(sig * t);
+    spiral.push([t, env * Math.cos(omg * t), env * Math.sin(omg * t)]);
+    envTop.push([t, env, 0]);
+    envBot.push([t, -env, 0]);
+  }
+  // Reference geometry: time axis, and the Re / Im axes at the origin.
+  var rMax = Math.max(1, Math.exp(sig * T_MAX));
+  var axisT  = [[0, 0, 0], [T_MAX * 1.04, 0, 0]];
+  var axisRe = [[0, -rMax, 0], [0, rMax * 1.12, 0]];
+  var axisIm = [[0, 0, -rMax], [0, 0, rMax * 1.12]];
+
+  // Collect projections to compute a uniform fit.
+  var all = [], i;
+  function add(list) { for (i = 0; i < list.length; i++) all.push(project(list[i][0], list[i][1], list[i][2])); }
+  add(spiral); add(envTop); add(envBot); add(axisT); add(axisRe); add(axisIm);
+  var minx = Infinity, maxx = -Infinity, miny = Infinity, maxy = -Infinity;
+  for (i = 0; i < all.length; i++) {
+    if (all[i].x < minx) minx = all[i].x; if (all[i].x > maxx) maxx = all[i].x;
+    if (all[i].y < miny) miny = all[i].y; if (all[i].y > maxy) maxy = all[i].y;
+  }
+  var sc = Math.min((SR_W - 2 * SR_PAD) / (maxx - minx || 1), (SR_H - 2 * SR_PAD) / (maxy - miny || 1));
+  var offx = (SR_W - (maxx - minx) * sc) / 2;
+  var offy = (SR_H - (maxy - miny) * sc) / 2;
+  function S(p) { var q = project(p[0], p[1], p[2]); return [offx + (q.x - minx) * sc, SR_H - (offy + (q.y - miny) * sc)]; }
+  function path(list) { return list.map(function (p, j) { var s = S(p); return (j ? 'L' : 'M') + fmt(s[0], 1) + ' ' + fmt(s[1], 1); }).join(' '); }
+
+  // Origin cross-axes (drawn faint, behind the curve).
+  mk(svg, 'path', { d: path(axisRe), fill: 'none', stroke: c.grid, 'stroke-width': 1.2 });
+  mk(svg, 'path', { d: path(axisIm), fill: 'none', stroke: c.grid, 'stroke-width': 1.2 });
+
+  // The exponential envelope e^{σt} (dashed) — the spiral's radius.
+  mk(svg, 'path', { d: path(envTop), fill: 'none', stroke: c.faint, 'stroke-width': 1.3, 'stroke-dasharray': '4 4' });
+  mk(svg, 'path', { d: path(envBot), fill: 'none', stroke: c.faint, 'stroke-width': 1.3, 'stroke-dasharray': '4 4' });
+
+  // The time axis with an arrowhead.
+  mk(svg, 'path', { d: path(axisT), fill: 'none', stroke: c.axis, 'stroke-width': 1.6 });
+  var tip = S(axisT[1]), pre = S([T_MAX * 0.9, 0, 0]);
+  var ang = Math.atan2(tip[1] - pre[1], tip[0] - pre[0]), hl = 10, ha = 0.4;
+  mk(svg, 'polygon', { points: tip[0] + ',' + tip[1] + ' ' +
+    (tip[0] - hl * Math.cos(ang - ha)) + ',' + (tip[1] - hl * Math.sin(ang - ha)) + ' ' +
+    (tip[0] - hl * Math.cos(ang + ha)) + ',' + (tip[1] - hl * Math.sin(ang + ha)), fill: c.axis });
+
+  // The spiral itself.
+  mk(svg, 'path', { d: path(spiral), fill: 'none', stroke: c.curve, 'stroke-width': 2, 'stroke-linejoin': 'round', 'stroke-linecap': 'round' });
+
+  // A dot at the start (t = 0).
+  var s0 = S(spiral[0]);
+  mk(svg, 'circle', { cx: s0[0], cy: s0[1], r: 3.5, fill: c.curve });
+
+  // Axis labels.
+  var lt = S([T_MAX * 1.04, 0, 0]); txt(svg, lt[0] + 4, lt[1] + 14, 't', c.text, 'start', 13);
+  var lr = S(axisRe[1]); txt(svg, lr[0] - 2, lr[1] - 4, 'Re', c.text, 'end', 12);
+  var li = S(axisIm[1]); txt(svg, li[0] + 4, li[1], 'Im', c.text, 'start', 12);
+
+  var cap = document.createElement('p');
+  cap.className = 'charta-cap';
+  cap.textContent = 'e^{st}  around the time axis';
+  container.appendChild(cap);
+}
+
+// ── Wire one layer ──────────────────────────────────────────────────
+function initESI(p, isDark) {
+  var c = themeColors(isDark);
+  var spFig = document.querySelector('#' + p + '-layer .splane-fig');
+  var srFig = document.querySelector('#' + p + '-layer .spiral-fig');
+  if (!spFig || !srFig) return;
+
+  function $out(id) { return document.getElementById(p + '-out-' + id); }
+  var state = { sig: -0.2, omg: 2.4 };
+
+  function describe() {
+    var env = state.sig > 0.02 ? 'growing  (e^{σt}, σ > 0)' :
+              state.sig < -0.02 ? 'decaying  (e^{σt}, σ < 0)' : 'steady  (σ = 0)';
+    var rot = Math.abs(state.omg) > 0.02 ? 'oscillating at ω = ' + fmt(Math.abs(state.omg)) + ' rad/s' : 'no rotation  (pure exponential)';
+    $out('sigma').textContent = fmt(state.sig);
+    $out('omega').textContent = fmt(state.omg);
+    $out('env').textContent = env;
+    $out('rot').textContent = rot;
+  }
+
+  function draw() {
+    renderSPlane(spFig, c, state.sig, state.omg);
+    renderSpiral(srFig, c, state.sig, state.omg);
+    describe();
+  }
+
+  // Dragging on the s-plane. Listeners live on the persistent container,
+  // so they survive the re-render that replaces the inner <svg>.
+  var dragging = false;
+  function setFromEvent(ev) {
+    var svg = spFig.querySelector('svg');
+    if (!svg) return;
+    var r = svg.getBoundingClientRect();
+    var px = (ev.clientX - r.left) / r.width * SP_W;
+    var py = (ev.clientY - r.top) / r.height * SP_H;
+    state.sig = Math.max(-SIG_MAX, Math.min(SIG_MAX, spInvX(px)));
+    state.omg = Math.max(-OMG_MAX, Math.min(OMG_MAX, spInvY(py)));
+    draw();
+  }
+  spFig.addEventListener('pointerdown', function (ev) {
+    if (ev.target.tagName === 'svg' || ev.target.closest('svg')) {
+      dragging = true; spFig.setPointerCapture && ev.pointerId != null && spFig.setPointerCapture(ev.pointerId);
+      setFromEvent(ev); ev.preventDefault();
+    }
+  });
+  spFig.addEventListener('pointermove', function (ev) { if (dragging) { setFromEvent(ev); ev.preventDefault(); } });
+  window.addEventListener('pointerup', function () { dragging = false; });
+
+  draw();
+}
+
+(function () {
+  var dark = (localStorage.getItem('sp-mode') === 'night');
+  initESI('alm', dark);   // almanac layer reflects the current daytime theme
+  initESI('cos', true);   // cosmos layer is always dark
+})();
+</script>
+
+</body>
+</html>

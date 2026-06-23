@@ -38,6 +38,8 @@
     .splane-fig svg { cursor: grab; touch-action: none; max-width: 360px; }
     .splane-fig svg:active { cursor: grabbing; }
     .spiral-fig svg { max-width: 440px; }
+    .endview-fig svg { max-width: 320px; }
+    .sideview-fig svg { max-width: 440px; }
     .figure-numbering { margin: var(--ms1) 0 0; }
     .figure-numbering p { font-family: var(--mono); font-size: var(--ts13); color: var(--ink-faint); margin: 0; line-height: 1.5; max-width: 60ch; }
 
@@ -143,9 +145,11 @@
           <div class="esi-stage">
             <div class="charta splane-fig"></div>
             <div class="charta spiral-fig"></div>
+            <div class="charta endview-fig"></div>
+            <div class="charta sideview-fig"></div>
           </div>
         </div>
-        <div class="figure-numbering ref num" data-fig="esi-spiral" data-label="Figure"><p>Left: the complex \(s\)-plane — drag \(s = \sigma + i\omega\) anywhere. Right: the resulting \(e^{st}\) spiralling around the time axis, its radius tracing the exponential envelope \(e^{\sigma t}\) (dashed).</p></div>
+        <div class="figure-numbering ref num" data-fig="esi-spiral" data-label="Figure"><p>Drag \(s = \sigma + i\omega\) on the complex \(s\)-plane (top-left). The other three panels redraw the same \(e^{st}\): the 3D spiral around the time axis (top-right), the end-on view looking straight down the time axis — a flat spiral in the \(\mathrm{Re}\)–\(\mathrm{Im}\) plane (bottom-left), and the side view of its real part \(e^{\sigma t}\cos\omega t\) with the envelope \(\pm e^{\sigma t}\) (dashed, bottom-right).</p></div>
         <div class="interactions">
           <p>real part \(\sigma\): <span class="esi-val" id="alm-out-sigma"></span></p>
           <p>imaginary part \(\omega\): <span class="esi-val" id="alm-out-omega"></span></p>
@@ -233,9 +237,11 @@
           <div class="esi-stage">
             <div class="charta splane-fig"></div>
             <div class="charta spiral-fig"></div>
+            <div class="charta endview-fig"></div>
+            <div class="charta sideview-fig"></div>
           </div>
         </div>
-        <div class="figure-numbering ref num" data-fig="esi-spiral" data-label="Figure"><p>Left: the complex \(s\)-plane — drag \(s = \sigma + i\omega\) anywhere. Right: the resulting \(e^{st}\) spiralling around the time axis, its radius tracing the exponential envelope \(e^{\sigma t}\) (dashed).</p></div>
+        <div class="figure-numbering ref num" data-fig="esi-spiral" data-label="Figure"><p>Drag \(s = \sigma + i\omega\) on the complex \(s\)-plane (top-left). The other three panels redraw the same \(e^{st}\): the 3D spiral around the time axis (top-right), the end-on view looking straight down the time axis — a flat spiral in the \(\mathrm{Re}\)–\(\mathrm{Im}\) plane (bottom-left), and the side view of its real part \(e^{\sigma t}\cos\omega t\) with the envelope \(\pm e^{\sigma t}\) (dashed, bottom-right).</p></div>
         <div class="interactions">
           <p>real part \(\sigma\): <span class="esi-val" id="cos-out-sigma"></span></p>
           <p>imaginary part \(\omega\): <span class="esi-val" id="cos-out-omega"></span></p>
@@ -459,12 +465,95 @@ function renderSpiral(container, c, sig, omg) {
   container.appendChild(cap);
 }
 
+// ── End-on view : looking straight down the time axis ───────────────
+// The Re–Im plane only — a flat spiral r(t) = e^{σt}, angle = ωt.
+var EV_W = 320, EV_H = 320, EV_PAD = 30;
+function renderEndView(container, c, sig, omg) {
+  var svg = makeSvg(container, EV_W, EV_H);
+
+  var N = 640, pts = [], k, t, env;
+  for (k = 0; k <= N; k++) {
+    t = (k / N) * T_MAX; env = Math.exp(sig * t);
+    pts.push([env * Math.cos(omg * t), env * Math.sin(omg * t)]);
+  }
+  // Symmetric fit about the origin so the axes stay centred.
+  var rMax = 1e-6, i;
+  for (i = 0; i < pts.length; i++) rMax = Math.max(rMax, Math.abs(pts[i][0]), Math.abs(pts[i][1]));
+  var sc = (Math.min(EV_W, EV_H) / 2 - EV_PAD) / rMax;
+  var cx = EV_W / 2, cy = EV_H / 2;
+  function S(p) { return [cx + p[0] * sc, cy - p[1] * sc]; }
+  function path(list) { return list.map(function (q, j) { var s = S(q); return (j ? 'L' : 'M') + fmt(s[0], 1) + ' ' + fmt(s[1], 1); }).join(' '); }
+
+  // Re / Im axes through the centre (the time axis points at us, into the dot).
+  mk(svg, 'line', { x1: EV_PAD, y1: cy, x2: EV_W - EV_PAD, y2: cy, stroke: c.axis, 'stroke-width': 1.4 });
+  mk(svg, 'line', { x1: cx, y1: EV_PAD, x2: cx, y2: EV_H - EV_PAD, stroke: c.axis, 'stroke-width': 1.4 });
+  // Unit reference circle = the starting radius e^{0} = 1.
+  mk(svg, 'circle', { cx: cx, cy: cy, r: sc, fill: 'none', stroke: c.faint, 'stroke-width': 1, 'stroke-dasharray': '3 3' });
+
+  mk(svg, 'path', { d: path(pts), fill: 'none', stroke: c.curve, 'stroke-width': 2, 'stroke-linejoin': 'round', 'stroke-linecap': 'round' });
+  var s0 = S(pts[0]); mk(svg, 'circle', { cx: s0[0], cy: s0[1], r: 3.5, fill: c.curve });
+  // The time axis itself reduces to a dot at the origin.
+  mk(svg, 'circle', { cx: cx, cy: cy, r: 2.5, fill: c.axis });
+
+  txt(svg, EV_W - EV_PAD + 4, cy - 6, 'Re', c.text, 'end', 12);
+  txt(svg, cx + 6, EV_PAD - 6, 'Im', c.text, 'start', 12);
+
+  var cap = document.createElement('p');
+  cap.className = 'charta-cap';
+  cap.textContent = 'looking down the t axis';
+  container.appendChild(cap);
+}
+
+// ── Side view : the real part with its envelope, time left→right ─────
+var SV_W = 440, SV_H = 300, SV_PAD = 30;
+function renderSideView(container, c, sig, omg) {
+  var svg = makeSvg(container, SV_W, SV_H);
+
+  var N = 640, re = [], top = [], bot = [], k, t, env;
+  for (k = 0; k <= N; k++) {
+    t = (k / N) * T_MAX; env = Math.exp(sig * t);
+    re.push([t, env * Math.cos(omg * t)]); top.push([t, env]); bot.push([t, -env]);
+  }
+  var vMax = 1e-6, i;
+  for (i = 0; i < top.length; i++) vMax = Math.max(vMax, top[i][1]);
+  var x0 = SV_PAD, x1 = SV_W - SV_PAD, cy = SV_H / 2;
+  var scx = (x1 - x0) / T_MAX, scy = (SV_H / 2 - SV_PAD) / vMax;
+  function S(p) { return [x0 + p[0] * scx, cy - p[1] * scy]; }
+  function path(list) { return list.map(function (q, j) { var s = S(q); return (j ? 'L' : 'M') + fmt(s[0], 1) + ' ' + fmt(s[1], 1); }).join(' '); }
+
+  // Time axis (value = 0) and the value axis at t = 0.
+  mk(svg, 'line', { x1: x0, y1: cy, x2: x1, y2: cy, stroke: c.axis, 'stroke-width': 1.4 });
+  mk(svg, 'line', { x1: x0, y1: SV_PAD, x2: x0, y2: SV_H - SV_PAD, stroke: c.axis, 'stroke-width': 1.4 });
+
+  // Envelope ±e^{σt} (dashed) and the real part inside it.
+  mk(svg, 'path', { d: path(top), fill: 'none', stroke: c.faint, 'stroke-width': 1.3, 'stroke-dasharray': '4 4' });
+  mk(svg, 'path', { d: path(bot), fill: 'none', stroke: c.faint, 'stroke-width': 1.3, 'stroke-dasharray': '4 4' });
+  mk(svg, 'path', { d: path(re), fill: 'none', stroke: c.curve, 'stroke-width': 2, 'stroke-linejoin': 'round', 'stroke-linecap': 'round' });
+  var s0 = S(re[0]); mk(svg, 'circle', { cx: s0[0], cy: s0[1], r: 3.5, fill: c.curve });
+
+  // Time arrowhead.
+  var ang = 0, hl = 9, ha = 0.45;
+  mk(svg, 'polygon', { points: x1 + ',' + cy + ' ' +
+    (x1 - hl * Math.cos(ang - ha)) + ',' + (cy - hl * Math.sin(ang - ha)) + ' ' +
+    (x1 - hl * Math.cos(ang + ha)) + ',' + (cy - hl * Math.sin(ang + ha)), fill: c.axis });
+
+  txt(svg, x1 + 2, cy + 16, 't', c.text, 'end', 13);
+  txt(svg, x0 + 4, SV_PAD - 4, 'Re', c.text, 'start', 12);
+
+  var cap = document.createElement('p');
+  cap.className = 'charta-cap';
+  cap.textContent = 'envelope from the side';
+  container.appendChild(cap);
+}
+
 // ── Wire one layer ──────────────────────────────────────────────────
 function initESI(p, isDark) {
   var c = themeColors(isDark);
   var spFig = document.querySelector('#' + p + '-layer .splane-fig');
   var srFig = document.querySelector('#' + p + '-layer .spiral-fig');
-  if (!spFig || !srFig) return;
+  var evFig = document.querySelector('#' + p + '-layer .endview-fig');
+  var svFig = document.querySelector('#' + p + '-layer .sideview-fig');
+  if (!spFig || !srFig || !evFig || !svFig) return;
 
   function $out(id) { return document.getElementById(p + '-out-' + id); }
   var state = { sig: -0.2, omg: 2.4 };
@@ -482,6 +571,8 @@ function initESI(p, isDark) {
   function draw() {
     renderSPlane(spFig, c, state.sig, state.omg);
     renderSpiral(srFig, c, state.sig, state.omg);
+    renderEndView(evFig, c, state.sig, state.omg);
+    renderSideView(svFig, c, state.sig, state.omg);
     describe();
   }
 

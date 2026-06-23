@@ -152,10 +152,10 @@
           <div class="matrix-input">
             <span class="matrix-bracket left"></span>
             <div class="matrix-cells">
-              <input id="alm-m-a" type="number" step="0.5" value="2" />
-              <input id="alm-m-b" type="number" step="0.5" value="1" />
-              <input id="alm-m-c" type="number" step="0.5" value="1" />
-              <input id="alm-m-d" type="number" step="0.5" value="2" />
+              <input id="alm-m-a" type="number" step="0.1" value="1.1" />
+              <input id="alm-m-b" type="number" step="0.1" value="0.2" />
+              <input id="alm-m-c" type="number" step="0.1" value="0.5" />
+              <input id="alm-m-d" type="number" step="0.1" value="1.2" />
             </div>
             <span class="matrix-bracket right"></span>
           </div>
@@ -271,10 +271,10 @@
           <div class="matrix-input">
             <span class="matrix-bracket left"></span>
             <div class="matrix-cells">
-              <input id="cos-m-a" type="number" step="0.5" value="2" />
-              <input id="cos-m-b" type="number" step="0.5" value="1" />
-              <input id="cos-m-c" type="number" step="0.5" value="1" />
-              <input id="cos-m-d" type="number" step="0.5" value="2" />
+              <input id="cos-m-a" type="number" step="0.1" value="1.1" />
+              <input id="cos-m-b" type="number" step="0.1" value="0.2" />
+              <input id="cos-m-c" type="number" step="0.1" value="0.5" />
+              <input id="cos-m-d" type="number" step="0.1" value="1.2" />
             </div>
             <span class="matrix-bracket right"></span>
           </div>
@@ -444,13 +444,16 @@ function renderEigPlane(container, isDark, a, b, c, d) {
   polyline(imagePts, ellipseCol, 1.8);
 
   // A grid of sample points, each carried by the matrix: an arrow runs from
-  // the point to where A sends it (v → A·v).
-  var span = 3, stepG = 1.5;
-  for (var gx = -span; gx <= span + 1e-9; gx += stepG) {
-    for (var gy = -span; gy <= span + 1e-9; gy += stepG) {
-      if (Math.abs(gx) < 1e-9 && Math.abs(gy) < 1e-9) continue;
+  // the point to where A sends it (v → A·v). Points sit 0.7 apart on each
+  // axis (±0.7, ±1.4, ±2.1, ±2.8, ±3.5), skipping the axes themselves.
+  var stepG = 0.7, nG = 5;
+  for (var ix = -nG; ix <= nG; ix++) {
+    if (ix === 0) continue;
+    for (var iy = -nG; iy <= nG; iy++) {
+      if (iy === 0) continue;
+      var gx = ix * stepG, gy = iy * stepG;
       var mx = a * gx + b * gy, my = c * gx + d * gy;
-      arrow(gx, gy, mx, my, outCol, 1.8);
+      arrow(gx, gy, mx, my, outCol, 1.6);
     }
   }
 

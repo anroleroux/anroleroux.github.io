@@ -302,7 +302,11 @@ def eom(t, y, M, C, K):
         <p>As covered in <a href="/egn.html">the article on eigenvalues and eigenvectors</a>, the eigen equation</p>
         <p>\[\mathbf{A}\mathbf{v} = \lambda\mathbf{v}\]</p>
         <p>singles out the directions a matrix leaves unrotated, scaling each by its eigenvalue \(\lambda\). Natural frequencies and mode shapes are the same idea carried over to a vibrating system, generalized to act jointly on a pair of matrices instead of one.</p>
-        <p>Every undamped SMD system has a set of special frequencies at which it naturally prefers to vibrate, each with an associated shape of motion. They are found by setting damping and forcing aside and posing this generalized eigenvalue problem on the mass and stiffness matrices:</p>
+        <p>Every undamped SMD system has a set of special frequencies at which it naturally prefers to vibrate, each with an associated shape of motion. To find them, set damping and forcing aside and start from the equation of motion:</p>
+        <p>\[\mathbf{M}\ddot{\mathbf{x}} + \mathbf{K}\mathbf{x} = \mathbf{0}\]</p>
+        <p>As explained in <a href="/esi.html">the article on the complex exponential</a>, the natural ansatz for an equation like this is \(\mathbf{x} = \boldsymbol{\phi}\,e^{st}\); with no damping to grow or decay the motion, \(s\) must be purely imaginary, \(s = i\omega\), so \(\mathbf{x} = \boldsymbol{\phi}\,e^{i\omega t}\). Differentiating twice brings down a factor of \((i\omega)^2 = -\omega^2\), so \(\ddot{\mathbf{x}} = -\omega^2\boldsymbol{\phi}\,e^{i\omega t}\), and substituting both into the equation of motion gives</p>
+        <p>\[-\omega^2\mathbf{M}\boldsymbol{\phi}\,e^{i\omega t} + \mathbf{K}\boldsymbol{\phi}\,e^{i\omega t} = \mathbf{0}\]</p>
+        <p>The exponential is never zero, so it cancels from both terms, leaving the generalized eigenvalue problem on the mass and stiffness matrices:</p>
         <p>\[\mathbf{K}\boldsymbol{\phi} = \omega^2\,\mathbf{M}\boldsymbol{\phi}\]</p>
         <p>Here \(\omega\) is a natural frequency and \(\boldsymbol{\phi}\) its mode shape — the relative amplitudes of the masses when the system oscillates purely at that frequency. SciPy solves this directly with <code>eigh</code>, which is built for symmetric matrix pairs like \(\mathbf{K}\) and \(\mathbf{M}\):</p>
         <p class="art-code-label">Python</p>
@@ -580,7 +584,11 @@ def eom(t, y, M, C, K):
         <p>As covered in <a href="/egn.html">the article on eigenvalues and eigenvectors</a>, the eigen equation</p>
         <p>\[\mathbf{A}\mathbf{v} = \lambda\mathbf{v}\]</p>
         <p>singles out the directions a matrix leaves unrotated, scaling each by its eigenvalue \(\lambda\). Natural frequencies and mode shapes are the same idea carried over to a vibrating system, generalized to act jointly on a pair of matrices instead of one.</p>
-        <p>Every undamped SMD system has a set of special frequencies at which it naturally prefers to vibrate, each with an associated shape of motion. They are found by setting damping and forcing aside and posing this generalized eigenvalue problem on the mass and stiffness matrices:</p>
+        <p>Every undamped SMD system has a set of special frequencies at which it naturally prefers to vibrate, each with an associated shape of motion. To find them, set damping and forcing aside and start from the equation of motion:</p>
+        <p>\[\mathbf{M}\ddot{\mathbf{x}} + \mathbf{K}\mathbf{x} = \mathbf{0}\]</p>
+        <p>As explained in <a href="/esi.html">the article on the complex exponential</a>, the natural ansatz for an equation like this is \(\mathbf{x} = \boldsymbol{\phi}\,e^{st}\); with no damping to grow or decay the motion, \(s\) must be purely imaginary, \(s = i\omega\), so \(\mathbf{x} = \boldsymbol{\phi}\,e^{i\omega t}\). Differentiating twice brings down a factor of \((i\omega)^2 = -\omega^2\), so \(\ddot{\mathbf{x}} = -\omega^2\boldsymbol{\phi}\,e^{i\omega t}\), and substituting both into the equation of motion gives</p>
+        <p>\[-\omega^2\mathbf{M}\boldsymbol{\phi}\,e^{i\omega t} + \mathbf{K}\boldsymbol{\phi}\,e^{i\omega t} = \mathbf{0}\]</p>
+        <p>The exponential is never zero, so it cancels from both terms, leaving the generalized eigenvalue problem on the mass and stiffness matrices:</p>
         <p>\[\mathbf{K}\boldsymbol{\phi} = \omega^2\,\mathbf{M}\boldsymbol{\phi}\]</p>
         <p>Here \(\omega\) is a natural frequency and \(\boldsymbol{\phi}\) its mode shape — the relative amplitudes of the masses when the system oscillates purely at that frequency. SciPy solves this directly with <code>eigh</code>, which is built for symmetric matrix pairs like \(\mathbf{K}\) and \(\mathbf{M}\):</p>
         <p class="art-code-label">Python</p>

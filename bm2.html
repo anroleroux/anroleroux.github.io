@@ -44,6 +44,14 @@
     .art-code-label { font-family: var(--mono); font-size: var(--ts11); letter-spacing: 1.2px; text-transform: uppercase; color: var(--ink-faint); margin: var(--ms3) 0 var(--ms-2); }
     .art-code { background: rgba(28,22,16,0.04); border: 1px solid var(--rule); border-radius: 2px; padding: var(--ms1) var(--ms3); margin: 0 0 var(--ms2); font-family: var(--mono); font-size: var(--ts13); line-height: 1.7; color: var(--ink-muted); overflow-x: auto; max-width: 66ch; white-space: pre; display: block; }
 
+    /* ── e^st interactive demo ────────────────────────────────────────── */
+    .est-stage { display: flex; flex-wrap: wrap; gap: var(--ms2); align-items: center; }
+    .est-stage .charta { flex: 1 1 360px; min-width: 280px; }
+    .est-controls { flex: 1 1 220px; min-width: 200px; display: flex; flex-direction: column; gap: var(--ms1); }
+    .est-controls label { display: block; font-family: var(--sans); font-size: var(--ts14); color: var(--ink-muted); }
+    .est-val { font-family: var(--mono); font-size: var(--ts14); color: var(--ink); margin-left: var(--ms-2); }
+    input.est-slider { display: block; width: 100%; margin-top: var(--ms-2); cursor: pointer; accent-color: var(--accent); }
+
     /* ── Cosmos overrides ─────────────────────────────────────────────── */
     .cosmos .note.block { border-left-color: var(--gold); background: rgba(214,171,94,0.04); }
     .cosmos .note.block h4 { color: var(--gold); }
@@ -61,6 +69,9 @@
     .cosmos .smd-diag .smd-mlabel { fill: var(--gold); }
     .cosmos .art-code-label { color: var(--bone-faint); }
     .cosmos .art-code { background: rgba(236,226,200,0.06); border-color: var(--bone-fainter); color: var(--bone-muted); }
+    .cosmos .est-controls label { color: var(--bone-muted); }
+    .cosmos .est-val { color: var(--bone); }
+    .cosmos input.est-slider { accent-color: var(--gold); }
   </style>
 </head>
 <body>
@@ -298,16 +309,34 @@ def eom(t, y, M, C, K):
         <p>The response shows mass 1 reacting to the force first while mass 2 lags behind, dragged along through the shared spring and damper. After the initial transient dies away, both masses settle into a steady-state oscillation at the driving frequency, moving together in the same direction. The natural question is what happens as the driving frequency changes — and that is where the natural frequencies provide great insight.</p>
       </section>
       <section>
-        <h2 class="num">Natural Frequencies and Mode Shapes</h2>
-        <p>As covered in <a href="/egn.html">the article on eigenvalues and eigenvectors</a>, the eigen equation</p>
-        <p>\[\mathbf{A}\mathbf{v} = \lambda\mathbf{v}\]</p>
-        <p>singles out the directions a matrix leaves unrotated, scaling each by its eigenvalue \(\lambda\). Natural frequencies and mode shapes are the same idea carried over to a vibrating system, generalized to act jointly on a pair of matrices instead of one.</p>
+        <h2 class="num">Vibration as a Complex Exponential</h2>
         <p>Every undamped SMD system has a set of special frequencies at which it naturally prefers to vibrate, each with an associated shape of motion. To find them, set damping and forcing aside and start from the equation of motion:</p>
         <p>\[\mathbf{M}\ddot{\mathbf{x}} + \mathbf{K}\mathbf{x} = \mathbf{0}\]</p>
-        <p>As explained in <a href="/esi.html">the article on the complex exponential</a>, the natural ansatz for an equation like this is \(\mathbf{x} = \boldsymbol{\phi}\,e^{st}\); with no damping to grow or decay the motion, \(s\) must be purely imaginary, \(s = i\omega\), so \(\mathbf{x} = \boldsymbol{\phi}\,e^{i\omega t}\). Differentiating twice brings down a factor of \((i\omega)^2 = -\omega^2\), so \(\ddot{\mathbf{x}} = -\omega^2\boldsymbol{\phi}\,e^{i\omega t}\), and substituting both into the equation of motion gives</p>
+        <p>As explained in <a href="/esi.html">the article on the complex exponential</a>, \(e^{st}\) is the natural ansatz for an equation like this: differentiating it only ever multiplies it by \(s\), so substituting \(\mathbf{x} = \boldsymbol{\phi}\,e^{st}\) turns a differential equation in \(t\) into plain algebra in \(s\). That article works out why this holds on a mathematical level; the demo below shows what the same building block actually does in motion.</p>
+        <div class="art-fig">
+          <div class="est-stage">
+            <div class="charta est-fig"></div>
+            <div class="est-controls">
+              <label>real part \(\sigma\) <span class="est-val est-sigma-val"></span>
+                <input type="range" class="est-slider est-sigma-slider" min="-1.5" max="0.5" step="0.01" value="-0.4">
+              </label>
+              <label>imaginary part \(\omega\) <span class="est-val est-omega-val"></span>
+                <input type="range" class="est-slider est-omega-slider" min="0" max="8" step="0.1" value="4">
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="figure-numbering ref num" data-fig="est-demo" data-label="Figure"><p>The solid curve is the real part of \(e^{st}\), \(e^{\sigma t}\cos\omega t\); the dashed curves are its envelope \(\pm e^{\sigma t}\). Drag \(\sigma\) negative and the curve decays like a damped vibration dying out; push it positive and the motion runs away; set it to zero and \(\omega\) alone produces a pure, undying oscillation.</p></div>
+        <p>Setting \(\sigma = 0\) above is exactly the case that applies here, since an undamped system has nothing to grow or decay its motion. With no damping or forcing, \(s\) must be purely imaginary, \(s = i\omega\), so \(\mathbf{x} = \boldsymbol{\phi}\,e^{i\omega t}\). Differentiating twice brings down a factor of \((i\omega)^2 = -\omega^2\), so \(\ddot{\mathbf{x}} = -\omega^2\boldsymbol{\phi}\,e^{i\omega t}\), and substituting both into the equation of motion gives</p>
         <p>\[-\omega^2\mathbf{M}\boldsymbol{\phi}\,e^{i\omega t} + \mathbf{K}\boldsymbol{\phi}\,e^{i\omega t} = \mathbf{0}\]</p>
         <p>The exponential is never zero, so it cancels from both terms, leaving the generalized eigenvalue problem on the mass and stiffness matrices:</p>
         <p>\[\mathbf{K}\boldsymbol{\phi} = \omega^2\,\mathbf{M}\boldsymbol{\phi}\]</p>
+      </section>
+      <section>
+        <h2 class="num">Natural Frequencies and Mode Shapes</h2>
+        <p>As covered in <a href="/egn.html">the article on eigenvalues and eigenvectors</a>, the eigen equation</p>
+        <p>\[\mathbf{A}\mathbf{v} = \lambda\mathbf{v}\]</p>
+        <p>singles out the directions a matrix leaves unrotated, scaling each by its eigenvalue \(\lambda\). Natural frequencies and mode shapes are the same idea carried over to a vibrating system — precisely the generalized eigenvalue problem \(\mathbf{K}\boldsymbol{\phi} = \omega^2\mathbf{M}\boldsymbol{\phi}\) derived in the previous chapter, acting jointly on a pair of matrices instead of one.</p>
         <p>Here \(\omega\) is a natural frequency and \(\boldsymbol{\phi}\) its mode shape — the relative amplitudes of the masses when the system oscillates purely at that frequency. SciPy solves this directly with <code>eigh</code>, which is built for symmetric matrix pairs like \(\mathbf{K}\) and \(\mathbf{M}\):</p>
         <p class="art-code-label">Python</p>
         <code class="art-code">from scipy.linalg import eigh
@@ -580,16 +609,34 @@ def eom(t, y, M, C, K):
         <p>The response shows mass 1 reacting to the force first while mass 2 lags behind, dragged along through the shared spring and damper. After the initial transient dies away, both masses settle into a steady-state oscillation at the driving frequency, moving together in the same direction. The natural question is what happens as the driving frequency changes — and that is where the natural frequencies provide great insight.</p>
       </section>
       <section>
-        <h2 class="num">Natural Frequencies and Mode Shapes</h2>
-        <p>As covered in <a href="/egn.html">the article on eigenvalues and eigenvectors</a>, the eigen equation</p>
-        <p>\[\mathbf{A}\mathbf{v} = \lambda\mathbf{v}\]</p>
-        <p>singles out the directions a matrix leaves unrotated, scaling each by its eigenvalue \(\lambda\). Natural frequencies and mode shapes are the same idea carried over to a vibrating system, generalized to act jointly on a pair of matrices instead of one.</p>
+        <h2 class="num">Vibration as a Complex Exponential</h2>
         <p>Every undamped SMD system has a set of special frequencies at which it naturally prefers to vibrate, each with an associated shape of motion. To find them, set damping and forcing aside and start from the equation of motion:</p>
         <p>\[\mathbf{M}\ddot{\mathbf{x}} + \mathbf{K}\mathbf{x} = \mathbf{0}\]</p>
-        <p>As explained in <a href="/esi.html">the article on the complex exponential</a>, the natural ansatz for an equation like this is \(\mathbf{x} = \boldsymbol{\phi}\,e^{st}\); with no damping to grow or decay the motion, \(s\) must be purely imaginary, \(s = i\omega\), so \(\mathbf{x} = \boldsymbol{\phi}\,e^{i\omega t}\). Differentiating twice brings down a factor of \((i\omega)^2 = -\omega^2\), so \(\ddot{\mathbf{x}} = -\omega^2\boldsymbol{\phi}\,e^{i\omega t}\), and substituting both into the equation of motion gives</p>
+        <p>As explained in <a href="/esi.html">the article on the complex exponential</a>, \(e^{st}\) is the natural ansatz for an equation like this: differentiating it only ever multiplies it by \(s\), so substituting \(\mathbf{x} = \boldsymbol{\phi}\,e^{st}\) turns a differential equation in \(t\) into plain algebra in \(s\). That article works out why this holds on a mathematical level; the demo below shows what the same building block actually does in motion.</p>
+        <div class="art-fig">
+          <div class="est-stage">
+            <div class="charta est-fig"></div>
+            <div class="est-controls">
+              <label>real part \(\sigma\) <span class="est-val est-sigma-val"></span>
+                <input type="range" class="est-slider est-sigma-slider" min="-1.5" max="0.5" step="0.01" value="-0.4">
+              </label>
+              <label>imaginary part \(\omega\) <span class="est-val est-omega-val"></span>
+                <input type="range" class="est-slider est-omega-slider" min="0" max="8" step="0.1" value="4">
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="figure-numbering ref num" data-fig="est-demo" data-label="Figure"><p>The solid curve is the real part of \(e^{st}\), \(e^{\sigma t}\cos\omega t\); the dashed curves are its envelope \(\pm e^{\sigma t}\). Drag \(\sigma\) negative and the curve decays like a damped vibration dying out; push it positive and the motion runs away; set it to zero and \(\omega\) alone produces a pure, undying oscillation.</p></div>
+        <p>Setting \(\sigma = 0\) above is exactly the case that applies here, since an undamped system has nothing to grow or decay its motion. With no damping or forcing, \(s\) must be purely imaginary, \(s = i\omega\), so \(\mathbf{x} = \boldsymbol{\phi}\,e^{i\omega t}\). Differentiating twice brings down a factor of \((i\omega)^2 = -\omega^2\), so \(\ddot{\mathbf{x}} = -\omega^2\boldsymbol{\phi}\,e^{i\omega t}\), and substituting both into the equation of motion gives</p>
         <p>\[-\omega^2\mathbf{M}\boldsymbol{\phi}\,e^{i\omega t} + \mathbf{K}\boldsymbol{\phi}\,e^{i\omega t} = \mathbf{0}\]</p>
         <p>The exponential is never zero, so it cancels from both terms, leaving the generalized eigenvalue problem on the mass and stiffness matrices:</p>
         <p>\[\mathbf{K}\boldsymbol{\phi} = \omega^2\,\mathbf{M}\boldsymbol{\phi}\]</p>
+      </section>
+      <section>
+        <h2 class="num">Natural Frequencies and Mode Shapes</h2>
+        <p>As covered in <a href="/egn.html">the article on eigenvalues and eigenvectors</a>, the eigen equation</p>
+        <p>\[\mathbf{A}\mathbf{v} = \lambda\mathbf{v}\]</p>
+        <p>singles out the directions a matrix leaves unrotated, scaling each by its eigenvalue \(\lambda\). Natural frequencies and mode shapes are the same idea carried over to a vibrating system — precisely the generalized eigenvalue problem \(\mathbf{K}\boldsymbol{\phi} = \omega^2\mathbf{M}\boldsymbol{\phi}\) derived in the previous chapter, acting jointly on a pair of matrices instead of one.</p>
         <p>Here \(\omega\) is a natural frequency and \(\boldsymbol{\phi}\) its mode shape — the relative amplitudes of the masses when the system oscillates purely at that frequency. SciPy solves this directly with <code>eigh</code>, which is built for symmetric matrix pairs like \(\mathbf{K}\) and \(\mathbf{M}\):</p>
         <p class="art-code-label">Python</p>
         <code class="art-code">from scipy.linalg import eigh
@@ -1019,6 +1066,98 @@ function drawSMDNatMode(layerId, isDark, modeIndex, figClass, title) {
   renderResponseChart(container, isDark, data, title);
 }
 
+// ── Interactive e^st demo: real part + envelope vs time ──────
+function renderExpChart(container, isDark, sigma, omega) {
+  container.innerHTML = '';
+
+  var reCol  = isDark ? '#d6ab5e' : '#8a3a13';
+  var envCol = isDark ? 'rgba(236,226,200,0.45)' : 'rgba(28,22,16,0.35)';
+  var zeroCol = isDark ? 'rgba(236,226,200,0.22)' : 'rgba(28,22,16,0.18)';
+
+  var tMax = 10, nPts = 400;
+  var data = [];
+  for (var i = 0; i <= nPts; i++) {
+    var t = tMax * i / nPts;
+    var env = Math.exp(sigma * t);
+    data.push({ t: t, re: env * Math.cos(omega * t), envHi: env, envLo: -env });
+  }
+
+  var yAll = data.map(function(d){ return d.envHi; }).concat(data.map(function(d){ return d.envLo; }));
+  var yMin = d3.min(yAll), yMax = d3.max(yAll);
+  var pad  = (yMax - yMin) * 0.12 || 0.02;
+  var yLo  = yMin - pad, yHi = yMax + pad;
+
+  var W = 640, H = 300;
+  var mg = { top: 30, right: 20, bottom: 40, left: 56 };
+  var innerW = W - mg.left - mg.right;
+  var innerH = H - mg.top - mg.bottom;
+
+  var xScale = d3.scaleLinear().domain([0, tMax]).range([0, innerW]);
+  var yScale = d3.scaleLinear().domain([yLo, yHi]).range([innerH, 0]);
+
+  var svg = d3.select(container).append('svg')
+    .attr('viewBox', '0 0 ' + W + ' ' + H)
+    .attr('preserveAspectRatio', 'xMidYMid meet');
+
+  var g = svg.append('g').attr('transform', 'translate(' + mg.left + ',' + mg.top + ')');
+
+  g.append('line')
+    .attr('x1', 0).attr('x2', innerW)
+    .attr('y1', yScale(0)).attr('y2', yScale(0))
+    .attr('stroke', zeroCol).attr('stroke-width', 1);
+
+  g.append('g').attr('transform', 'translate(0,' + innerH + ')')
+    .call(d3.axisBottom(xScale).ticks(10).tickFormat(function(d){ return d + 's'; }));
+  g.append('g').call(d3.axisLeft(yScale).ticks(6));
+
+  var lineRe   = d3.line().x(function(d){ return xScale(d.t); }).y(function(d){ return yScale(d.re); });
+  var lineEnvHi = d3.line().x(function(d){ return xScale(d.t); }).y(function(d){ return yScale(d.envHi); });
+  var lineEnvLo = d3.line().x(function(d){ return xScale(d.t); }).y(function(d){ return yScale(d.envLo); });
+
+  g.append('path').datum(data).attr('fill', 'none')
+    .attr('stroke', envCol).attr('stroke-width', 1.5).attr('stroke-dasharray', '5 4').attr('d', lineEnvHi);
+  g.append('path').datum(data).attr('fill', 'none')
+    .attr('stroke', envCol).attr('stroke-width', 1.5).attr('stroke-dasharray', '5 4').attr('d', lineEnvLo);
+  g.append('path').datum(data).attr('fill', 'none')
+    .attr('stroke', reCol).attr('stroke-width', 2).attr('d', lineRe);
+
+  g.append('text').attr('class', 'axis-label')
+    .attr('transform', 'rotate(-90)')
+    .attr('x', -innerH / 2).attr('y', -42).attr('text-anchor', 'middle')
+    .text('Re(eˢᵗ)');
+  svg.append('text').attr('class', 'axis-label')
+    .attr('x', mg.left + innerW / 2).attr('y', H - 4).attr('text-anchor', 'middle')
+    .text('time (s)');
+
+  g.append('text').attr('class', 'panel-title')
+    .attr('x', 0).attr('y', -12)
+    .text('eˢᵗ, real part  ·  σ=' + sigma.toFixed(2) + ', ω=' + omega.toFixed(1));
+}
+
+// Wires the σ/ω sliders for the e^st demo to a live-updating chart
+function setupExpDemo(layerId, isDark) {
+  var root = document.getElementById(layerId);
+  if (!root) return;
+  var container   = root.querySelector('.est-fig');
+  var sigmaSlider = root.querySelector('.est-sigma-slider');
+  var omegaSlider = root.querySelector('.est-omega-slider');
+  var sigmaVal    = root.querySelector('.est-sigma-val');
+  var omegaVal    = root.querySelector('.est-omega-val');
+  if (!container || !sigmaSlider || !omegaSlider) return;
+
+  function update() {
+    var sigma = parseFloat(sigmaSlider.value);
+    var omega = parseFloat(omegaSlider.value);
+    sigmaVal.textContent = sigma.toFixed(2);
+    omegaVal.textContent = omega.toFixed(1);
+    renderExpChart(container, isDark, sigma, omega);
+  }
+
+  sigmaSlider.addEventListener('input', update);
+  omegaSlider.addEventListener('input', update);
+  update();
+}
+
 // Fill the plain-text natural-frequency values in the resonance captions
 function fillNatFreqLabels() {
   var modes = getNatModes();
@@ -1039,6 +1178,7 @@ function setTextAll(cls, text) {
     var isDark = (i === 1) || dark;
     drawSMDResponse(lid, isDark);
     drawSMDForced(lid, isDark);
+    setupExpDemo(lid, isDark);
     drawSMDNatMode(lid, isDark, 0, 'smd-nat1-fig', 'Response at ω₁  ·  x(t)');
     drawSMDNatMode(lid, isDark, 1, 'smd-nat2-fig', 'Response at ω₂  ·  x(t)');
     drawSMDFRF(lid, isDark);

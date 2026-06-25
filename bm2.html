@@ -296,9 +296,11 @@ def eom(t, y, M, C, K):
         <div class="figure-numbering ref num" data-fig="smd-forced" data-label="Figure"><p>Displacement of both masses with a 5 rad/s (≈0.80 Hz) sinusoidal force applied to mass 1, starting from rest.</p></div>
 
         <p>The response shows mass 1 reacting to the force first while mass 2 lags behind, dragged along through the shared spring and damper. After the initial transient dies away, both masses settle into a steady-state oscillation at the driving frequency, moving together in the same direction. The natural question is what happens as the driving frequency changes — and that is where the natural frequencies provide great insight.</p>
-
-        <h3 class="num">Natural Frequencies and Mode Shapes</h3>
-        <p>Every undamped SMD system has a set of special frequencies at which it naturally prefers to vibrate, each with an associated shape of motion. They are found by setting damping and forcing aside and posing the generalized eigenvalue problem on the mass and stiffness matrices:</p>
+      </section>
+      <section>
+        <h2 class="num">Natural Frequencies and Mode Shapes</h2>
+        <p>As covered in <a href="/egn.html">the article on eigenvalues and eigenvectors</a>, the eigen equation \(\mathbf{A}\mathbf{v} = \lambda\mathbf{v}\) singles out the directions a matrix leaves unrotated, scaling each by its eigenvalue \(\lambda\). Natural frequencies and mode shapes are the same idea carried over to a vibrating system, generalized to act jointly on a pair of matrices instead of one.</p>
+        <p>Every undamped SMD system has a set of special frequencies at which it naturally prefers to vibrate, each with an associated shape of motion. They are found by setting damping and forcing aside and posing this generalized eigenvalue problem on the mass and stiffness matrices:</p>
         <p>\[\mathbf{K}\boldsymbol{\phi} = \omega^2\,\mathbf{M}\boldsymbol{\phi}\]</p>
         <p>Here \(\omega\) is a natural frequency and \(\boldsymbol{\phi}\) its mode shape — the relative amplitudes of the masses when the system oscillates purely at that frequency. SciPy solves this directly with <code>eigh</code>, which is built for symmetric matrix pairs like \(\mathbf{K}\) and \(\mathbf{M}\):</p>
         <p class="art-code-label">Python</p>
@@ -566,9 +568,11 @@ def eom(t, y, M, C, K):
         <div class="figure-numbering ref num" data-fig="smd-forced" data-label="Figure"><p>Displacement of both masses with a 5 rad/s (≈0.80 Hz) sinusoidal force applied to mass 1, starting from rest.</p></div>
 
         <p>The response shows mass 1 reacting to the force first while mass 2 lags behind, dragged along through the shared spring and damper. After the initial transient dies away, both masses settle into a steady-state oscillation at the driving frequency, moving together in the same direction. The natural question is what happens as the driving frequency changes — and that is where the natural frequencies provide great insight.</p>
-
-        <h3 class="num">Natural Frequencies and Mode Shapes</h3>
-        <p>Every undamped SMD system has a set of special frequencies at which it naturally prefers to vibrate, each with an associated shape of motion. They are found by setting damping and forcing aside and posing the generalized eigenvalue problem on the mass and stiffness matrices:</p>
+      </section>
+      <section>
+        <h2 class="num">Natural Frequencies and Mode Shapes</h2>
+        <p>As covered in <a href="/egn.html">the article on eigenvalues and eigenvectors</a>, the eigen equation \(\mathbf{A}\mathbf{v} = \lambda\mathbf{v}\) singles out the directions a matrix leaves unrotated, scaling each by its eigenvalue \(\lambda\). Natural frequencies and mode shapes are the same idea carried over to a vibrating system, generalized to act jointly on a pair of matrices instead of one.</p>
+        <p>Every undamped SMD system has a set of special frequencies at which it naturally prefers to vibrate, each with an associated shape of motion. They are found by setting damping and forcing aside and posing this generalized eigenvalue problem on the mass and stiffness matrices:</p>
         <p>\[\mathbf{K}\boldsymbol{\phi} = \omega^2\,\mathbf{M}\boldsymbol{\phi}\]</p>
         <p>Here \(\omega\) is a natural frequency and \(\boldsymbol{\phi}\) its mode shape — the relative amplitudes of the masses when the system oscillates purely at that frequency. SciPy solves this directly with <code>eigh</code>, which is built for symmetric matrix pairs like \(\mathbf{K}\) and \(\mathbf{M}\):</p>
         <p class="art-code-label">Python</p>

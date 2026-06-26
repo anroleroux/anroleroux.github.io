@@ -27,7 +27,8 @@
   .cos-card-pills  { display: flex; flex-wrap: wrap; gap: var(--ms-5); margin-top: var(--ms-2); }
 
   .alm-section-explain { font-family: var(--sans); font-size: var(--ts14); line-height: 1.85; color: var(--ink-muted); max-width: 74ch; margin: var(--ms1) 0 0; }
-  .alm-section-explain .pill { vertical-align: middle; margin: 0 0.12em; }
+  .cos-section-explain { font-family: var(--sans); font-size: var(--ts14); line-height: 1.85; color: var(--bone-muted); max-width: 74ch; margin: var(--ms1) 0 var(--ms2); }
+  .alm-section-explain .pill, .cos-section-explain .pill { vertical-align: middle; margin: 0 0.12em; }
 
   /* ── Scope diagrams (both layers) ── */
   .fig-prose { max-width: 66ch; margin: var(--ms4) 0 0; }
@@ -396,9 +397,7 @@
     <section>
       <div class="cos-section-eyebrow">§ Content · Shared work</div>
       <h2 class="title">Articles, <em>Code</em> and Applications.</h2>
-      <p style="font-family: var(--display); font-style: italic; font-size: var(--ts18); color: var(--bone-muted); max-width: 60ch; line-height: 1.55; margin: 0 0 var(--ms2);">
-        Work shared to facilitate the goals of this site. Articles present applications of math and information that engage careers. Repositories and applications touch on engineering and leadership.
-      </p>
+      <p class="cos-section-explain">Items are grouped by <span class="pill pill-group">articles</span> <span class="pill pill-group">code</span> and <span class="pill pill-group">applications</span>. Items are categorized into <span class="pill pill-cat">programming</span> <span class="pill pill-cat">engineering</span> <span class="pill pill-cat">mathematics</span> and <span class="pill pill-cat">leadership</span>. Items can fall in multiple categories. Articles are works-in-progress, versioned with major, minor and patch numbers; a major version of 0 marks a draft.</p>
       <div class="cos-timeline">
         <div class="cos-tl-row">
           <a class="cos-card" href="https://github.com/anroleroux/neograph" target="_blank" rel="noopener">

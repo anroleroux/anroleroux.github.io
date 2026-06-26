@@ -286,6 +286,7 @@ function initRef(p) {
                 el.insertAdjacentHTML('afterbegin', '<span class="numbering">' + display + '.</span> ');
             }
             h3Display = display;            // remember for nested h3 numbering
+            groups.h3 = 0;                  // restart h3 numbering within each chapter
             if (el.classList.contains('ref')) refs[id] = display;
             addToc(text, id, display ? display + '.' : '', 0);
 

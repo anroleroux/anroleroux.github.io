@@ -9,7 +9,61 @@
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;1,9..144,300;1,9..144,400&family=Inter+Tight:wght@300;400;500;600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="/home.css" />
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
-  
+
+  <style>
+  /* ── Content pills (group + category indicators) — index page only ── */
+  .pill {
+    display: inline-flex; align-items: center; line-height: 1; white-space: nowrap;
+    font-family: var(--mono); font-size: var(--ts9); letter-spacing: 1px;
+    text-transform: uppercase; padding: var(--ms-6) var(--ms-3);
+    border: 1px solid currentColor; border-radius: 999px;
+  }
+  .almanac .pill-group { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+  .almanac .pill-cat   { color: var(--accent); border-color: rgba(138,58,19,0.4); }
+  .cosmos  .pill-group { background: var(--gold-faint); color: var(--bone); border-color: var(--gold-faint); }
+  .cosmos  .pill-cat   { color: var(--gold); border-color: var(--gold-faint); }
+
+  .alm-entry-pills { display: flex; flex-wrap: wrap; gap: var(--ms-5); justify-content: flex-end; align-content: flex-start; }
+  .cos-card-pills  { display: flex; flex-wrap: wrap; gap: var(--ms-5); margin-top: var(--ms-2); }
+
+  .alm-section-explain { font-family: var(--sans); font-size: var(--ts14); line-height: 1.85; color: var(--ink-muted); max-width: 74ch; margin: var(--ms1) 0 0; }
+  .cos-section-explain { font-family: var(--sans); font-size: var(--ts14); line-height: 1.85; color: var(--bone-muted); max-width: 74ch; margin: var(--ms1) 0 var(--ms2); }
+  .alm-section-explain .pill, .cos-section-explain .pill { vertical-align: middle; margin: 0 0.12em; }
+
+  /* ── Scope diagrams (both layers) ── */
+  .fig-prose { max-width: 66ch; margin: var(--ms4) 0 0; }
+  .fig-prose p { margin: 0 0 var(--ms1); }
+  .almanac .fig-prose p { font-family: var(--sans); font-size: var(--ts15); line-height: 1.7; color: var(--ink-muted); }
+  .cosmos  .fig-prose p { font-family: var(--sans); font-size: var(--ts13); line-height: 1.6; color: var(--bone-muted); }
+  .fig-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--ms4); margin: var(--ms3) 0 var(--ms1); align-items: start; }
+  .diagram { margin: 0; }
+  .diagram svg { display: block; width: 100%; height: auto; max-width: 360px; margin: 0 auto; }
+  .diagram figcaption { font-family: var(--mono); font-size: var(--ts10); letter-spacing: 1px; text-transform: uppercase; text-align: center; margin-top: var(--ms-1); }
+  .diagram figcaption b { font-weight: 600; }
+  .almanac .diagram figcaption { color: var(--ink-faint); }
+  .cosmos  .diagram figcaption { color: var(--bone-faint); }
+  .dia .node-label  { font-family: var(--mono); font-size: 15px; text-anchor: middle; dominant-baseline: central; }
+  .dia .axis-label  { font-family: var(--mono); font-size: 9px; letter-spacing: 0.5px; dominant-baseline: middle; }
+  .dia .node    { stroke-width: 1.4; }
+  .dia .edge    { fill: none; stroke-width: 1.4; }
+  .dia .axis    { stroke-width: 1.2; }
+  .dia .qcircle { stroke-width: 1.1; }
+  .dia .arrowhead { stroke: none; }
+  .almanac .dia .node    { fill: var(--paper); stroke: var(--ink); }
+  .almanac .dia .node-label { fill: var(--ink); }
+  .almanac .dia .edge, .almanac .dia .axis { stroke: var(--ink-faint); }
+  .almanac .dia .qcircle { fill: rgba(138,58,19,0.06); stroke: var(--ink-faint); }
+  .almanac .dia .axis-label { fill: var(--ink-muted); }
+  .almanac .dia .arrowhead  { fill: var(--ink-faint); }
+  .cosmos  .dia .node    { fill: rgba(214,171,94,0.06); stroke: var(--gold-faint); }
+  .cosmos  .dia .node-label { fill: var(--gold); }
+  .cosmos  .dia .edge, .cosmos .dia .axis { stroke: var(--gold-faint); }
+  .cosmos  .dia .qcircle { fill: rgba(214,171,94,0.05); stroke: var(--gold-faint); }
+  .cosmos  .dia .axis-label { fill: var(--bone-faint); }
+  .cosmos  .dia .arrowhead  { fill: var(--gold); }
+  @media (max-width: 760px) { .fig-grid { grid-template-columns: 1fr; } }
+  </style>
+
 </head>
 <body>
 
@@ -73,9 +127,8 @@
           <em>&amp; leadership.</em>
         </h1>
         <p class="alm-lede">
-          Aiming to inspire and unlock potential in programming,
-          engineering and mathematics while encouraging brave
-          and trusting leadership driving success.
+          Steps to combine the power of programming, engineering and
+          mathematics while driving success through sincere leadership.
         </p>
         <div class="alm-meta">
           <span>est. mmxxv</span>
@@ -91,14 +144,11 @@
 
     <section>
       <div class="alm-section-head">
-        <div class="alm-section-num">§ iii · content</div>
+        <div class="alm-section-num">§ i · content</div>
         <div>
-          <h2 class="title">Things made, <em>by their scale</em>.</h2>
-          <p class="alm-section-blurb">
-            Each entry is anchored to the time it operates on — the
-            characteristic duration of the problem it solves or the horizon
-            of the system it touches.
-          </p>
+          <h2 class="title">Articles, <em>Code</em> and Applications.</h2>
+          <p class="alm-section-blurb">Work shared to facilitate the goals of this site. Articles present applications of math and information that engage careers. Repositories and applications touch on engineering and leadership.</p>
+          <p class="alm-section-explain">Items are grouped by <span class="pill pill-group">articles</span> <span class="pill pill-group">code</span> and <span class="pill pill-group">applications</span>. Items are categorized into <span class="pill pill-cat">programming</span> <span class="pill pill-cat">engineering</span> <span class="pill pill-cat">mathematics</span> and <span class="pill pill-cat">leadership</span>. Items can fall in multiple categories. Articles are works-in-progress, versioned with major, minor and patch numbers; a major version of 0 marks a draft.</p>
         </div>
       </div>
       <div class="alm-work">
@@ -108,7 +158,7 @@
             <h3 class="alm-entry-title"><em>neo</em>Graph Controller</h3>
             <p class="alm-entry-desc">Drop-in software that turns affordable Wi-Fi micro-controllers into a meshable, user-friendly customisable control system.</p>
           </div>
-          <div class="alm-entry-kind">code · repository</div>
+          <div class="alm-entry-pills"><span class="pill pill-group">code</span><span class="pill pill-cat">programming</span><span class="pill pill-cat">engineering</span></div>
           <div class="alm-entry-arrow">→</div>
         </a>
         <a class="alm-entry" href="/unlog.html">
@@ -117,7 +167,7 @@
             <h3 class="alm-entry-title">UnLog</h3>
             <p class="alm-entry-desc">A focused daily logging webapp for tracking what matters without the noise.</p>
           </div>
-          <div class="alm-entry-kind">app · live</div>
+          <div class="alm-entry-pills"><span class="pill pill-group">app</span><span class="pill pill-group">code</span><span class="pill pill-cat">programming</span><span class="pill pill-cat">leadership</span></div>
           <div class="alm-entry-arrow">→</div>
         </a>
         <a class="alm-entry" href="/ccm.html">
@@ -126,7 +176,7 @@
             <h3 class="alm-entry-title">Code as a Career Multiplier</h3>
             <p class="alm-entry-desc">Adding programming to your professional toolkit — and why the compounding starts earlier than you think.</p>
           </div>
-          <div class="alm-entry-kind">article</div>
+          <div class="alm-entry-pills"><span class="pill pill-group">article</span><span class="pill pill-cat">programming</span><span class="pill pill-cat">leadership</span></div>
           <div class="alm-entry-arrow">→</div>
         </a>
         <a class="alm-entry" href="/bm1.html">
@@ -135,7 +185,7 @@
             <h3 class="alm-entry-title">The Beauty of <em>Motion</em></h3>
             <p class="alm-entry-desc">How stiffness, damping, and inertia govern every moving thing — and the energy flows that connect them.</p>
           </div>
-          <div class="alm-entry-kind">article</div>
+          <div class="alm-entry-pills"><span class="pill pill-group">article</span><span class="pill pill-cat">engineering</span><span class="pill pill-cat">mathematics</span></div>
           <div class="alm-entry-arrow">→</div>
         </a>
         <a class="alm-entry" href="/bm2.html">
@@ -144,7 +194,7 @@
             <h3 class="alm-entry-title">The Beauty of Motion 2: <em>2DoF Systems</em></h3>
             <p class="alm-entry-desc">From single-mass dynamics to coupled multi-degree-of-freedom systems — simulating real mechanical complexity.</p>
           </div>
-          <div class="alm-entry-kind">article</div>
+          <div class="alm-entry-pills"><span class="pill pill-group">article</span><span class="pill pill-cat">engineering</span><span class="pill pill-cat">mathematics</span></div>
           <div class="alm-entry-arrow">→</div>
         </a>
         <a class="alm-entry" href="/pic.html">
@@ -153,7 +203,7 @@
             <h3 class="alm-entry-title">Primes <em>&amp;</em> Cryptography</h3>
             <p class="alm-entry-desc">How the modern world is built on a seemingly insignificant peculiarity of the integers — and the time it would take to undo.</p>
           </div>
-          <div class="alm-entry-kind">article</div>
+          <div class="alm-entry-pills"><span class="pill pill-group">article</span><span class="pill pill-cat">mathematics</span></div>
           <div class="alm-entry-arrow">→</div>
         </a>
         <a class="alm-entry" href="/egn.html">
@@ -162,7 +212,7 @@
             <h3 class="alm-entry-title">Eigenvalues <em>&amp;</em> Eigenvectors</h3>
             <p class="alm-entry-desc">Most directions get bent by a matrix; a special few are only stretched — and those reveal what the matrix really does.</p>
           </div>
-          <div class="alm-entry-kind">article</div>
+          <div class="alm-entry-pills"><span class="pill pill-group">article</span><span class="pill pill-cat">mathematics</span></div>
           <div class="alm-entry-arrow">→</div>
         </a>
         <a class="alm-entry" href="/esi.html">
@@ -171,7 +221,7 @@
             <h3 class="alm-entry-title">The Complex <em>Exponential</em></h3>
             <p class="alm-entry-desc">One function carries both oscillation and growth at once — which is why eˢᵗ solves almost every equation of motion.</p>
           </div>
-          <div class="alm-entry-kind">article</div>
+          <div class="alm-entry-pills"><span class="pill pill-group">article</span><span class="pill pill-cat">mathematics</span><span class="pill pill-cat">engineering</span></div>
           <div class="alm-entry-arrow">→</div>
         </a>
       </div>
@@ -179,78 +229,86 @@
 
     <section>
       <div class="alm-section-head">
-        <div class="alm-section-num">§ ii · services</div>
+        <div class="alm-section-num">§ ii · scope</div>
         <div>
-          <h2 class="title">Work with <em>me</em>.</h2>
-          <p class="alm-section-blurb">
-            A course on AI-assisted software development and personalised
-            mentoring or training sessions — practical paths to building
-            faster and compounding longer.
-          </p>
-        </div>
-      </div>
-      <a href="/services.html" class="alm-cta-btn">View services →</a>
-    </section>
-
-    <section>
-      <div class="alm-section-head">
-        <div class="alm-section-num">§ iv · scope</div>
-        <div>
-          <h2 class="title">Technical excellence is built on <em>human interaction</em>.</h2>
-          <p class="alm-section-blurb">
-            Four disciplines, one horizon. New multi-discipline career paths
-            are emerging and the earliest adopters compound the longest.
-          </p>
+          <h2 class="title">The <em>Diamond Disciplines</em>, a set of complementary endeavours.</h2>
+          <p class="alm-section-blurb">Some roles are specific and uniform. This site focuses on a combination of disciplines that are less fixed but cumulative in value.</p>
         </div>
       </div>
       <div class="alm-disciplines">
         <div class="alm-disc">
-          <div class="alm-disc-scale">Patent Planned Timeframes</div>
-          <h3 class="alm-disc-name">Engineering</h3>
-          <p class="alm-disc-body">Civil, mechanical, electronic, process, computer, industrial engineering — building products and solving problems that interact with the physical world.</p>
-        </div>
-        <div class="alm-disc">
           <div class="alm-disc-scale">Short Feedback Cycles</div>
           <h3 class="alm-disc-name">Programming</h3>
-          <p class="alm-disc-body">Software development and its practices — the skill of getting an idea out into the world repeatably.</p>
+          <p class="alm-disc-body">Programming uses code to solve problems and create digital tools. It applies mathematical logic and supports engineering through simulations, automation, and efficient systems.</p>
         </div>
         <div class="alm-disc">
-          <div class="alm-disc-scale">Discovered Through the Ages</div>
-          <h3 class="alm-disc-name">Mathematics</h3>
-          <p class="alm-disc-body">Applied maths threaded through engineering and programming — often invisible, always load-bearing.</p>
+          <div class="alm-disc-scale">Patient Planned Timeframes</div>
+          <h3 class="alm-disc-name">Engineering</h3>
+          <p class="alm-disc-body">Engineering uses science, mathematics, programming, and creativity to design real-world solutions. It brings these disciplines together to build products, systems, and technologies that improve life.</p>
         </div>
         <div class="alm-disc">
           <div class="alm-disc-scale">Developed Over Lifetimes</div>
           <h3 class="alm-disc-name"><em>Leadership</em></h3>
-          <p class="alm-disc-body">What effective leadership looks like — the fathership sense and the importance of trust.</p>
+          <p class="alm-disc-body">Leadership is the ability to guide people toward a shared goal. In STEM, it helps teams combine skills, make decisions, and turn technical ideas into results.</p>
         </div>
+        <div class="alm-disc">
+          <div class="alm-disc-scale">Discovered Through the Ages</div>
+          <h3 class="alm-disc-name">Mathematics</h3>
+          <p class="alm-disc-body">Mathematics builds logical thinking and problem-solving skills. It supports programming and engineering by helping analyze problems, create models, and make accurate decisions.</p>
+        </div>
+      </div>
+      <div class="fig-prose">
+        <p>These four disciplines relate well with each other. Software interfaces regularly with engineering (e.g. electronics or mechanical systems). Leadership is highly integrated with engineering and software development, since it is creative work that must be performed according to requirements. Additionally, a good understanding of mathematics is beneficial to both programming and engineering. Figure 1 shows the latter relationships in a graph.</p>
+        <div class="fig-grid">
+          <figure class="diagram" id="alm-diamondDisciplines">
+            <svg viewBox="0 0 320 295" class="dia" role="img" aria-label="Diamond of disciplines: Leadership at top, Programming and Engineering in the middle, Mathematics at the bottom">
+              <defs><marker id="alm-ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5.5" markerHeight="5.5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="arrowhead"/></marker></defs>
+              <line x1="94" y1="150" x2="226" y2="150" class="edge" marker-start="url(#alm-ah)" marker-end="url(#alm-ah)"/>
+              <line x1="136.5" y1="69.6" x2="83.5" y2="125.4" class="edge" marker-start="url(#alm-ah)" marker-end="url(#alm-ah)"/>
+              <line x1="183.5" y1="69.6" x2="236.5" y2="125.4" class="edge" marker-start="url(#alm-ah)" marker-end="url(#alm-ah)"/>
+              <line x1="136" y1="226" x2="84" y2="174" class="edge" marker-end="url(#alm-ah)"/>
+              <line x1="184" y1="226" x2="236" y2="174" class="edge" marker-end="url(#alm-ah)"/>
+              <g><circle cx="160" cy="45" r="34" class="node"/><text x="160" y="45" class="node-label">L</text></g>
+              <g><circle cx="60" cy="150" r="34" class="node"/><text x="60" y="150" class="node-label">P</text></g>
+              <g><circle cx="260" cy="150" r="34" class="node"/><text x="260" y="150" class="node-label">E</text></g>
+              <g><circle cx="160" cy="250" r="34" class="node"/><text x="160" y="250" class="node-label">M</text></g>
+            </svg>
+            <figcaption><b>Figure 1.</b> Diamond Disciplines.</figcaption>
+          </figure>
+          <figure class="diagram" id="alm-knowledgeTheoryPlane">
+            <svg viewBox="0 0 320 300" class="dia" role="img" aria-label="Knowledge–theory plane: Programming top-left, Mathematics top-right, Leadership bottom-left, Engineering bottom-right">
+              <defs><marker id="alm-ah2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="arrowhead"/></marker></defs>
+              <circle cx="120" cy="115" r="70" class="qcircle"/>
+              <circle cx="200" cy="115" r="70" class="qcircle"/>
+              <circle cx="120" cy="195" r="70" class="qcircle"/>
+              <circle cx="200" cy="195" r="70" class="qcircle"/>
+              <line x1="160" y1="24" x2="160" y2="286" class="axis" marker-start="url(#alm-ah2)" marker-end="url(#alm-ah2)"/>
+              <line x1="20" y1="155" x2="300" y2="155" class="axis" marker-start="url(#alm-ah2)" marker-end="url(#alm-ah2)"/>
+              <text x="160" y="13" class="axis-label" text-anchor="middle">KNOWLEDGE WORK</text>
+              <text x="160" y="298" class="axis-label" text-anchor="middle">PHYSICAL WORK</text>
+              <text x="6" y="155" class="axis-label" text-anchor="start">APPLICABLE</text>
+              <text x="314" y="155" class="axis-label" text-anchor="end">THEORETICAL</text>
+              <text x="95" y="92" class="node-label">P</text>
+              <text x="225" y="92" class="node-label">M</text>
+              <text x="95" y="218" class="node-label">L</text>
+              <text x="225" y="218" class="node-label">E</text>
+            </svg>
+            <figcaption><b>Figure 2.</b> The Knowledge–Theory Plane.</figcaption>
+          </figure>
+        </div>
+        <p>Leadership, programming, engineering and mathematics complement each other in terms of theoretical depth and how applicable they are, as well as knowledge richness and physical value. Figure 2 illustrates how each discipline is strong where another is weak, while together they form a cohesive set that fits naturally. Mastering these disciplines is a valuable pursuit that this site aims to facilitate.</p>
       </div>
     </section>
 
     <section>
       <div class="alm-section-head">
-        <div class="alm-section-num">§ v · about</div>
+        <div class="alm-section-num">§ iii · contact</div>
         <div>
-          <h2 class="title">The scope, <em>in brief</em>.</h2>
-          <p class="alm-section-blurb">Four disciplines, two classes of work, one notebook.</p>
+          <h2 class="title">How can I <em>assist you?</em></h2>
+          <p class="alm-section-blurb">I can help getting up to speed with something new with regular sessions — practical paths to compound faster.</p>
         </div>
       </div>
-      <div class="alm-about-body">
-        <p>There is thus the technical side where much of the content focuses on the junction of engineering, programming and mathematics. The motivation for this combination is that new multi-discipline career paths are emerging as technologies like LLMs are reducing the barrier to entry. The additional opportunities are creating more jobs and reducing competition. Furthermore, these three disciplines seldom seem to be considered complementary by people that practise it and the hope is to create more harmony in the community. There are naturally fields like science and business that link well to software, engineering and maths, but are left out of scope.</p>
-        <p>But there is also the human relational topic that is deeply integrated in engineering and software development. Technical excellence can be, and is very often, stifled due to detrimental suspicion or competition amongst colleagues (horizontal) and distrust between employees and leadership (vertical). Additionally, the growing lack of mentorship and elder figures nurturing young potential is leaving a wake of under-developed professionals. Technical excellence, sustainability and innovation go hand-in-hand with human relationships.</p>
-        <p>The heart (jobs, in terms of Clayton Christensen's language) is to:</p>
-        <ul>
-          <li><strong>Inspire</strong> — to show what is possible and present a path-to-entry to anyone interested. To make readers realise they can understand and implement something they might not think they could.</li>
-          <li><strong>Empower</strong> — to encourage readers to embrace their talent set and follow their unique career path. To show how and where to start. To help organise and prioritize ideas. By explaining complex topics in incremental and clear visual ways.</li>
-          <li><strong>Guide</strong> — to highlight the importance of leaders that can humbly encourage and empower successors. To create work environments of trust, respect and the freedom to develop people in their unique ways.</li>
-        </ul>
-        <h2>Item classes</h2>
-        <p>The website presents articles, code bases and applications.</p>
-        <h2>Categories</h2>
-        <p>Items are categorized into programming, engineering, mathematics and leadership. Items can fall in multiple categories.</p>
-        <h2>Article versions</h2>
-        <p>Articles are considered works-in-progress and are therefore versioned with major, minor and patch version numbers. If the major version is 0 it is considered a draft.</p>
-      </div>
+      <a href="mailto:aleroux85@gmail.com" class="alm-cta-btn">Contact Me →</a>
     </section>
 
     <footer class="alm-foot">
@@ -286,7 +344,7 @@
     </nav>
 
     <header class="cos-hero">
-      <div class="cos-eyebrow">— A working notebook to inspire career potential —</div>
+      <div class="cos-eyebrow">— A working notebook to unleash potential —</div>
       <h1 class="cos-h1">
         Engineering<br>
         Programming<br>
@@ -337,56 +395,65 @@
     </header>
 
     <section>
-      <div class="cos-section-eyebrow">§ work · placed on the time axis</div>
-      <h2 class="title">Things made, <em>and the time each holds.</em></h2>
+      <div class="cos-section-eyebrow">§ Content · Shared work</div>
+      <h2 class="title">Articles, <em>Code</em> and Applications.</h2>
+      <p class="cos-section-explain">Items are grouped by <span class="pill pill-group">articles</span> <span class="pill pill-group">code</span> and <span class="pill pill-group">applications</span>. Items are categorized into <span class="pill pill-cat">programming</span> <span class="pill pill-cat">engineering</span> <span class="pill pill-cat">mathematics</span> and <span class="pill pill-cat">leadership</span>. Items can fall in multiple categories. Articles are works-in-progress, versioned with major, minor and patch numbers; a major version of 0 marks a draft.</p>
       <div class="cos-timeline">
         <div class="cos-tl-row">
           <a class="cos-card" href="https://github.com/anroleroux/neograph" target="_blank" rel="noopener">
             <div class="cos-card-scale"><span>10⁻³ s</span><span class="cos-card-kind">code</span></div>
             <h3 class="cos-card-title"><em>neo</em>Graph<br>Controller</h3>
             <p class="cos-card-desc">Drop-in software turning affordable Wi-Fi micro-controllers into a meshable, customisable control system.</p>
+            <div class="cos-card-pills"><span class="pill pill-group">code</span><span class="pill pill-cat">programming</span><span class="pill pill-cat">engineering</span></div>
             <div class="cos-card-foot"><span>milliseconds</span><span class="arrow">→</span></div>
           </a>
           <a class="cos-card" href="/unlog.html">
             <div class="cos-card-scale"><span>10⁵ s</span><span class="cos-card-kind">app</span></div>
             <h3 class="cos-card-title">UnLog</h3>
             <p class="cos-card-desc">A focused daily logging webapp for tracking what matters — without the noise.</p>
+            <div class="cos-card-pills"><span class="pill pill-group">app</span><span class="pill pill-group">code</span><span class="pill pill-cat">programming</span><span class="pill pill-cat">leadership</span></div>
             <div class="cos-card-foot"><span>a day</span><span class="arrow">→</span></div>
           </a>
           <a class="cos-card" href="/ccm.html">
             <div class="cos-card-scale"><span>10⁹ s</span><span class="cos-card-kind">article</span></div>
             <h3 class="cos-card-title">Code as a Career Multiplier</h3>
             <p class="cos-card-desc">Adding programming to a professional toolkit — and where the compounding actually starts.</p>
+            <div class="cos-card-pills"><span class="pill pill-group">article</span><span class="pill pill-cat">programming</span><span class="pill pill-cat">leadership</span></div>
             <div class="cos-card-foot"><span>a career</span><span class="arrow">→</span></div>
           </a>
           <a class="cos-card" href="/bm1.html">
             <div class="cos-card-scale"><span>10⁰ s</span><span class="cos-card-kind">article</span></div>
             <h3 class="cos-card-title">The Beauty of <em>Motion</em></h3>
             <p class="cos-card-desc">Stiffness, damping, and inertia — the three interactions that govern every moving thing.</p>
+            <div class="cos-card-pills"><span class="pill pill-group">article</span><span class="pill pill-cat">engineering</span><span class="pill pill-cat">mathematics</span></div>
             <div class="cos-card-foot"><span>one second</span><span class="arrow">→</span></div>
           </a>
           <a class="cos-card" href="/bm2.html">
             <div class="cos-card-scale"><span>10⁰ s</span><span class="cos-card-kind">article</span></div>
             <h3 class="cos-card-title">The Beauty of Motion 2: <em>2DoF</em></h3>
             <p class="cos-card-desc">Coupled multi-degree-of-freedom SMD systems — from equations of motion to simulation.</p>
+            <div class="cos-card-pills"><span class="pill pill-group">article</span><span class="pill pill-cat">engineering</span><span class="pill pill-cat">mathematics</span></div>
             <div class="cos-card-foot"><span>one second</span><span class="arrow">→</span></div>
           </a>
           <a class="cos-card" href="/pic.html">
             <div class="cos-card-scale"><span>10²⁰ s</span><span class="cos-card-kind">article</span></div>
             <h3 class="cos-card-title">Primes <em>&amp;</em> Cryptography</h3>
             <p class="cos-card-desc">How the modern world is built on a small peculiarity of the integers — and how long it would take to undo.</p>
+            <div class="cos-card-pills"><span class="pill pill-group">article</span><span class="pill pill-cat">mathematics</span></div>
             <div class="cos-card-foot"><span>universal</span><span class="arrow">→</span></div>
           </a>
           <a class="cos-card" href="/egn.html">
             <div class="cos-card-scale"><span>10⁰ s</span><span class="cos-card-kind">article</span></div>
             <h3 class="cos-card-title">Eigenvalues <em>&amp;</em> Eigenvectors</h3>
             <p class="cos-card-desc">The directions a matrix only stretches — and the equation that finds them, visualised on a transforming plane.</p>
+            <div class="cos-card-pills"><span class="pill pill-group">article</span><span class="pill pill-cat">mathematics</span></div>
             <div class="cos-card-foot"><span>timeless</span><span class="arrow">→</span></div>
           </a>
           <a class="cos-card" href="/esi.html">
             <div class="cos-card-scale"><span>10⁰ s</span><span class="cos-card-kind">article</span></div>
             <h3 class="cos-card-title">The Complex <em>Exponential</em></h3>
             <p class="cos-card-desc">One function, eˢᵗ, carries both oscillation and growth at once — the language every equation of motion is written in.</p>
+            <div class="cos-card-pills"><span class="pill pill-group">article</span><span class="pill pill-cat">mathematics</span><span class="pill pill-cat">engineering</span></div>
             <div class="cos-card-foot"><span>oscillatory</span><span class="arrow">→</span></div>
           </a>
         </div>
@@ -402,64 +469,84 @@
     </section>
 
     <section>
-      <div class="cos-section-eyebrow">§ services · work with me</div>
-      <h2 class="title">Build your skills <em>faster</em>.</h2>
-      <p style="font-family: var(--display); font-style: italic; font-size: var(--ts18); color: var(--bone-muted); max-width: 52ch; line-height: 1.55; margin: 0 0 var(--ms1);">
-        A course on AI-assisted development and focused mentoring sessions — practical paths to compounding faster.
-      </p>
-      <a href="/services.html" class="cos-cta-btn">View services →</a>
-    </section>
-
-    <section>
-      <div class="cos-section-eyebrow">§ disciplines · four crafts, one horizon</div>
-      <h2 class="title">Technical excellence is built on <em>human interaction</em>.</h2>
+      <div class="cos-section-eyebrow">§ Scope · Motivating combination</div>
+      <h2 class="title">The <em>Diamond Disciplines</em>, a set of complementary endeavours.</h2>
       <div class="cos-disc-grid">
-        <div class="cos-disc">
-          <div class="cos-disc-mark">E</div>
-          <div class="cos-disc-scale">Patent Planned Timeframes</div>
-          <h3 class="cos-disc-name">Engineering</h3>
-          <p class="cos-disc-body">Civil, mechanical, electronic, process, computer, industrial engineering — building products and solving problems that interact with the physical world.</p>
-        </div>
         <div class="cos-disc">
           <div class="cos-disc-mark">P</div>
           <div class="cos-disc-scale">Short Feedback Cycles</div>
           <h3 class="cos-disc-name">Programming</h3>
-          <p class="cos-disc-body">Software development and its practices — the skill of getting an idea out into the world repeatably.</p>
+          <p class="cos-disc-body">Programming uses code to solve problems and create digital tools. It applies mathematical logic and supports engineering through simulations, automation, and efficient systems.</p>
         </div>
         <div class="cos-disc">
-          <div class="cos-disc-mark">M</div>
-          <div class="cos-disc-scale">Discovered Through the Ages</div>
-          <h3 class="cos-disc-name">Mathematics</h3>
-          <p class="cos-disc-body">Applied maths threaded through engineering and programming — often invisible, always load-bearing.</p>
+          <div class="cos-disc-mark">E</div>
+          <div class="cos-disc-scale">Patient Planned Timeframes</div>
+          <h3 class="cos-disc-name">Engineering</h3>
+          <p class="cos-disc-body">Engineering uses science, mathematics, programming, and creativity to design real-world solutions. It brings these disciplines together to build products, systems, and technologies that improve life.</p>
         </div>
         <div class="cos-disc">
           <div class="cos-disc-mark">L</div>
           <div class="cos-disc-scale">Developed Over Lifetimes</div>
           <h3 class="cos-disc-name">Leadership</h3>
-          <p class="cos-disc-body">What effective leadership looks like — the fathership sense and the importance of trust.</p>
+          <p class="cos-disc-body">Leadership is the ability to guide people toward a shared goal. In STEM, it helps teams combine skills, make decisions, and turn technical ideas into results.</p>
         </div>
+        <div class="cos-disc">
+          <div class="cos-disc-mark">M</div>
+          <div class="cos-disc-scale">Discovered Through the Ages</div>
+          <h3 class="cos-disc-name">Mathematics</h3>
+          <p class="cos-disc-body">Mathematics builds logical thinking and problem-solving skills. It supports programming and engineering by helping analyze problems, create models, and make accurate decisions.</p>
+        </div>
+      </div>
+      <div class="fig-prose">
+        <p>These four disciplines relate well with each other. Software interfaces regularly with engineering (e.g. electronics or mechanical systems). Leadership is highly integrated with engineering and software development, since it is creative work that must be performed according to requirements. Additionally, a good understanding of mathematics is beneficial to both programming and engineering. Figure 1 shows the latter relationships in a graph.</p>
+        <div class="fig-grid">
+          <figure class="diagram" id="cos-diamondDisciplines">
+            <svg viewBox="0 0 320 295" class="dia" role="img" aria-label="Diamond of disciplines: Leadership at top, Programming and Engineering in the middle, Mathematics at the bottom">
+              <defs><marker id="cos-ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5.5" markerHeight="5.5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="arrowhead"/></marker></defs>
+              <line x1="94" y1="150" x2="226" y2="150" class="edge" marker-start="url(#cos-ah)" marker-end="url(#cos-ah)"/>
+              <line x1="136.5" y1="69.6" x2="83.5" y2="125.4" class="edge" marker-start="url(#cos-ah)" marker-end="url(#cos-ah)"/>
+              <line x1="183.5" y1="69.6" x2="236.5" y2="125.4" class="edge" marker-start="url(#cos-ah)" marker-end="url(#cos-ah)"/>
+              <line x1="136" y1="226" x2="84" y2="174" class="edge" marker-end="url(#cos-ah)"/>
+              <line x1="184" y1="226" x2="236" y2="174" class="edge" marker-end="url(#cos-ah)"/>
+              <g><circle cx="160" cy="45" r="34" class="node"/><text x="160" y="45" class="node-label">L</text></g>
+              <g><circle cx="60" cy="150" r="34" class="node"/><text x="60" y="150" class="node-label">P</text></g>
+              <g><circle cx="260" cy="150" r="34" class="node"/><text x="260" y="150" class="node-label">E</text></g>
+              <g><circle cx="160" cy="250" r="34" class="node"/><text x="160" y="250" class="node-label">M</text></g>
+            </svg>
+            <figcaption><b>Figure 1.</b> Diamond Disciplines.</figcaption>
+          </figure>
+          <figure class="diagram" id="cos-knowledgeTheoryPlane">
+            <svg viewBox="0 0 320 300" class="dia" role="img" aria-label="Knowledge–theory plane: Programming top-left, Mathematics top-right, Leadership bottom-left, Engineering bottom-right">
+              <defs><marker id="cos-ah2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="arrowhead"/></marker></defs>
+              <circle cx="120" cy="115" r="70" class="qcircle"/>
+              <circle cx="200" cy="115" r="70" class="qcircle"/>
+              <circle cx="120" cy="195" r="70" class="qcircle"/>
+              <circle cx="200" cy="195" r="70" class="qcircle"/>
+              <line x1="160" y1="24" x2="160" y2="286" class="axis" marker-start="url(#cos-ah2)" marker-end="url(#cos-ah2)"/>
+              <line x1="20" y1="155" x2="300" y2="155" class="axis" marker-start="url(#cos-ah2)" marker-end="url(#cos-ah2)"/>
+              <text x="160" y="13" class="axis-label" text-anchor="middle">KNOWLEDGE WORK</text>
+              <text x="160" y="298" class="axis-label" text-anchor="middle">PHYSICAL WORK</text>
+              <text x="6" y="155" class="axis-label" text-anchor="start">APPLICABLE</text>
+              <text x="314" y="155" class="axis-label" text-anchor="end">THEORETICAL</text>
+              <text x="95" y="92" class="node-label">P</text>
+              <text x="225" y="92" class="node-label">M</text>
+              <text x="95" y="218" class="node-label">L</text>
+              <text x="225" y="218" class="node-label">E</text>
+            </svg>
+            <figcaption><b>Figure 2.</b> The Knowledge–Theory Plane.</figcaption>
+          </figure>
+        </div>
+        <p>Leadership, programming, engineering and mathematics complement each other in terms of theoretical depth and how applicable they are, as well as knowledge richness and physical value. Figure 2 illustrates how each discipline is strong where another is weak, while together they form a cohesive set that fits naturally. Mastering these disciplines is a valuable pursuit that this site aims to facilitate.</p>
       </div>
     </section>
 
     <section>
-      <div class="cos-section-eyebrow">§ about this site</div>
-      <h2 class="title">The scope, <em>in brief.</em></h2>
-      <div class="cos-about-body">
-        <p>There is thus the technical side where much of the content focuses on the junction of engineering, programming and mathematics. The motivation for this combination is that new multi-discipline career paths are emerging as technologies like LLMs are reducing the barrier to entry. The additional opportunities are creating more jobs and reducing competition. Furthermore, these three disciplines seldom seem to be considered complementary by people that practise it and the hope is to create more harmony in the community. There are naturally fields like science and business that link well to software, engineering and maths, but are left out of scope.</p>
-        <p>But there is also the human relational topic that is deeply integrated in engineering and software development. Technical excellence can be, and is very often, stifled due to detrimental suspicion or competition amongst colleagues (horizontal) and distrust between employees and leadership (vertical). Additionally, the growing lack of mentorship and elder figures nurturing young potential is leaving a wake of under-developed professionals. Technical excellence, sustainability and innovation go hand-in-hand with human relationships.</p>
-        <p>The heart (jobs, in terms of Clayton Christensen's language) is to:</p>
-        <ul>
-          <li><strong>Inspire</strong> — to show what is possible and present a path-to-entry to anyone interested. To make readers realise they can understand and implement something they might not think they could.</li>
-          <li><strong>Empower</strong> — to encourage readers to embrace their talent set and follow their unique career path. To show how and where to start. To help organise and prioritize ideas. By explaining complex topics in incremental and clear visual ways.</li>
-          <li><strong>Guide</strong> — to highlight the importance of leaders that can humbly encourage and empower successors. To create work environments of trust, respect and the freedom to develop people in their unique ways.</li>
-        </ul>
-        <h2>Item <em>classes</em></h2>
-        <p>The website presents articles, code bases and applications.</p>
-        <h2><em>Categories</em></h2>
-        <p>Items are categorized into programming, engineering, mathematics and leadership. Items can fall in multiple categories.</p>
-        <h2>Article <em>versions</em></h2>
-        <p>Articles are considered works-in-progress and are therefore versioned with major, minor and patch version numbers. If the major version is 0 it is considered a draft.</p>
-      </div>
+      <div class="cos-section-eyebrow">§ Contact · Work with me</div>
+      <h2 class="title">How can I <em>assist you?</em></h2>
+      <p style="font-family: var(--display); font-style: italic; font-size: var(--ts18); color: var(--bone-muted); max-width: 52ch; line-height: 1.55; margin: 0 0 var(--ms1);">
+        I can help getting up to speed with something new with regular sessions — practical paths to compound faster.
+      </p>
+      <a href="mailto:aleroux85@gmail.com" class="cos-cta-btn">Contact Me →</a>
     </section>
 
     <footer class="cos-foot">

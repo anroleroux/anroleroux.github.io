@@ -80,7 +80,7 @@ body { margin: 0; padding: 0; width: 100%; font-family: 'Inter', system-ui, sans
 /* ── Sun panel ────────────────────────────────────────────────── */
 #sun-panel {
   display: none;
-  position: fixed; top: var(--ms1); right: var(--ms1); width: 2var(--ms6);
+  position: fixed; top: var(--ms1); right: var(--ms1); width: calc(3 * var(--ms6));
   padding: var(--ms0) var(--ms1) var(--ms0);
   backdrop-filter: saturate(180%) blur(var(--ms-1));
   -webkit-backdrop-filter: saturate(180%) blur(var(--ms-1));
@@ -310,6 +310,7 @@ a.alm-brand, a.cos-brand { text-decoration: none; color: inherit; }
   display: flex; justify-content: center; align-items: center; position: relative;
 }
 .alm-rings-wrap svg { animation: ringsBreath 24s ease-in-out infinite; }
+/* #alm-rings, #cos-rings { min-width: 0; width: 100%; } */
 
 /* .alm-section { padding: var(--ms6) var(--ms6); border-top: 1px solid var(--rule); } */
 .alm-section-head {
@@ -549,7 +550,8 @@ a.alm-brand, a.cos-brand { text-decoration: none; color: inherit; }
   .alm-hero { grid-template-columns: 1fr; padding: var(--ms3) var(--ms1) var(--ms6); }
   .alm-rings-wrap { margin-top: var(--ms3); }
   .alm-h1 { font-size: var(--ts48); }
-  .alm-section { padding: var(--ms4) var(--ms1); }
+  .almanac section { padding: var(--ms4) var(--ms3) var(--ms3); }
+  .cosmos section { padding: var(--ms4) var(--ms3) var(--ms3); }
   .alm-section-head { grid-template-columns: 1fr; gap: var(--ms0); }
   .alm-entry { grid-template-columns: 1fr; gap: var(--ms-2); padding: var(--ms1) var(--ms-2); }
   .alm-entry-kind, .alm-entry-arrow { text-align: left; }
@@ -558,7 +560,6 @@ a.alm-brand, a.cos-brand { text-decoration: none; color: inherit; }
   .cos-hero { padding: var(--ms3) 0 var(--ms5) 0; }
   .cos-h1 { font-size: var(--ts48); }
   .cos-rings-stage { min-height: 400px; }
-  .cos-section { padding: var(--ms5) var(--ms1) var(--ms3); }
   .cos-disc-grid { grid-template-columns: 1fr 1fr; }
   .cos-foot { padding: var(--ms3) var(--ms1) var(--ms4); grid-template-columns: 1fr 1fr; }
   .cos-foot-mark { grid-column: 1 / -1; margin-bottom: var(--ms0); }
@@ -577,8 +578,10 @@ a.alm-brand, a.cos-brand { text-decoration: none; color: inherit; }
   .alm-h1 { font-size: var(--ts36); }
   .cos-h1 { font-size: var(--ts36); }
   .alm-lede { font-size: var(--ts18); }
-  .alm-section-title { font-size: var(--ts36); }
-  .cos-section-h { font-size: var(--ts36); }
+  .almanac section { padding: var(--ms4) var(--ms3) var(--ms3); }
+  .cosmos section { padding: var(--ms4) var(--ms3) var(--ms3); }
+  .almanac section .title { font-size: var(--ms3); }
+  .cosmos section .title { font-size: var(--ms3); }
   .alm-disciplines { grid-template-columns: 1fr; }
   .cos-disc-grid { grid-template-columns: 1fr; }
   .alm-foot { grid-template-columns: 1fr; }

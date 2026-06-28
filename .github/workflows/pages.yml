@@ -24,11 +24,11 @@ jobs:
       - uses: actions/checkout@v7
 
       - name: Build dev version
-        run: make uidev
+        run: make dev
 
       # - name: Build prod version
       #   run: |
-      #     make uidev
+      #     make dev
       #     mkdir -p ui/dist/dev
       #     cp ui/dist/index.html ui/dist/dev/index.html
 
@@ -49,11 +49,11 @@ jobs:
       - uses: actions/checkout@v7
 
       - name: Build dev version
-        run: make uidev
+        run: make dev
 
       # - name: Build prod version
       #   run: |
-      #     make uidev
+      #     make dev
       #     mkdir -p ui/dist/dev
       #     cp ui/dist/index.html ui/dist/dev/index.html
 

@@ -23,14 +23,11 @@ jobs:
     steps:
       - uses: actions/checkout@v7
 
-      - name: Build dev version
-        run: make dev
-
-      # - name: Build prod version
-      #   run: |
-      #     make dev
-      #     mkdir -p ui/dist/dev
-      #     cp ui/dist/index.html ui/dist/dev/index.html
+      - name: Build prod version
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_PUBLISHABLE_KEY: ${{ secrets.SUPABASE_PUBLISHABLE_KEY }}
+        run: make prd
 
       - uses: actions/upload-pages-artifact@v5
         with:

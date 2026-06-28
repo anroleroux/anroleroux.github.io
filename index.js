@@ -337,6 +337,7 @@ function initRef(p) {
 initRef('alm');
 initRef('cos');
 
+//online-start
 // ── Supabase (shared by auth + tracking) ──────────────────────
 let SUPABASE_URL  = 'https://hbiyyreqmliesghdclpg.supabase.co';
 let SUPABASE_ANON = 'sb_publishable_OsrWXMOvvDm0PluzQE6-6g_zb2yaaP7';
@@ -440,3 +441,4 @@ sb.auth.onAuthStateChange(function (event, session) {
     trackVisit(session);
   }
 });
+//online-end

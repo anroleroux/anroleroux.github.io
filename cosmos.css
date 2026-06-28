@@ -1,0 +1,26 @@
+.cosmos {
+  --ink: #07080d;
+  --bone: #ece2c8;
+  --bone-muted: rgba(236,226,200,0.65);
+  --bone-faint: rgba(236,226,200,0.4);
+  --bone-fainter: rgba(236,226,200,0.18);
+  --gold: #d6ab5e;
+  --gold-soft: rgba(214,171,94,0.6);
+  --gold-faint: rgba(214,171,94,0.25);
+  --sans: 'Inter Tight', 'Inter', system-ui, sans-serif;
+  --display: 'Fraunces', 'Cormorant Garamond', Georgia, serif;
+  --mono: 'JetBrains Mono', 'IBM Plex Mono', ui-monospace, monospace;
+  background: var(--ink);
+  color: var(--bone);
+  font-family: var(--sans);
+  position: relative;
+}
+.cosmos::before {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse at 50% 30%, rgba(214,171,94,0.06), transparent 55%),
+    radial-gradient(ellipse at 50% 100%, rgba(214,171,94,0.04), transparent 60%);
+  pointer-events: none; z-index: 0;
+}
+.cosmos > * { position: relative; z-index: 1; }

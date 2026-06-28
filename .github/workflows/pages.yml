@@ -1,0 +1,65 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy-prod:
+    if: github.ref == 'refs/heads/main'
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Build dev version
+        run: make uidev
+
+      # - name: Build prod version
+      #   run: |
+      #     make uidev
+      #     mkdir -p ui/dist/dev
+      #     cp ui/dist/index.html ui/dist/dev/index.html
+
+      - uses: actions/upload-pages-artifact@v5
+        with:
+          path: ui/dist
+
+      - uses: actions/deploy-pages@v5
+        id: deployment
+
+  deploy-preview:
+    if: github.ref != 'refs/heads/main'
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Build dev version
+        run: make uidev
+
+      # - name: Build prod version
+      #   run: |
+      #     make uidev
+      #     mkdir -p ui/dist/dev
+      #     cp ui/dist/index.html ui/dist/dev/index.html
+
+      - uses: actions/upload-pages-artifact@v5
+        with:
+          path: ui/dist
+
+      - uses: actions/deploy-pages@v5
+        id: deployment

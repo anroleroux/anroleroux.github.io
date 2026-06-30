@@ -1,0 +1,21 @@
+services:
+  grafana:
+    image: grafana/grafana:11.4.0
+    container_name: anr-analytics-grafana
+    ports:
+      - "3000:3000"
+    # analytics/.env supplies the Supabase connection vars (consumed by the
+    # provisioned datasource) and, optionally, GF_SECURITY_ADMIN_* credentials.
+    env_file: analytics/.env
+    environment:
+      GF_USERS_ALLOW_SIGN_UP: "false"
+      GF_AUTH_ANONYMOUS_ENABLED: "false"
+      # The dashboard ships read-only data, so no plugins are needed.
+      GF_INSTALL_PLUGINS: ""
+    volumes:
+      - ./analytics/grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./analytics/grafana/dashboards:/var/lib/grafana/dashboards:ro
+      - grafana-data:/var/lib/grafana
+
+volumes:
+  grafana-data:

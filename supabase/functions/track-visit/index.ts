@@ -21,6 +21,7 @@ const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/
 // Free tier: 1000 req/day, no key needed. Returns nulls on any failure.
 
 interface GeoResult {
+  country: string | null;
   city: string | null;
   continent: string | null;
   latitude: number | null;
@@ -30,7 +31,7 @@ interface GeoResult {
 }
 
 async function fetchGeo(ip: string): Promise<GeoResult> {
-  const empty: GeoResult = { city: null, continent: null, latitude: null, longitude: null, timezone: null, asorg: null };
+  const empty: GeoResult = { country: null, city: null, continent: null, latitude: null, longitude: null, timezone: null, asorg: null };
   if (ip === 'unknown') return empty;
   try {
     const res = await fetch(`https://ipapi.co/${ip}/json/`, {
@@ -41,6 +42,7 @@ async function fetchGeo(ip: string): Promise<GeoResult> {
     const d = await res.json();
     if (d.error) return empty;
     return {
+      country:   typeof d.country_code   === 'string' ? d.country_code   : null,
       city:      typeof d.city           === 'string' ? d.city           : null,
       continent: typeof d.continent_code === 'string' ? d.continent_code : null,
       latitude:  typeof d.latitude       === 'number' ? d.latitude       : null,
@@ -112,14 +114,15 @@ Deno.serve(async (req: Request): Promise<Response> => {
   // Get raw IP before hashing — needed for geo lookup
   const rawIp = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ?? 'unknown';
 
-  // cf-ipcountry passes through Supabase's infrastructure; the richer cf-ip* headers
-  // are Cloudflare Workers-only and are not available here — ipapi.co fills the gaps.
+  const geo = await fetchGeo(rawIp);
+
+  // cf-ipcountry is set by Cloudflare and is only present on the rare request where
+  // that header survives Supabase's infra; prefer it when valid, otherwise fall back
+  // to the country code from ipapi.co (which also supplies the richer geo fields).
   const cfCountry = req.headers.get('cf-ipcountry');
   const country   = cfCountry && /^[A-Z]{2}$/.test(cfCountry) && cfCountry !== 'XX' && cfCountry !== 'T1'
     ? cfCountry
-    : null;
-
-  const geo = await fetchGeo(rawIp);
+    : geo.country;
 
   // Bot check — return 200 silently so bots get no signal they were filtered
   if (isBot(userAgent, geo.asorg)) {

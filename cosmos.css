@@ -24,3 +24,5 @@
   pointer-events: none; z-index: 0;
 }
 .cosmos > * { position: relative; z-index: 1; }
+
+.cos-stars { position: absolute; inset: 0; pointer-events: none; opacity: 0.5; z-index: 0; height: 100% }

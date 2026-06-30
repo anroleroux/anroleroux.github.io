@@ -21,6 +21,7 @@ dev TRX: home.html dist/index.css dist/index.js
 	@cp egn.html dist/egn.html
 	@cp esi.html dist/esi.html
 	@cp unlog.html dist/unlog.html
+	@cp contact.html dist/contact.html
 	@cp dist/index.html index.html
 	@cp dist/index.js index.js
 	@cp dist/index.css index.css
@@ -38,6 +39,7 @@ prd TRS: home.html dist/index.css dist/index.js
 	@cp egn.html dist/egn.html
 	@cp esi.html dist/esi.html
 	@cp unlog.html dist/unlog.html
+	@cp contact.html dist/contact.html
 	@echo "Built local dev version → dist/index.html"
 
 dist/index.css: root.css almanac.css cosmos.css $(wildcard comps/*.css)

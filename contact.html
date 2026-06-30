@@ -142,13 +142,17 @@
           </div>
         </div>
         <div class="cf-field">
+          <label class="cf-label" for="alm-email">Email</label>
+          <input id="alm-email" name="email" type="email" autocomplete="email" maxlength="254" required />
+        </div>
+        <div class="cf-field">
           <label class="cf-label" for="alm-looking">What are you looking for?</label>
           <select id="alm-looking" name="looking_for" required>
             <option value="" disabled selected>Choose one…</option>
             <option value="build-unblock">Help building a project</option>
             <option value="mentoring">Training or mentoring</option>
             <option value="website">A website built for me</option>
-            <option value="website">Help on a math problem</option>
+            <option value="math">Help on a math problem</option>
           </select>
         </div>
         <div class="cf-field">
@@ -215,13 +219,17 @@
           </div>
         </div>
         <div class="cf-field">
+          <label class="cf-label" for="cos-email">Email</label>
+          <input id="cos-email" name="email" type="email" autocomplete="email" maxlength="254" required />
+        </div>
+        <div class="cf-field">
           <label class="cf-label" for="cos-looking">What are you looking for?</label>
           <select id="cos-looking" name="looking_for" required>
             <option value="" disabled selected>Choose one…</option>
             <option value="build-unblock">Help building a project</option>
             <option value="mentoring">Training or mentoring</option>
             <option value="website">A website built for me</option>
-            <option value="website">Help on a math problem</option>
+            <option value="math">Help on a math problem</option>
           </select>
         </div>
         <div class="cf-field">
@@ -274,6 +282,7 @@
         body: JSON.stringify({
           name:          form.elements['name'].value,
           surname:       form.elements['surname'].value,
+          email:         form.elements['email'].value,
           looking_for:   form.elements['looking_for'].value,
           note:          form.elements['note'].value,
           session_token: localStorage.getItem(SESSION_KEY),

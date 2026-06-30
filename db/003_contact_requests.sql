@@ -13,8 +13,9 @@ CREATE TABLE IF NOT EXISTS contact_requests (
   id             BIGSERIAL    PRIMARY KEY,
   name           TEXT         NOT NULL,
   surname        TEXT         NOT NULL,
+  email          TEXT         NOT NULL,
   looking_for    TEXT         NOT NULL
-                   CHECK (looking_for IN ('build-unblock', 'mentoring', 'website')),
+                   CHECK (looking_for IN ('build-unblock', 'mentoring', 'website', 'math')),
   note           TEXT,
   session_token  UUID,                  -- soft link to sessions(session_token); may be NULL
   created_at     TIMESTAMPTZ  NOT NULL DEFAULT NOW()

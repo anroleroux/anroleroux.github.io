@@ -70,6 +70,7 @@
   50%       { transform: scale(1.008); }
 }
 
+html { font-size: 22px; }
 html { margin: 0; padding: 0; width: 100%; overflow-x: hidden; }
 body { margin: 0; padding: 0; width: 100%; font-family: 'Inter', system-ui, sans-serif; background: #f0eee9; }
 
@@ -176,36 +177,6 @@ article a { color: var(--accent); text-decoration: none; border-bottom: 1px soli
 article a:hover { border-bottom-color: var(--accent); }
 article ul { font-size: var(--ts15); line-height: 1.75; color: var(--ink-muted); max-width: 66ch; margin: 0 0 var(--ms0); padding-left: 1.6em; }
 /* .numbering { margin-right: 0.4ch; } */
-
-.almanac section { padding: var(--ms6) var(--ms6); border-top: 1px solid var(--rule); }
-.almanac section .title {
-  font-family: var(--serif); font-weight: 400; font-size: var(--ts48); line-height: 1; letter-spacing: -0.01em;
-  margin: 0;
-}
-.almanac section .title em { font-style: italic; color: var(--accent); }
-
-.almanac article h2 { font-family: var(--serif); font-weight: 400; color: var(--ink); }
-.almanac article h3 { font-family: var(--serif); font-weight: 400; color: var(--ink); }
-.almanac article p { color: var(--ink-muted); }
-.almanac article a { color: var(--accent); text-decoration: none; border-bottom: 1px solid rgba(138,58,19,0.3); }
-.almanac article a:hover { border-bottom-color: var(--accent); }
-.almanac article ul { font-size: var(--ts15); line-height: 1.75; color: var(--ink-muted); max-width: 66ch; margin: 0 0 var(--ms0); padding-left: 1.6em; }
-/* .numbering { margin-right: 0.4ch; } */
-
-.cosmos section { padding: var(--ms7) var(--ms6) var(--ms6); }
-.cosmos section .title {
-  font-family: var(--display); font-weight: 300; font-size: var(--ts56); line-height: 1; letter-spacing: -0.015em;
-  margin: 0 0 var(--ms4); max-width: 22ch;
-}
-.cosmos section .title em { font-style: italic; color: var(--gold); font-weight: 300; }
-
-.cosmos article section { border-top-color: var(--bone-fainter); }
-.cosmos article h2 { font-family: var(--display); font-weight: 300; color: var(--bone); }
-.cosmos article h3 { font-family: var(--display); font-weight: 300; color: var(--bone); }
-.cosmos article p { color: var(--bone-muted); }
-.cosmos article ul { color: var(--bone-muted); }
-.cosmos article a { color: var(--gold); border-bottom-color: rgba(214,171,94,0.3); }
-.cosmos article a:hover { border-bottom-color: var(--gold); }
 
 /* ── Article nav brand ───────────────────────────────────────── */
 a.alm-brand, a.cos-brand { text-decoration: none; color: inherit; }
@@ -530,7 +501,9 @@ a.alm-brand, a.cos-brand { text-decoration: none; color: inherit; }
 
 /* ── RESPONSIVE ──────────────────────────────────────────────── */
 @media (max-width: 1100px) {
-  html { font-size: 16px; }
+  html { font-size: 20px; }
+  .almanac section { padding: var(--ms4) var(--ms4); }
+  .cosmos section { padding: var(--ms5) var(--ms4) var(--ms4); }
   .alm-h1 { font-size: var(--ts64); }
   .cos-h1 { font-size: var(--ts72); }
   .alm-hero { padding: var(--ms5) var(--ms4) var(--ms6); gap: var(--ms4); }
@@ -542,7 +515,7 @@ a.alm-brand, a.cos-brand { text-decoration: none; color: inherit; }
 }
 
 @media (max-width: 800px) {
-  html { font-size: 16px; }
+  html { font-size: 18px; }
   .alm-nav { padding: var(--ms1) var(--ms1); flex-direction: column; align-items: baseline; }
   .cos-nav { padding: var(--ms1) var(--ms1); }
   .alm-hero { grid-template-columns: 1fr; padding: var(--ms3) var(--ms1) var(--ms6); }

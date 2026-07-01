@@ -7,6 +7,8 @@
   --gold: #d6ab5e;
   --gold-soft: rgba(214,171,94,0.6);
   --gold-faint: rgba(214,171,94,0.25);
+  --gold-gloss: rgba(214,171,94,0.06);
+  --gold-tint: rgba(214,171,94,0.04);
   --sans: 'Inter Tight', 'Inter', system-ui, sans-serif;
   --display: 'Fraunces', 'Cormorant Garamond', Georgia, serif;
   --mono: 'JetBrains Mono', 'IBM Plex Mono', ui-monospace, monospace;
@@ -19,10 +21,30 @@
   content: '';
   position: absolute; inset: 0;
   background:
-    radial-gradient(ellipse at 50% 30%, rgba(214,171,94,0.06), transparent 55%),
-    radial-gradient(ellipse at 50% 100%, rgba(214,171,94,0.04), transparent 60%);
+    radial-gradient(ellipse at 50% 30%, var(--gold-gloss), transparent 55%),
+    radial-gradient(ellipse at 50% 100%, var(--gold-tint), transparent 60%);
   pointer-events: none; z-index: 0;
 }
 .cosmos > * { position: relative; z-index: 1; }
 
 .cos-stars { position: absolute; inset: 0; pointer-events: none; opacity: 0.5; z-index: 0; width: 100%; height: 100% }
+
+.cosmos section { padding: var(--ms7) var(--ms6) var(--ms6); }
+.cosmos section .title {
+  font-family: var(--display); font-weight: 300; font-size: var(--ts56); line-height: 1; letter-spacing: -0.015em;
+  margin: 0 0 var(--ms4); max-width: 22ch;
+}
+.cosmos section .title em { font-style: italic; color: var(--gold); font-weight: 300; }
+
+.cosmos article section { border-top-color: var(--bone-fainter); }
+.cosmos article h2 { font-family: var(--display); font-weight: 300; color: var(--bone); }
+.cosmos article h3 { font-family: var(--display); font-weight: 300; color: var(--bone); }
+.cosmos article p { color: var(--bone-muted); }
+.cosmos article ul { color: var(--bone-muted); }
+.cosmos article a { color: var(--gold); border-bottom-color: rgba(214,171,94,0.3); }
+.cosmos article a:hover { border-bottom-color: var(--gold); }
+
+.cosmos .insight.block { border-left: 2px solid var(--gold); padding: var(--ms1) var(--ms3); margin: var(--ms3) 0; background: var(--gold-gloss); max-width: 66ch; }
+.cosmos .insight.block h4 { font-family: var(--mono); font-size: var(--ts11); letter-spacing: 1.4px; text-transform: uppercase; color: var(--gold); margin: 0 0 var(--ms-1); font-weight: 500; }
+.cosmos .insight.block p { font-size: var(--ts14); margin: 0 0 var(--ms-2); }
+.cosmos .insight.block p:last-child { margin: 0; }

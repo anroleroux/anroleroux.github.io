@@ -4,6 +4,7 @@
   --ink-muted: #5b4e3b;
   --ink-faint: #8a7c64;
   --rule: rgba(28,22,16,0.16);
+  --rule-gloss: rgba(28,22,16,0.06);
   --accent: #8a3a13;
   --serif: 'Cormorant Garamond', 'EB Garamond', Georgia, serif;
   --sans: 'Inter', system-ui, sans-serif;
@@ -23,3 +24,24 @@
   z-index: 0;
 }
 .almanac > * { position: relative; z-index: 1; }
+
+.almanac section { padding: var(--ms6) var(--ms6); border-top: 1px solid var(--rule); }
+.almanac section .title {
+  font-family: var(--serif); font-weight: 400; font-size: var(--ts48); line-height: 1; letter-spacing: -0.01em;
+  margin: 0;
+}
+.almanac section .title em { font-style: italic; color: var(--accent); }
+
+.almanac article h2 { font-family: var(--serif); font-weight: 400; color: var(--ink); }
+.almanac article h3 { font-family: var(--serif); font-weight: 400; color: var(--ink); }
+.almanac article p { color: var(--ink-muted); }
+.almanac article a { color: var(--accent); text-decoration: none; border-bottom: 1px solid rgba(138,58,19,0.3); }
+.almanac article a:hover { border-bottom-color: var(--accent); }
+.almanac article ul { font-size: var(--ts15); line-height: 1.75; color: var(--ink-muted); max-width: 66ch; margin: 0 0 var(--ms0); padding-left: 1.6em; }
+/* .numbering { margin-right: 0.4ch; } */
+
+/* Insight block */
+.almanac .insight.block { border-left: 2px solid var(--accent); padding: var(--ms1) var(--ms3); margin: var(--ms3) 0; background: var(--rule-gloss); max-width: 66ch; }
+.almanac .insight.block h4 { font-family: var(--mono); font-size: var(--ts11); letter-spacing: 1.4px; text-transform: uppercase; color: var(--accent); margin: 0 0 var(--ms-1); font-weight: 500; }
+.almanac .insight.block p { font-size: var(--ts14); margin: 0 0 var(--ms-2); }
+.almanac .insight.block p:last-child { margin: 0; }

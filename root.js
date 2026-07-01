@@ -34,19 +34,60 @@ function smoothstep(a, b, x) {
 }
 
 // ── Build starfield ───────────────────────────────────────────
+// The starfield covers the full cosmos layer, whose height grows with the
+// article. A fixed viewBox + slice zooms the stars on very tall (or very wide)
+// pages, so instead we size the viewBox to the element's actual pixel box (1:1)
+// and scatter stars at a constant density. This keeps star size and spacing
+// consistent at any aspect ratio — from a wide desktop to a long phone article.
 (function() {
   let svg = document.querySelector('.cos-stars');
-  svg.innerHTML = '';
-  for (let i = 0; i < 90; i++) {
-    let x = (i * 137.508) % 1440;
-    let y = ((i * 73.21) + 47) % 2400;
-    let r = 0.4 + ((i * 31) % 11) / 18;
-    let o = 0.25 + ((i * 19) % 7) / 12;
-    let c = document.createElementNS(SVG_NS, 'circle');
-    c.setAttribute('cx', x.toFixed(1)); c.setAttribute('cy', y.toFixed(1));
-    c.setAttribute('r',  r.toFixed(2)); c.setAttribute('fill', '#ece2c8');
-    c.setAttribute('opacity', o.toFixed(2));
-    svg.appendChild(c);
+  if (!svg) return;
+
+  let DENSITY  = 90 / (1440 * 2400); // stars per px², matched to the original look
+  let MAX_STARS = 400;               // guard against enormous (very long) pages
+  let lastW = 0, lastH = 0;
+
+  function build(w, h) {
+    svg.setAttribute('viewBox', '0 0 ' + w + ' ' + h);
+    svg.innerHTML = '';
+    let count = Math.min(MAX_STARS, Math.round(DENSITY * w * h));
+    for (let i = 0; i < count; i++) {
+      let x = (i * 137.508) % w;
+      let y = ((i * 73.21) + 47) % h;
+      let r = 0.4 + ((i * 31) % 11) / 18;
+      let o = 0.25 + ((i * 19) % 7) / 12;
+      let c = document.createElementNS(SVG_NS, 'circle');
+      c.setAttribute('cx', x.toFixed(1)); c.setAttribute('cy', y.toFixed(1));
+      c.setAttribute('r',  r.toFixed(2)); c.setAttribute('fill', '#ece2c8');
+      c.setAttribute('opacity', o.toFixed(2));
+      svg.appendChild(c);
+    }
+  }
+
+  function refresh() {
+    let box = svg.getBoundingClientRect();
+    let w = Math.round(box.width);
+    let h = Math.round(box.height);
+    if (!w || !h) return;
+    // Skip trivial changes (scrollbars, mobile URL-bar jitter) to avoid churn.
+    if (Math.abs(w - lastW) < 20 && Math.abs(h - lastH) < 40) return;
+    lastW = w; lastH = h;
+    build(w, h);
+  }
+
+  refresh();
+
+  // Rebuild when the layer's box changes (resize, orientation, reflow), coalesced
+  // into a single frame so rapid resizes don't rebuild repeatedly.
+  if (typeof ResizeObserver !== 'undefined') {
+    let raf = null;
+    let ro = new ResizeObserver(function() {
+      if (raf) cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(refresh);
+    });
+    ro.observe(svg);
+  } else {
+    window.addEventListener('resize', refresh);
   }
 })();
 

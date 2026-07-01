@@ -23,6 +23,7 @@ dev TRX: home.html dist/index.css dist/index.js
 	@cp unlog.html dist/unlog.html
 	@cp contact.html dist/contact.html
 	@cp pic-mod.js dist/pic-mod.js
+	@cp RSAAuth.svg dist/RSAAuth.svg
 	@cp dist/index.html index.html
 	@cp dist/index.js index.js
 	@cp dist/index.css index.css
@@ -42,6 +43,7 @@ prd TRS: home.html dist/index.css dist/index.js
 	@cp unlog.html dist/unlog.html
 	@cp contact.html dist/contact.html
 	@cp pic-mod.js dist/pic-mod.js
+	@cp RSAAuth.svg dist/RSAAuth.svg
 	@echo "Built local dev version → dist/index.html"
 
 dist/index.css: root.css almanac.css cosmos.css $(wildcard comps/*.css)

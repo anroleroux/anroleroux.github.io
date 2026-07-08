@@ -128,7 +128,7 @@
     </nav>
 
     <header class="art-hero">
-      <div class="art-eyebrow">§ work · mathematics</div>
+      <div class="art-eyebrow">article · mathematics programming</div>
       <h1 class="art-h1">Primes and <em>Cryptography</em></h1>
       <p class="art-lede">How the modern world is built on a seemingly insignificant math peculiarity.</p>
     </header>
@@ -151,34 +151,44 @@
 
     <article class="art-body">
       <section>
-        <p>Why are prime numbers such a big deal in mathematics? It's quirky, but of what use is it really? This article will go into details of prime numbers and show how they are extensively used in key exchange and cryptography. The reader will find it no surprise that trust among 5 billion people using the internet rely on the humble prime.</p>
-        <p>Three problems will be addressed. Assuming an insecure network, a sender needs to send a message to a recipient that:</p>
+        <p>Why are prime numbers such a big deal in mathematics? It's quirky, but of what use is it really? This article will look into prime numbers and show how they are extensively used in key exchange and cryptography. The reader will find it no surprise that trust among 5 billion people using the internet rely on the humble prime.</p>
+        <p>Three problems will be considered. Assuming an insecure network, a sender needs to send a message to a recipient that:</p>
         <ul>
           <li>no one else can read (encryption),</li>
           <li>is sent without prior exchanging of a secret key (key exchange),</li>
-          <li>where the recipient can verify the sender is the sender (authentication).</li>
+          <li>the recipient can verify the sender is the sender (authentication).</li>
         </ul>
         <div class="warning block">
           <h4>Warning</h4>
           <p>This article is intended to take the reader on a discovery journey of interesting cryptography handshaking concepts and how prime numbers are used to secure them. Do not build and rely on your own security algorithms. There are plenty of robust open tools that are maintained by professionals.</p>
         </div>
-        <p>There are two types of cryptography, symmetric where the same key is used for encryption and decryption, and asymmetric where each person has a key that is publicly accessible and a key that stays private/secret. Symmetric cryptography immediately raises the question of how a secret key can be shared over an insecure network.</p>
+        <p>There are two types of cryptography, symmetric where the same key is used for encryption and decryption, and asymmetric where each person has a publicly accessible key and a key that stays secret. Symmetric cryptography immediately raises the question of how a secret key can be shared over an insecure network.</p>
       </section>
       <section>
         <h2 class="num">Key Exchange</h2>
-        <p>Diffie-Hellman (DH) key exchange was published in 1967 as a method to exchange a secret key over an insecure channel. It uses the hardness of the discrete logarithm problem to calculate an irreversible representation of a secret key. The representation can be publicly accessible since the secret cannot be obtained from it.</p>
-        <p>Consider a secret key \(a\) and its public representation \(A\) that will be owned by Alice. \(A\) can be obtained with \[A = g^a \bmod{n}\]</p>
+        <p>Diffie-Hellman (DH) key exchange was published in 1967 as a method to exchange a secret key over an insecure channel. It uses the hardness of the Discrete Logarithm Problem (DLP) to calculate an irreversible representation of a secret key. The representation can be publicly accessible since the secret cannot be obtained from it.</p>
+        <p>Consider a secret key \(a\) and its public representation \(A\) that is owned by Alice. \(A\) can be obtained with \[A = g^a \bmod{n}\]</p>
         <p>where \(g\) is a base (usually 2 or 5) and \(n\) is a large number that makes it hard to reverse the calculation and get back to \(a\) from \(A\).</p>
         <div class="insight block ref num" data-label="Insight">
           <h4></h4>
-          <p>It is easy to calculate the modulo of an exponential function \[X = g^x \bmod{n}\] if the base \(g\), the power \(x\) and the modulus \(n\) is known, but it is hard to calculate \(x\) from \(X\) if \(n\) is a large prime number.</p>
+          <p>The Discrete Logarithm Problem presents \[X = g^x \bmod{n}\] It is easy to calculate the modulo of an exponential function if the base \(g\), the power \(x\) and the modulus \(n\) is known, but it is hard to calculate \(x\) from \(X\) if \(n\) is large.</p>
         </div>
-        <p>Bob does the same to obtain \(B\) with his secret key \(b\) and sends it to Alice to compute \(z\) with</p>
+        <p>Bob does the same to obtain \(B\) with his secret key \(b\), and sends to Alice to compute \(z\) with Bob's \(B\) and her \(a\).</p>
         <p>\[B^a \bmod{n} = g^{b a} \bmod{n} = g^{a b} \bmod{n} = z\]</p>
-        <p>Bob can also compute the same \(z\) by using \(A\) and \(b\).</p>
+        <p>Bob can also get to the same \(z\) by using \(A\) and \(b\).</p>
         <p>\[A^b \bmod{n} = g^{a b} \bmod{n} = z\]</p>
-        <p>Note that a shared key (\(z\)) was established without ever exposing secret keys \(a\) or \(b\) and no one can compute \(z\) with only \(g\), \(n\), \(A\) and \(B\). Still, one may wonder why \(n\) must be specifically prime.</p>
-        <p>If \(n=15\) and \(g=2\), then \(z\) only falls within the set of \(\zeta = \{1,2,4,8\}\), instead of utilizing the entire possible range \(\{1,...,n-1\}\). A utilization ratio, \(\gamma\), can thus be expressed as the number of elements utilized, \(|\zeta|\), divided by \(n-1\). Thus, when \(n=15\) and \(g=2\), the utilization ratio, \[\gamma = \frac{|\zeta|}{n-1}=\frac{4}{14}\] is approximately 0.286. In this case \(A\), \(B\) and \(z\) only cycle through 28.6% of the numbers making it easier to guess the shared key \(z\). Figure <span class="figure-number" data-fid="mod-clock"></span> shows how much numbers are utilised. With \(n=19\) and \(g=2\) it cycles through all the numbers \(\{1,...,n-1\}\). Thus \(\gamma = 1\), which is usually the case when \(n\) is prime.</p>
+        <p>Note that a shared key (\(z\)) was established without exposing secret keys \(a\) or \(b\) and no one can compute \(z\) with only \(g\), \(n\), \(A\) and \(B\). Still, one may wonder why \(n\) must be specifically prime.</p>
+      </section>
+      <section>
+        <h2 class="num">DLP Securing Criteria</h2>
+        <p>If the encryption function was simply \(g^x\), instead of the full DLP in Insight 1, the equation could simply be inverted making decryption trivial. \[X=g^x \iff x=\log(g,X)\]</p>
+        <p>The presence of the modulus adds discreteness and irreversibility. Given an input \(x\), the output \(X\) is unpredictable as shown in figure <span class="figure-number" data-fid="log-dlp"></span>.</p>
+        <div id="alm-log-dlp" class="charta"></div>
+        <div class="figure-numbering ref num" data-fig="log-dlp" data-label="Figure"><p>Continuous vs Discrete Nature of DLP.</p></div>
+        <p>When \(g=2\) and \(n=11\), an attacker can start at \(x=1\) and test each secret up to \(x=10\) against \(X\). The sequence 2, 4, 8, 5, 10, 9, 7, 3, 6, 1 is produced and if \(X=5\) the attacker knows \(x=4\) (the 4th number in the sequence). When \(x\) gets to \(n-1\), \(X=1\), and then the sequence repeats. To avoid ambiguity, DH secrets are always chosen before repetition occurs. Fortunately there are many numbers to use when \(n\) is large.</p>
+        <p>The next criteria to adhere to is that \(n\) must be prime. When \(n=9\) and \(g=2\), the range of repeating numbers are \(\{2,4,8,7,5,1\}\). The secret can only be one of these numbers instead of utilizing the entire possible range of \(n-1\) numbers and an attacker has less numbers to test. This is because \(n\) is not a prime number.</p>
+        <p>A utilization ratio, \(\gamma\), can be expressed as the number of elements utilized, \(|\zeta|\), divided by the total number of elements in the group, \(n-1\). Thus, when \(n=15\) and \(g=2\), the utilization ratio, \[\gamma = \frac{|\zeta|}{n-1}=\frac{4}{14}\] is approximately 0.286. With \(n=19\) and \(g=2\) it cycles through all the numbers. Thus \(\gamma=1\), which is the case when \(n\) is prime, with one last caveat.</p>
+        <p>Figure <span class="figure-number" data-fid="mod-clock"></span> shows how many numbers are utilised with a clock diagram, depending on the \(n\) and \(g\) values selected in the input boxes. The number sequence is also printed.</p>
         <div class="interactions">
           <p>\(n\):
             <span class="number-input-wrapper">
@@ -208,6 +218,7 @@
         <div id="alm-tooltip" class="gamman tooltip"></div>
         <div class="figure-numbering ref num" data-fig="gamma-n-plot" data-label="Figure"><p>Plot of \(\gamma\) against \(n\) with prime \(n\) values highlighted with green lines.</p></div>
         <p>Figure <span class="figure-number" data-fid="gamma-n-plot"></span> shows a graph of \(\gamma\) over a range of \(n\) values. Even numbers of \(n\) are omitted and prime \(n\) numbers are highlighted with green vertical lines. Click on the points to set \(n\) and \(g\) above and see how each pattern look in the modular clock diagram.</p>
+        <p>The expectation is that \(\gamma=1\) at every prime but some shows \(\gamma<1\). The reason is that, even with \(n\) being prime, \(g\) needs to be a generator for \(n\). Switching between the \(g\) values on figure <span class="figure-number" data-fid="gamma-n-plot"></span> reveals the generators for each prime number. There is a procedure for finding a generator for a prime number but DH typically uses predefined n-g combinations.</p>
       </section>
       <section>
         <h2 class="num">The Atoms of Math</h2>
@@ -232,11 +243,12 @@
             &=2^4*3^2*5*7
           \end{align}\]
         </p>
-        <p>Notice that all the factors are prime numbers. In fact, every number has only one list of factors that is all prime. This is called the Fundamental Theorem of Arithmetic and was detailed by Carl Friedrich Gauss in 1801. Admittedly, I was embarrassed to only learn this now, especially after using words like peculiar and quirky.</p>
-        <p>Prime numbers are not just weird numbers in everyday counting numbers, they are actually the atoms of which all numbers are made up of. This also means that two prime numbers can be selected, and the product of them will only have those two numbers as factors. When asked to find the factors of 679, only 17 will be found to divide it together with 41. When asked about 22790237 one will have to go up to 3187. It becomes apparent that factoring products of two large primes is difficult.</p>
+        <p>Notice that all the factors are prime numbers. In fact, every number has only one list of factors that is all prime. This is called the Fundamental Theorem of Arithmetic and was detailed by Carl Friedrich Gauss in 1801. Admittedly I was surprised to only realise this now, especially since it's so fundamental.</p>
+        <p>Prime numbers are not just weird numbers in everyday counting numbers, they are actually the atoms of which all numbers are made up of. This also means that two prime numbers can be selected, and the product of them will only have those two numbers as factors.</p>
+        <p>When asked to find the factors of 679, only 17 will be found to divide it together with 41. When asked about 22790237 one will have to go up to 3187. It becomes apparent that factoring products of two large primes is difficult.</p>
         <div class="insight block ref num" data-label="Insight">
           <h4></h4>
-          <p>Multiplying two large prime numbers results in a new prime number with only the two prime factors. The multiplication (forward) is easy, but factoring it (backwards) into the two original primes is hard.</p>
+          <p>Multiplying two large prime numbers results in a new prime number with only the two primes as factors. The multiplication (forward) is easy, but factoring it (backwards) into the two original primes is hard.</p>
         </div>
       </section>
       <section>
@@ -367,7 +379,7 @@
     </nav>
 
     <header class="art-hero">
-      <div class="art-eyebrow">§ work · mathematics</div>
+      <div class="art-eyebrow">article · mathematics programming</div>
       <h1 class="art-h1">Primes and <em>Cryptography</em></h1>
       <p class="art-lede">How the modern world is built on a seemingly insignificant math peculiarity.</p>
     </header>
@@ -390,34 +402,44 @@
 
     <article class="art-body">
       <section>
-        <p>Why are prime numbers such a big deal in mathematics? It's quirky, but of what use is it really? This article will go into details of prime numbers and show how they are extensively used in key exchange and cryptography. The reader will find it no surprise that trust among 5 billion people using the internet rely on the humble prime.</p>
-        <p>Three problems will be addressed. Assuming an insecure network, a sender needs to send a message to a recipient that:</p>
+        <p>Why are prime numbers such a big deal in mathematics? It's quirky, but of what use is it really? This article will look into prime numbers and show how they are extensively used in key exchange and cryptography. The reader will find it no surprise that trust among 5 billion people using the internet rely on the humble prime.</p>
+        <p>Three problems will be considered. Assuming an insecure network, a sender needs to send a message to a recipient that:</p>
         <ul>
           <li>no one else can read (encryption),</li>
           <li>is sent without prior exchanging of a secret key (key exchange),</li>
-          <li>where the recipient can verify the sender is the sender (authentication).</li>
+          <li>the recipient can verify the sender is the sender (authentication).</li>
         </ul>
         <div class="warning block">
           <h4>Warning</h4>
           <p>This article is intended to take the reader on a discovery journey of interesting cryptography handshaking concepts and how prime numbers are used to secure them. Do not build and rely on your own security algorithms. There are plenty of robust open tools that are maintained by professionals.</p>
         </div>
-        <p>There are two types of cryptography, symmetric where the same key is used for encryption and decryption, and asymmetric where each person has a key that is publicly accessible and a key that stays private/secret. Symmetric cryptography immediately raises the question of how a secret key can be shared over an insecure network.</p>
+        <p>There are two types of cryptography, symmetric where the same key is used for encryption and decryption, and asymmetric where each person has a publicly accessible key and a key that stays secret. Symmetric cryptography immediately raises the question of how a secret key can be shared over an insecure network.</p>
       </section>
       <section>
         <h2 class="num">Key Exchange</h2>
-        <p>Diffie-Hellman (DH) key exchange was published in 1967 as a method to exchange a secret key over an insecure channel. It uses the hardness of the discrete logarithm problem to calculate an irreversible representation of a secret key. The representation can be publicly accessible since the secret cannot be obtained from it.</p>
-        <p>Consider a secret key \(a\) and its public representation \(A\) that will be owned by Alice. \(A\) can be obtained with \[A = g^a \bmod{n}\]</p>
+        <p>Diffie-Hellman (DH) key exchange was published in 1967 as a method to exchange a secret key over an insecure channel. It uses the hardness of the Discrete Logarithm Problem (DLP) to calculate an irreversible representation of a secret key. The representation can be publicly accessible since the secret cannot be obtained from it.</p>
+        <p>Consider a secret key \(a\) and its public representation \(A\) that is owned by Alice. \(A\) can be obtained with \[A = g^a \bmod{n}\]</p>
         <p>where \(g\) is a base (usually 2 or 5) and \(n\) is a large number that makes it hard to reverse the calculation and get back to \(a\) from \(A\).</p>
         <div class="insight block ref num" data-label="Insight">
           <h4></h4>
-          <p>It is easy to calculate the modulo of an exponential function \[X = g^x \bmod{n}\] if the base \(g\), the power \(x\) and the modulus \(n\) is known, but it is hard to calculate \(x\) from \(X\) if \(n\) is a large prime number.</p>
+          <p>The Discrete Logarithm Problem presents \[X = g^x \bmod{n}\] It is easy to calculate the modulo of an exponential function if the base \(g\), the power \(x\) and the modulus \(n\) is known, but it is hard to calculate \(x\) from \(X\) if \(n\) is large.</p>
         </div>
-        <p>Bob does the same to obtain \(B\) with his secret key \(b\) and sends it to Alice to compute \(z\) with</p>
+        <p>Bob does the same to obtain \(B\) with his secret key \(b\), and sends to Alice to compute \(z\) with Bob's \(B\) and her \(a\).</p>
         <p>\[B^a \bmod{n} = g^{b a} \bmod{n} = g^{a b} \bmod{n} = z\]</p>
-        <p>Bob can also compute the same \(z\) by using \(A\) and \(b\).</p>
+        <p>Bob can also get to the same \(z\) by using \(A\) and \(b\).</p>
         <p>\[A^b \bmod{n} = g^{a b} \bmod{n} = z\]</p>
-        <p>Note that a shared key (\(z\)) was established without ever exposing secret keys \(a\) or \(b\) and no one can compute \(z\) with only \(g\), \(n\), \(A\) and \(B\). Still, one may wonder why \(n\) must be specifically prime.</p>
-        <p>If \(n=15\) and \(g=2\), then \(z\) only falls within the set of \(\zeta = \{1,2,4,8\}\), instead of utilizing the entire possible range \(\{1,...,n-1\}\). A utilization ratio, \(\gamma\), can thus be expressed as the number of elements utilized, \(|\zeta|\), divided by \(n-1\). Thus, when \(n=15\) and \(g=2\), the utilization ratio, \[\gamma = \frac{|\zeta|}{n-1}=\frac{4}{14}\] is approximately 0.286. In this case \(A\), \(B\) and \(z\) only cycle through 28.6% of the numbers making it easier to guess the shared key \(z\). Figure <span class="figure-number" data-fid="mod-clock"></span> shows how much numbers are utilised. With \(n=19\) and \(g=2\) it cycles through all the numbers \(\{1,...,n-1\}\). Thus \(\gamma = 1\), which is usually the case when \(n\) is prime.</p>
+        <p>Note that a shared key (\(z\)) was established without exposing secret keys \(a\) or \(b\) and no one can compute \(z\) with only \(g\), \(n\), \(A\) and \(B\). Still, one may wonder why \(n\) must be specifically prime.</p>
+      </section>
+      <section>
+        <h2 class="num">DLP Securing Criteria</h2>
+        <p>If the encryption function was simply \(g^x\), instead of the full DLP in Insight 1, the equation could simply be inverted making decryption trivial. \[X=g^x \iff x=\log(g,X)\]</p>
+        <p>The presence of the modulus adds discreteness and irreversibility. Given an input \(x\), the output \(X\) is unpredictable as shown in figure <span class="figure-number" data-fid="log-dlp"></span>.</p>
+        <div id="cos-log-dlp" class="charta"></div>
+        <div class="figure-numbering ref num" data-fig="log-dlp" data-label="Figure"><p>Continuous vs Discrete Nature of DLP.</p></div>
+        <p>When \(g=2\) and \(n=11\), an attacker can start at \(x=1\) and test each secret up to \(x=10\) against \(X\). The sequence 2, 4, 8, 5, 10, 9, 7, 3, 6, 1 is produced and if \(X=5\) the attacker knows \(x=4\) (the 4th number in the sequence). When \(x\) gets to \(n-1\), \(X=1\), and then the sequence repeats. To avoid ambiguity, DH secrets are always chosen before repetition occurs. Fortunately there are many numbers to use when \(n\) is large.</p>
+        <p>The next criteria to adhere to is that \(n\) must be prime. When \(n=9\) and \(g=2\), the range of repeating numbers are \(\{2,4,8,7,5,1\}\). The secret can only be one of these numbers instead of utilizing the entire possible range of \(n-1\) numbers and an attacker has less numbers to test. This is because \(n\) is not a prime number.</p>
+        <p>A utilization ratio, \(\gamma\), can be expressed as the number of elements utilized, \(|\zeta|\), divided by the total number of elements in the group, \(n-1\). Thus, when \(n=15\) and \(g=2\), the utilization ratio, \[\gamma = \frac{|\zeta|}{n-1}=\frac{4}{14}\] is approximately 0.286. With \(n=19\) and \(g=2\) it cycles through all the numbers. Thus \(\gamma=1\), which is the case when \(n\) is prime, with one last caveat.</p>
+        <p>Figure <span class="figure-number" data-fid="mod-clock"></span> shows how many numbers are utilised with a clock diagram, depending on the \(n\) and \(g\) values selected in the input boxes. The number sequence is also printed.</p>
         <div class="interactions">
           <p>\(n\):
             <span class="number-input-wrapper">
@@ -447,20 +469,21 @@
         <div id="cos-tooltip" class="gamman tooltip"></div>
         <div class="figure-numbering ref num" data-fig="gamma-n-plot" data-label="Figure"><p>Plot of \(\gamma\) against \(n\) with prime \(n\) values highlighted with green lines.</p></div>
         <p>Figure <span class="figure-number" data-fid="gamma-n-plot"></span> shows a graph of \(\gamma\) over a range of \(n\) values. Even numbers of \(n\) are omitted and prime \(n\) numbers are highlighted with green vertical lines. Click on the points to set \(n\) and \(g\) above and see how each pattern look in the modular clock diagram.</p>
+        <p>The expectation is that \(\gamma=1\) at every prime but some shows \(\gamma<1\). The reason is that, even with \(n\) being prime, \(g\) needs to be a generator for \(n\). Switching between the \(g\) values on figure <span class="figure-number" data-fid="gamma-n-plot"></span> reveals the generators for each prime number. There is a procedure for finding a generator for a prime number but DH typically uses predefined n-g combinations.</p>
       </section>
       <section>
         <h2 class="num">The Atoms of Math</h2>
         <p>If asked to find the factors of 5040, a sensible strategy might be to start from the lowest numbers and see what can divide 5040.
           \[\begin{align}
-            5040/1 &= 5040 && \text{(no effect, use 2)} \\
-            5040/2 &= 2520 && \text{(continue with 2)} \\
+            5040/1 &= 5040 && \text{(1 has no effect so continue with 2)} \\
+            5040/2 &= 2520 && \text{(2520 is still divisible by 2 so continue with 2)} \\
             2520/2 &= 1260 && \text{(continue with 2)} \\
             1260/2 &= 630 && \text{(continue with 2)} \\
             630/2 &= 315 && \text{(try to divide by 3)} \\
             315/3 &= 105 && \text{(try again with 3)} \\
-            105/3 &= 35 && \text{(continue with 5)} \\
+            105/3 &= 35 && \text{(not divisible by 2 or 3 anymore, continue with 5)} \\
             35/5 &= 7 && \text{(only divisible by 7)} \\
-            7/7 &= 1 && \text{(found all factors)} \\
+            7/7 &= 1 && \text{(stop)} \\
           \end{align}\]
         </p>
         <p>The list of factors are \[2*2*2*2*3*3*5*7=5040\] That's interesting because 5040 was actually constructed from factors \[2*3*4*5*6*7=5040\] However, 4 and 6 have factors of their own, thus
@@ -471,11 +494,12 @@
             &=2^4*3^2*5*7
           \end{align}\]
         </p>
-        <p>Notice that all the factors are prime numbers. In fact, every number has only one list of factors that is all prime. This is called the Fundamental Theorem of Arithmetic and was detailed by Carl Friedrich Gauss in 1801. Admittedly, I was embarrassed to only learn this now, especially after using words like peculiar and quirky.</p>
-        <p>Prime numbers are not just weird numbers in everyday counting numbers, they are actually the atoms of which all numbers are made up of. This also means that two prime numbers can be selected, and the product of them will only have those two numbers as factors. When asked to find the factors of 679, only 17 will be found to divide it together with 41. When asked about 22790237 one will have to go up to 3187. It becomes apparent that factoring products of two large primes is difficult.</p>
+        <p>Notice that all the factors are prime numbers. In fact, every number has only one list of factors that is all prime. This is called the Fundamental Theorem of Arithmetic and was detailed by Carl Friedrich Gauss in 1801. Admittedly I was surprised to only realise this now, especially since it's so fundamental.</p>
+        <p>Prime numbers are not just weird numbers in everyday counting numbers, they are actually the atoms of which all numbers are made up of. This also means that two prime numbers can be selected, and the product of them will only have those two numbers as factors.</p>
+        <p>When asked to find the factors of 679, only 17 will be found to divide it together with 41. When asked about 22790237 one will have to go up to 3187. It becomes apparent that factoring products of two large primes is difficult.</p>
         <div class="insight block ref num" data-label="Insight">
           <h4></h4>
-          <p>Multiplying two large prime numbers results in a new prime number with only the two prime factors. The multiplication (forward) is easy, but factoring it (backwards) into the two original primes is hard.</p>
+          <p>Multiplying two large prime numbers results in a new prime number with only the two primes as factors. The multiplication (forward) is easy, but factoring it (backwards) into the two original primes is hard.</p>
         </div>
       </section>
       <section>
@@ -733,6 +757,12 @@ function initArticle(p) {
       nDHInput.value = d.n;
       drawClock();
     }
+  });
+
+  // Continuous vs discrete DLP figure
+  plotLogDLP({
+    containerId: p + '-log-dlp',
+    isDark: p === 'cos'
   });
 
   updateCalculations();

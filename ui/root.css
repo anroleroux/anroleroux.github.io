@@ -70,7 +70,7 @@
   50%       { transform: scale(1.008); }
 }
 
-html { font-size: 22px; }
+html { font-size: 21px; }
 html { margin: 0; padding: 0; width: 100%; overflow-x: hidden; }
 body { margin: 0; padding: 0; width: 100%; font-family: 'Inter', system-ui, sans-serif; background: #f0eee9; }
 
@@ -413,7 +413,7 @@ a.alm-brand, a.cos-brand { text-decoration: none; color: inherit; }
 
 .cos-tl-row {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
   gap: var(--ms1); align-items: stretch;
 }
 .cos-card {

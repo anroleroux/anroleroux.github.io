@@ -297,3 +297,85 @@ function plotGammaN(opts) {
 
     refreshVisibility();
 }
+
+// Continuous vs discrete nature of the DLP: a line plot of g^x next to a
+// scatter of g^x mod n, both for g=2, n=11 and x = 1..10.
+function plotLogDLP(opts) {
+    opts = opts || {};
+    var containerId = opts.containerId || 'log-dlp';
+    var isDark = opts.isDark || false;
+    var fg     = isDark ? 'rgba(236,226,200,0.7)'  : '#555';
+    var accent = isDark ? '#d6ab5e' : '#c0521a';
+
+    var container = document.getElementById(containerId);
+    if (!container) return;
+    container.innerHTML = '';
+
+    var g = 2, n = 11;
+    var xs = d3.range(1, 11); // x = 1..10
+    var contData = xs.map(function(x) { return { x: x, y: Math.pow(g, x) }; });
+    var discData = xs.map(function(x) { return { x: x, y: Number(modPow(g, x, n)) }; });
+
+    var width = 920, height = 340, gap = 80;
+    var panelW = (width - gap) / 2;
+    var margin = { top: 26, right: 18, bottom: 46, left: 58 };
+    var innerW = panelW - margin.left - margin.right;
+    var innerH = height - margin.top - margin.bottom;
+
+    var svg = d3.select(container).append('svg')
+        .attr('viewBox', '0 0 ' + width + ' ' + height)
+        .attr('preserveAspectRatio', 'xMidYMid meet');
+
+    function title(xOffset, mod) {
+        var t = svg.append('text')
+            .attr('class', 'axis-label')
+            .attr('x', xOffset + margin.left + innerW / 2)
+            .attr('y', 14)
+            .attr('text-anchor', 'middle')
+            .attr('fill', fg);
+        t.append('tspan').text('X = g');
+        t.append('tspan').attr('dy', '-6').attr('font-size', '0.72em').text('x');
+        t.append('tspan').attr('dy', '6').text(mod ? ' mod n' : '');
+    }
+
+    function panel(xOffset, data, yMax, drawLine) {
+        var pg = svg.append('g')
+            .attr('transform', 'translate(' + (xOffset + margin.left) + ',' + margin.top + ')');
+        var xScale = d3.scaleLinear().domain([0, 10]).range([0, innerW]);
+        var yScale = d3.scaleLinear().domain([0, yMax]).nice().range([innerH, 0]);
+
+        pg.append('g')
+            .attr('transform', 'translate(0,' + innerH + ')')
+            .call(d3.axisBottom(xScale).ticks(10))
+            .style('color', fg);
+        pg.append('g')
+            .call(d3.axisLeft(yScale).ticks(6))
+            .style('color', fg);
+
+        if (drawLine) {
+            var lineGen = d3.line()
+                .x(function(d) { return xScale(d.x); })
+                .y(function(d) { return yScale(d.y); });
+            pg.append('path').datum(data)
+                .attr('fill', 'none').attr('stroke', accent).attr('stroke-width', 2)
+                .attr('d', lineGen);
+        }
+        pg.selectAll('circle').data(data).enter().append('circle')
+            .attr('cx', function(d) { return xScale(d.x); })
+            .attr('cy', function(d) { return yScale(d.y); })
+            .attr('r', 3.5).attr('fill', accent);
+
+        svg.append('text')
+            .attr('class', 'axis-label')
+            .attr('x', xOffset + margin.left + innerW / 2)
+            .attr('y', height - 10)
+            .attr('text-anchor', 'middle')
+            .attr('fill', fg)
+            .text('x');
+    }
+
+    title(0, false);
+    panel(0, contData, Math.pow(g, 10), true);
+    title(panelW + gap, true);
+    panel(panelW + gap, discData, n - 1, false);
+}

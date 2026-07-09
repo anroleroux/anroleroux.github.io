@@ -316,86 +316,65 @@ function plotLogDLP(opts) {
     var contData = xs.map(function(x) { return { x: x, y: Math.pow(g, x) }; });
     var discData = xs.map(function(x) { return { x: x, y: Number(modPow(g, x, n)) }; });
 
-    var panelW = 420, panelH = 340, gap = 80, vGap = 40;
+    var panelW = 420, panelH = 340;
     var margin = { top: 26, right: 18, bottom: 46, left: 58 };
     var innerW = panelW - margin.left - margin.right;
     var innerH = panelH - margin.top - margin.bottom;
 
-    // Below this container width the two panels stack vertically.
-    var STACK_BREAKPOINT = 560;
+    // Each panel is its own SVG so CSS (.log-dlp-fig) can lay them out side by
+    // side on wide screens and stack them on narrow ones.
+    var fig = d3.select(container).append('div').attr('class', 'log-dlp-fig');
 
-    function render() {
-        var vertical = container.clientWidth > 0 && container.clientWidth < STACK_BREAKPOINT;
-        var width  = vertical ? panelW : panelW * 2 + gap;
-        var height = vertical ? panelH * 2 + vGap : panelH;
-
-        container.innerHTML = '';
-        var svg = d3.select(container).append('svg')
-            .attr('viewBox', '0 0 ' + width + ' ' + height)
+    function panel(data, yMax, drawLine, mod) {
+        var svg = fig.append('div').attr('class', 'log-dlp-panel').append('svg')
+            .attr('viewBox', '0 0 ' + panelW + ' ' + panelH)
             .attr('preserveAspectRatio', 'xMidYMid meet');
 
-        function title(xOffset, yOffset, mod) {
-            var t = svg.append('text')
-                .attr('class', 'axis-label')
-                .attr('x', xOffset + margin.left + innerW / 2)
-                .attr('y', yOffset + 14)
-                .attr('text-anchor', 'middle')
-                .attr('fill', fg);
-            t.append('tspan').text('X = g');
-            t.append('tspan').attr('dy', '-6').attr('font-size', '0.72em').text('x');
-            t.append('tspan').attr('dy', '6').text(mod ? ' mod n' : '');
+        var t = svg.append('text')
+            .attr('class', 'axis-label')
+            .attr('x', margin.left + innerW / 2)
+            .attr('y', 14)
+            .attr('text-anchor', 'middle')
+            .attr('fill', fg);
+        t.append('tspan').text('X = g');
+        t.append('tspan').attr('dy', '-6').attr('font-size', '0.72em').text('x');
+        t.append('tspan').attr('dy', '6').text(mod ? ' mod n' : '');
+
+        var pg = svg.append('g')
+            .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
+        var xScale = d3.scaleLinear().domain([0, 10]).range([0, innerW]);
+        var yScale = d3.scaleLinear().domain([0, yMax]).nice().range([innerH, 0]);
+
+        pg.append('g')
+            .attr('transform', 'translate(0,' + innerH + ')')
+            .call(d3.axisBottom(xScale).ticks(10))
+            .style('color', fg);
+        pg.append('g')
+            .call(d3.axisLeft(yScale).ticks(6))
+            .style('color', fg);
+
+        if (drawLine) {
+            var lineGen = d3.line()
+                .x(function(d) { return xScale(d.x); })
+                .y(function(d) { return yScale(d.y); });
+            pg.append('path').datum(data)
+                .attr('fill', 'none').attr('stroke', accent).attr('stroke-width', 2)
+                .attr('d', lineGen);
         }
+        pg.selectAll('circle').data(data).enter().append('circle')
+            .attr('cx', function(d) { return xScale(d.x); })
+            .attr('cy', function(d) { return yScale(d.y); })
+            .attr('r', 3.5).attr('fill', accent);
 
-        function panel(xOffset, yOffset, data, yMax, drawLine) {
-            var pg = svg.append('g')
-                .attr('transform', 'translate(' + (xOffset + margin.left) + ',' + (yOffset + margin.top) + ')');
-            var xScale = d3.scaleLinear().domain([0, 10]).range([0, innerW]);
-            var yScale = d3.scaleLinear().domain([0, yMax]).nice().range([innerH, 0]);
-
-            pg.append('g')
-                .attr('transform', 'translate(0,' + innerH + ')')
-                .call(d3.axisBottom(xScale).ticks(10))
-                .style('color', fg);
-            pg.append('g')
-                .call(d3.axisLeft(yScale).ticks(6))
-                .style('color', fg);
-
-            if (drawLine) {
-                var lineGen = d3.line()
-                    .x(function(d) { return xScale(d.x); })
-                    .y(function(d) { return yScale(d.y); });
-                pg.append('path').datum(data)
-                    .attr('fill', 'none').attr('stroke', accent).attr('stroke-width', 2)
-                    .attr('d', lineGen);
-            }
-            pg.selectAll('circle').data(data).enter().append('circle')
-                .attr('cx', function(d) { return xScale(d.x); })
-                .attr('cy', function(d) { return yScale(d.y); })
-                .attr('r', 3.5).attr('fill', accent);
-
-            svg.append('text')
-                .attr('class', 'axis-label')
-                .attr('x', xOffset + margin.left + innerW / 2)
-                .attr('y', yOffset + panelH - 10)
-                .attr('text-anchor', 'middle')
-                .attr('fill', fg)
-                .text('x');
-        }
-
-        var bx = vertical ? 0 : panelW + gap;
-        var by = vertical ? panelH + vGap : 0;
-
-        title(0, 0, false);
-        panel(0, 0, contData, Math.pow(g, 10), true);
-        title(bx, by, true);
-        panel(bx, by, discData, n - 1, false);
+        svg.append('text')
+            .attr('class', 'axis-label')
+            .attr('x', margin.left + innerW / 2)
+            .attr('y', panelH - 10)
+            .attr('text-anchor', 'middle')
+            .attr('fill', fg)
+            .text('x');
     }
 
-    render();
-
-    var resizeTimer;
-    window.addEventListener('resize', function() {
-        clearTimeout(resizeTimer);
-        resizeTimer = setTimeout(render, 150);
-    });
+    panel(contData, Math.pow(g, 10), true, false);
+    panel(discData, n - 1, false, true);
 }

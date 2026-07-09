@@ -33,6 +33,8 @@
     .interactions input[type=number]::-webkit-outer-spin-button,
     .interactions input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
     .interactions input[type=number] { -moz-appearance: textfield; }
+    /* DLP n/g inputs only hold 2-digit numbers, so keep them narrow */
+    #alm-in-n, #alm-in-g, #cos-in-n, #cos-in-g { width: 3ch; }
     .number-input-wrapper { display: inline-flex; align-items: stretch; vertical-align: middle; }
     .number-controls { display: inline-flex; margin-left: var(--ms-3); }
     .number-controls button { background: rgba(28,22,16,0.03); border: 1px solid var(--rule); cursor: pointer; font-size: var(--ts16); line-height: 1; padding: 0 var(--ms1); color: var(--ink-muted); display: flex; align-items: center; justify-content: center; }

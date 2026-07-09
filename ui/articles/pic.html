@@ -33,10 +33,12 @@
     .interactions input[type=number]::-webkit-outer-spin-button,
     .interactions input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
     .interactions input[type=number] { -moz-appearance: textfield; }
-    .number-input-wrapper { display: inline-flex; align-items: center; position: relative; vertical-align: middle; }
-    .number-controls { display: flex; flex-direction: column; position: absolute; right: 5px; height: calc(100% - 4px); justify-content: center; gap: 1px; }
-    .number-controls button { background: none; border: none; cursor: pointer; font-size: 8px; padding: 0 5px; line-height: 1; display: flex; align-items: center; justify-content: center; height: 45%; color: var(--ink-faint); }
-    .number-controls button:hover { color: var(--accent); }
+    .number-input-wrapper { display: inline-flex; align-items: stretch; vertical-align: middle; }
+    .number-controls { display: inline-flex; margin-left: var(--ms-3); }
+    .number-controls button { background: rgba(28,22,16,0.03); border: 1px solid var(--rule); cursor: pointer; font-size: var(--ts16); line-height: 1; padding: 0 var(--ms1); color: var(--ink-muted); display: flex; align-items: center; justify-content: center; }
+    .number-controls button:first-child { border-radius: 8px 0 0 8px; }
+    .number-controls button:last-child { border-radius: 0 8px 8px 0; margin-left: -1px; }
+    .number-controls button:hover { color: var(--accent); border-color: var(--accent); }
 
     /* ── Clock SVG ────────────────────────────────────────────────── */
     .art-clock-svg { display: block; margin: var(--ms3) auto; width: 100%; max-width: 400px; height: auto; border: 1px solid var(--rule); border-radius: 2px; }
@@ -80,8 +82,8 @@
     .cosmos .interactions p { color: var(--bone-muted); }
     .cosmos .interactions input[type=number],
     .cosmos .interactions input[type=text] { border-color: var(--bone-fainter); background: rgba(236,226,200,0.04); color: var(--bone); }
-    .cosmos .number-controls button { color: var(--bone-faint); }
-    .cosmos .number-controls button:hover { color: var(--gold); }
+    .cosmos .number-controls button { color: var(--bone-faint); border-color: var(--bone-fainter); background: rgba(236,226,200,0.04); }
+    .cosmos .number-controls button:hover { color: var(--gold); border-color: var(--gold); }
     .cosmos .art-clock-svg { border-color: var(--bone-fainter); }
     .cosmos .mod-seq { color: var(--bone-muted); }
     .cosmos .mod-seq-box { border-color: var(--bone-fainter); background: rgba(236,226,200,0.02); color: var(--bone-muted); }
@@ -220,10 +222,10 @@
               </span>
             </span>
           </p>
+          <p class="mod-seq">\(\zeta\) sequence:</p>
+          <div id="alm-out-sequence" class="mod-seq-box"></div>
           <svg id="alm-clock-svg" class="art-clock-svg" viewBox="0 0 400 400" width="400" height="400"></svg>
           <div class="figure-numbering ref num" data-fig="mod-clock" data-label="Figure"><p>Modular clock diagram.</p></div>
-          <p class="mod-seq">Sequence:</p>
-          <div id="alm-out-sequence" class="mod-seq-box"></div>
         </div>
         <div id="alm-gammanplot" class="charta"></div>
         <div id="alm-tooltip" class="gamman tooltip"></div>
@@ -471,10 +473,10 @@
               </span>
             </span>
           </p>
+          <p class="mod-seq">\(\zeta\) sequence:</p>
+          <div id="cos-out-sequence" class="mod-seq-box"></div>
           <svg id="cos-clock-svg" class="art-clock-svg" viewBox="0 0 400 400" width="400" height="400"></svg>
           <div class="figure-numbering ref num" data-fig="mod-clock" data-label="Figure"><p>Modular clock diagram.</p></div>
-          <p class="mod-seq">Sequence:</p>
-          <div id="cos-out-sequence" class="mod-seq-box"></div>
         </div>
         <div id="cos-gammanplot" class="charta"></div>
         <div id="cos-tooltip" class="gamman tooltip"></div>

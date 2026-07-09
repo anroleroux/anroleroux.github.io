@@ -316,31 +316,32 @@ function plotLogDLP(opts) {
     var contData = xs.map(function(x) { return { x: x, y: Math.pow(g, x) }; });
     var discData = xs.map(function(x) { return { x: x, y: Number(modPow(g, x, n)) }; });
 
-    var width = 920, height = 340, gap = 80;
-    var panelW = (width - gap) / 2;
+    var panelW = 420, panelH = 340;
     var margin = { top: 26, right: 18, bottom: 46, left: 58 };
     var innerW = panelW - margin.left - margin.right;
-    var innerH = height - margin.top - margin.bottom;
+    var innerH = panelH - margin.top - margin.bottom;
 
-    var svg = d3.select(container).append('svg')
-        .attr('viewBox', '0 0 ' + width + ' ' + height)
-        .attr('preserveAspectRatio', 'xMidYMid meet');
+    // Each panel is its own SVG so CSS (.log-dlp-fig) can lay them out side by
+    // side on wide screens and stack them on narrow ones.
+    var fig = d3.select(container).append('div').attr('class', 'log-dlp-fig');
 
-    function title(xOffset, mod) {
+    function panel(data, yMax, drawLine, mod) {
+        var svg = fig.append('div').attr('class', 'log-dlp-panel').append('svg')
+            .attr('viewBox', '0 0 ' + panelW + ' ' + panelH)
+            .attr('preserveAspectRatio', 'xMidYMid meet');
+
         var t = svg.append('text')
             .attr('class', 'axis-label')
-            .attr('x', xOffset + margin.left + innerW / 2)
+            .attr('x', margin.left + innerW / 2)
             .attr('y', 14)
             .attr('text-anchor', 'middle')
             .attr('fill', fg);
         t.append('tspan').text('X = g');
         t.append('tspan').attr('dy', '-6').attr('font-size', '0.72em').text('x');
         t.append('tspan').attr('dy', '6').text(mod ? ' mod n' : '');
-    }
 
-    function panel(xOffset, data, yMax, drawLine) {
         var pg = svg.append('g')
-            .attr('transform', 'translate(' + (xOffset + margin.left) + ',' + margin.top + ')');
+            .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
         var xScale = d3.scaleLinear().domain([0, 10]).range([0, innerW]);
         var yScale = d3.scaleLinear().domain([0, yMax]).nice().range([innerH, 0]);
 
@@ -367,15 +368,13 @@ function plotLogDLP(opts) {
 
         svg.append('text')
             .attr('class', 'axis-label')
-            .attr('x', xOffset + margin.left + innerW / 2)
-            .attr('y', height - 10)
+            .attr('x', margin.left + innerW / 2)
+            .attr('y', panelH - 10)
             .attr('text-anchor', 'middle')
             .attr('fill', fg)
             .text('x');
     }
 
-    title(0, false);
-    panel(0, contData, Math.pow(g, 10), true);
-    title(panelW + gap, true);
-    panel(panelW + gap, discData, n - 1, false);
+    panel(contData, Math.pow(g, 10), true, false);
+    panel(discData, n - 1, false, true);
 }

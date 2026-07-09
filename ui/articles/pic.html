@@ -21,20 +21,7 @@
     .warning.block h4 { font-family: var(--mono); font-size: var(--ts11); letter-spacing: 1.4px; text-transform: uppercase; color: #c0521a; margin: 0 0 var(--ms-1); font-weight: 500; }
     .warning.block p { font-size: var(--ts14); margin: 0; }
 
-    /* ── Interactions ─────────────────────────────────────────────── */
-    .interactions { margin: var(--ms3) 0; }
-    .interactions p { font-family: var(--sans); font-size: var(--ts15); line-height: 1.75; color: var(--ink-muted); margin: 0 0 var(--ms-1); }
-    .interactions input[type=number], .interactions input[type=text] {
-      margin-left: var(--ms1); padding: 10px 14px; border: 1px solid var(--rule);
-      border-radius: 8px; font: inherit; font-size: var(--ts14); background: rgba(28,22,16,0.03);
-      color: var(--ink); width: auto;
-    }
-    .interactions input[type=text] { max-width: 100%; }
-    .interactions input[type=number]::-webkit-outer-spin-button,
-    .interactions input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
-    .interactions input[type=number] { -moz-appearance: textfield; }
-    /* DLP n/g inputs only hold 2-digit numbers, so keep them narrow */
-    #alm-in-n, #alm-in-g, #cos-in-n, #cos-in-g { width: 3ch; }
+    /* ── Interactions (base + input styling hoisted to root/almanac/cosmos css) ─ */
     .number-input-wrapper { display: inline-flex; align-items: stretch; vertical-align: middle; }
     .number-controls { display: inline-flex; margin-left: var(--ms-3); }
     .number-controls button { background: rgba(28,22,16,0.03); border: 1px solid var(--rule); cursor: pointer; font-size: var(--ts16); line-height: 1; padding: 0 var(--ms1); color: var(--ink-muted); display: flex; align-items: center; justify-content: center; }
@@ -42,16 +29,16 @@
     .number-controls button:last-child { border-radius: 0 8px 8px 0; margin-left: -1px; }
     .number-controls button:hover { color: var(--accent); border-color: var(--accent); }
 
-    /* ── Clock SVG ────────────────────────────────────────────────── */
-    .art-clock-svg { display: block; margin: var(--ms3) auto; width: 100%; max-width: 400px; height: auto; border: 1px solid var(--rule); border-radius: 2px; }
+    /* ── D3 chart (.interactions svg framing hoisted to root/almanac/cosmos css) ─ */
+    .interactions svg text { font-size: 12px; }
+    .charta .axis-label { fill: var(--ink-muted); font-family: var(--sans); font-size: 12px; }
+    .cosmos .charta .axis-label { fill: var(--bone-muted); }
+    .interactions svg.art-clock-svg {width: 50%;}
 
     /* ── Sequence / mod display ───────────────────────────────────── */
     .mod-seq { font-family: var(--mono); font-size: var(--ts13); line-height: 1.6; color: var(--ink-muted); max-width: 66ch; margin: 0 0 var(--ms-2); }
     .mod-seq-box { word-break: break-all; font-family: var(--mono); height: var(--ms8); font-size: var(--ts13); overflow-y: auto; border: 1px solid var(--rule); border-radius: 8px; padding: var(--ms1); background: rgba(28,22,16,0.02); margin-bottom: var(--ms2); }
 
-    /* ── D3 chart ─────────────────────────────────────────────────── */
-    .charta svg { display: block; width: 100%; height: auto; }
-    .charta .axis-label { fill: var(--ink-muted); font-family: var(--sans); font-size: 12px; }
 
     /* log-dlp: two panels side by side, stacked on small screens */
     .log-dlp-fig { display: flex; gap: var(--ms3); }
@@ -81,15 +68,10 @@
     .cosmos .art-version-select { color: var(--bone-muted); }
     .cosmos .warning.block { border-left-color: #d4855a; background: rgba(212,133,90,0.06); }
     .cosmos .warning.block h4 { color: #d4855a; }
-    .cosmos .interactions p { color: var(--bone-muted); }
-    .cosmos .interactions input[type=number],
-    .cosmos .interactions input[type=text] { border-color: var(--bone-fainter); background: rgba(236,226,200,0.04); color: var(--bone); }
     .cosmos .number-controls button { color: var(--bone-faint); border-color: var(--bone-fainter); background: rgba(236,226,200,0.04); }
     .cosmos .number-controls button:hover { color: var(--gold); border-color: var(--gold); }
-    .cosmos .art-clock-svg { border-color: var(--bone-fainter); }
     .cosmos .mod-seq { color: var(--bone-muted); }
     .cosmos .mod-seq-box { border-color: var(--bone-fainter); background: rgba(236,226,200,0.02); color: var(--bone-muted); }
-    .cosmos .charta .axis-label { fill: var(--bone-muted); }
     .cosmos .gamman.tooltip { background: rgba(20,18,14,0.96); border-color: var(--bone-fainter); color: var(--bone); }
     .cosmos .figure-numbering p { color: var(--bone-faint); }
     .cosmos .art-rsa-img { border-color: var(--bone-fainter); filter: invert(1) sepia(0.15); }
@@ -198,8 +180,10 @@
         <h2 class="num">DLP Securing Criteria</h2>
         <p>If the encryption function was simply \(g^x\), instead of the full DLP in Insight 1, the equation could simply be inverted making decryption trivial. \[X=g^x \iff x=\log(g,X)\]</p>
         <p>The presence of the modulus adds discreteness and irreversibility. Given an input \(x\), the output \(X\) is unpredictable as shown in figure <span class="figure-number" data-fid="log-dlp"></span>.</p>
-        <div id="alm-log-dlp" class="charta"></div>
-        <div class="figure-numbering ref num" data-fig="log-dlp" data-label="Figure"><p>Continuous vs Discrete Nature of DLP.</p></div>
+        <div class="interactions">
+          <div id="alm-log-dlp" class="charta"></div>
+          <div class="figure-numbering ref num" data-fig="log-dlp" data-label="Figure"><p>Continuous vs Discrete Nature of DLP.</p></div>
+        </div>
         <p>When \(g=2\) and \(n=11\), an attacker can start at \(x=1\) and test each secret up to \(x=10\) against \(X\). The sequence 2, 4, 8, 5, 10, 9, 7, 3, 6, 1 is produced and if \(X=5\) the attacker knows \(x=4\) (the 4th number in the sequence). When \(x\) gets to \(n-1\), \(X=1\), and then the sequence repeats. To avoid ambiguity, DH secrets are always chosen before repetition occurs. Fortunately there are many numbers to use when \(n\) is large.</p>
         <p>The next criteria to adhere to is that \(n\) must be prime. When \(n=9\) and \(g=2\), the range of repeating numbers are \(\{2,4,8,7,5,1\}\). The secret can only be one of these numbers instead of utilizing the entire possible range of \(n-1\) numbers and an attacker has less numbers to test. This is because \(n\) is not a prime number.</p>
         <p>A utilization ratio, \(\gamma\), can be expressed as the number of elements utilized, \(|\zeta|\), divided by the total number of elements in the group, \(n-1\). Thus, when \(n=15\) and \(g=2\), the utilization ratio, \[\gamma = \frac{|\zeta|}{n-1}=\frac{4}{14}\] is approximately 0.286. With \(n=19\) and \(g=2\) it cycles through all the numbers. Thus \(\gamma=1\), which is the case when \(n\) is prime, with one last caveat.</p>
@@ -229,9 +213,11 @@
           <svg id="alm-clock-svg" class="art-clock-svg" viewBox="0 0 400 400" width="400" height="400"></svg>
           <div class="figure-numbering ref num" data-fig="mod-clock" data-label="Figure"><p>Modular clock diagram.</p></div>
         </div>
-        <div id="alm-gammanplot" class="charta"></div>
-        <div id="alm-tooltip" class="gamman tooltip"></div>
-        <div class="figure-numbering ref num" data-fig="gamma-n-plot" data-label="Figure"><p>Plot of \(\gamma\) against \(n\) with prime \(n\) values highlighted with green lines.</p></div>
+        <div class="interactions">
+          <div id="alm-gammanplot" class="charta framed"></div>
+          <div id="alm-tooltip" class="gamman tooltip"></div>
+          <div class="figure-numbering ref num" data-fig="gamma-n-plot" data-label="Figure"><p>Plot of \(\gamma\) against \(n\) with prime \(n\) values highlighted with green lines.</p></div>
+        </div>
         <p>Figure <span class="figure-number" data-fid="gamma-n-plot"></span> shows a graph of \(\gamma\) over a range of \(n\) values. Even numbers of \(n\) are omitted and prime \(n\) numbers are highlighted with green vertical lines. Click on the points to set \(n\) and \(g\) above and see how each pattern look in the modular clock diagram.</p>
         <p>The expectation is that \(\gamma=1\) at every prime but some shows \(\gamma<1\). The reason is that, even with \(n\) being prime, \(g\) needs to be a generator for \(n\). Switching between the \(g\) values on figure <span class="figure-number" data-fid="gamma-n-plot"></span> reveals the generators for each prime number. There is a procedure for finding a generator for a prime number but DH typically uses predefined n-g combinations.</p>
       </section>
@@ -449,8 +435,10 @@
         <h2 class="num">DLP Securing Criteria</h2>
         <p>If the encryption function was simply \(g^x\), instead of the full DLP in Insight 1, the equation could simply be inverted making decryption trivial. \[X=g^x \iff x=\log(g,X)\]</p>
         <p>The presence of the modulus adds discreteness and irreversibility. Given an input \(x\), the output \(X\) is unpredictable as shown in figure <span class="figure-number" data-fid="log-dlp"></span>.</p>
-        <div id="cos-log-dlp" class="charta"></div>
-        <div class="figure-numbering ref num" data-fig="log-dlp" data-label="Figure"><p>Continuous vs Discrete Nature of DLP.</p></div>
+        <div class="interactions">
+          <div id="cos-log-dlp" class="charta"></div>
+          <div class="figure-numbering ref num" data-fig="log-dlp" data-label="Figure"><p>Continuous vs Discrete Nature of DLP.</p></div>
+        </div>
         <p>When \(g=2\) and \(n=11\), an attacker can start at \(x=1\) and test each secret up to \(x=10\) against \(X\). The sequence 2, 4, 8, 5, 10, 9, 7, 3, 6, 1 is produced and if \(X=5\) the attacker knows \(x=4\) (the 4th number in the sequence). When \(x\) gets to \(n-1\), \(X=1\), and then the sequence repeats. To avoid ambiguity, DH secrets are always chosen before repetition occurs. Fortunately there are many numbers to use when \(n\) is large.</p>
         <p>The next criteria to adhere to is that \(n\) must be prime. When \(n=9\) and \(g=2\), the range of repeating numbers are \(\{2,4,8,7,5,1\}\). The secret can only be one of these numbers instead of utilizing the entire possible range of \(n-1\) numbers and an attacker has less numbers to test. This is because \(n\) is not a prime number.</p>
         <p>A utilization ratio, \(\gamma\), can be expressed as the number of elements utilized, \(|\zeta|\), divided by the total number of elements in the group, \(n-1\). Thus, when \(n=15\) and \(g=2\), the utilization ratio, \[\gamma = \frac{|\zeta|}{n-1}=\frac{4}{14}\] is approximately 0.286. With \(n=19\) and \(g=2\) it cycles through all the numbers. Thus \(\gamma=1\), which is the case when \(n\) is prime, with one last caveat.</p>
@@ -480,9 +468,11 @@
           <svg id="cos-clock-svg" class="art-clock-svg" viewBox="0 0 400 400" width="400" height="400"></svg>
           <div class="figure-numbering ref num" data-fig="mod-clock" data-label="Figure"><p>Modular clock diagram.</p></div>
         </div>
-        <div id="cos-gammanplot" class="charta"></div>
-        <div id="cos-tooltip" class="gamman tooltip"></div>
-        <div class="figure-numbering ref num" data-fig="gamma-n-plot" data-label="Figure"><p>Plot of \(\gamma\) against \(n\) with prime \(n\) values highlighted with green lines.</p></div>
+        <div class="interactions">
+          <div id="cos-gammanplot" class="charta framed"></div>
+          <div id="cos-tooltip" class="gamman tooltip"></div>
+          <div class="figure-numbering ref num" data-fig="gamma-n-plot" data-label="Figure"><p>Plot of \(\gamma\) against \(n\) with prime \(n\) values highlighted with green lines.</p></div>
+        </div>
         <p>Figure <span class="figure-number" data-fid="gamma-n-plot"></span> shows a graph of \(\gamma\) over a range of \(n\) values. Even numbers of \(n\) are omitted and prime \(n\) numbers are highlighted with green vertical lines. Click on the points to set \(n\) and \(g\) above and see how each pattern look in the modular clock diagram.</p>
         <p>The expectation is that \(\gamma=1\) at every prime but some shows \(\gamma<1\). The reason is that, even with \(n\) being prime, \(g\) needs to be a generator for \(n\). Switching between the \(g\) values on figure <span class="figure-number" data-fid="gamma-n-plot"></span> reveals the generators for each prime number. There is a procedure for finding a generator for a prime number but DH typically uses predefined n-g combinations.</p>
       </section>

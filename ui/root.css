@@ -211,6 +211,24 @@ a.alm-brand, a.cos-brand { text-decoration: none; color: inherit; }
 .art-body ul { font-family: var(--sans); font-size: var(--ts15); line-height: 1.75; color: var(--ink-muted); max-width: 66ch; margin: 0 0 var(--ms0); padding-left: 1.6em; }
 .numbering { margin-right: 0.4ch; } */
 
+/* ── Article interactions (shared by articles with interactive widgets) ─ */
+.interactions { margin: var(--ms3) 0; }
+.interactions p { font-family: var(--sans); font-size: var(--ts15); line-height: 1.75; color: var(--ink-muted); margin: 0 0 var(--ms-1); }
+.interactions input[type=number], .interactions input[type=text] {
+  margin-left: var(--ms1); padding: var(--ms-2) var(--ms-1); border-width: 1px; border-style: solid;
+  border-radius: var(--ms-2); font: inherit; font-size: var(--ts14); width: auto;
+}
+.interactions input[type=text] { max-width: 100%; }
+.interactions input[type=number]::-webkit-outer-spin-button,
+.interactions input[type=number]::-webkit-inner-spin-button { appearance: none; -webkit-appearance: none; margin: 0; }
+.interactions input[type=number] { appearance: textfield; -moz-appearance: textfield; }
+.interactions input[type=number] { width: 6ch; }
+.interactions svg {
+  display: block; margin: var(--ms3) auto;
+  width: 100%; height: auto;
+  border-width: 1px; border-style: solid; border-radius: var(--ms-7);
+}
+
 /* ── Article CTA buttons (primary mirrors the index hero CTA) ─── */
 .app-cta-group { display: flex; flex-wrap: wrap; gap: var(--ms2); }
 .app-cta-btn {

@@ -43,6 +43,9 @@
 .cosmos article ul { color: var(--bone-muted); }
 .cosmos article a { color: var(--gold); border-bottom-color: rgba(214,171,94,0.3); }
 .cosmos article a:hover { border-bottom-color: var(--gold); }
+.cosmos .interactions p { color: var(--bone-muted); }
+.cosmos .interactions input[type=number], .cosmos .interactions input[type=text] { border-color: var(--bone-fainter); background: rgba(236,226,200,0.04); color: var(--bone); }
+.cosmos .interactions svg { border-color: var(--bone-fainter); }
 
 .cosmos .insight.block { border-left: 2px solid var(--gold); padding: var(--ms1) var(--ms3); margin: var(--ms3) 0; background: var(--gold-gloss); max-width: 66ch; }
 .cosmos .insight.block h4 { font-family: var(--mono); font-size: var(--ts11); letter-spacing: 1.4px; text-transform: uppercase; color: var(--gold); margin: 0 0 var(--ms-1); font-weight: 500; }

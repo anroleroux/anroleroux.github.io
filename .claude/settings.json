@@ -4,7 +4,8 @@
       "mcp__claude_ai_Google_Drive__search_files",
       "mcp__claude_ai_Google_Drive__read_file_content",
       "Edit(/.claude/skills/copy-sync/**)",
-      "Bash(pkill -f \"http.server 8765\")"
+      "Bash(pkill -f \"http.server 8765\")",
+      "Edit(/.claude/skills/hoist-css/**)"
     ]
   }
 }

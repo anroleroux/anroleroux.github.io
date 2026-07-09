@@ -45,3 +45,7 @@
 .almanac .insight.block h4 { font-family: var(--mono); font-size: var(--ts11); letter-spacing: 1.4px; text-transform: uppercase; color: var(--accent); margin: 0 0 var(--ms-1); font-weight: 500; }
 .almanac .insight.block p { font-size: var(--ts14); margin: 0 0 var(--ms-2); }
 .almanac .insight.block p:last-child { margin: 0; }
+
+/* Interactions inputs */
+.almanac .interactions input[type=number], .almanac .interactions input[type=text] { border-color: var(--rule); background: rgba(28,22,16,0.03); color: var(--ink); }
+.almanac .interactions svg { border-color: var(--rule); }

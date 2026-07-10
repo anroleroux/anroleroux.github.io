@@ -164,20 +164,21 @@
       <section>
         <h2 class="num">Key Exchange</h2>
         <p>Diffie-Hellman (DH) key exchange was published in 1967 as a method to exchange a secret key over an insecure channel. It uses the hardness of the Discrete Logarithm Problem (DLP) to calculate an irreversible representation of a secret key. The representation can be publicly accessible since the secret cannot be obtained from it.</p>
-        <p>Consider a secret key \(a\) and its public representation \(A\) that is owned by Alice. \(A\) can be obtained with \[A = g^a \bmod{n}\]</p>
-        <p>where \(g\) is a base (usually 2 or 5) and \(n\) is a large number that makes it hard to reverse the calculation and get back to \(a\) from \(A\).</p>
+        <p>Consider a secret key \(a\) and its public representation \(A\) that is owned by Alice. \(A\) can be obtained with \[A = f(g,a,n) = g^a \bmod{n}\]</p>
+        <p>where \(g\) is a base and \(n\) is a large number. Bob does the same to obtain \(B\) with his secret key \(b\), and sends it to Alice to compute \(z\). \[f(B,a,n) = B^a \bmod{n} = g^{b a} \bmod{n} = g^{a b} \bmod{n} = z\]</p>
+        <div class="interactions">
+          <img src="DHAuth.svg" alt="The Diffie-Hellman key exchange method." class="art-rsa-img" />
+          <div class="figure-numbering ref num" data-fig="dh-diagram" data-label="Figure"><p>The Diffie-Hellman key exchange method.</p></div>
+        </div>
+        <p>Bob can also get to the same \(z\) by using \(A\) and \(b\). \[f(A,b,n) = A^b \bmod{n} = g^{a b} \bmod{n} = z\]</p>
+        <p>Note that the same private key (\(z\)) was established without exposing secret keys \(a\) or \(b\) and no one can compute \(z\) with only \(g\), \(n\), \(A\) and \(B\). The function \(f\) is introduced and becomes a center piece in the rest of the article.</p>
+      </section>
+      <section>
+        <h2 class="num">DLP Securing Criteria</h2>
         <div class="insight block ref num" data-label="Insight">
           <h4></h4>
           <p>The Discrete Logarithm Problem presents \[X = g^x \bmod{n}\] It is easy to calculate the modulo of an exponential function if the base \(g\), the power \(x\) and the modulus \(n\) is known, but it is hard to calculate \(x\) from \(X\) if \(n\) is large.</p>
         </div>
-        <p>Bob does the same to obtain \(B\) with his secret key \(b\), and sends to Alice to compute \(z\) with Bob's \(B\) and her \(a\).</p>
-        <p>\[B^a \bmod{n} = g^{b a} \bmod{n} = g^{a b} \bmod{n} = z\]</p>
-        <p>Bob can also get to the same \(z\) by using \(A\) and \(b\).</p>
-        <p>\[A^b \bmod{n} = g^{a b} \bmod{n} = z\]</p>
-        <p>Note that a shared key (\(z\)) was established without exposing secret keys \(a\) or \(b\) and no one can compute \(z\) with only \(g\), \(n\), \(A\) and \(B\). Still, one may wonder why \(n\) must be specifically prime.</p>
-      </section>
-      <section>
-        <h2 class="num">DLP Securing Criteria</h2>
         <p>If the encryption function was simply \(g^x\), instead of the full DLP in Insight 1, the equation could simply be inverted making decryption trivial. \[X=g^x \iff x=\log(g,X)\]</p>
         <p>The presence of the modulus adds discreteness and irreversibility. Given an input \(x\), the output \(X\) is unpredictable as shown in figure <span class="figure-number" data-fid="log-dlp"></span>.</p>
         <div class="interactions">
@@ -419,20 +420,21 @@
       <section>
         <h2 class="num">Key Exchange</h2>
         <p>Diffie-Hellman (DH) key exchange was published in 1967 as a method to exchange a secret key over an insecure channel. It uses the hardness of the Discrete Logarithm Problem (DLP) to calculate an irreversible representation of a secret key. The representation can be publicly accessible since the secret cannot be obtained from it.</p>
-        <p>Consider a secret key \(a\) and its public representation \(A\) that is owned by Alice. \(A\) can be obtained with \[A = g^a \bmod{n}\]</p>
-        <p>where \(g\) is a base (usually 2 or 5) and \(n\) is a large number that makes it hard to reverse the calculation and get back to \(a\) from \(A\).</p>
+        <p>Consider a secret key \(a\) and its public representation \(A\) that is owned by Alice. \(A\) can be obtained with \[A = f(g,a,n) = g^a \bmod{n}\]</p>
+        <p>where \(g\) is a base and \(n\) is a large number. Bob does the same to obtain \(B\) with his secret key \(b\), and sends it to Alice to compute \(z\). \[f(B,a,n) = B^a \bmod{n} = g^{b a} \bmod{n} = g^{a b} \bmod{n} = z\]</p>
+        <div class="interactions">
+          <img src="DHAuth.svg" alt="The Diffie-Hellman key exchange method." class="art-rsa-img" />
+          <div class="figure-numbering ref num" data-fig="dh-diagram" data-label="Figure"><p>The Diffie-Hellman key exchange method.</p></div>
+        </div>
+        <p>Bob can also get to the same \(z\) by using \(A\) and \(b\). \[f(A,b,n) = A^b \bmod{n} = g^{a b} \bmod{n} = z\]</p>
+        <p>Note that the same private key (\(z\)) was established without exposing secret keys \(a\) or \(b\) and no one can compute \(z\) with only \(g\), \(n\), \(A\) and \(B\). The function \(f\) is introduced and becomes a center piece in the rest of the article.</p>
+      </section>
+      <section>
+        <h2 class="num">DLP Securing Criteria</h2>
         <div class="insight block ref num" data-label="Insight">
           <h4></h4>
           <p>The Discrete Logarithm Problem presents \[X = g^x \bmod{n}\] It is easy to calculate the modulo of an exponential function if the base \(g\), the power \(x\) and the modulus \(n\) is known, but it is hard to calculate \(x\) from \(X\) if \(n\) is large.</p>
         </div>
-        <p>Bob does the same to obtain \(B\) with his secret key \(b\), and sends to Alice to compute \(z\) with Bob's \(B\) and her \(a\).</p>
-        <p>\[B^a \bmod{n} = g^{b a} \bmod{n} = g^{a b} \bmod{n} = z\]</p>
-        <p>Bob can also get to the same \(z\) by using \(A\) and \(b\).</p>
-        <p>\[A^b \bmod{n} = g^{a b} \bmod{n} = z\]</p>
-        <p>Note that a shared key (\(z\)) was established without exposing secret keys \(a\) or \(b\) and no one can compute \(z\) with only \(g\), \(n\), \(A\) and \(B\). Still, one may wonder why \(n\) must be specifically prime.</p>
-      </section>
-      <section>
-        <h2 class="num">DLP Securing Criteria</h2>
         <p>If the encryption function was simply \(g^x\), instead of the full DLP in Insight 1, the equation could simply be inverted making decryption trivial. \[X=g^x \iff x=\log(g,X)\]</p>
         <p>The presence of the modulus adds discreteness and irreversibility. Given an input \(x\), the output \(X\) is unpredictable as shown in figure <span class="figure-number" data-fid="log-dlp"></span>.</p>
         <div class="interactions">

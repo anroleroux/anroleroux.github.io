@@ -176,6 +176,78 @@
       <section>
         <h2 class="num">Modular Exponentiation</h2>
         <p>The modular exponentiation function, \(f\), introduced in section <span class="figure-number" data-fid="key-exchange"></span> is a core machine used in cryptography. Encryption typically requires a function that takes a sensitive input and computes a secure (hard-to-reverse) representation of the input. The forward calculation should be very easy, backward (getting to the input from the output) very hard.</p>
+        <p>A mapping function is required that maps inputs to outputs. \[x \mapsto f(x)\]</p>
+        <div class="interactions">
+          <svg class="art-mappings-svg" viewBox="0 0 480 154" style="width:100%;height:auto;display:block" role="img" aria-label="Four mapping diagrams: a one-to-one bijection, a spread mapping, a many-to-two mapping, and an all-to-one mapping.">
+            <defs><marker id="alm-map-arrow" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="5.5" markerHeight="5.5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="currentColor" fill-opacity="0.75"/></marker></defs>
+            <g transform="translate(0,0)">
+              <rect x="12" y="18" width="20" height="14" rx="3" fill="currentColor" fill-opacity="0.05" stroke="currentColor" stroke-opacity="0.55" stroke-width="1"/>
+              <rect x="12" y="46" width="20" height="14" rx="3" fill="currentColor" fill-opacity="0.05" stroke="currentColor" stroke-opacity="0.55" stroke-width="1"/>
+              <rect x="12" y="74" width="20" height="14" rx="3" fill="currentColor" fill-opacity="0.05" stroke="currentColor" stroke-opacity="0.55" stroke-width="1"/>
+              <rect x="12" y="102" width="20" height="14" rx="3" fill="currentColor" fill-opacity="0.05" stroke="currentColor" stroke-opacity="0.55" stroke-width="1"/>
+              <rect x="12" y="130" width="20" height="14" rx="3" fill="currentColor" fill-opacity="0.05" stroke="currentColor" stroke-opacity="0.55" stroke-width="1"/>
+              <rect x="88" y="18" width="20" height="14" rx="3" fill="currentColor" fill-opacity="0.05" stroke="currentColor" stroke-opacity="0.55" stroke-width="1"/>
+              <rect x="88" y="46" width="20" height="14" rx="3" fill="currentColor" fill-opacity="0.05" stroke="currentColor" stroke-opacity="0.55" stroke-width="1"/>
+              <rect x="88" y="74" width="20" height="14" rx="3" fill="currentColor" fill-opacity="0.05" stroke="currentColor" stroke-opacity="0.55" stroke-width="1"/>
+              <rect x="88" y="102" width="20" height="14" rx="3" fill="currentColor" fill-opacity="0.05" stroke="currentColor" stroke-opacity="0.55" stroke-width="1"/>
+              <rect x="88" y="130" width="20" height="14" rx="3" fill="currentColor" fill-opacity="0.05" stroke="currentColor" stroke-opacity="0.55" stroke-width="1"/>
+              <line x1="33" y1="25" x2="86" y2="53" stroke="currentColor" stroke-opacity="0.6" stroke-width="1.1" marker-end="url(#alm-map-arrow)"/>
+              <line x1="33" y1="53" x2="86" y2="109" stroke="currentColor" stroke-opacity="0.6" stroke-width="1.1" marker-end="url(#alm-map-arrow)"/>
+              <line x1="33" y1="81" x2="86" y2="25" stroke="currentColor" stroke-opacity="0.6" stroke-width="1.1" marker-end="url(#alm-map-arrow)"/>
+              <line x1="33" y1="109" x2="86" y2="137" stroke="currentColor" stroke-opacity="0.6" stroke-width="1.1" marker-end="url(#alm-map-arrow)"/>
+              <line x1="33" y1="137" x2="86" y2="81" stroke="currentColor" stroke-opacity="0.6" stroke-width="1.1" marker-end="url(#alm-map-arrow)"/>
+            </g>
+            <g transform="translate(120,0)">
+              <rect x="12" y="18" width="20" height="14" rx="3" fill="currentColor" fill-opacity="0.05" stroke="currentColor" stroke-opacity="0.55" stroke-width="1"/>
+              <rect x="12" y="46" width="20" height="14" rx="3" fill="currentColor" fill-opacity="0.05" stroke="currentColor" stroke-opacity="0.55" stroke-width="1"/>
+              <rect x="12" y="74" width="20" height="14" rx="3" fill="currentColor" fill-opacity="0.05" stroke="currentColor" stroke-opacity="0.55" stroke-width="1"/>
+              <rect x="12" y="102" width="20" height="14" rx="3" fill="currentColor" fill-opacity="0.05" stroke="currentColor" stroke-opacity="0.55" stroke-width="1"/>
+              <rect x="12" y="130" width="20" height="14" rx="3" fill="currentColor" fill-opacity="0.05" stroke="currentColor" stroke-opacity="0.55" stroke-width="1"/>
+              <rect x="88" y="18" width="20" height="14" rx="3" fill="currentColor" fill-opacity="0.05" stroke="currentColor" stroke-opacity="0.55" stroke-width="1"/>
+              <rect x="88" y="46" width="20" height="14" rx="3" fill="currentColor" fill-opacity="0.05" stroke="currentColor" stroke-opacity="0.55" stroke-width="1"/>
+              <rect x="88" y="74" width="20" height="14" rx="3" fill="currentColor" fill-opacity="0.05" stroke="currentColor" stroke-opacity="0.55" stroke-width="1"/>
+              <rect x="88" y="102" width="20" height="14" rx="3" fill="currentColor" fill-opacity="0.05" stroke="currentColor" stroke-opacity="0.55" stroke-width="1"/>
+              <rect x="88" y="130" width="20" height="14" rx="3" fill="currentColor" fill-opacity="0.05" stroke="currentColor" stroke-opacity="0.55" stroke-width="1"/>
+              <line x1="33" y1="25" x2="86" y2="25" stroke="currentColor" stroke-opacity="0.6" stroke-width="1.1" marker-end="url(#alm-map-arrow)"/>
+              <line x1="33" y1="53" x2="86" y2="81" stroke="currentColor" stroke-opacity="0.6" stroke-width="1.1" marker-end="url(#alm-map-arrow)"/>
+              <line x1="33" y1="81" x2="86" y2="137" stroke="currentColor" stroke-opacity="0.6" stroke-width="1.1" marker-end="url(#alm-map-arrow)"/>
+            </g>
+            <g transform="translate(240,0)">
+              <rect x="12" y="18" width="20" height="14" rx="3" fill="currentColor" fill-opacity="0.05" stroke="currentColor" stroke-opacity="0.55" stroke-width="1"/>
+              <rect x="12" y="46" width="20" height="14" rx="3" fill="currentColor" fill-opacity="0.05" stroke="currentColor" stroke-opacity="0.55" stroke-width="1"/>
+              <rect x="12" y="74" width="20" height="14" rx="3" fill="currentColor" fill-opacity="0.05" stroke="currentColor" stroke-opacity="0.55" stroke-width="1"/>
+              <rect x="12" y="102" width="20" height="14" rx="3" fill="currentColor" fill-opacity="0.05" stroke="currentColor" stroke-opacity="0.55" stroke-width="1"/>
+              <rect x="12" y="130" width="20" height="14" rx="3" fill="currentColor" fill-opacity="0.05" stroke="currentColor" stroke-opacity="0.55" stroke-width="1"/>
+              <rect x="88" y="18" width="20" height="14" rx="3" fill="currentColor" fill-opacity="0.05" stroke="currentColor" stroke-opacity="0.55" stroke-width="1"/>
+              <rect x="88" y="46" width="20" height="14" rx="3" fill="currentColor" fill-opacity="0.05" stroke="currentColor" stroke-opacity="0.55" stroke-width="1"/>
+              <rect x="88" y="74" width="20" height="14" rx="3" fill="currentColor" fill-opacity="0.05" stroke="currentColor" stroke-opacity="0.55" stroke-width="1"/>
+              <rect x="88" y="102" width="20" height="14" rx="3" fill="currentColor" fill-opacity="0.05" stroke="currentColor" stroke-opacity="0.55" stroke-width="1"/>
+              <rect x="88" y="130" width="20" height="14" rx="3" fill="currentColor" fill-opacity="0.05" stroke="currentColor" stroke-opacity="0.55" stroke-width="1"/>
+              <line x1="33" y1="25" x2="86" y2="25" stroke="currentColor" stroke-opacity="0.6" stroke-width="1.1" marker-end="url(#alm-map-arrow)"/>
+              <line x1="33" y1="53" x2="86" y2="53" stroke="currentColor" stroke-opacity="0.6" stroke-width="1.1" marker-end="url(#alm-map-arrow)"/>
+              <line x1="33" y1="81" x2="86" y2="25" stroke="currentColor" stroke-opacity="0.6" stroke-width="1.1" marker-end="url(#alm-map-arrow)"/>
+              <line x1="33" y1="109" x2="86" y2="53" stroke="currentColor" stroke-opacity="0.6" stroke-width="1.1" marker-end="url(#alm-map-arrow)"/>
+              <line x1="33" y1="137" x2="86" y2="25" stroke="currentColor" stroke-opacity="0.6" stroke-width="1.1" marker-end="url(#alm-map-arrow)"/>
+            </g>
+            <g transform="translate(360,0)">
+              <rect x="12" y="18" width="20" height="14" rx="3" fill="currentColor" fill-opacity="0.05" stroke="currentColor" stroke-opacity="0.55" stroke-width="1"/>
+              <rect x="12" y="46" width="20" height="14" rx="3" fill="currentColor" fill-opacity="0.05" stroke="currentColor" stroke-opacity="0.55" stroke-width="1"/>
+              <rect x="12" y="74" width="20" height="14" rx="3" fill="currentColor" fill-opacity="0.05" stroke="currentColor" stroke-opacity="0.55" stroke-width="1"/>
+              <rect x="12" y="102" width="20" height="14" rx="3" fill="currentColor" fill-opacity="0.05" stroke="currentColor" stroke-opacity="0.55" stroke-width="1"/>
+              <rect x="12" y="130" width="20" height="14" rx="3" fill="currentColor" fill-opacity="0.05" stroke="currentColor" stroke-opacity="0.55" stroke-width="1"/>
+              <rect x="88" y="18" width="20" height="14" rx="3" fill="currentColor" fill-opacity="0.05" stroke="currentColor" stroke-opacity="0.55" stroke-width="1"/>
+              <rect x="88" y="46" width="20" height="14" rx="3" fill="currentColor" fill-opacity="0.05" stroke="currentColor" stroke-opacity="0.55" stroke-width="1"/>
+              <rect x="88" y="74" width="20" height="14" rx="3" fill="currentColor" fill-opacity="0.05" stroke="currentColor" stroke-opacity="0.55" stroke-width="1"/>
+              <rect x="88" y="102" width="20" height="14" rx="3" fill="currentColor" fill-opacity="0.05" stroke="currentColor" stroke-opacity="0.55" stroke-width="1"/>
+              <rect x="88" y="130" width="20" height="14" rx="3" fill="currentColor" fill-opacity="0.05" stroke="currentColor" stroke-opacity="0.55" stroke-width="1"/>
+              <line x1="33" y1="25" x2="86" y2="25" stroke="currentColor" stroke-opacity="0.6" stroke-width="1.1" marker-end="url(#alm-map-arrow)"/>
+              <line x1="33" y1="53" x2="86" y2="25" stroke="currentColor" stroke-opacity="0.6" stroke-width="1.1" marker-end="url(#alm-map-arrow)"/>
+              <line x1="33" y1="81" x2="86" y2="25" stroke="currentColor" stroke-opacity="0.6" stroke-width="1.1" marker-end="url(#alm-map-arrow)"/>
+              <line x1="33" y1="109" x2="86" y2="25" stroke="currentColor" stroke-opacity="0.6" stroke-width="1.1" marker-end="url(#alm-map-arrow)"/>
+              <line x1="33" y1="137" x2="86" y2="25" stroke="currentColor" stroke-opacity="0.6" stroke-width="1.1" marker-end="url(#alm-map-arrow)"/>
+            </g>
+          </svg>
+        </div>
         <p>Normal continuous functions like \(g^x\) have useful properties but can be analytically inverted making decryption trivial. \[X=g^x \iff x=\log_{g}(X)\]</p>
         <p>Combining \(g^x\) with a modulus operation adds discreteness and irreversibility. Given an input \(x\), the output \(X\) is unpredictable as shown in figure <span class="figure-number" data-fid="log-dlp"></span>.</p>
         <div class="interactions">
@@ -433,6 +505,78 @@
       <section>
         <h2 class="num">Modular Exponentiation</h2>
         <p>The modular exponentiation function, \(f\), introduced in section <span class="figure-number" data-fid="key-exchange"></span> is a core machine used in cryptography. Encryption typically requires a function that takes a sensitive input and computes a secure (hard-to-reverse) representation of the input. The forward calculation should be very easy, backward (getting to the input from the output) very hard.</p>
+        <p>A mapping function is required that maps inputs to outputs. \[x \mapsto f(x)\]</p>
+        <div class="interactions">
+          <svg class="art-mappings-svg" viewBox="0 0 480 154" style="width:100%;height:auto;display:block" role="img" aria-label="Four mapping diagrams: a one-to-one bijection, a spread mapping, a many-to-two mapping, and an all-to-one mapping.">
+            <defs><marker id="cos-map-arrow" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="5.5" markerHeight="5.5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="currentColor" fill-opacity="0.75"/></marker></defs>
+            <g transform="translate(0,0)">
+              <rect x="12" y="18" width="20" height="14" rx="3" fill="currentColor" fill-opacity="0.05" stroke="currentColor" stroke-opacity="0.55" stroke-width="1"/>
+              <rect x="12" y="46" width="20" height="14" rx="3" fill="currentColor" fill-opacity="0.05" stroke="currentColor" stroke-opacity="0.55" stroke-width="1"/>
+              <rect x="12" y="74" width="20" height="14" rx="3" fill="currentColor" fill-opacity="0.05" stroke="currentColor" stroke-opacity="0.55" stroke-width="1"/>
+              <rect x="12" y="102" width="20" height="14" rx="3" fill="currentColor" fill-opacity="0.05" stroke="currentColor" stroke-opacity="0.55" stroke-width="1"/>
+              <rect x="12" y="130" width="20" height="14" rx="3" fill="currentColor" fill-opacity="0.05" stroke="currentColor" stroke-opacity="0.55" stroke-width="1"/>
+              <rect x="88" y="18" width="20" height="14" rx="3" fill="currentColor" fill-opacity="0.05" stroke="currentColor" stroke-opacity="0.55" stroke-width="1"/>
+              <rect x="88" y="46" width="20" height="14" rx="3" fill="currentColor" fill-opacity="0.05" stroke="currentColor" stroke-opacity="0.55" stroke-width="1"/>
+              <rect x="88" y="74" width="20" height="14" rx="3" fill="currentColor" fill-opacity="0.05" stroke="currentColor" stroke-opacity="0.55" stroke-width="1"/>
+              <rect x="88" y="102" width="20" height="14" rx="3" fill="currentColor" fill-opacity="0.05" stroke="currentColor" stroke-opacity="0.55" stroke-width="1"/>
+              <rect x="88" y="130" width="20" height="14" rx="3" fill="currentColor" fill-opacity="0.05" stroke="currentColor" stroke-opacity="0.55" stroke-width="1"/>
+              <line x1="33" y1="25" x2="86" y2="53" stroke="currentColor" stroke-opacity="0.6" stroke-width="1.1" marker-end="url(#cos-map-arrow)"/>
+              <line x1="33" y1="53" x2="86" y2="109" stroke="currentColor" stroke-opacity="0.6" stroke-width="1.1" marker-end="url(#cos-map-arrow)"/>
+              <line x1="33" y1="81" x2="86" y2="25" stroke="currentColor" stroke-opacity="0.6" stroke-width="1.1" marker-end="url(#cos-map-arrow)"/>
+              <line x1="33" y1="109" x2="86" y2="137" stroke="currentColor" stroke-opacity="0.6" stroke-width="1.1" marker-end="url(#cos-map-arrow)"/>
+              <line x1="33" y1="137" x2="86" y2="81" stroke="currentColor" stroke-opacity="0.6" stroke-width="1.1" marker-end="url(#cos-map-arrow)"/>
+            </g>
+            <g transform="translate(120,0)">
+              <rect x="12" y="18" width="20" height="14" rx="3" fill="currentColor" fill-opacity="0.05" stroke="currentColor" stroke-opacity="0.55" stroke-width="1"/>
+              <rect x="12" y="46" width="20" height="14" rx="3" fill="currentColor" fill-opacity="0.05" stroke="currentColor" stroke-opacity="0.55" stroke-width="1"/>
+              <rect x="12" y="74" width="20" height="14" rx="3" fill="currentColor" fill-opacity="0.05" stroke="currentColor" stroke-opacity="0.55" stroke-width="1"/>
+              <rect x="12" y="102" width="20" height="14" rx="3" fill="currentColor" fill-opacity="0.05" stroke="currentColor" stroke-opacity="0.55" stroke-width="1"/>
+              <rect x="12" y="130" width="20" height="14" rx="3" fill="currentColor" fill-opacity="0.05" stroke="currentColor" stroke-opacity="0.55" stroke-width="1"/>
+              <rect x="88" y="18" width="20" height="14" rx="3" fill="currentColor" fill-opacity="0.05" stroke="currentColor" stroke-opacity="0.55" stroke-width="1"/>
+              <rect x="88" y="46" width="20" height="14" rx="3" fill="currentColor" fill-opacity="0.05" stroke="currentColor" stroke-opacity="0.55" stroke-width="1"/>
+              <rect x="88" y="74" width="20" height="14" rx="3" fill="currentColor" fill-opacity="0.05" stroke="currentColor" stroke-opacity="0.55" stroke-width="1"/>
+              <rect x="88" y="102" width="20" height="14" rx="3" fill="currentColor" fill-opacity="0.05" stroke="currentColor" stroke-opacity="0.55" stroke-width="1"/>
+              <rect x="88" y="130" width="20" height="14" rx="3" fill="currentColor" fill-opacity="0.05" stroke="currentColor" stroke-opacity="0.55" stroke-width="1"/>
+              <line x1="33" y1="25" x2="86" y2="25" stroke="currentColor" stroke-opacity="0.6" stroke-width="1.1" marker-end="url(#cos-map-arrow)"/>
+              <line x1="33" y1="53" x2="86" y2="81" stroke="currentColor" stroke-opacity="0.6" stroke-width="1.1" marker-end="url(#cos-map-arrow)"/>
+              <line x1="33" y1="81" x2="86" y2="137" stroke="currentColor" stroke-opacity="0.6" stroke-width="1.1" marker-end="url(#cos-map-arrow)"/>
+            </g>
+            <g transform="translate(240,0)">
+              <rect x="12" y="18" width="20" height="14" rx="3" fill="currentColor" fill-opacity="0.05" stroke="currentColor" stroke-opacity="0.55" stroke-width="1"/>
+              <rect x="12" y="46" width="20" height="14" rx="3" fill="currentColor" fill-opacity="0.05" stroke="currentColor" stroke-opacity="0.55" stroke-width="1"/>
+              <rect x="12" y="74" width="20" height="14" rx="3" fill="currentColor" fill-opacity="0.05" stroke="currentColor" stroke-opacity="0.55" stroke-width="1"/>
+              <rect x="12" y="102" width="20" height="14" rx="3" fill="currentColor" fill-opacity="0.05" stroke="currentColor" stroke-opacity="0.55" stroke-width="1"/>
+              <rect x="12" y="130" width="20" height="14" rx="3" fill="currentColor" fill-opacity="0.05" stroke="currentColor" stroke-opacity="0.55" stroke-width="1"/>
+              <rect x="88" y="18" width="20" height="14" rx="3" fill="currentColor" fill-opacity="0.05" stroke="currentColor" stroke-opacity="0.55" stroke-width="1"/>
+              <rect x="88" y="46" width="20" height="14" rx="3" fill="currentColor" fill-opacity="0.05" stroke="currentColor" stroke-opacity="0.55" stroke-width="1"/>
+              <rect x="88" y="74" width="20" height="14" rx="3" fill="currentColor" fill-opacity="0.05" stroke="currentColor" stroke-opacity="0.55" stroke-width="1"/>
+              <rect x="88" y="102" width="20" height="14" rx="3" fill="currentColor" fill-opacity="0.05" stroke="currentColor" stroke-opacity="0.55" stroke-width="1"/>
+              <rect x="88" y="130" width="20" height="14" rx="3" fill="currentColor" fill-opacity="0.05" stroke="currentColor" stroke-opacity="0.55" stroke-width="1"/>
+              <line x1="33" y1="25" x2="86" y2="25" stroke="currentColor" stroke-opacity="0.6" stroke-width="1.1" marker-end="url(#cos-map-arrow)"/>
+              <line x1="33" y1="53" x2="86" y2="53" stroke="currentColor" stroke-opacity="0.6" stroke-width="1.1" marker-end="url(#cos-map-arrow)"/>
+              <line x1="33" y1="81" x2="86" y2="25" stroke="currentColor" stroke-opacity="0.6" stroke-width="1.1" marker-end="url(#cos-map-arrow)"/>
+              <line x1="33" y1="109" x2="86" y2="53" stroke="currentColor" stroke-opacity="0.6" stroke-width="1.1" marker-end="url(#cos-map-arrow)"/>
+              <line x1="33" y1="137" x2="86" y2="25" stroke="currentColor" stroke-opacity="0.6" stroke-width="1.1" marker-end="url(#cos-map-arrow)"/>
+            </g>
+            <g transform="translate(360,0)">
+              <rect x="12" y="18" width="20" height="14" rx="3" fill="currentColor" fill-opacity="0.05" stroke="currentColor" stroke-opacity="0.55" stroke-width="1"/>
+              <rect x="12" y="46" width="20" height="14" rx="3" fill="currentColor" fill-opacity="0.05" stroke="currentColor" stroke-opacity="0.55" stroke-width="1"/>
+              <rect x="12" y="74" width="20" height="14" rx="3" fill="currentColor" fill-opacity="0.05" stroke="currentColor" stroke-opacity="0.55" stroke-width="1"/>
+              <rect x="12" y="102" width="20" height="14" rx="3" fill="currentColor" fill-opacity="0.05" stroke="currentColor" stroke-opacity="0.55" stroke-width="1"/>
+              <rect x="12" y="130" width="20" height="14" rx="3" fill="currentColor" fill-opacity="0.05" stroke="currentColor" stroke-opacity="0.55" stroke-width="1"/>
+              <rect x="88" y="18" width="20" height="14" rx="3" fill="currentColor" fill-opacity="0.05" stroke="currentColor" stroke-opacity="0.55" stroke-width="1"/>
+              <rect x="88" y="46" width="20" height="14" rx="3" fill="currentColor" fill-opacity="0.05" stroke="currentColor" stroke-opacity="0.55" stroke-width="1"/>
+              <rect x="88" y="74" width="20" height="14" rx="3" fill="currentColor" fill-opacity="0.05" stroke="currentColor" stroke-opacity="0.55" stroke-width="1"/>
+              <rect x="88" y="102" width="20" height="14" rx="3" fill="currentColor" fill-opacity="0.05" stroke="currentColor" stroke-opacity="0.55" stroke-width="1"/>
+              <rect x="88" y="130" width="20" height="14" rx="3" fill="currentColor" fill-opacity="0.05" stroke="currentColor" stroke-opacity="0.55" stroke-width="1"/>
+              <line x1="33" y1="25" x2="86" y2="25" stroke="currentColor" stroke-opacity="0.6" stroke-width="1.1" marker-end="url(#cos-map-arrow)"/>
+              <line x1="33" y1="53" x2="86" y2="25" stroke="currentColor" stroke-opacity="0.6" stroke-width="1.1" marker-end="url(#cos-map-arrow)"/>
+              <line x1="33" y1="81" x2="86" y2="25" stroke="currentColor" stroke-opacity="0.6" stroke-width="1.1" marker-end="url(#cos-map-arrow)"/>
+              <line x1="33" y1="109" x2="86" y2="25" stroke="currentColor" stroke-opacity="0.6" stroke-width="1.1" marker-end="url(#cos-map-arrow)"/>
+              <line x1="33" y1="137" x2="86" y2="25" stroke="currentColor" stroke-opacity="0.6" stroke-width="1.1" marker-end="url(#cos-map-arrow)"/>
+            </g>
+          </svg>
+        </div>
         <p>Normal continuous functions like \(g^x\) have useful properties but can be analytically inverted making decryption trivial. \[X=g^x \iff x=\log_{g}(X)\]</p>
         <p>Combining \(g^x\) with a modulus operation adds discreteness and irreversibility. Given an input \(x\), the output \(X\) is unpredictable as shown in figure <span class="figure-number" data-fid="log-dlp"></span>.</p>
         <div class="interactions">

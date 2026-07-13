@@ -34,6 +34,7 @@
     .charta .axis-label { fill: var(--ink-muted); font-family: var(--sans); font-size: 12px; }
     .cosmos .charta .axis-label { fill: var(--bone-muted); }
     .interactions svg.art-clock-svg {width: 50%;}
+    @media (max-width: 560px) { .interactions svg.art-clock-svg {width: 100%;} }
 
     /* ── Sequence / mod display ───────────────────────────────────── */
     .mod-seq { font-family: var(--mono); font-size: var(--ts13); line-height: 1.6; color: var(--ink-muted); max-width: 66ch; margin: 0 0 var(--ms-2); }
@@ -186,7 +187,7 @@
             &= z \\
           \end{align}\]
         </p>
-        <div class="interactions">
+        <div class="interactions inlim">
           <img src="DHAuth.svg" alt="The Diffie-Hellman key exchange method." class="art-rsa-img" />
           <div class="figure-numbering ref num" data-fig="dh-diagram" data-label="Figure"><p>The Diffie-Hellman key exchange method.</p></div>
         </div>
@@ -194,7 +195,7 @@
       </section>
       <section>
         <h2 class="num">Modular Exponentiation</h2>
-        <p>The modular exponentiation function, \(f\), introduced in section <span class="figure-number" data-fid="key-exchange"></span> is a core machine used in cryptography. A mapping function is required that maps secret inputs to encrypted outputs. It must be easy to compute, hard to invert, have useful algebraic structure and be mathematically provable. \[x \mapsto f(x)\]</p>
+        <p>The modular exponentiation function, \(f\), introduced in section <span class="figure-number" data-fid="key-exchange"></span> is a core machine used in cryptography. A mapping function is required that maps secret inputs to encrypted outputs. It must be easy to compute, hard to invert, have useful algebraic structure and be mathematically provable. \[x \mapsto f(x)\] \[f(x) = \text{&lt;base&gt;}^{\text{&lt;exponent&gt;}} \bmod \text{&lt;modulus&gt;}\]</p>
         <div class="interactions">
           <svg class="art-mappings-svg" viewBox="0 0 480 154" style="width:100%;height:auto;display:block" role="img" aria-label="Four mapping diagrams: a one-to-one bijection, a spread mapping, a many-to-two mapping, and an all-to-one mapping.">
             <defs><marker id="alm-map-arrow" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="5.5" markerHeight="5.5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="currentColor" fill-opacity="0.75"/></marker></defs>
@@ -273,9 +274,43 @@
           <div id="alm-log-dlp" class="charta"></div>
           <div class="figure-numbering ref num" data-fig="log-dlp" data-label="Figure"><p>Continuous vs Discrete Nature of DLP.</p></div>
         </div>
-        <p>The exponentiation also provides mathematical structure with which algebraic operations can be performed and proofs of security conducted. Not only does exponentiation enables composibility that allows \[\begin{align} g^b g^a \bmod{n} &= g^{b a} \bmod{n} \\ &= B^a \bmod{n} \end{align}\] in Diffie-Hellman (section <span class="figure-number" data-fid="key-exchange"></span>). It also allows modular exponentiation to be backed up by rich mathematical theory like \(\mathbb{Z}^*_c\) in group theory that provides proofs for the behaviour of the function \(f\).</p>
-        <p>Two different mappings are used in cryptography. \[x \mapsto f(x,e,n)\] \[x \mapsto f(g,x,n)\]</p>
-        <p>The first map is used in RSA encryption. \(n\) must be a prime and \(e\) a coprime with \(n\).</p>
+        <p>
+          The exponentiation also provides mathematical structure with which algebraic operations can be performed and proofs of security conducted.
+          Not only does exponentiation enables composibility that allows
+          \[\begin{align} g^b g^a \bmod{n} &= g^{b a} \bmod{n} \\ &= B^a \bmod{n} \end{align}\]
+          in Diffie-Hellman (section <span class="figure-number" data-fid="key-exchange"></span>).
+          It also allows modular exponentiation to be backed up by rich mathematical theory like \(\mathbb{Z}^*_c\) in group theory that provides proofs for the behaviour of the function \(f\).
+        </p>
+        <p>Addressing the ease of computing \(f\), highly efficient methods exist even for large exponents. The Right-to-Left Binary Method, for example, can compute \(f(g,x,n)\) in \(\Theta(\log x)\) without actually calculating \(g^x\). Therefore, despite the existence of other one-way functions like elliptic curves, lattices, hash functions, isogenies, modular exponentiation is a preferred method for most cryptography.</p>
+        <p>\(f\) is actually used in two ways. One way is to keep the exponent fixed and have a variable base. The second is to have a fixed base and use the exponent as the input variable. \[x \mapsto f(x,e,n)\] \[x \mapsto f(g,x,n)\]</p>
+        <h3 class="num">Base as Input</h3>
+        <p>This map is used in RSA encryption. \(n\) must be a prime and \(e\) a coprime with \(n\).</p>
+        <div class="interactions">
+          <p>\(n\):
+            <span class="number-input-wrapper">
+              <input id="alm-in-mb-n" value="19" type="number" />
+              <span class="number-controls">
+                <button type="button" class="num-up">▲</button>
+                <button type="button" class="num-down">▼</button>
+              </span>
+            </span>
+            <span class="primality"></span>
+          </p>
+          <p>\(e\):
+            <span class="number-input-wrapper">
+              <input id="alm-in-mb-e" value="3" type="number" />
+              <span class="number-controls">
+                <button type="button" class="num-up">▲</button>
+                <button type="button" class="num-down">▼</button>
+              </span>
+            </span>
+          </p>
+          <p class="mod-seq">\(\zeta\) sequence:</p>
+          <div id="alm-out-mb-sequence" class="mod-seq-box"></div>
+          <svg id="alm-mb-clock-svg" class="art-clock-svg" viewBox="0 0 400 400" width="400" height="400"></svg>
+          <div class="figure-numbering ref num" data-fig="base-mod-clock" data-label="Figure"><p>Modular clock diagram.</p></div>
+        </div>
+        <h3 class="num">Exponent as Input</h3>
         <p>The second map is used for Diffie-Hellman and uses the discrete logarithm problem.</p>
         <div class="insight block ref num" data-label="Insight">
           <h4></h4>
@@ -430,7 +465,7 @@
         <p>Notice that only two of the original goals were covered thus far. The receiver still needs to know that the sender is in fact the sender. With RSA this can be done by simply encrypting a string with the sender's private key. The receiver can then use the sender's public key to decrypt it and see if it makes sense. The only problem is that everyone can decrypt that message.</p>
         <p>A popular solution to get both encryption and authentication is to run the message content through a hashing function like SHA-256 prior to encryption. The hashing is an irreversible function that takes in data and produces an unpredictable digest (number) that's unique. Hashing the message and encrypting the hash with the private key is called signing the message or creating a digital signature.</p>
         <p>Anyone that decrypts the signature only gets the hash digest. However, the recipient can apply the same hashing on the private-key-decoded message and compare it with the hash. If it matches, the recipient knows that the message is signed by the sender. Authentication is established together with secure encryption. The RSA encryption-decryption flow with authentication can be seen in the following diagram.</p>
-        <div class="interactions">
+        <div class="interactions inlim">
           <img src="RSAAuth.svg" alt="RSA Encryption and Authentication Flow" class="art-rsa-img" />
         </div>
       </section>
@@ -538,7 +573,7 @@
             &= z \\
           \end{align}\]
         </p>
-        <div class="interactions">
+        <div class="interactions inlim">
           <img src="DHAuth.svg" alt="The Diffie-Hellman key exchange method." class="art-rsa-img" />
           <div class="figure-numbering ref num" data-fig="dh-diagram" data-label="Figure"><p>The Diffie-Hellman key exchange method.</p></div>
         </div>
@@ -546,7 +581,7 @@
       </section>
       <section>
         <h2 class="num">Modular Exponentiation</h2>
-        <p>The modular exponentiation function, \(f\), introduced in section <span class="figure-number" data-fid="key-exchange"></span> is a core machine used in cryptography. A mapping function is required that maps secret inputs to encrypted outputs. It must be easy to compute, hard to invert, have useful algebraic structure and be mathematically provable. \[x \mapsto f(x)\]</p>
+        <p>The modular exponentiation function, \(f\), introduced in section <span class="figure-number" data-fid="key-exchange"></span> is a core machine used in cryptography. A mapping function is required that maps secret inputs to encrypted outputs. It must be easy to compute, hard to invert, have useful algebraic structure and be mathematically provable. \[x \mapsto f(x)\] \[f(x) = \text{&lt;base&gt;}^{\text{&lt;exponent&gt;}} \bmod \text{&lt;modulus&gt;}\]</p>
         <div class="interactions">
           <svg class="art-mappings-svg" viewBox="0 0 480 154" style="width:100%;height:auto;display:block" role="img" aria-label="Four mapping diagrams: a one-to-one bijection, a spread mapping, a many-to-two mapping, and an all-to-one mapping.">
             <defs><marker id="cos-map-arrow" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="5.5" markerHeight="5.5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="currentColor" fill-opacity="0.75"/></marker></defs>
@@ -626,8 +661,36 @@
           <div class="figure-numbering ref num" data-fig="log-dlp" data-label="Figure"><p>Continuous vs Discrete Nature of DLP.</p></div>
         </div>
         <p>The exponentiation also provides mathematical structure with which algebraic operations can be performed and proofs of security conducted. Not only does exponentiation enables composibility that allows \[\begin{align} g^b g^a \bmod{n} &= g^{b a} \bmod{n} \\ &= B^a \bmod{n} \end{align}\] in Diffie-Hellman (section <span class="figure-number" data-fid="key-exchange"></span>). It also allows modular exponentiation to be backed up by rich mathematical theory like \(\mathbb{Z}^*_c\) in group theory that provides proofs for the behaviour of the function \(f\).</p>
-        <p>Two different mappings are used in cryptography. \[x \mapsto f(x,e,n)\] \[x \mapsto f(g,x,n)\]</p>
-        <p>The first map is used in RSA encryption. \(n\) must be a prime and \(e\) a coprime with \(n\).</p>
+        <p>Addressing the ease of computing \(f\), highly efficient methods exist even for large exponents. The Right-to-Left Binary Method, for example, can compute \(f(g,x,n)\) in \(\Theta(\log x)\) without actually calculating \(g^x\). Therefore, despite the existence of other one-way functions like elliptic curves, lattices, hash functions, isogenies, modular exponentiation is a preferred method for most cryptography.</p>
+        <p>\(f\) is actually used in two ways. One way is to keep the exponent fixed and have a variable base. The second is to have a fixed base and use the exponent as the input variable. \[x \mapsto f(x,e,n)\] \[x \mapsto f(g,x,n)\]</p>
+        <h3 class="num">Base as Input</h3>
+        <p>This map is used in RSA encryption. \(n\) must be a prime and \(e\) a coprime with \(n\).</p>
+        <div class="interactions">
+          <p>\(n\):
+            <span class="number-input-wrapper">
+              <input id="cos-in-mb-n" value="19" type="number" />
+              <span class="number-controls">
+                <button type="button" class="num-up">▲</button>
+                <button type="button" class="num-down">▼</button>
+              </span>
+            </span>
+            <span class="primality"></span>
+          </p>
+          <p>\(e\):
+            <span class="number-input-wrapper">
+              <input id="cos-in-mb-e" value="3" type="number" />
+              <span class="number-controls">
+                <button type="button" class="num-up">▲</button>
+                <button type="button" class="num-down">▼</button>
+              </span>
+            </span>
+          </p>
+          <p class="mod-seq">\(\zeta\) sequence:</p>
+          <div id="cos-out-mb-sequence" class="mod-seq-box"></div>
+          <svg id="cos-mb-clock-svg" class="art-clock-svg" viewBox="0 0 400 400" width="400" height="400"></svg>
+          <div class="figure-numbering ref num" data-fig="base-mod-clock" data-label="Figure"><p>Modular clock diagram.</p></div>
+        </div>
+        <h3 class="num">Exponent as Input</h3>
         <p>The second map is used for Diffie-Hellman and uses the discrete logarithm problem.</p>
         <div class="insight block ref num" data-label="Insight">
           <h4></h4>
@@ -782,7 +845,7 @@
         <p>Notice that only two of the original goals were covered thus far. The receiver still needs to know that the sender is in fact the sender. With RSA this can be done by simply encrypting a string with the sender's private key. The receiver can then use the sender's public key to decrypt it and see if it makes sense. The only problem is that everyone can decrypt that message.</p>
         <p>A popular solution to get both encryption and authentication is to run the message content through a hashing function like SHA-256 prior to encryption. The hashing is an irreversible function that takes in data and produces an unpredictable digest (number) that's unique. Hashing the message and encrypting the hash with the private key is called signing the message or creating a digital signature.</p>
         <p>Anyone that decrypts the signature only gets the hash digest. However, the recipient can apply the same hashing on the private-key-decoded message and compare it with the hash. If it matches, the recipient knows that the message is signed by the sender. Authentication is established together with secure encryption. The RSA encryption-decryption flow with authentication can be seen in the following diagram.</p>
-        <div class="interactions">
+        <div class="interactions inlim">
           <img src="RSAAuth.svg" alt="RSA Encryption and Authentication Flow" class="art-rsa-img" />
         </div>
       </section>
@@ -822,6 +885,12 @@ function initArticle(p) {
   var gDHInput = $id('in-g');
   var clockSvg = $id('clock-svg');
   var seqDiv   = $id('out-sequence');
+
+  // Base-as-input clock inputs (x^e mod n)
+  var nMBInput  = $id('in-mb-n');
+  var eMBInput  = $id('in-mb-e');
+  var mbClockSvg = $id('mb-clock-svg');
+  var mbSeqDiv   = $id('out-mb-sequence');
 
   function drawClock() {
     var n = parseInt(nDHInput.value);
@@ -869,6 +938,53 @@ function initArticle(p) {
       cur = next;
     }
     seqDiv.textContent = sequence.join(', ');
+  }
+
+  // Base as input: map x -> x^e mod n for x = 1..n-1
+  function drawBaseClock() {
+    var n = parseInt(nMBInput.value);
+    var e = parseInt(eMBInput.value);
+    if (isNaN(n) || isNaN(e) || n < 2) return;
+    mbClockSvg.innerHTML = '';
+    var cx = 200, cy = 200, r = 160;
+    var points = [], sequence = [];
+    var isDark = p === 'cos';
+    var dotFill   = isDark ? 'rgba(236,226,200,0.8)'  : '#666';
+    var labelFill = isDark ? 'rgba(236,226,200,0.92)' : '#333';
+    for (var i = 0; i < n; i++) {
+      var ang = (2 * Math.PI * i) / n - Math.PI / 2;
+      var x = cx + r * Math.cos(ang), y = cy + r * Math.sin(ang);
+      points.push({x: x, y: y});
+      var dot = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+      dot.setAttribute('cx', x); dot.setAttribute('cy', y);
+      dot.setAttribute('r', n > 100 ? '1' : '3');
+      dot.setAttribute('fill', dotFill);
+      mbClockSvg.appendChild(dot);
+      if (n <= 50) {
+        var lbl = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+        lbl.setAttribute('x', cx + (r + 15) * Math.cos(ang));
+        lbl.setAttribute('y', cy + (r + 15) * Math.sin(ang));
+        lbl.setAttribute('text-anchor', 'middle');
+        lbl.setAttribute('dominant-baseline', 'middle');
+        lbl.setAttribute('font-size', '10');
+        lbl.setAttribute('fill', labelFill);
+        lbl.textContent = i;
+        mbClockSvg.appendChild(lbl);
+      }
+    }
+    for (var xv = 1; xv <= n - 1; xv++) {
+      sequence.push(Number(modPow(xv, e, n)));
+    }
+    for (var k = 0; k < sequence.length - 1; k++) {
+      var p1 = points[sequence[k]], p2 = points[sequence[k + 1]];
+      var ln = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+      ln.setAttribute('x1', p1.x); ln.setAttribute('y1', p1.y);
+      ln.setAttribute('x2', p2.x); ln.setAttribute('y2', p2.y);
+      ln.setAttribute('stroke', 'hsl(' + (k * 360 / n) + ',70%,50%)');
+      ln.setAttribute('stroke-width', '1'); ln.setAttribute('opacity', '0.6');
+      mbClockSvg.appendChild(ln);
+    }
+    mbSeqDiv.textContent = sequence.join(', ');
   }
 
   // RSA calculations
@@ -941,6 +1057,9 @@ function initArticle(p) {
   nDHInput.addEventListener('input', updateCalculations);
   gDHInput.addEventListener('input', drawClock);
   gDHInput.addEventListener('input', updateCalculations);
+  nMBInput.addEventListener('input', drawBaseClock);
+  nMBInput.addEventListener('input', updateCalculations);
+  eMBInput.addEventListener('input', drawBaseClock);
   pIn.addEventListener('input', updateCalculations);
   qIn.addEventListener('input', updateCalculations);
   xIn.addEventListener('input', updateCalculations);
@@ -966,6 +1085,7 @@ function initArticle(p) {
 
   updateCalculations();
   drawClock();
+  drawBaseClock();
 }
 
 initArticle('alm');

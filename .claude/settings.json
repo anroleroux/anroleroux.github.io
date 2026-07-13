@@ -5,7 +5,8 @@
       "mcp__claude_ai_Google_Drive__read_file_content",
       "Edit(/.claude/skills/copy-sync/**)",
       "Bash(pkill -f \"http.server 8765\")",
-      "Edit(/.claude/skills/hoist-css/**)"
+      "Edit(/.claude/skills/hoist-css/**)",
+      "Read(//home/anro/Projects/.claude/projects/-home-anro-Projects-anroleroux-github-io/memory/**)"
     ]
   }
 }

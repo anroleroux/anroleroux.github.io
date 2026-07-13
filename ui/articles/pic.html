@@ -163,10 +163,11 @@
       </section>
       <section>
         <h2 class="num ref">Key Exchange</h2>
-        <p>Diffie-Hellman (DH) key exchange was published in 1967 as a method to exchange a secret key over an insecure channel. It uses the hardness of the Discrete Logarithm Problem (DLP) to calculate an irreversible representation of a secret key. The representation can be publicly accessible since the secret cannot be obtained from it.</p>
+        <p>Diffie-Hellman (DH) key exchange was published in 1967 as a method to exchange a secret key over an insecure channel. It uses the hardness of the Discrete Logarithm Problem to calculate an irreversible representation of a secret key. The representation can be sent over an insecure channel. No one can do anything with the representation, except the communicating parties that use it to obtain a shared secret key.</p>
         <p>Consider a secret key \(a\) and its public representation \(A\) that is owned by Alice. \(A\) can be obtained with \[A = f(g,a,n) = g^a \bmod{n}\]</p>
         <p>
           where \(g\) is a base and \(n\) is a large number.
+          At this stage it's only important to understand there is a function \(f\) that is used in two ways. The modular exponentiation will be explained in the next section.
           Bob does the same to obtain \(B\) with his secret key \(b\), and sends it to Alice to compute \(z\).
           \[\begin{align}
             f(B,a,n) &= B^a \bmod{n} \\
@@ -512,10 +513,11 @@
       </section>
       <section>
         <h2 class="num ref">Key Exchange</h2>
-        <p>Diffie-Hellman (DH) key exchange was published in 1967 as a method to exchange a secret key over an insecure channel. It uses the hardness of the Discrete Logarithm Problem (DLP) to calculate an irreversible representation of a secret key. The representation can be publicly accessible since the secret cannot be obtained from it.</p>
+        <p>Diffie-Hellman (DH) key exchange was published in 1967 as a method to exchange a secret key over an insecure channel. It uses the hardness of the Discrete Logarithm Problem to calculate an irreversible representation of a secret key. The representation can be sent over an insecure channel. No one can do anything with the representation, except the communicating parties that use it to obtain a shared secret key.</p>
         <p>Consider a secret key \(a\) and its public representation \(A\) that is owned by Alice. \(A\) can be obtained with \[A = f(g,a,n) = g^a \bmod{n}\]</p>
         <p>
           where \(g\) is a base and \(n\) is a large number.
+          At this stage it's only important to understand there is a function \(f\) that is used in two ways. The modular exponentiation will be explained in the next section.
           Bob does the same to obtain \(B\) with his secret key \(b\), and sends it to Alice to compute \(z\).
           \[\begin{align}
             f(B,a,n) &= B^a \bmod{n} \\

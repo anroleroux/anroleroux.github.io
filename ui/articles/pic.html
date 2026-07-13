@@ -165,12 +165,28 @@
         <h2 class="num ref">Key Exchange</h2>
         <p>Diffie-Hellman (DH) key exchange was published in 1967 as a method to exchange a secret key over an insecure channel. It uses the hardness of the Discrete Logarithm Problem (DLP) to calculate an irreversible representation of a secret key. The representation can be publicly accessible since the secret cannot be obtained from it.</p>
         <p>Consider a secret key \(a\) and its public representation \(A\) that is owned by Alice. \(A\) can be obtained with \[A = f(g,a,n) = g^a \bmod{n}\]</p>
-        <p>where \(g\) is a base and \(n\) is a large number. Bob does the same to obtain \(B\) with his secret key \(b\), and sends it to Alice to compute \(z\). \[f(B,a,n) = B^a \bmod{n} = g^{b a} \bmod{n} = g^{a b} \bmod{n} = z\]</p>
+        <p>
+          where \(g\) is a base and \(n\) is a large number.
+          Bob does the same to obtain \(B\) with his secret key \(b\), and sends it to Alice to compute \(z\).
+          \[\begin{align}
+            f(B,a,n) &= B^a \bmod{n} \\
+            &= g^{b a} \bmod{n} \\
+            &= g^{a b} \bmod{n} \\
+            &= z \\
+          \end{align}\]
+        </p>
         <div class="interactions">
           <img src="DHAuth.svg" alt="The Diffie-Hellman key exchange method." class="art-rsa-img" />
           <div class="figure-numbering ref num" data-fig="dh-diagram" data-label="Figure"><p>The Diffie-Hellman key exchange method.</p></div>
         </div>
-        <p>Bob can also get to the same \(z\) by using \(A\) and \(b\). \[f(A,b,n) = A^b \bmod{n} = g^{a b} \bmod{n} = z\]</p>
+        <p>
+          Bob can also get to the same \(z\) by using \(A\) and \(b\).
+          \[\begin{align}
+            f(A,b,n) &= A^b \bmod{n} \\
+            &= g^{a b} \bmod{n} \\
+            &= z \\
+          \end{align}\]
+        </p>
         <p>Note that the same private key (\(z\)) was established without exposing secret keys \(a\) or \(b\) and no one can compute \(z\) with only \(g\), \(n\), \(A\) and \(B\). The function \(f\) is introduced and becomes a center piece in the rest of the article.</p>
       </section>
       <section>
@@ -422,12 +438,28 @@
         <h2 class="num ref">Key Exchange</h2>
         <p>Diffie-Hellman (DH) key exchange was published in 1967 as a method to exchange a secret key over an insecure channel. It uses the hardness of the Discrete Logarithm Problem (DLP) to calculate an irreversible representation of a secret key. The representation can be publicly accessible since the secret cannot be obtained from it.</p>
         <p>Consider a secret key \(a\) and its public representation \(A\) that is owned by Alice. \(A\) can be obtained with \[A = f(g,a,n) = g^a \bmod{n}\]</p>
-        <p>where \(g\) is a base and \(n\) is a large number. Bob does the same to obtain \(B\) with his secret key \(b\), and sends it to Alice to compute \(z\). \[f(B,a,n) = B^a \bmod{n} = g^{b a} \bmod{n} = g^{a b} \bmod{n} = z\]</p>
+        <p>
+          where \(g\) is a base and \(n\) is a large number.
+          Bob does the same to obtain \(B\) with his secret key \(b\), and sends it to Alice to compute \(z\).
+          \[\begin{align}
+            f(B,a,n) &= B^a \bmod{n} \\
+            &= g^{b a} \bmod{n} \\
+            &= g^{a b} \bmod{n} \\
+            &= z \\
+          \end{align}\]
+        </p>
         <div class="interactions">
           <img src="DHAuth.svg" alt="The Diffie-Hellman key exchange method." class="art-rsa-img" />
           <div class="figure-numbering ref num" data-fig="dh-diagram" data-label="Figure"><p>The Diffie-Hellman key exchange method.</p></div>
         </div>
-        <p>Bob can also get to the same \(z\) by using \(A\) and \(b\). \[f(A,b,n) = A^b \bmod{n} = g^{a b} \bmod{n} = z\]</p>
+        <p>
+          Bob can also get to the same \(z\) by using \(A\) and \(b\).
+          \[\begin{align}
+            f(A,b,n) &= A^b \bmod{n} \\
+            &= g^{a b} \bmod{n} \\
+            &= z \\
+          \end{align}\]
+        </p>
         <p>Note that the same private key (\(z\)) was established without exposing secret keys \(a\) or \(b\) and no one can compute \(z\) with only \(g\), \(n\), \(A\) and \(B\). The function \(f\) is introduced and becomes a center piece in the rest of the article.</p>
       </section>
       <section>
@@ -484,15 +516,15 @@
         <h2 class="num">The Atoms of Math</h2>
         <p>If asked to find the factors of 5040, a sensible strategy might be to start from the lowest numbers and see what can divide 5040.
           \[\begin{align}
-            5040/1 &= 5040 && \text{(1 has no effect so continue with 2)} \\
-            5040/2 &= 2520 && \text{(2520 is still divisible by 2 so continue with 2)} \\
+            5040/1 &= 5040 && \text{(no effect, use 2)} \\
+            5040/2 &= 2520 && \text{(continue with 2)} \\
             2520/2 &= 1260 && \text{(continue with 2)} \\
             1260/2 &= 630 && \text{(continue with 2)} \\
             630/2 &= 315 && \text{(try to divide by 3)} \\
             315/3 &= 105 && \text{(try again with 3)} \\
-            105/3 &= 35 && \text{(not divisible by 2 or 3 anymore, continue with 5)} \\
+            105/3 &= 35 && \text{(continue with 5)} \\
             35/5 &= 7 && \text{(only divisible by 7)} \\
-            7/7 &= 1 && \text{(stop)} \\
+            7/7 &= 1 && \text{(found all factors)} \\
           \end{align}\]
         </p>
         <p>The list of factors are \[2*2*2*2*3*3*5*7=5040\] That's interesting because 5040 was actually constructed from factors \[2*3*4*5*6*7=5040\] However, 4 and 6 have factors of their own, thus

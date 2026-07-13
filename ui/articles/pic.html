@@ -194,8 +194,7 @@
       </section>
       <section>
         <h2 class="num">Modular Exponentiation</h2>
-        <p>The modular exponentiation function, \(f\), introduced in section <span class="figure-number" data-fid="key-exchange"></span> is a core machine used in cryptography. Encryption typically requires a function that takes a sensitive input and computes a secure (hard-to-reverse) representation of the input. The forward calculation should be very easy, backward (getting to the input from the output) very hard.</p>
-        <p>A mapping function is required that maps secret inputs to encrypted outputs. \[x \mapsto f(x)\]</p>
+        <p>The modular exponentiation function, \(f\), introduced in section <span class="figure-number" data-fid="key-exchange"></span> is a core machine used in cryptography. A mapping function is required that maps secret inputs to encrypted outputs. It must be easy to compute, hard to invert, have useful algebraic structure and be mathematically provable. \[x \mapsto f(x)\]</p>
         <div class="interactions">
           <svg class="art-mappings-svg" viewBox="0 0 480 154" style="width:100%;height:auto;display:block" role="img" aria-label="Four mapping diagrams: a one-to-one bijection, a spread mapping, a many-to-two mapping, and an all-to-one mapping.">
             <defs><marker id="alm-map-arrow" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="5.5" markerHeight="5.5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="currentColor" fill-opacity="0.75"/></marker></defs>
@@ -274,6 +273,7 @@
           <div id="alm-log-dlp" class="charta"></div>
           <div class="figure-numbering ref num" data-fig="log-dlp" data-label="Figure"><p>Continuous vs Discrete Nature of DLP.</p></div>
         </div>
+        <p>The exponentiation also provides mathematical structure with which algebraic operations can be performed and proofs of security conducted. Not only does exponentiation enables composibility that allows \[\begin{align} g^b g^a \bmod{n} &= g^{b a} \bmod{n} \\ &= B^a \bmod{n} \end{align}\] in Diffie-Hellman (section <span class="figure-number" data-fid="key-exchange"></span>). It also allows modular exponentiation to be backed up by rich mathematical theory like \(\mathbb{Z}^*_c\) in group theory that provides proofs for the behaviour of the function \(f\).</p>
         <p>Two different mappings are used in cryptography. \[x \mapsto f(x,e,n)\] \[x \mapsto f(g,x,n)\]</p>
         <p>The first map is used in RSA encryption. \(n\) must be a prime and \(e\) a coprime with \(n\).</p>
         <p>The second map is used for Diffie-Hellman and uses the discrete logarithm problem.</p>
@@ -546,8 +546,7 @@
       </section>
       <section>
         <h2 class="num">Modular Exponentiation</h2>
-        <p>The modular exponentiation function, \(f\), introduced in section <span class="figure-number" data-fid="key-exchange"></span> is a core machine used in cryptography. Encryption typically requires a function that takes a sensitive input and computes a secure (hard-to-reverse) representation of the input. The forward calculation should be very easy, backward (getting to the input from the output) very hard.</p>
-        <p>A mapping function is required that maps secret inputs to encrypted outputs. \[x \mapsto f(x)\]</p>
+        <p>The modular exponentiation function, \(f\), introduced in section <span class="figure-number" data-fid="key-exchange"></span> is a core machine used in cryptography. A mapping function is required that maps secret inputs to encrypted outputs. It must be easy to compute, hard to invert, have useful algebraic structure and be mathematically provable. \[x \mapsto f(x)\]</p>
         <div class="interactions">
           <svg class="art-mappings-svg" viewBox="0 0 480 154" style="width:100%;height:auto;display:block" role="img" aria-label="Four mapping diagrams: a one-to-one bijection, a spread mapping, a many-to-two mapping, and an all-to-one mapping.">
             <defs><marker id="cos-map-arrow" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="5.5" markerHeight="5.5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="currentColor" fill-opacity="0.75"/></marker></defs>
@@ -626,6 +625,7 @@
           <div id="cos-log-dlp" class="charta"></div>
           <div class="figure-numbering ref num" data-fig="log-dlp" data-label="Figure"><p>Continuous vs Discrete Nature of DLP.</p></div>
         </div>
+        <p>The exponentiation also provides mathematical structure with which algebraic operations can be performed and proofs of security conducted. Not only does exponentiation enables composibility that allows \[\begin{align} g^b g^a \bmod{n} &= g^{b a} \bmod{n} \\ &= B^a \bmod{n} \end{align}\] in Diffie-Hellman (section <span class="figure-number" data-fid="key-exchange"></span>). It also allows modular exponentiation to be backed up by rich mathematical theory like \(\mathbb{Z}^*_c\) in group theory that provides proofs for the behaviour of the function \(f\).</p>
         <p>Two different mappings are used in cryptography. \[x \mapsto f(x,e,n)\] \[x \mapsto f(g,x,n)\]</p>
         <p>The first map is used in RSA encryption. \(n\) must be a prime and \(e\) a coprime with \(n\).</p>
         <p>The second map is used for Diffie-Hellman and uses the discrete logarithm problem.</p>

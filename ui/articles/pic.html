@@ -168,10 +168,10 @@
         <p>Consider a secret key \(a\) and its public representation \(A\) that is owned by Alice. \(A\) can be obtained with \[A = f(g,a,n) = g^a \bmod{n}\]</p>
         <p>
           where \(n\) is a large prime number and \(g\) is a fixed base.
-          At this stage it's only important to understand there is a function \(f\) that encrypts a secret. The form of \(f\) will be explained in section <span class="figure-number" data-fid="modular-exponentiation"></span>.
+          At this stage it's only important to understand that there is a function \(f\) that encrypts a secret. The form of \(f\) will be discussed in section <span class="figure-number" data-fid="modular-exponentiation"></span>.
         </p>
         <p>
-          Alice sends \(A\) to Bob that computes \(z\).
+          Alice sends \(A\) to Bob that computes \(z\) with his secret key \(b\).
           \[\begin{align}
             f(A,b,n) &= A^b \bmod{n} \\
             &= g^{a b} \bmod{n} \\
@@ -179,7 +179,7 @@
           \end{align}\]
         </p>
         <p>
-          Bob does the same to obtain \(B\) with his secret key \(b\), and sends it to Alice to compute \(z\).
+          Bob also obtain \(B\) and sends it to Alice that also computes \(z\) with her secret key \(a\).
           \[\begin{align}
             f(B,a,n) &= B^a \bmod{n} \\
             &= g^{b a} \bmod{n} \\
@@ -195,10 +195,9 @@
       </section>
       <section>
         <h2 class="num ref">Modular Exponentiation</h2>
-        <p>The modular exponentiation function, denoted \(f\), was introduced in section <span class="figure-number" data-fid="key-exchange"></span>. It has the form: \[f(\text{&lt;base&gt;},\text{&lt;exponent&gt;},\text{&lt;modulus&gt;}) = \text{&lt;base&gt;}^{\text{&lt;exponent&gt;}} \bmod \text{&lt;modulus&gt;}\]</p>
-        <p>This is core machinery in cryptography and is explained in this section.</p>
+        <p>Function \(f\) introduced in section <span class="figure-number" data-fid="key-exchange"></span> is a modular exponentiation function. It has the form \[f(g,e,n) = g^e \bmod{n}\] where \(g\) is called the base, \(e\) the exponent and \(n\) the modulus. This is a work horse in cryptography that gets unpacked in this section.</p>
         <h3 class="num">Mappings</h3>
-        <p>A mapping function is required that maps secret inputs to encrypted outputs. It must be easy to compute, hard to invert, have useful algebraic structure and be mathematically provable. \[x \mapsto f(x)\]</p>
+        <p>In order to encrypt data, a mapping function is required that maps secret inputs to encrypted outputs. It must be easy to compute, hard to invert, have useful algebraic structure and be mathematically provable. \[x \mapsto f(x)\]</p>
         <div class="interactions">
           <svg class="art-mappings-svg" viewBox="0 0 480 154" style="width:100%;height:auto;display:block" role="img" aria-label="Four mapping diagrams: a one-to-one bijection, a spread mapping, a many-to-two mapping, and an all-to-one mapping.">
             <defs><marker id="alm-map-arrow" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="5.5" markerHeight="5.5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="currentColor" fill-opacity="0.75"/></marker></defs>
@@ -557,10 +556,10 @@
         <p>Consider a secret key \(a\) and its public representation \(A\) that is owned by Alice. \(A\) can be obtained with \[A = f(g,a,n) = g^a \bmod{n}\]</p>
         <p>
           where \(n\) is a large prime number and \(g\) is a fixed base.
-          At this stage it's only important to understand there is a function \(f\) that encrypts a secret. The form of \(f\) will be explained in section <span class="figure-number" data-fid="modular-exponentiation"></span>.
+          At this stage it's only important to understand that there is a function \(f\) that encrypts a secret. The form of \(f\) will be discussed in section <span class="figure-number" data-fid="modular-exponentiation"></span>.
         </p>
         <p>
-          Alice sends \(A\) to Bob that computes \(z\).
+          Alice sends \(A\) to Bob that computes \(z\) with his secret key \(b\).
           \[\begin{align}
             f(A,b,n) &= A^b \bmod{n} \\
             &= g^{a b} \bmod{n} \\
@@ -568,7 +567,7 @@
           \end{align}\]
         </p>
         <p>
-          Bob does the same to obtain \(B\) with his secret key \(b\), and sends it to Alice to compute \(z\).
+          Bob also obtain \(B\) and sends it to Alice that also computes \(z\) with her secret key \(a\).
           \[\begin{align}
             f(B,a,n) &= B^a \bmod{n} \\
             &= g^{b a} \bmod{n} \\
@@ -584,10 +583,9 @@
       </section>
       <section>
         <h2 class="num ref">Modular Exponentiation</h2>
-        <p>The modular exponentiation function, denoted \(f\), was introduced in section <span class="figure-number" data-fid="key-exchange"></span>. It has the form: \[f(\text{&lt;base&gt;},\text{&lt;exponent&gt;},\text{&lt;modulus&gt;}) = \text{&lt;base&gt;}^{\text{&lt;exponent&gt;}} \bmod \text{&lt;modulus&gt;}\]</p>
-        <p>This is core machinery in cryptography and is explained in this section.</p>
+        <p>Function \(f\) introduced in section <span class="figure-number" data-fid="key-exchange"></span> is a modular exponentiation function. It has the form \[f(g,e,n) = g^e \bmod{n}\] where \(g\) is called the base, \(e\) the exponent and \(n\) the modulus. This is a work horse in cryptography that gets unpacked in this section.</p>
         <h3 class="num">Mappings</h3>
-        <p>A mapping function is required that maps secret inputs to encrypted outputs. It must be easy to compute, hard to invert, have useful algebraic structure and be mathematically provable. \[x \mapsto f(x)\]</p>
+        <p>In order to encrypt data, a mapping function is required that maps secret inputs to encrypted outputs. It must be easy to compute, hard to invert, have useful algebraic structure and be mathematically provable. \[x \mapsto f(x)\]</p>
         <div class="interactions">
           <svg class="art-mappings-svg" viewBox="0 0 480 154" style="width:100%;height:auto;display:block" role="img" aria-label="Four mapping diagrams: a one-to-one bijection, a spread mapping, a many-to-two mapping, and an all-to-one mapping.">
             <defs><marker id="cos-map-arrow" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="5.5" markerHeight="5.5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="currentColor" fill-opacity="0.75"/></marker></defs>

@@ -60,7 +60,7 @@
     .figure-numbering p { font-family: var(--mono); font-size: var(--ts13); color: var(--ink-faint); margin: 0; max-width: 60ch; text-align: center; }
 
     /* ── Primality span ───────────────────────────────────────────── */
-    .primality { font-family: var(--mono); font-size: var(--ts13); margin-left: var(--ms-1); }
+    .primality, .coprimality { font-family: var(--mono); font-size: var(--ts13); margin-left: var(--ms-1); }
 
     /* ── RSA auth image ───────────────────────────────────────────── */
     .art-rsa-img { display: block; margin: var(--ms3) 0; width: 100%; height: auto; border: 1px solid var(--rule); padding: var(--ms1); box-sizing: border-box; }
@@ -309,6 +309,7 @@
                 <button type="button" class="num-down">▼</button>
               </span>
             </span>
+            <span class="coprimality"></span>
           </p>
           <p class="mod-seq">\(\zeta\) sequence:</p>
           <div id="alm-out-mb-sequence" class="mod-seq-box"></div>
@@ -694,6 +695,7 @@
                 <button type="button" class="num-down">▼</button>
               </span>
             </span>
+            <span class="coprimality"></span>
           </p>
           <p class="mod-seq">\(\zeta\) sequence:</p>
           <div id="cos-out-mb-sequence" class="mod-seq-box"></div>
@@ -950,8 +952,20 @@ function initArticle(p) {
     seqDiv.textContent = sequence.join(', ');
   }
 
+  // Coprime indicator for the base-as-input exponent e (coprime with n-1)
+  function updateBaseCoprime() {
+    var span = document.querySelector('#' + p + '-layer .coprimality');
+    if (!span) return;
+    var n = parseInt(nMBInput.value);
+    var e = parseInt(eMBInput.value);
+    var ok = !isNaN(n) && !isNaN(e) && n > 1 && gcd(e, n - 1) === 1;
+    span.textContent = ok ? ' (coprime)' : ' (not coprime)';
+    span.style.color = ok ? 'green' : 'red';
+  }
+
   // Base as input: map x -> x^e mod n for x = 1..n-1
   function drawBaseClock() {
+    updateBaseCoprime();
     var n = parseInt(nMBInput.value);
     var e = parseInt(eMBInput.value);
     if (isNaN(n) || isNaN(e) || n < 2) return;

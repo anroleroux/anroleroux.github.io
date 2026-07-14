@@ -164,11 +164,19 @@
       </section>
       <section>
         <h2 class="num ref">Key Exchange</h2>
-        <p>Diffie-Hellman (DH) key exchange was published in 1967 as a method to exchange a secret key over an insecure channel. It uses the hardness of the Discrete Logarithm Problem to calculate an irreversible representation of a secret key. The representation can be sent over an insecure channel. No one can do anything with the representation, except the communicating parties that use it to obtain a shared secret key.</p>
+        <p>Diffie-Hellman (DH) key exchange was published in 1967 as a method to exchange a secret key over an insecure channel. It uses the hardness of the Discrete Logarithm Problem to calculate an irreversible representation of a secret key. The representation can be sent over an insecure channel. No one can do anything with it, except the communicating parties that use it to obtain a shared secret key.</p>
         <p>Consider a secret key \(a\) and its public representation \(A\) that is owned by Alice. \(A\) can be obtained with \[A = f(g,a,n) = g^a \bmod{n}\]</p>
         <p>
-          where \(g\) is a base and \(n\) is a large number.
-          At this stage it's only important to understand there is a function \(f\) that is used in two ways. The modular exponentiation will be explained in the next section.
+          where \(n\) is a large prime number and \(g\) is a fixed base.
+          At this stage it's only important to understand there is a function \(f\) that encrypts a secret. The form of \(f\) will be explained in section <span class="figure-number" data-fid="modular-exponentiation"></span>.
+        </p>
+        <p>
+          Alice sends \(A\) to Bob that computes \(z\).
+          \[\begin{align}
+            f(A,b,n) &= A^b \bmod{n} \\
+            &= g^{a b} \bmod{n} \\
+            &= z \\
+          \end{align}\]
         </p>
         <p>
           Bob does the same to obtain \(B\) with his secret key \(b\), and sends it to Alice to compute \(z\).
@@ -179,23 +187,18 @@
             &= z \\
           \end{align}\]
         </p>
-        <p>
-          Bob can also get to the same \(z\) by using \(A\) and \(b\).
-          \[\begin{align}
-            f(A,b,n) &= A^b \bmod{n} \\
-            &= g^{a b} \bmod{n} \\
-            &= z \\
-          \end{align}\]
-        </p>
         <div class="interactions inlim">
           <img src="DHAuth.svg" alt="The Diffie-Hellman key exchange method." class="art-rsa-img" />
           <div class="figure-numbering ref num" data-fig="dh-diagram" data-label="Figure"><p>The Diffie-Hellman key exchange method.</p></div>
         </div>
-        <p>Note that the same private key (\(z\)) was established without exposing secret keys \(a\) or \(b\) and no one can compute \(z\) with only \(g\), \(n\), \(A\) and \(B\). The function \(f\) is introduced and becomes a center piece in the rest of the article.</p>
+        <p>Note that the same private key (\(z\)) was established without exposing secret keys \(a\) or \(b\) and no one can compute \(z\) with only \(g\), \(n\), \(A\) and \(B\).</p>
       </section>
       <section>
-        <h2 class="num">Modular Exponentiation</h2>
-        <p>The modular exponentiation function, \(f\), introduced in section <span class="figure-number" data-fid="key-exchange"></span> is a core machine used in cryptography. A mapping function is required that maps secret inputs to encrypted outputs. It must be easy to compute, hard to invert, have useful algebraic structure and be mathematically provable. \[x \mapsto f(x)\] \[f(x) = \text{&lt;base&gt;}^{\text{&lt;exponent&gt;}} \bmod \text{&lt;modulus&gt;}\]</p>
+        <h2 class="num ref">Modular Exponentiation</h2>
+        <p>The modular exponentiation function, denoted \(f\), was introduced in section <span class="figure-number" data-fid="key-exchange"></span>. It has the form: \[f(\text{&lt;base&gt;},\text{&lt;exponent&gt;},\text{&lt;modulus&gt;}) = \text{&lt;base&gt;}^{\text{&lt;exponent&gt;}} \bmod \text{&lt;modulus&gt;}\]</p>
+        <p>This is core machinery in cryptography and is explained in this section.</p>
+        <h3 class="num">Mappings</h3>
+        <p>A mapping function is required that maps secret inputs to encrypted outputs. It must be easy to compute, hard to invert, have useful algebraic structure and be mathematically provable. \[x \mapsto f(x)\]</p>
         <div class="interactions">
           <svg class="art-mappings-svg" viewBox="0 0 480 154" style="width:100%;height:auto;display:block" role="img" aria-label="Four mapping diagrams: a one-to-one bijection, a spread mapping, a many-to-two mapping, and an all-to-one mapping.">
             <defs><marker id="alm-map-arrow" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="5.5" markerHeight="5.5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="currentColor" fill-opacity="0.75"/></marker></defs>
@@ -550,11 +553,19 @@
       </section>
       <section>
         <h2 class="num ref">Key Exchange</h2>
-        <p>Diffie-Hellman (DH) key exchange was published in 1967 as a method to exchange a secret key over an insecure channel. It uses the hardness of the Discrete Logarithm Problem to calculate an irreversible representation of a secret key. The representation can be sent over an insecure channel. No one can do anything with the representation, except the communicating parties that use it to obtain a shared secret key.</p>
+        <p>Diffie-Hellman (DH) key exchange was published in 1967 as a method to exchange a secret key over an insecure channel. It uses the hardness of the Discrete Logarithm Problem to calculate an irreversible representation of a secret key. The representation can be sent over an insecure channel. No one can do anything with it, except the communicating parties that use it to obtain a shared secret key.</p>
         <p>Consider a secret key \(a\) and its public representation \(A\) that is owned by Alice. \(A\) can be obtained with \[A = f(g,a,n) = g^a \bmod{n}\]</p>
         <p>
-          where \(g\) is a base and \(n\) is a large number.
-          At this stage it's only important to understand there is a function \(f\) that is used in two ways. The modular exponentiation will be explained in the next section.
+          where \(n\) is a large prime number and \(g\) is a fixed base.
+          At this stage it's only important to understand there is a function \(f\) that encrypts a secret. The form of \(f\) will be explained in section <span class="figure-number" data-fid="modular-exponentiation"></span>.
+        </p>
+        <p>
+          Alice sends \(A\) to Bob that computes \(z\).
+          \[\begin{align}
+            f(A,b,n) &= A^b \bmod{n} \\
+            &= g^{a b} \bmod{n} \\
+            &= z \\
+          \end{align}\]
         </p>
         <p>
           Bob does the same to obtain \(B\) with his secret key \(b\), and sends it to Alice to compute \(z\).
@@ -565,23 +576,18 @@
             &= z \\
           \end{align}\]
         </p>
-        <p>
-          Bob can also get to the same \(z\) by using \(A\) and \(b\).
-          \[\begin{align}
-            f(A,b,n) &= A^b \bmod{n} \\
-            &= g^{a b} \bmod{n} \\
-            &= z \\
-          \end{align}\]
-        </p>
         <div class="interactions inlim">
           <img src="DHAuth.svg" alt="The Diffie-Hellman key exchange method." class="art-rsa-img" />
           <div class="figure-numbering ref num" data-fig="dh-diagram" data-label="Figure"><p>The Diffie-Hellman key exchange method.</p></div>
         </div>
-        <p>Note that the same private key (\(z\)) was established without exposing secret keys \(a\) or \(b\) and no one can compute \(z\) with only \(g\), \(n\), \(A\) and \(B\). The function \(f\) is introduced and becomes a center piece in the rest of the article.</p>
+        <p>Note that the same private key (\(z\)) was established without exposing secret keys \(a\) or \(b\) and no one can compute \(z\) with only \(g\), \(n\), \(A\) and \(B\).</p>
       </section>
       <section>
-        <h2 class="num">Modular Exponentiation</h2>
-        <p>The modular exponentiation function, \(f\), introduced in section <span class="figure-number" data-fid="key-exchange"></span> is a core machine used in cryptography. A mapping function is required that maps secret inputs to encrypted outputs. It must be easy to compute, hard to invert, have useful algebraic structure and be mathematically provable. \[x \mapsto f(x)\] \[f(x) = \text{&lt;base&gt;}^{\text{&lt;exponent&gt;}} \bmod \text{&lt;modulus&gt;}\]</p>
+        <h2 class="num ref">Modular Exponentiation</h2>
+        <p>The modular exponentiation function, denoted \(f\), was introduced in section <span class="figure-number" data-fid="key-exchange"></span>. It has the form: \[f(\text{&lt;base&gt;},\text{&lt;exponent&gt;},\text{&lt;modulus&gt;}) = \text{&lt;base&gt;}^{\text{&lt;exponent&gt;}} \bmod \text{&lt;modulus&gt;}\]</p>
+        <p>This is core machinery in cryptography and is explained in this section.</p>
+        <h3 class="num">Mappings</h3>
+        <p>A mapping function is required that maps secret inputs to encrypted outputs. It must be easy to compute, hard to invert, have useful algebraic structure and be mathematically provable. \[x \mapsto f(x)\]</p>
         <div class="interactions">
           <svg class="art-mappings-svg" viewBox="0 0 480 154" style="width:100%;height:auto;display:block" role="img" aria-label="Four mapping diagrams: a one-to-one bijection, a spread mapping, a many-to-two mapping, and an all-to-one mapping.">
             <defs><marker id="cos-map-arrow" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="5.5" markerHeight="5.5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="currentColor" fill-opacity="0.75"/></marker></defs>

@@ -311,8 +311,8 @@ function plotLogDLP(opts) {
     if (!container) return;
     container.innerHTML = '';
 
-    var g = 2, n = 11;
-    var xs = d3.range(1, 11); // x = 1..10
+    var g = 2, n = 19;
+    var xs = d3.range(1, 19); // x = 1..18
     var contData = xs.map(function(x) { return { x: x, y: Math.pow(g, x) }; });
     var discData = xs.map(function(x) { return { x: x, y: Number(modPow(g, x, n)) }; });
 
@@ -342,12 +342,12 @@ function plotLogDLP(opts) {
 
         var pg = svg.append('g')
             .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
-        var xScale = d3.scaleLinear().domain([0, 10]).range([0, innerW]);
+        var xScale = d3.scaleLinear().domain([0, 18]).range([0, innerW]);
         var yScale = d3.scaleLinear().domain([0, yMax]).nice().range([innerH, 0]);
 
         pg.append('g')
             .attr('transform', 'translate(0,' + innerH + ')')
-            .call(d3.axisBottom(xScale).ticks(10))
+            .call(d3.axisBottom(xScale).ticks(9))
             .style('color', fg);
         pg.append('g')
             .call(d3.axisLeft(yScale).ticks(6))
@@ -375,6 +375,6 @@ function plotLogDLP(opts) {
             .text('x');
     }
 
-    panel(contData, Math.pow(g, 10), true, false);
+    panel(contData, Math.pow(g, 18), true, false);
     panel(discData, n - 1, false, true);
 }

@@ -60,7 +60,7 @@
     .figure-numbering p { font-family: var(--mono); font-size: var(--ts13); color: var(--ink-faint); margin: 0; max-width: 60ch; text-align: center; }
 
     /* ── Primality span ───────────────────────────────────────────── */
-    .primality { font-family: var(--mono); font-size: var(--ts13); margin-left: var(--ms-1); }
+    .primality, .coprimality { font-family: var(--mono); font-size: var(--ts13); margin-left: var(--ms-1); }
 
     /* ── RSA auth image ───────────────────────────────────────────── */
     .art-rsa-img { display: block; margin: var(--ms3) 0; width: 100%; height: auto; border: 1px solid var(--rule); padding: var(--ms1); box-sizing: border-box; }
@@ -164,25 +164,27 @@
       </section>
       <section>
         <h2 class="num ref">Key Exchange</h2>
-        <p>Diffie-Hellman (DH) key exchange was published in 1967 as a method to exchange a secret key over an insecure channel. It uses the hardness of the Discrete Logarithm Problem to calculate an irreversible representation of a secret key. The representation can be sent over an insecure channel. No one can do anything with the representation, except the communicating parties that use it to obtain a shared secret key.</p>
+        <p>Diffie-Hellman (DH) key exchange was published in 1976 as a method to exchange a secret key over an insecure channel. It uses the hardness of the Discrete Logarithm Problem to calculate an irreversible representation of a secret key. The representation can be sent over an insecure channel. No one can do anything with it, except the communicating parties that use it to obtain a shared secret key.</p>
         <p>Consider a secret key \(a\) and its public representation \(A\) that is owned by Alice. \(A\) can be obtained with \[A = f(g,a,n) = g^a \bmod{n}\]</p>
         <p>
-          where \(g\) is a base and \(n\) is a large number.
-          At this stage it's only important to understand there is a function \(f\) that is used in two ways. The modular exponentiation will be explained in the next section.
+          where \(n\) is a large prime number and \(g\) is a fixed base.
+          At this stage it's only important to understand that there is a function \(f\) that encrypts a secret. The form of \(f\) will be discussed in section <span class="figure-number" data-fid="modular-exponentiation"></span>.
         </p>
         <p>
-          Bob does the same to obtain \(B\) with his secret key \(b\), and sends it to Alice to compute \(z\).
+          Alice sends \(A\) to Bob that computes \(z\) with his secret key \(b\).
           \[\begin{align}
-            f(B,a,n) &= B^a \bmod{n} \\
-            &= g^{b a} \bmod{n} \\
+            f(A,b,n) &= A^b \bmod{n} \\
+            &= {g^a}^b \bmod{n} \\
             &= g^{a b} \bmod{n} \\
             &= z \\
           \end{align}\]
         </p>
         <p>
-          Bob can also get to the same \(z\) by using \(A\) and \(b\).
+          Bob also obtain \(B\) and sends it to Alice that also computes \(z\) with her secret key \(a\).
           \[\begin{align}
-            f(A,b,n) &= A^b \bmod{n} \\
+            f(B,a,n) &= B^a \bmod{n} \\
+            &= {g^b}^a \bmod{n} \\
+            &= g^{b a} \bmod{n} \\
             &= g^{a b} \bmod{n} \\
             &= z \\
           \end{align}\]
@@ -191,14 +193,16 @@
           <img src="DHAuth.svg" alt="The Diffie-Hellman key exchange method." class="art-rsa-img" />
           <div class="figure-numbering ref num" data-fig="dh-diagram" data-label="Figure"><p>The Diffie-Hellman key exchange method.</p></div>
         </div>
-        <p>Note that the same private key (\(z\)) was established without exposing secret keys \(a\) or \(b\) and no one can compute \(z\) with only \(g\), \(n\), \(A\) and \(B\). The function \(f\) is introduced and becomes a center piece in the rest of the article.</p>
+        <p>Note that the same private key (\(z\)) was established without exposing secret keys \(a\) or \(b\) and no one can compute \(z\) with only \(g\), \(n\), \(A\) and \(B\).</p>
       </section>
       <section>
-        <h2 class="num">Modular Exponentiation</h2>
-        <p>The modular exponentiation function, \(f\), introduced in section <span class="figure-number" data-fid="key-exchange"></span> is a core machine used in cryptography. A mapping function is required that maps secret inputs to encrypted outputs. It must be easy to compute, hard to invert, have useful algebraic structure and be mathematically provable. \[x \mapsto f(x)\] \[f(x) = \text{&lt;base&gt;}^{\text{&lt;exponent&gt;}} \bmod \text{&lt;modulus&gt;}\]</p>
+        <h2 class="num ref">Modular Exponentiation</h2>
+        <p>Function \(f\) introduced in section <span class="figure-number" data-fid="key-exchange"></span> is a modular exponentiation function. It has the form \[f(g,e,n) = g^e \bmod{n}\] where \(g\) is called the base, \(e\) the exponent and \(n\) the modulus. This is a workhorse in cryptography that gets unpacked in this section.</p>
+        <h3 class="num">Motivation</h3>
+        <p>In order to encrypt data, a mapping function is required that maps secret inputs to encrypted outputs. It must be easy to compute, hard to invert, have useful algebraic structure and be mathematically provable. A map can be mathematically expressed as \[x \mapsto f(x)\] but is simply one group of elements connected (mapped) to another group of elements. Figure <span class="figure-number" data-fid="mappings"></span> shows various mapping ranging from weak to strong.</p>
         <div class="interactions">
-          <svg class="art-mappings-svg" viewBox="0 0 480 154" style="width:100%;height:auto;display:block" role="img" aria-label="Four mapping diagrams: a one-to-one bijection, a spread mapping, a many-to-two mapping, and an all-to-one mapping.">
-            <defs><marker id="alm-map-arrow" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="5.5" markerHeight="5.5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="currentColor" fill-opacity="0.75"/></marker></defs>
+          <svg class="art-mappings-svg" viewBox="0 0 480 168" style="width:100%;height:auto;display:block" role="img" aria-label="Four mapping diagrams: (a) an analytically invertable mapping with bi-directional arrows, (b) a predictable one-directional function, (c) an incomplete cycle, and (d) a one-to-one bijection.">
+            <defs><marker id="alm-map-arrow" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="5.5" markerHeight="5.5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="currentColor" fill-opacity="0.75"/></marker></defs>
             <g transform="translate(0,0)">
               <rect x="12" y="18" width="20" height="14" rx="3" fill="currentColor" fill-opacity="0.05" stroke="currentColor" stroke-opacity="0.55" stroke-width="1"/>
               <rect x="12" y="46" width="20" height="14" rx="3" fill="currentColor" fill-opacity="0.05" stroke="currentColor" stroke-opacity="0.55" stroke-width="1"/>
@@ -210,11 +214,10 @@
               <rect x="88" y="74" width="20" height="14" rx="3" fill="currentColor" fill-opacity="0.05" stroke="currentColor" stroke-opacity="0.55" stroke-width="1"/>
               <rect x="88" y="102" width="20" height="14" rx="3" fill="currentColor" fill-opacity="0.05" stroke="currentColor" stroke-opacity="0.55" stroke-width="1"/>
               <rect x="88" y="130" width="20" height="14" rx="3" fill="currentColor" fill-opacity="0.05" stroke="currentColor" stroke-opacity="0.55" stroke-width="1"/>
-              <line x1="33" y1="25" x2="86" y2="53" stroke="currentColor" stroke-opacity="0.6" stroke-width="1.1" marker-end="url(#alm-map-arrow)"/>
-              <line x1="33" y1="53" x2="86" y2="109" stroke="currentColor" stroke-opacity="0.6" stroke-width="1.1" marker-end="url(#alm-map-arrow)"/>
-              <line x1="33" y1="81" x2="86" y2="25" stroke="currentColor" stroke-opacity="0.6" stroke-width="1.1" marker-end="url(#alm-map-arrow)"/>
-              <line x1="33" y1="109" x2="86" y2="137" stroke="currentColor" stroke-opacity="0.6" stroke-width="1.1" marker-end="url(#alm-map-arrow)"/>
-              <line x1="33" y1="137" x2="86" y2="81" stroke="currentColor" stroke-opacity="0.6" stroke-width="1.1" marker-end="url(#alm-map-arrow)"/>
+              <line x1="33" y1="25" x2="86" y2="25" stroke="currentColor" stroke-opacity="0.6" stroke-width="1.1" marker-start="url(#alm-map-arrow)" marker-end="url(#alm-map-arrow)"/>
+              <line x1="33" y1="53" x2="86" y2="81" stroke="currentColor" stroke-opacity="0.6" stroke-width="1.1" marker-start="url(#alm-map-arrow)" marker-end="url(#alm-map-arrow)"/>
+              <line x1="33" y1="81" x2="86" y2="137" stroke="currentColor" stroke-opacity="0.6" stroke-width="1.1" marker-start="url(#alm-map-arrow)" marker-end="url(#alm-map-arrow)"/>
+              <text x="60" y="162" text-anchor="middle" font-size="11" font-style="italic" fill="currentColor" fill-opacity="0.75">a</text>
             </g>
             <g transform="translate(120,0)">
               <rect x="12" y="18" width="20" height="14" rx="3" fill="currentColor" fill-opacity="0.05" stroke="currentColor" stroke-opacity="0.55" stroke-width="1"/>
@@ -230,6 +233,7 @@
               <line x1="33" y1="25" x2="86" y2="25" stroke="currentColor" stroke-opacity="0.6" stroke-width="1.1" marker-end="url(#alm-map-arrow)"/>
               <line x1="33" y1="53" x2="86" y2="81" stroke="currentColor" stroke-opacity="0.6" stroke-width="1.1" marker-end="url(#alm-map-arrow)"/>
               <line x1="33" y1="81" x2="86" y2="137" stroke="currentColor" stroke-opacity="0.6" stroke-width="1.1" marker-end="url(#alm-map-arrow)"/>
+              <text x="60" y="162" text-anchor="middle" font-size="11" font-style="italic" fill="currentColor" fill-opacity="0.75">b</text>
             </g>
             <g transform="translate(240,0)">
               <rect x="12" y="18" width="20" height="14" rx="3" fill="currentColor" fill-opacity="0.05" stroke="currentColor" stroke-opacity="0.55" stroke-width="1"/>
@@ -247,6 +251,7 @@
               <line x1="33" y1="81" x2="86" y2="25" stroke="currentColor" stroke-opacity="0.6" stroke-width="1.1" marker-end="url(#alm-map-arrow)"/>
               <line x1="33" y1="109" x2="86" y2="53" stroke="currentColor" stroke-opacity="0.6" stroke-width="1.1" marker-end="url(#alm-map-arrow)"/>
               <line x1="33" y1="137" x2="86" y2="25" stroke="currentColor" stroke-opacity="0.6" stroke-width="1.1" marker-end="url(#alm-map-arrow)"/>
+              <text x="60" y="162" text-anchor="middle" font-size="11" font-style="italic" fill="currentColor" fill-opacity="0.75">c</text>
             </g>
             <g transform="translate(360,0)">
               <rect x="12" y="18" width="20" height="14" rx="3" fill="currentColor" fill-opacity="0.05" stroke="currentColor" stroke-opacity="0.55" stroke-width="1"/>
@@ -259,32 +264,53 @@
               <rect x="88" y="74" width="20" height="14" rx="3" fill="currentColor" fill-opacity="0.05" stroke="currentColor" stroke-opacity="0.55" stroke-width="1"/>
               <rect x="88" y="102" width="20" height="14" rx="3" fill="currentColor" fill-opacity="0.05" stroke="currentColor" stroke-opacity="0.55" stroke-width="1"/>
               <rect x="88" y="130" width="20" height="14" rx="3" fill="currentColor" fill-opacity="0.05" stroke="currentColor" stroke-opacity="0.55" stroke-width="1"/>
-              <line x1="33" y1="25" x2="86" y2="25" stroke="currentColor" stroke-opacity="0.6" stroke-width="1.1" marker-end="url(#alm-map-arrow)"/>
-              <line x1="33" y1="53" x2="86" y2="25" stroke="currentColor" stroke-opacity="0.6" stroke-width="1.1" marker-end="url(#alm-map-arrow)"/>
+              <line x1="33" y1="25" x2="86" y2="53" stroke="currentColor" stroke-opacity="0.6" stroke-width="1.1" marker-end="url(#alm-map-arrow)"/>
+              <line x1="33" y1="53" x2="86" y2="109" stroke="currentColor" stroke-opacity="0.6" stroke-width="1.1" marker-end="url(#alm-map-arrow)"/>
               <line x1="33" y1="81" x2="86" y2="25" stroke="currentColor" stroke-opacity="0.6" stroke-width="1.1" marker-end="url(#alm-map-arrow)"/>
-              <line x1="33" y1="109" x2="86" y2="25" stroke="currentColor" stroke-opacity="0.6" stroke-width="1.1" marker-end="url(#alm-map-arrow)"/>
-              <line x1="33" y1="137" x2="86" y2="25" stroke="currentColor" stroke-opacity="0.6" stroke-width="1.1" marker-end="url(#alm-map-arrow)"/>
+              <line x1="33" y1="109" x2="86" y2="137" stroke="currentColor" stroke-opacity="0.6" stroke-width="1.1" marker-end="url(#alm-map-arrow)"/>
+              <line x1="33" y1="137" x2="86" y2="81" stroke="currentColor" stroke-opacity="0.6" stroke-width="1.1" marker-end="url(#alm-map-arrow)"/>
+              <text x="60" y="162" text-anchor="middle" font-size="11" font-style="italic" fill="currentColor" fill-opacity="0.75">d</text>
             </g>
           </svg>
-          <div class="figure-numbering ref num" data-fig="mappings" data-label="Figure"><p>Types of mappings from inputs to outputs: a one-to-one bijection, a spread mapping, a many-to-two mapping, and an all-to-one mapping.</p></div>
+          <div class="figure-numbering ref num" data-fig="mappings" data-label="Figure"><p>Types of mappings from inputs to outputs: a) analytically invertable, b) predictable function, c) incomplete cycle, d) a one-to-one bijection.</p></div>
         </div>
-        <p>Normal continuous functions like \(g^x\) have useful properties but can be analytically inverted making decryption trivial. \[X=g^x \iff x=\log_{g}(X)\]</p>
-        <p>Combining \(g^x\) with a modulus operation adds discreteness and irreversibility. Given an input \(x\), the output \(X\) is unpredictable as shown in figure <span class="figure-number" data-fid="log-dlp"></span>.</p>
+        <p>Normal continuous functions like \(g^x\) have useful algebraic properties but can be analytically inverted making decryption trivial. This is presented by the bi-directional arrows in figure <span class="figure-number" data-fid="mappings"></span>a. \[X=g^x \iff x=\log_{g}(X)\]</p>
+        <p>Given \(X\), the secret \(x\) can be instantly calculated. But even if analytic inversion is not possible (figure <span class="figure-number" data-fid="mappings"></span>b), continuous functions tend to be predictable. Combining \(g^x\) with a modulus operation adds deterministically unpredictable behaviour and irreversibility as shown in figure <span class="figure-number" data-fid="log-dlp"></span>.</p>
         <div class="interactions">
           <div id="alm-log-dlp" class="charta"></div>
-          <div class="figure-numbering ref num" data-fig="log-dlp" data-label="Figure"><p>Continuous vs Discrete Nature of DLP.</p></div>
+          <div class="figure-numbering ref num" data-fig="log-dlp" data-label="Figure"><p>Predictable continuous functions vs unpredictable modular exponentiation.</p></div>
         </div>
         <p>
-          The exponentiation also provides mathematical structure with which algebraic operations can be performed and proofs of security conducted.
+          The exponentiation provides mathematical structure with which algebraic operations can be performed and proofs of security conducted.
           Not only does exponentiation enables composibility that allows
-          \[\begin{align} g^b g^a \bmod{n} &= g^{b a} \bmod{n} \\ &= B^a \bmod{n} \end{align}\]
+          \[\begin{align} {g^b}^a \bmod{n} &= g^{b a} \bmod{n} \tag{eq 1} \\ &= B^a \bmod{n} \end{align}\]
           in Diffie-Hellman (section <span class="figure-number" data-fid="key-exchange"></span>).
           It also allows modular exponentiation to be backed up by rich mathematical theory like \(\mathbb{Z}^*_c\) in group theory that provides proofs for the behaviour of the function \(f\).
         </p>
         <p>Addressing the ease of computing \(f\), highly efficient methods exist even for large exponents. The Right-to-Left Binary Method, for example, can compute \(f(g,x,n)\) in \(\Theta(\log x)\) without actually calculating \(g^x\). Therefore, despite the existence of other one-way functions like elliptic curves, lattices, hash functions, isogenies, modular exponentiation is a preferred method for most cryptography.</p>
-        <p>\(f\) is actually used in two ways. One way is to keep the exponent fixed and have a variable base. The second is to have a fixed base and use the exponent as the input variable. \[x \mapsto f(x,e,n)\] \[x \mapsto f(g,x,n)\]</p>
+        <div class="insight block ref num" data-label="Insight">
+          <h4></h4>
+          <p>Modular Exponentiation use prime and semiprime modulo \(n\) in \[f(g,e,n) = g^e \bmod{n}\] and is an elegant cryptographic machine that provides easy forward computation, hard to reverse bijection mapping with rich mathematical theory backing it up.</p>
+        </div>
+        <h3 class="num">Application</h3>
+        <p>The perfect mapping of figure <span class="figure-number" data-fid="mappings"></span>d is on the cards but there are still criteria to be addressed. The fixed values in modular exponentiation must be chosen correctly to avoid partial mappings like the one shown in figure <span class="figure-number" data-fid="mappings"></span>c.</p>
+        <p>Modular exponentiation is actually used in two ways. One way is to keep the exponent fixed and have a variable base. The second is to have a fixed base and use the exponent as the input variable. \[x \mapsto f(x,e,n) = x^e \bmod{n}\] \[x \mapsto f(g,x,n) = g^x \bmod{n}\]</p>
+        <p>General securing criteria is:</p>
+        <ul>
+          <li>\(n\) must be large - Diffie-Hellman uses a minimum number size of 2048 bits (617 digits) to ensure it is computationally infeasible to test all combinations and find the secret (brute-force)</li>
+          <li>\(n\) must be prime or semiprime - if not:
+            <ul>
+              <li>the fixed values (\(e\) or \(g\)) might not meet the necessary criteria</li>
+              <li>\(n\) can be factored into smaller numbers making it easier to brute-force</li>
+              <li>the mapping may not even be cyclical, completely breaking encryption (e.g. \(4^x \bmod{16}\) results in \(\{4,0,0,...\}\))</li>
+            </ul>
+          </li>
+          <li>the fixed values (\(e\) or \(g\)) must adhere to the necessary criteria causing small mapping cycles that repeat, also making it easier to brute-force</li>
+        </ul>
+        <p>The last point is important. Lagrange’s theorem (group theory) states “the order of any element always divides the order of the group”. This is seen in action with, for example, \(4^x \bmod{17}\) that results in a repeating sequence \(\{4,16,13,1\}\). The 4 is not a generator of the group that is criteria explained in section <span class="figure-number" data-fid="exponent-as-input"></span>. The length of the sequence (4) divides the order of the group (\(n-1 = 16\)). The unpredictable behaviour is four times weaker.</p>
         <h3 class="num">Base as Input</h3>
-        <p>This map is used in RSA encryption. \(n\) must be a prime and \(e\) a coprime with \(n\).</p>
+        <p>This method is used in RSA encryption that is further discussed in section <span class="figure-number" data-fid="inventing-rsa"></span>. The exponent is kept fixed and the base is the value that gets encrypted. \[f(x,e,n) = x^e \bmod{n}\]</p>
+        <p>The criteria is simple. \(n\) must be prime and \(e\) a coprime with \(n-1\). Change the values of \(e\) and \(n\) below and see how the mapping cycles through the numbers in figure <span class="figure-number" data-fid="base-mod-clock"></span>.</p>
         <div class="interactions">
           <p>\(n\):
             <span class="number-input-wrapper">
@@ -304,22 +330,17 @@
                 <button type="button" class="num-down">▼</button>
               </span>
             </span>
+            <span class="coprimality"></span>
           </p>
           <p class="mod-seq">\(\zeta\) sequence:</p>
           <div id="alm-out-mb-sequence" class="mod-seq-box"></div>
           <svg id="alm-mb-clock-svg" class="art-clock-svg" viewBox="0 0 400 400" width="400" height="400"></svg>
           <div class="figure-numbering ref num" data-fig="base-mod-clock" data-label="Figure"><p>Modular clock diagram.</p></div>
         </div>
-        <h3 class="num">Exponent as Input</h3>
-        <p>The second map is used for Diffie-Hellman and uses the discrete logarithm problem.</p>
-        <div class="insight block ref num" data-label="Insight">
-          <h4></h4>
-          <p>The Discrete Logarithm Problem presents \[X = g^x \bmod{n}\] It is easy to calculate the modulo of an exponential function if the base \(g\), the power \(x\) and the modulus \(n\) is known, but it is hard to calculate \(x\) from \(X\) if \(n\) is large.</p>
-        </div>
-        <p>When \(g=2\) and \(n=11\), an attacker can start at \(x=1\) and test each secret up to \(x=10\) against \(X\). The sequence 2, 4, 8, 5, 10, 9, 7, 3, 6, 1 is produced and if \(X=5\) the attacker knows \(x=4\) (the 4th number in the sequence). When \(x\) gets to \(n-1\), \(X=1\), and then the sequence repeats. To avoid ambiguity, DH secrets are always chosen before repetition occurs. Fortunately there are many numbers to use when \(n\) is large.</p>
-        <p>The next criteria to adhere to is that \(n\) must be prime. When \(n=9\) and \(g=2\), the range of repeating numbers are \(\{2,4,8,7,5,1\}\). The secret can only be one of these numbers instead of utilizing the entire possible range of \(n-1\) numbers and an attacker has less numbers to test. This is because \(n\) is not a prime number.</p>
-        <p>A utilization ratio, \(\gamma\), can be expressed as the number of elements utilized, \(|\zeta|\), divided by the total number of elements in the group, \(n-1\). Thus, when \(n=15\) and \(g=2\), the utilization ratio, \[\gamma = \frac{|\zeta|}{n-1}=\frac{4}{14}\] is approximately 0.286. With \(n=19\) and \(g=2\) it cycles through all the numbers. Thus \(\gamma=1\), which is the case when \(n\) is prime, with one last caveat.</p>
-        <p>Figure <span class="figure-number" data-fid="mod-clock"></span> shows how many numbers are utilised with a clock diagram, depending on the \(n\) and \(g\) values selected in the input boxes. The number sequence is also printed.</p>
+        <h3 class="num ref">Exponent as Input</h3>
+        <p>This method is used for Diffie-Hellman and uses the Discrete Logarithm Problem \[X = g^x \bmod{n}\]</p>
+        <p>The criteria here is that \(n\) must be prime (or semiprime for RSA, section <span class="figure-number" data-fid="inventing-rsa"></span>) and \(g\) must be a generator of the group \(\{1,2,...,n-1\}\) (a primitive root modulo \(n\)). A utilization ratio, \(\gamma\), can be expressed as the number of elements utilized, \(|\zeta|\), divided by the total number of elements in the group, \(n-1\). Thus, when \(n=15\) and \(g=2\), \(\zeta = \{2,4,8,1\}\) and the utilization ratio, \[\gamma = \frac{|\zeta|}{n-1}=\frac{4}{14}\] is approximately 0.286. With \(n=19\) and \(g=2\) it cycles through all the numbers.</p>
+        <p>Figure <span class="figure-number" data-fid="mod-clock"></span> shows how many numbers are utilised with a clock diagram, depending on the \(n\) and \(g\) values selected in the input boxes.</p>
         <div class="interactions">
           <p>\(n\):
             <span class="number-input-wrapper">
@@ -350,8 +371,8 @@
           <div id="alm-tooltip" class="gamman tooltip"></div>
           <div class="figure-numbering ref num" data-fig="gamma-n-plot" data-label="Figure"><p>Plot of \(\gamma\) against \(n\) with prime \(n\) values highlighted with green lines.</p></div>
         </div>
-        <p>Figure <span class="figure-number" data-fid="gamma-n-plot"></span> shows a graph of \(\gamma\) over a range of \(n\) values. Even numbers of \(n\) are omitted and prime \(n\) numbers are highlighted with green vertical lines. Click on the points to set \(n\) and \(g\) above and see how each pattern look in the modular clock diagram.</p>
-        <p>The expectation is that \(\gamma=1\) at every prime but some shows \(\gamma<1\). The reason is that, even with \(n\) being prime, \(g\) needs to be a generator for \(n\). Switching between the \(g\) values on figure <span class="figure-number" data-fid="gamma-n-plot"></span> reveals the generators for each prime number. There is a procedure for finding a generator for a prime number but DH typically uses predefined n-g combinations.</p>
+        <p>Figure <span class="figure-number" data-fid="gamma-n-plot"></span> shows a graph of \(\gamma\) over a range of \(n\) values. Even numbers of \(n\) are omitted and prime \(n\) numbers are highlighted with green vertical lines. Click on the points to set \(n\) and \(g\) above and see how each pattern look in figure <span class="figure-number" data-fid="mod-clock"></span>.</p>
+        <p>The expectation is that \(\gamma=1\) at every prime but the matching generator \(g\) must also be selected. Switching between the \(g\) values on figure <span class="figure-number" data-fid="gamma-n-plot"></span> reveals the generators for each group of modulus \(n\). There is a procedure for finding a generator for a group but DH typically uses predefined n-g combinations.</p>
       </section>
       <section>
         <h2 class="num">The Atoms of Math</h2>
@@ -376,27 +397,34 @@
             &=2^4*3^2*5*7
           \end{align}\]
         </p>
-        <p>Notice that all the factors are prime numbers. In fact, every number has only one list of factors that is all prime. This is called the Fundamental Theorem of Arithmetic and was detailed by Carl Friedrich Gauss in 1801. Admittedly I was surprised to only realise this now, especially since it's so fundamental.</p>
+        <p>Notice that all the factors are prime numbers. In fact, every number has only one list of factors that is all prime. This is called the Fundamental Theorem of Arithmetic and was proved by Carl Friedrich Gauss in 1801 with original credit to Euclid. Admittedly I was surprised to only realise this while writing this article.</p>
         <p>Prime numbers are not just weird numbers in everyday counting numbers, they are actually the atoms of which all numbers are made up of. This also means that two prime numbers can be selected, and the product of them will only have those two numbers as factors.</p>
         <p>When asked to find the factors of 679, only 17 will be found to divide it together with 41. When asked about 22790237 one will have to go up to 3187. It becomes apparent that factoring products of two large primes is difficult.</p>
-        <div class="insight block ref num" data-label="Insight">
+        <div class="insight block ref num" data-label="Insight" data-ref="prime-factors">
           <h4></h4>
           <p>Multiplying two large prime numbers results in a new prime number with only the two primes as factors. The multiplication (forward) is easy, but factoring it (backwards) into the two original primes is hard.</p>
         </div>
       </section>
       <section>
-        <h2 class="num">Inventing RSA</h2>
-        <p>With asymmetric cryptography each person has a public key (\(S\), \(R\)) and a private key (\(s\), \(r\)). Anyone can see the public keys but only the owners ever know the private keys. The sender can encrypt a message with the recipient's public key (\(R\)) and only the recipient can decrypt the message with the matching private key (\(r\)). Encryption is established without exchanging any secret keys.</p>
-        <p>The method in Insight 1 can also be used to encrypt messages. The message \(m\) is used instead of the base \(g\) and raised to the power of an encryption key \(e\). The encrypted message \(M\) is thus \[M=m^e \bmod{n}\] However, it will be convenient to also be able to decrypt \(M\) in the same way by applying a decryption key as another power to get back to \(m\) \[m=M^d \bmod{n}\] which is equivalent to \[\begin{equation} m \equiv m^{e d} \pmod{n} \tag{eq 1} \end{equation}\]</p>
+        <h2 class="num ref">Inventing RSA</h2>
+        <p>With asymmetric cryptography each person has a public key (\(S\), \(R\)) and a private key (\(s\), \(r\)). Anyone can see the public keys but only the owners ever know their own private keys. The sender can encrypt a message with the recipient's public key \(R\) and only the recipient can decrypt the message with the matching private key \(r\). Encryption is established without exchanging any secret keys.</p>
+        <p>The modular exponentiation method in section <span class="figure-number" data-fid="exponent-as-input"></span> can be used to encrypt messages. The message \(m\) is used for the base \(g\) and raised to the power of an encryption key \(e\). The encrypted message \(M\) is \[M = m^e \bmod{n}\]</p>
+        <p>Equation 1 presents the power combination mechanism that will be convenient for decryption of \(M\) by applying a decryption key as another power to get back to \(m\). \[\begin{align} m = M^d \bmod{n} &= {m^e}^d \bmod{n} \\ &= m^{ed} \bmod{n} \end{align}\]</p>
+        <p>It's worth switching to modulo congruence notation. It is like an equal sign, just under the condition of mod \(n\). \[4+3 \neq 1\] \[4+3 \equiv 1 \pmod{6}\]</p>
+        <p>Similarly \[m \equiv m^{ed} \pmod{n} \tag{eq 2}\]</p>
+        <p>The idea is simple but finding \(e\) and \(d\) to be able to accomplish encryption and decryption requires a deep turn in mathematics history.</p>
         <p>Rivest, Shamir and Adleman published RSA in 1977 in which they derived \(e\) and \(d\) to encrypt and decrypt messages. The RSA authors build on math discovered three centuries earlier. The initial version of Euler's theorem was first published in 1736 as a proof of Fermat's little theorem (published without proof in 1640).</p>
-        <p>Refer back to how modulo sequences went though the numbers in section 1. It's clear in the short vulnerable sets that the sequences always end with one \(\{1,2,4,8,1,2,4,8,1,...\}\). The same is true when a large prime modulus is used. This phenomenon can be used to decrypt an encrypted value by moving it forward to the end of the sequence.</p>
-        <p>Euler's theorem: \[m^{\varphi(n)} \equiv 1 \pmod{n}\] shows that there is a power (Euler's Totient) one can raise a base to, that results in a remainder of 1. So if one power (in an exponent) is used to encrypt a value, a second power can be calculated that decrypts it again.</p>
-        <p>It starts by generating two large prime numbers, \(p\) and \(q\), and calculating the product. \[n = p q\] \(n\) is a new prime number that can be publicly shared while \(p\) and \(q\) remain secret because of the irreversibility pointed out by Insight 2. Thus, \(p\) and \(q\) can still be used to calculate Euler's Totient: \[\varphi(n) = (p-1)(q-1)\]</p>
-        <p>\(e\) and \(d\) need to be calculated using \(\varphi(n)\). First, \(1 \pmod{n}\) is isolated in equation 1.</p>
-        <p>\[m^{ed} \equiv m \pmod{n} \iff m^{ed-1} \equiv 1 \pmod{n}\]</p>
+        <p>Refer back to how modulo sequences went though the numbers in section <span class="figure-number" data-fid="exponent-as-input"></span>. Output sequences always end with one like, for example, \(2^x \bmod{11}\) results in \(\{2,4,8,5,10,9,7,3,6,1\}\). This phenomenon can be used to decrypt an encrypted value by moving it forward to the end of the sequence.</p>
+        <div class="insight block ref num" data-label="Insight">
+          <h4></h4>
+          <p>Euler's theorem \[m^{\varphi(n)} \equiv 1 \pmod{n}\] shows that there is a power (Euler's Totient, 1763) one can raise a base to that results in a remainder of 1. So if one power (in an exponent) is used to encrypt a value, a second power can be calculated that decrypts it again.</p>
+        </div>
+        <p>It starts by generating two large prime numbers, \(p\) and \(q\), and calculating the product. \[n = p q\] \(n\) is a new prime number that can be publicly shared while \(p\) and \(q\) remain secret because of the irreversibility pointed out by Insight <span class="figure-number" data-fid="prime-factors"></span>. Thus, \(p\) and \(q\) can still be used to calculate Euler's Totient: \[\varphi(n) = (p-1)(q-1)\]</p>
+        <p>\(e\) and \(d\) need to be calculated using \(\varphi(n)\). First, \(1 \pmod{n}\) is isolated in equation 2.</p>
+        <p>\[m^{ed} \equiv m \iff m^{ed-1} \equiv 1 \pmod{n}\]</p>
         <p>Secondly, Euler's theorem is modified to handle any multiple of \(\varphi(n)\). \[(m^{\varphi(n)})^k \equiv 1^k \equiv 1 \pmod{n}\]</p>
         <p>The latter two equations can now be combined. \[m^{\varphi(n)k} \equiv m^{ed-1} \equiv 1 \pmod{n}\]</p>
-        <p>The exponents \(e\) and \(d\) can then be calculated with: \[ed-1 = \varphi(n)k \iff ed-\varphi(n)k = 1\]</p>
+        <p>The exponents \(e\) and \(d\) can then be calculated with: \[ed-1 = \varphi(n)k \iff ed = \varphi(n)k+1 \iff ed-\varphi(n)k = 1\]</p>
         <p>that can be transformed into modulo form (this is why the multiple \(k\) was required earlier): \[ed \equiv 1 \pmod{\varphi(n)}\]</p>
       </section>
       <section>
@@ -427,7 +455,7 @@
           <p>\(n\):<span id="alm-out-n"></span></p>
           <p>\(\varphi(n)\):<span id="alm-out-phi"></span></p>
         </div>
-        <p>\(e\) must be smaller than \(\varphi(n)\) and be coprime with it. A number that, in its binary form, has zeros and starts and ends with 1 is a preferred for \(e\). \(d\) is then obtained by finding \(d\) where \(e d \bmod{\varphi(n)} = 1\).</p>
+        <p>\(e\) must be smaller than \(\varphi(n)\) and be coprime with it. A number that, in its binary form, has zeros and starts and ends with 1 is a preferred for \(e\). \(d\) is then obtained by finding a \(d\) where \[ed \bmod{\varphi(n)} = 1\] \[\gcd(e,\varphi(n)) = 1\] \[ed \equiv 1 \pmod{\varphi(n)}\]</p>
         <div class="interactions">
           <p>\(e\):<span id="alm-out-e"></span></p>
           <p>\(d\):<span id="alm-out-d"></span></p>
@@ -555,25 +583,27 @@
       </section>
       <section>
         <h2 class="num ref">Key Exchange</h2>
-        <p>Diffie-Hellman (DH) key exchange was published in 1967 as a method to exchange a secret key over an insecure channel. It uses the hardness of the Discrete Logarithm Problem to calculate an irreversible representation of a secret key. The representation can be sent over an insecure channel. No one can do anything with the representation, except the communicating parties that use it to obtain a shared secret key.</p>
+        <p>Diffie-Hellman (DH) key exchange was published in 1976 as a method to exchange a secret key over an insecure channel. It uses the hardness of the Discrete Logarithm Problem to calculate an irreversible representation of a secret key. The representation can be sent over an insecure channel. No one can do anything with it, except the communicating parties that use it to obtain a shared secret key.</p>
         <p>Consider a secret key \(a\) and its public representation \(A\) that is owned by Alice. \(A\) can be obtained with \[A = f(g,a,n) = g^a \bmod{n}\]</p>
         <p>
-          where \(g\) is a base and \(n\) is a large number.
-          At this stage it's only important to understand there is a function \(f\) that is used in two ways. The modular exponentiation will be explained in the next section.
+          where \(n\) is a large prime number and \(g\) is a fixed base.
+          At this stage it's only important to understand that there is a function \(f\) that encrypts a secret. The form of \(f\) will be discussed in section <span class="figure-number" data-fid="modular-exponentiation"></span>.
         </p>
         <p>
-          Bob does the same to obtain \(B\) with his secret key \(b\), and sends it to Alice to compute \(z\).
+          Alice sends \(A\) to Bob that computes \(z\) with his secret key \(b\).
           \[\begin{align}
-            f(B,a,n) &= B^a \bmod{n} \\
-            &= g^{b a} \bmod{n} \\
+            f(A,b,n) &= A^b \bmod{n} \\
+            &= {g^a}^b \bmod{n} \\
             &= g^{a b} \bmod{n} \\
             &= z \\
           \end{align}\]
         </p>
         <p>
-          Bob can also get to the same \(z\) by using \(A\) and \(b\).
+          Bob also obtain \(B\) and sends it to Alice that also computes \(z\) with her secret key \(a\).
           \[\begin{align}
-            f(A,b,n) &= A^b \bmod{n} \\
+            f(B,a,n) &= B^a \bmod{n} \\
+            &= {g^b}^a \bmod{n} \\
+            &= g^{b a} \bmod{n} \\
             &= g^{a b} \bmod{n} \\
             &= z \\
           \end{align}\]
@@ -582,14 +612,16 @@
           <img src="DHAuth.svg" alt="The Diffie-Hellman key exchange method." class="art-rsa-img" />
           <div class="figure-numbering ref num" data-fig="dh-diagram" data-label="Figure"><p>The Diffie-Hellman key exchange method.</p></div>
         </div>
-        <p>Note that the same private key (\(z\)) was established without exposing secret keys \(a\) or \(b\) and no one can compute \(z\) with only \(g\), \(n\), \(A\) and \(B\). The function \(f\) is introduced and becomes a center piece in the rest of the article.</p>
+        <p>Note that the same private key (\(z\)) was established without exposing secret keys \(a\) or \(b\) and no one can compute \(z\) with only \(g\), \(n\), \(A\) and \(B\).</p>
       </section>
       <section>
-        <h2 class="num">Modular Exponentiation</h2>
-        <p>The modular exponentiation function, \(f\), introduced in section <span class="figure-number" data-fid="key-exchange"></span> is a core machine used in cryptography. A mapping function is required that maps secret inputs to encrypted outputs. It must be easy to compute, hard to invert, have useful algebraic structure and be mathematically provable. \[x \mapsto f(x)\] \[f(x) = \text{&lt;base&gt;}^{\text{&lt;exponent&gt;}} \bmod \text{&lt;modulus&gt;}\]</p>
+        <h2 class="num ref">Modular Exponentiation</h2>
+        <p>Function \(f\) introduced in section <span class="figure-number" data-fid="key-exchange"></span> is a modular exponentiation function. It has the form \[f(g,e,n) = g^e \bmod{n}\] where \(g\) is called the base, \(e\) the exponent and \(n\) the modulus. This is a workhorse in cryptography that gets unpacked in this section.</p>
+        <h3 class="num">Motivation</h3>
+        <p>In order to encrypt data, a mapping function is required that maps secret inputs to encrypted outputs. It must be easy to compute, hard to invert, have useful algebraic structure and be mathematically provable. A map can be mathematically expressed as \[x \mapsto f(x)\] but is simply one group of elements connected (mapped) to another group of elements. Figure <span class="figure-number" data-fid="mappings"></span> shows various mapping ranging from weak to strong.</p>
         <div class="interactions">
-          <svg class="art-mappings-svg" viewBox="0 0 480 154" style="width:100%;height:auto;display:block" role="img" aria-label="Four mapping diagrams: a one-to-one bijection, a spread mapping, a many-to-two mapping, and an all-to-one mapping.">
-            <defs><marker id="cos-map-arrow" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="5.5" markerHeight="5.5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="currentColor" fill-opacity="0.75"/></marker></defs>
+          <svg class="art-mappings-svg" viewBox="0 0 480 168" style="width:100%;height:auto;display:block" role="img" aria-label="Four mapping diagrams: (a) an analytically invertable mapping with bi-directional arrows, (b) a predictable one-directional function, (c) an incomplete cycle, and (d) a one-to-one bijection.">
+            <defs><marker id="cos-map-arrow" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="5.5" markerHeight="5.5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="currentColor" fill-opacity="0.75"/></marker></defs>
             <g transform="translate(0,0)">
               <rect x="12" y="18" width="20" height="14" rx="3" fill="currentColor" fill-opacity="0.05" stroke="currentColor" stroke-opacity="0.55" stroke-width="1"/>
               <rect x="12" y="46" width="20" height="14" rx="3" fill="currentColor" fill-opacity="0.05" stroke="currentColor" stroke-opacity="0.55" stroke-width="1"/>
@@ -601,11 +633,10 @@
               <rect x="88" y="74" width="20" height="14" rx="3" fill="currentColor" fill-opacity="0.05" stroke="currentColor" stroke-opacity="0.55" stroke-width="1"/>
               <rect x="88" y="102" width="20" height="14" rx="3" fill="currentColor" fill-opacity="0.05" stroke="currentColor" stroke-opacity="0.55" stroke-width="1"/>
               <rect x="88" y="130" width="20" height="14" rx="3" fill="currentColor" fill-opacity="0.05" stroke="currentColor" stroke-opacity="0.55" stroke-width="1"/>
-              <line x1="33" y1="25" x2="86" y2="53" stroke="currentColor" stroke-opacity="0.6" stroke-width="1.1" marker-end="url(#cos-map-arrow)"/>
-              <line x1="33" y1="53" x2="86" y2="109" stroke="currentColor" stroke-opacity="0.6" stroke-width="1.1" marker-end="url(#cos-map-arrow)"/>
-              <line x1="33" y1="81" x2="86" y2="25" stroke="currentColor" stroke-opacity="0.6" stroke-width="1.1" marker-end="url(#cos-map-arrow)"/>
-              <line x1="33" y1="109" x2="86" y2="137" stroke="currentColor" stroke-opacity="0.6" stroke-width="1.1" marker-end="url(#cos-map-arrow)"/>
-              <line x1="33" y1="137" x2="86" y2="81" stroke="currentColor" stroke-opacity="0.6" stroke-width="1.1" marker-end="url(#cos-map-arrow)"/>
+              <line x1="33" y1="25" x2="86" y2="25" stroke="currentColor" stroke-opacity="0.6" stroke-width="1.1" marker-start="url(#cos-map-arrow)" marker-end="url(#cos-map-arrow)"/>
+              <line x1="33" y1="53" x2="86" y2="81" stroke="currentColor" stroke-opacity="0.6" stroke-width="1.1" marker-start="url(#cos-map-arrow)" marker-end="url(#cos-map-arrow)"/>
+              <line x1="33" y1="81" x2="86" y2="137" stroke="currentColor" stroke-opacity="0.6" stroke-width="1.1" marker-start="url(#cos-map-arrow)" marker-end="url(#cos-map-arrow)"/>
+              <text x="60" y="162" text-anchor="middle" font-size="11" font-style="italic" fill="currentColor" fill-opacity="0.75">a</text>
             </g>
             <g transform="translate(120,0)">
               <rect x="12" y="18" width="20" height="14" rx="3" fill="currentColor" fill-opacity="0.05" stroke="currentColor" stroke-opacity="0.55" stroke-width="1"/>
@@ -621,6 +652,7 @@
               <line x1="33" y1="25" x2="86" y2="25" stroke="currentColor" stroke-opacity="0.6" stroke-width="1.1" marker-end="url(#cos-map-arrow)"/>
               <line x1="33" y1="53" x2="86" y2="81" stroke="currentColor" stroke-opacity="0.6" stroke-width="1.1" marker-end="url(#cos-map-arrow)"/>
               <line x1="33" y1="81" x2="86" y2="137" stroke="currentColor" stroke-opacity="0.6" stroke-width="1.1" marker-end="url(#cos-map-arrow)"/>
+              <text x="60" y="162" text-anchor="middle" font-size="11" font-style="italic" fill="currentColor" fill-opacity="0.75">b</text>
             </g>
             <g transform="translate(240,0)">
               <rect x="12" y="18" width="20" height="14" rx="3" fill="currentColor" fill-opacity="0.05" stroke="currentColor" stroke-opacity="0.55" stroke-width="1"/>
@@ -638,6 +670,7 @@
               <line x1="33" y1="81" x2="86" y2="25" stroke="currentColor" stroke-opacity="0.6" stroke-width="1.1" marker-end="url(#cos-map-arrow)"/>
               <line x1="33" y1="109" x2="86" y2="53" stroke="currentColor" stroke-opacity="0.6" stroke-width="1.1" marker-end="url(#cos-map-arrow)"/>
               <line x1="33" y1="137" x2="86" y2="25" stroke="currentColor" stroke-opacity="0.6" stroke-width="1.1" marker-end="url(#cos-map-arrow)"/>
+              <text x="60" y="162" text-anchor="middle" font-size="11" font-style="italic" fill="currentColor" fill-opacity="0.75">c</text>
             </g>
             <g transform="translate(360,0)">
               <rect x="12" y="18" width="20" height="14" rx="3" fill="currentColor" fill-opacity="0.05" stroke="currentColor" stroke-opacity="0.55" stroke-width="1"/>
@@ -650,26 +683,47 @@
               <rect x="88" y="74" width="20" height="14" rx="3" fill="currentColor" fill-opacity="0.05" stroke="currentColor" stroke-opacity="0.55" stroke-width="1"/>
               <rect x="88" y="102" width="20" height="14" rx="3" fill="currentColor" fill-opacity="0.05" stroke="currentColor" stroke-opacity="0.55" stroke-width="1"/>
               <rect x="88" y="130" width="20" height="14" rx="3" fill="currentColor" fill-opacity="0.05" stroke="currentColor" stroke-opacity="0.55" stroke-width="1"/>
-              <line x1="33" y1="25" x2="86" y2="25" stroke="currentColor" stroke-opacity="0.6" stroke-width="1.1" marker-end="url(#cos-map-arrow)"/>
-              <line x1="33" y1="53" x2="86" y2="25" stroke="currentColor" stroke-opacity="0.6" stroke-width="1.1" marker-end="url(#cos-map-arrow)"/>
+              <line x1="33" y1="25" x2="86" y2="53" stroke="currentColor" stroke-opacity="0.6" stroke-width="1.1" marker-end="url(#cos-map-arrow)"/>
+              <line x1="33" y1="53" x2="86" y2="109" stroke="currentColor" stroke-opacity="0.6" stroke-width="1.1" marker-end="url(#cos-map-arrow)"/>
               <line x1="33" y1="81" x2="86" y2="25" stroke="currentColor" stroke-opacity="0.6" stroke-width="1.1" marker-end="url(#cos-map-arrow)"/>
-              <line x1="33" y1="109" x2="86" y2="25" stroke="currentColor" stroke-opacity="0.6" stroke-width="1.1" marker-end="url(#cos-map-arrow)"/>
-              <line x1="33" y1="137" x2="86" y2="25" stroke="currentColor" stroke-opacity="0.6" stroke-width="1.1" marker-end="url(#cos-map-arrow)"/>
+              <line x1="33" y1="109" x2="86" y2="137" stroke="currentColor" stroke-opacity="0.6" stroke-width="1.1" marker-end="url(#cos-map-arrow)"/>
+              <line x1="33" y1="137" x2="86" y2="81" stroke="currentColor" stroke-opacity="0.6" stroke-width="1.1" marker-end="url(#cos-map-arrow)"/>
+              <text x="60" y="162" text-anchor="middle" font-size="11" font-style="italic" fill="currentColor" fill-opacity="0.75">d</text>
             </g>
           </svg>
-          <div class="figure-numbering ref num" data-fig="mappings" data-label="Figure"><p>Types of mappings from inputs to outputs: a one-to-one bijection, a spread mapping, a many-to-two mapping, and an all-to-one mapping.</p></div>
+          <div class="figure-numbering ref num" data-fig="mappings" data-label="Figure"><p>Types of mappings from inputs to outputs: a) analytically invertable, b) predictable function, c) incomplete cycle, d) a one-to-one bijection.</p></div>
         </div>
-        <p>Normal continuous functions like \(g^x\) have useful properties but can be analytically inverted making decryption trivial. \[X=g^x \iff x=\log_{g}(X)\]</p>
-        <p>Combining \(g^x\) with a modulus operation adds discreteness and irreversibility. Given an input \(x\), the output \(X\) is unpredictable as shown in figure <span class="figure-number" data-fid="log-dlp"></span>.</p>
+        <p>Normal continuous functions like \(g^x\) have useful algebraic properties but can be analytically inverted making decryption trivial. This is presented by the bi-directional arrows in figure <span class="figure-number" data-fid="mappings"></span>a. \[X=g^x \iff x=\log_{g}(X)\]</p>
+        <p>Given \(X\), the secret \(x\) can be instantly calculated. But even if analytic inversion is not possible (figure <span class="figure-number" data-fid="mappings"></span>b), continuous functions tend to be predictable. Combining \(g^x\) with a modulus operation adds deterministically unpredictable behaviour and irreversibility as shown in figure <span class="figure-number" data-fid="log-dlp"></span>.</p>
         <div class="interactions">
           <div id="cos-log-dlp" class="charta"></div>
-          <div class="figure-numbering ref num" data-fig="log-dlp" data-label="Figure"><p>Continuous vs Discrete Nature of DLP.</p></div>
+          <div class="figure-numbering ref num" data-fig="log-dlp" data-label="Figure"><p>Predictable continuous functions vs unpredictable modular exponentiation.</p></div>
         </div>
-        <p>The exponentiation also provides mathematical structure with which algebraic operations can be performed and proofs of security conducted. Not only does exponentiation enables composibility that allows \[\begin{align} g^b g^a \bmod{n} &= g^{b a} \bmod{n} \\ &= B^a \bmod{n} \end{align}\] in Diffie-Hellman (section <span class="figure-number" data-fid="key-exchange"></span>). It also allows modular exponentiation to be backed up by rich mathematical theory like \(\mathbb{Z}^*_c\) in group theory that provides proofs for the behaviour of the function \(f\).</p>
+        <p>The exponentiation provides mathematical structure with which algebraic operations can be performed and proofs of security conducted. Not only does exponentiation enables composibility that allows \[\begin{align} {g^b}^a \bmod{n} &= g^{b a} \bmod{n} \tag{eq 1} \\ &= B^a \bmod{n} \end{align}\] in Diffie-Hellman (section <span class="figure-number" data-fid="key-exchange"></span>). It also allows modular exponentiation to be backed up by rich mathematical theory like \(\mathbb{Z}^*_c\) in group theory that provides proofs for the behaviour of the function \(f\).</p>
         <p>Addressing the ease of computing \(f\), highly efficient methods exist even for large exponents. The Right-to-Left Binary Method, for example, can compute \(f(g,x,n)\) in \(\Theta(\log x)\) without actually calculating \(g^x\). Therefore, despite the existence of other one-way functions like elliptic curves, lattices, hash functions, isogenies, modular exponentiation is a preferred method for most cryptography.</p>
-        <p>\(f\) is actually used in two ways. One way is to keep the exponent fixed and have a variable base. The second is to have a fixed base and use the exponent as the input variable. \[x \mapsto f(x,e,n)\] \[x \mapsto f(g,x,n)\]</p>
+        <div class="insight block ref num" data-label="Insight">
+          <h4></h4>
+          <p>Modular Exponentiation use prime and semiprime modulo \(n\) in \[f(g,e,n) = g^e \bmod{n}\] and is an elegant cryptographic machine that provides easy forward computation, hard to reverse bijection mapping with rich mathematical theory backing it up.</p>
+        </div>
+        <h3 class="num">Application</h3>
+        <p>The perfect mapping of figure <span class="figure-number" data-fid="mappings"></span>d is on the cards but there are still criteria to be addressed. The fixed values in modular exponentiation must be chosen correctly to avoid partial mappings like the one shown in figure <span class="figure-number" data-fid="mappings"></span>c.</p>
+        <p>Modular exponentiation is actually used in two ways. One way is to keep the exponent fixed and have a variable base. The second is to have a fixed base and use the exponent as the input variable. \[x \mapsto f(x,e,n) = x^e \bmod{n}\] \[x \mapsto f(g,x,n) = g^x \bmod{n}\]</p>
+        <p>General securing criteria is:</p>
+        <ul>
+          <li>\(n\) must be large - Diffie-Hellman uses a minimum number size of 2048 bits (617 digits) to ensure it is computationally infeasible to test all combinations and find the secret (brute-force)</li>
+          <li>\(n\) must be prime or semiprime - if not:
+            <ul>
+              <li>the fixed values (\(e\) or \(g\)) might not meet the necessary criteria</li>
+              <li>\(n\) can be factored into smaller numbers making it easier to brute-force</li>
+              <li>the mapping may not even be cyclical, completely breaking encryption (e.g. \(4^x \bmod{16}\) results in \(\{4,0,0,...\}\))</li>
+            </ul>
+          </li>
+          <li>the fixed values (\(e\) or \(g\)) must adhere to the necessary criteria causing small mapping cycles that repeat, also making it easier to brute-force</li>
+        </ul>
+        <p>The last point is important. Lagrange’s theorem (group theory) states “the order of any element always divides the order of the group”. This is seen in action with, for example, \(4^x \bmod{17}\) that results in a repeating sequence \(\{4,16,13,1\}\). The 4 is not a generator of the group that is criteria explained in section <span class="figure-number" data-fid="exponent-as-input"></span>. The length of the sequence (4) divides the order of the group (\(n-1 = 16\)). The unpredictable behaviour is four times weaker.</p>
         <h3 class="num">Base as Input</h3>
-        <p>This map is used in RSA encryption. \(n\) must be a prime and \(e\) a coprime with \(n\).</p>
+        <p>This method is used in RSA encryption that is further discussed in section <span class="figure-number" data-fid="inventing-rsa"></span>. The exponent is kept fixed and the base is the value that gets encrypted. \[f(x,e,n) = x^e \bmod{n}\]</p>
+        <p>The criteria is simple. \(n\) must be prime and \(e\) a coprime with \(n-1\). Change the values of \(e\) and \(n\) below and see how the mapping cycles through the numbers in figure <span class="figure-number" data-fid="base-mod-clock"></span>.</p>
         <div class="interactions">
           <p>\(n\):
             <span class="number-input-wrapper">
@@ -689,22 +743,17 @@
                 <button type="button" class="num-down">▼</button>
               </span>
             </span>
+            <span class="coprimality"></span>
           </p>
           <p class="mod-seq">\(\zeta\) sequence:</p>
           <div id="cos-out-mb-sequence" class="mod-seq-box"></div>
           <svg id="cos-mb-clock-svg" class="art-clock-svg" viewBox="0 0 400 400" width="400" height="400"></svg>
           <div class="figure-numbering ref num" data-fig="base-mod-clock" data-label="Figure"><p>Modular clock diagram.</p></div>
         </div>
-        <h3 class="num">Exponent as Input</h3>
-        <p>The second map is used for Diffie-Hellman and uses the discrete logarithm problem.</p>
-        <div class="insight block ref num" data-label="Insight">
-          <h4></h4>
-          <p>The Discrete Logarithm Problem presents \[X = g^x \bmod{n}\] It is easy to calculate the modulo of an exponential function if the base \(g\), the power \(x\) and the modulus \(n\) is known, but it is hard to calculate \(x\) from \(X\) if \(n\) is large.</p>
-        </div>
-        <p>When \(g=2\) and \(n=11\), an attacker can start at \(x=1\) and test each secret up to \(x=10\) against \(X\). The sequence 2, 4, 8, 5, 10, 9, 7, 3, 6, 1 is produced and if \(X=5\) the attacker knows \(x=4\) (the 4th number in the sequence). When \(x\) gets to \(n-1\), \(X=1\), and then the sequence repeats. To avoid ambiguity, DH secrets are always chosen before repetition occurs. Fortunately there are many numbers to use when \(n\) is large.</p>
-        <p>The next criteria to adhere to is that \(n\) must be prime. When \(n=9\) and \(g=2\), the range of repeating numbers are \(\{2,4,8,7,5,1\}\). The secret can only be one of these numbers instead of utilizing the entire possible range of \(n-1\) numbers and an attacker has less numbers to test. This is because \(n\) is not a prime number.</p>
-        <p>A utilization ratio, \(\gamma\), can be expressed as the number of elements utilized, \(|\zeta|\), divided by the total number of elements in the group, \(n-1\). Thus, when \(n=15\) and \(g=2\), the utilization ratio, \[\gamma = \frac{|\zeta|}{n-1}=\frac{4}{14}\] is approximately 0.286. With \(n=19\) and \(g=2\) it cycles through all the numbers. Thus \(\gamma=1\), which is the case when \(n\) is prime, with one last caveat.</p>
-        <p>Figure <span class="figure-number" data-fid="mod-clock"></span> shows how many numbers are utilised with a clock diagram, depending on the \(n\) and \(g\) values selected in the input boxes. The number sequence is also printed.</p>
+        <h3 class="num ref">Exponent as Input</h3>
+        <p>This method is used for Diffie-Hellman and uses the Discrete Logarithm Problem \[X = g^x \bmod{n}\]</p>
+        <p>The criteria here is that \(n\) must be prime (or semiprime for RSA, section <span class="figure-number" data-fid="inventing-rsa"></span>) and \(g\) must be a generator of the group \(\{1,2,...,n-1\}\) (a primitive root modulo \(n\)). A utilization ratio, \(\gamma\), can be expressed as the number of elements utilized, \(|\zeta|\), divided by the total number of elements in the group, \(n-1\). Thus, when \(n=15\) and \(g=2\), \(\zeta = \{2,4,8,1\}\) and the utilization ratio, \[\gamma = \frac{|\zeta|}{n-1}=\frac{4}{14}\] is approximately 0.286. With \(n=19\) and \(g=2\) it cycles through all the numbers.</p>
+        <p>Figure <span class="figure-number" data-fid="mod-clock"></span> shows how many numbers are utilised with a clock diagram, depending on the \(n\) and \(g\) values selected in the input boxes.</p>
         <div class="interactions">
           <p>\(n\):
             <span class="number-input-wrapper">
@@ -735,8 +784,8 @@
           <div id="cos-tooltip" class="gamman tooltip"></div>
           <div class="figure-numbering ref num" data-fig="gamma-n-plot" data-label="Figure"><p>Plot of \(\gamma\) against \(n\) with prime \(n\) values highlighted with green lines.</p></div>
         </div>
-        <p>Figure <span class="figure-number" data-fid="gamma-n-plot"></span> shows a graph of \(\gamma\) over a range of \(n\) values. Even numbers of \(n\) are omitted and prime \(n\) numbers are highlighted with green vertical lines. Click on the points to set \(n\) and \(g\) above and see how each pattern look in the modular clock diagram.</p>
-        <p>The expectation is that \(\gamma=1\) at every prime but some shows \(\gamma<1\). The reason is that, even with \(n\) being prime, \(g\) needs to be a generator for \(n\). Switching between the \(g\) values on figure <span class="figure-number" data-fid="gamma-n-plot"></span> reveals the generators for each prime number. There is a procedure for finding a generator for a prime number but DH typically uses predefined n-g combinations.</p>
+        <p>Figure <span class="figure-number" data-fid="gamma-n-plot"></span> shows a graph of \(\gamma\) over a range of \(n\) values. Even numbers of \(n\) are omitted and prime \(n\) numbers are highlighted with green vertical lines. Click on the points to set \(n\) and \(g\) above and see how each pattern look in figure <span class="figure-number" data-fid="mod-clock"></span>.</p>
+        <p>The expectation is that \(\gamma=1\) at every prime but the matching generator \(g\) must also be selected. Switching between the \(g\) values on figure <span class="figure-number" data-fid="gamma-n-plot"></span> reveals the generators for each group of modulus \(n\). There is a procedure for finding a generator for a group but DH typically uses predefined n-g combinations.</p>
       </section>
       <section>
         <h2 class="num">The Atoms of Math</h2>
@@ -761,27 +810,34 @@
             &=2^4*3^2*5*7
           \end{align}\]
         </p>
-        <p>Notice that all the factors are prime numbers. In fact, every number has only one list of factors that is all prime. This is called the Fundamental Theorem of Arithmetic and was detailed by Carl Friedrich Gauss in 1801. Admittedly I was surprised to only realise this now, especially since it's so fundamental.</p>
+        <p>Notice that all the factors are prime numbers. In fact, every number has only one list of factors that is all prime. This is called the Fundamental Theorem of Arithmetic and was proved by Carl Friedrich Gauss in 1801 with original credit to Euclid. Admittedly I was surprised to only realise this while writing this article.</p>
         <p>Prime numbers are not just weird numbers in everyday counting numbers, they are actually the atoms of which all numbers are made up of. This also means that two prime numbers can be selected, and the product of them will only have those two numbers as factors.</p>
         <p>When asked to find the factors of 679, only 17 will be found to divide it together with 41. When asked about 22790237 one will have to go up to 3187. It becomes apparent that factoring products of two large primes is difficult.</p>
-        <div class="insight block ref num" data-label="Insight">
+        <div class="insight block ref num" data-label="Insight" data-ref="prime-factors">
           <h4></h4>
           <p>Multiplying two large prime numbers results in a new prime number with only the two primes as factors. The multiplication (forward) is easy, but factoring it (backwards) into the two original primes is hard.</p>
         </div>
       </section>
       <section>
-        <h2 class="num">Inventing RSA</h2>
-        <p>With asymmetric cryptography each person has a public key (\(S\), \(R\)) and a private key (\(s\), \(r\)). Anyone can see the public keys but only the owners ever know the private keys. The sender can encrypt a message with the recipient's public key (\(R\)) and only the recipient can decrypt the message with the matching private key (\(r\)). Encryption is established without exchanging any secret keys.</p>
-        <p>The method in Insight 1 can also be used to encrypt messages. The message \(m\) is used instead of the base \(g\) and raised to the power of an encryption key \(e\). The encrypted message \(M\) is thus \[M=m^e \bmod{n}\] However, it will be convenient to also be able to decrypt \(M\) in the same way by applying a decryption key as another power to get back to \(m\) \[m=M^d \bmod{n}\] which is equivalent to \[\begin{equation} m \equiv m^{e d} \pmod{n} \tag{eq 1} \end{equation}\]</p>
+        <h2 class="num ref">Inventing RSA</h2>
+        <p>With asymmetric cryptography each person has a public key (\(S\), \(R\)) and a private key (\(s\), \(r\)). Anyone can see the public keys but only the owners ever know their own private keys. The sender can encrypt a message with the recipient's public key \(R\) and only the recipient can decrypt the message with the matching private key \(r\). Encryption is established without exchanging any secret keys.</p>
+        <p>The modular exponentiation method in section <span class="figure-number" data-fid="exponent-as-input"></span> can be used to encrypt messages. The message \(m\) is used for the base \(g\) and raised to the power of an encryption key \(e\). The encrypted message \(M\) is \[M = m^e \bmod{n}\]</p>
+        <p>Equation 1 presents the power combination mechanism that will be convenient for decryption of \(M\) by applying a decryption key as another power to get back to \(m\). \[\begin{align} m = M^d \bmod{n} &= {m^e}^d \bmod{n} \\ &= m^{ed} \bmod{n} \end{align}\]</p>
+        <p>It's worth switching to modulo congruence notation. It is like an equal sign, just under the condition of mod \(n\). \[4+3 \neq 1\] \[4+3 \equiv 1 \pmod{6}\]</p>
+        <p>Similarly \[m \equiv m^{ed} \pmod{n} \tag{eq 2}\]</p>
+        <p>The idea is simple but finding \(e\) and \(d\) to be able to accomplish encryption and decryption requires a deep turn in mathematics history.</p>
         <p>Rivest, Shamir and Adleman published RSA in 1977 in which they derived \(e\) and \(d\) to encrypt and decrypt messages. The RSA authors build on math discovered three centuries earlier. The initial version of Euler's theorem was first published in 1736 as a proof of Fermat's little theorem (published without proof in 1640).</p>
-        <p>Refer back to how modulo sequences went though the numbers in section 1. It's clear in the short vulnerable sets that the sequences always end with one \(\{1,2,4,8,1,2,4,8,1,...\}\). The same is true when a large prime modulus is used. This phenomenon can be used to decrypt an encrypted value by moving it forward to the end of the sequence.</p>
-        <p>Euler's theorem: \[m^{\varphi(n)} \equiv 1 \pmod{n}\] shows that there is a power (Euler's Totient) one can raise a base to, that results in a remainder of 1. So if one power (in an exponent) is used to encrypt a value, a second power can be calculated that decrypts it again.</p>
-        <p>It starts by generating two large prime numbers, \(p\) and \(q\), and calculating the product. \[n = p q\] \(n\) is a new prime number that can be publicly shared while \(p\) and \(q\) remain secret because of the irreversibility pointed out by Insight 2. Thus, \(p\) and \(q\) can still be used to calculate Euler's Totient: \[\varphi(n) = (p-1)(q-1)\]</p>
-        <p>\(e\) and \(d\) need to be calculated using \(\varphi(n)\). First, \(1 \pmod{n}\) is isolated in equation 1.</p>
-        <p>\[m^{ed} \equiv m \pmod{n} \iff m^{ed-1} \equiv 1 \pmod{n}\]</p>
+        <p>Refer back to how modulo sequences went though the numbers in section <span class="figure-number" data-fid="exponent-as-input"></span>. Output sequences always end with one like, for example, \(2^x \bmod{11}\) results in \(\{2,4,8,5,10,9,7,3,6,1\}\). This phenomenon can be used to decrypt an encrypted value by moving it forward to the end of the sequence.</p>
+        <div class="insight block ref num" data-label="Insight">
+          <h4></h4>
+          <p>Euler's theorem \[m^{\varphi(n)} \equiv 1 \pmod{n}\] shows that there is a power (Euler's Totient, 1763) one can raise a base to that results in a remainder of 1. So if one power (in an exponent) is used to encrypt a value, a second power can be calculated that decrypts it again.</p>
+        </div>
+        <p>It starts by generating two large prime numbers, \(p\) and \(q\), and calculating the product. \[n = p q\] \(n\) is a new prime number that can be publicly shared while \(p\) and \(q\) remain secret because of the irreversibility pointed out by Insight <span class="figure-number" data-fid="prime-factors"></span>. Thus, \(p\) and \(q\) can still be used to calculate Euler's Totient: \[\varphi(n) = (p-1)(q-1)\]</p>
+        <p>\(e\) and \(d\) need to be calculated using \(\varphi(n)\). First, \(1 \pmod{n}\) is isolated in equation 2.</p>
+        <p>\[m^{ed} \equiv m \iff m^{ed-1} \equiv 1 \pmod{n}\]</p>
         <p>Secondly, Euler's theorem is modified to handle any multiple of \(\varphi(n)\). \[(m^{\varphi(n)})^k \equiv 1^k \equiv 1 \pmod{n}\]</p>
         <p>The latter two equations can now be combined. \[m^{\varphi(n)k} \equiv m^{ed-1} \equiv 1 \pmod{n}\]</p>
-        <p>The exponents \(e\) and \(d\) can then be calculated with: \[ed-1 = \varphi(n)k \iff ed-\varphi(n)k = 1\]</p>
+        <p>The exponents \(e\) and \(d\) can then be calculated with: \[ed-1 = \varphi(n)k \iff ed = \varphi(n)k+1 \iff ed-\varphi(n)k = 1\]</p>
         <p>that can be transformed into modulo form (this is why the multiple \(k\) was required earlier): \[ed \equiv 1 \pmod{\varphi(n)}\]</p>
       </section>
       <section>
@@ -812,7 +868,7 @@
           <p>\(n\):<span id="cos-out-n"></span></p>
           <p>\(\varphi(n)\):<span id="cos-out-phi"></span></p>
         </div>
-        <p>\(e\) must be smaller than \(\varphi(n)\) and be coprime with it. A number that, in its binary form, has zeros and starts and ends with 1 is a preferred for \(e\). \(d\) is then obtained by finding \(d\) where \(e d \bmod{\varphi(n)} = 1\).</p>
+        <p>\(e\) must be smaller than \(\varphi(n)\) and be coprime with it. A number that, in its binary form, has zeros and starts and ends with 1 is a preferred for \(e\). \(d\) is then obtained by finding a \(d\) where \[ed \bmod{\varphi(n)} = 1\] \[\gcd(e,\varphi(n)) = 1\] \[ed \equiv 1 \pmod{\varphi(n)}\]</p>
         <div class="interactions">
           <p>\(e\):<span id="cos-out-e"></span></p>
           <p>\(d\):<span id="cos-out-d"></span></p>
@@ -950,8 +1006,20 @@ function initArticle(p) {
     seqDiv.textContent = sequence.join(', ');
   }
 
+  // Coprime indicator for the base-as-input exponent e (coprime with n-1)
+  function updateBaseCoprime() {
+    var span = document.querySelector('#' + p + '-layer .coprimality');
+    if (!span) return;
+    var n = parseInt(nMBInput.value);
+    var e = parseInt(eMBInput.value);
+    var ok = !isNaN(n) && !isNaN(e) && n > 1 && gcd(e, n - 1) === 1;
+    span.textContent = ok ? ' (coprime)' : ' (not coprime)';
+    span.style.color = ok ? 'green' : 'red';
+  }
+
   // Base as input: map x -> x^e mod n for x = 1..n-1
   function drawBaseClock() {
+    updateBaseCoprime();
     var n = parseInt(nMBInput.value);
     var e = parseInt(eMBInput.value);
     if (isNaN(n) || isNaN(e) || n < 2) return;

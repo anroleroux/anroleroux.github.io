@@ -288,9 +288,22 @@
         <p>Addressing the ease of computing \(f\), highly efficient methods exist even for large exponents. The Right-to-Left Binary Method, for example, can compute \(f(g,x,n)\) in \(\Theta(\log x)\) without actually calculating \(g^x\). Therefore, despite the existence of other one-way functions like elliptic curves, lattices, hash functions, isogenies, modular exponentiation is a preferred method for most cryptography.</p>
         <h3 class="num">Application</h3>
         <p>The perfect mapping of figure <span class="figure-number" data-fid="mappings"></span>d is on the cards but there are still criteria to be addressed. The fixed values in modular exponentiation must be chosen correctly to avoid partial mappings like the one shown in figure <span class="figure-number" data-fid="mappings"></span>c.</p>
-        <p>Modular exponentiation is actually used in two ways in cryptography. One way is to keep the exponent fixed and have a variable base. The second is to have a fixed base and use the exponent as the input variable. \[x \mapsto f(x,e,n)\] \[x \mapsto f(g,x,n)\]</p>
+        <p>Modular exponentiation is actually used in two ways in cryptography. One way is to keep the exponent fixed and have a variable base. The second is to have a fixed base and use the exponent as the input variable. \[x \mapsto f(x,e,n) = x^e \bmod{n}\] \[x \mapsto f(g,x,n) = g^x \bmod{n}\]</p>
+        <p>General securing criteria is:</p>
+        <ul>
+          <li>\(n\) must be large - Diffie-Hellman uses a minimum number size of 2048 bits (617 digits) to ensure it is computationally infeasible to test all combinations and find the secret (brute-force)</li>
+          <li>\(n\) must be prime - if not:
+            <ul>
+              <li>the fixed values (\(e\) or \(g\)) might not meet the necessary criteria</li>
+              <li>\(n\) can be factored into smaller numbers making it easier to brute-force</li>
+              <li>the mapping may not even be cyclical, completely breaking encryption (e.g. \(4^x \bmod{16} \mapsto \{4,0,0,...\}\))</li>
+            </ul>
+          </li>
+          <li>the fixed values (\(e\) or \(g\)) must adhere to the necessary criteria causing small mapping cycles that repeat, also making it easier to brute-force</li>
+        </ul>
+        <p>The last point is important. Lagrange’s theorem states “the order of any element always divides the order of the group”. This is seen in action with, for example, \(4^x \bmod{17}\) that results in a repeating sequence \(\{4,16,13,1\}\). There 4 is not a generator of 17 that is a criteria as explained in section <span class="figure-number" data-fid="exponent-as-input"></span>. The length of the sequence (4) divides the order of the group (\(n-1 = 16\)). The unpredictable behaviour is four times weaker.</p>
         <h3 class="num">Base as Input</h3>
-        <p>This method is used in RSA encryption that is further discussed in section <span class="figure-number" data-fid="inventing-rsa"></span>. The criteria is simple. \(n\) must be a prime and \(e\) a coprime with \(n-1\).</p>
+        <p>This method is used in RSA encryption that is further discussed in section <span class="figure-number" data-fid="inventing-rsa"></span>. \[f(x,e,n) = x^e \bmod{n}\] The criteria is simple. \(n\) must be a prime and \(e\) a coprime with \(n-1\).</p>
         <p>If the criteria is not met less numbers are cycled through, making brute force attacks easier. Change the values of \(e\) and \(n\) below and see how the mapping cycles through the numbers in figure <span class="figure-number" data-fid="base-mod-clock"></span>.</p>
         <div class="interactions">
           <p>\(n\):
@@ -318,8 +331,8 @@
           <svg id="alm-mb-clock-svg" class="art-clock-svg" viewBox="0 0 400 400" width="400" height="400"></svg>
           <div class="figure-numbering ref num" data-fig="base-mod-clock" data-label="Figure"><p>Modular clock diagram.</p></div>
         </div>
-        <h3 class="num">Exponent as Input</h3>
-        <p>The second map is used for Diffie-Hellman and uses the discrete logarithm problem.</p>
+        <h3 class="num ref">Exponent as Input</h3>
+        <p>This method is used for Diffie-Hellman and uses the discrete logarithm problem.</p>
         <div class="insight block ref num" data-label="Insight">
           <h4></h4>
           <p>The Discrete Logarithm Problem presents \[X = g^x \bmod{n}\] It is easy to calculate the modulo of an exponential function if the base \(g\), the power \(x\) and the modulus \(n\) is known, but it is hard to calculate \(x\) from \(X\) if \(n\) is large.</p>
@@ -676,9 +689,22 @@
         <p>Addressing the ease of computing \(f\), highly efficient methods exist even for large exponents. The Right-to-Left Binary Method, for example, can compute \(f(g,x,n)\) in \(\Theta(\log x)\) without actually calculating \(g^x\). Therefore, despite the existence of other one-way functions like elliptic curves, lattices, hash functions, isogenies, modular exponentiation is a preferred method for most cryptography.</p>
         <h3 class="num">Application</h3>
         <p>The perfect mapping of figure <span class="figure-number" data-fid="mappings"></span>d is on the cards but there are still criteria to be addressed. The fixed values in modular exponentiation must be chosen correctly to avoid partial mappings like the one shown in figure <span class="figure-number" data-fid="mappings"></span>c.</p>
-        <p>Modular exponentiation is actually used in two ways in cryptography. One way is to keep the exponent fixed and have a variable base. The second is to have a fixed base and use the exponent as the input variable. \[x \mapsto f(x,e,n)\] \[x \mapsto f(g,x,n)\]</p>
+        <p>Modular exponentiation is actually used in two ways in cryptography. One way is to keep the exponent fixed and have a variable base. The second is to have a fixed base and use the exponent as the input variable. \[x \mapsto f(x,e,n) = x^e \bmod{n}\] \[x \mapsto f(g,x,n) = g^x \bmod{n}\]</p>
+        <p>General securing criteria is:</p>
+        <ul>
+          <li>\(n\) must be large - Diffie-Hellman uses a minimum number size of 2048 bits (617 digits) to ensure it is computationally infeasible to test all combinations and find the secret (brute-force)</li>
+          <li>\(n\) must be prime - if not:
+            <ul>
+              <li>the fixed values (\(e\) or \(g\)) might not meet the necessary criteria</li>
+              <li>\(n\) can be factored into smaller numbers making it easier to brute-force</li>
+              <li>the mapping may not even be cyclical, completely breaking encryption (e.g. \(4^x \bmod{16} \mapsto \{4,0,0,...\}\))</li>
+            </ul>
+          </li>
+          <li>the fixed values (\(e\) or \(g\)) must adhere to the necessary criteria causing small mapping cycles that repeat, also making it easier to brute-force</li>
+        </ul>
+        <p>The last point is important. Lagrange’s theorem states “the order of any element always divides the order of the group”. This is seen in action with, for example, \(4^x \bmod{17}\) that results in a repeating sequence \(\{4,16,13,1\}\). There 4 is not a generator of 17 that is a criteria as explained in section <span class="figure-number" data-fid="exponent-as-input"></span>. The length of the sequence (4) divides the order of the group (\(n-1 = 16\)). The unpredictable behaviour is four times weaker.</p>
         <h3 class="num">Base as Input</h3>
-        <p>This method is used in RSA encryption that is further discussed in section <span class="figure-number" data-fid="inventing-rsa"></span>. The criteria is simple. \(n\) must be a prime and \(e\) a coprime with \(n-1\).</p>
+        <p>This method is used in RSA encryption that is further discussed in section <span class="figure-number" data-fid="inventing-rsa"></span>. \[f(x,e,n) = x^e \bmod{n}\] The criteria is simple. \(n\) must be a prime and \(e\) a coprime with \(n-1\).</p>
         <p>If the criteria is not met less numbers are cycled through, making brute force attacks easier. Change the values of \(e\) and \(n\) below and see how the mapping cycles through the numbers in figure <span class="figure-number" data-fid="base-mod-clock"></span>.</p>
         <div class="interactions">
           <p>\(n\):
@@ -706,8 +732,8 @@
           <svg id="cos-mb-clock-svg" class="art-clock-svg" viewBox="0 0 400 400" width="400" height="400"></svg>
           <div class="figure-numbering ref num" data-fig="base-mod-clock" data-label="Figure"><p>Modular clock diagram.</p></div>
         </div>
-        <h3 class="num">Exponent as Input</h3>
-        <p>The second map is used for Diffie-Hellman and uses the discrete logarithm problem.</p>
+        <h3 class="num ref">Exponent as Input</h3>
+        <p>This method is used for Diffie-Hellman and uses the discrete logarithm problem.</p>
         <div class="insight block ref num" data-label="Insight">
           <h4></h4>
           <p>The Discrete Logarithm Problem presents \[X = g^x \bmod{n}\] It is easy to calculate the modulo of an exponential function if the base \(g\), the power \(x\) and the modulus \(n\) is known, but it is hard to calculate \(x\) from \(X\) if \(n\) is large.</p>

@@ -195,7 +195,7 @@
       </section>
       <section>
         <h2 class="num ref">Modular Exponentiation</h2>
-        <p>Function \(f\) introduced in section <span class="figure-number" data-fid="key-exchange"></span> is a modular exponentiation function. It has the form \[f(g,e,n) = g^e \bmod{n}\] where \(g\) is called the base, \(e\) the exponent and \(n\) the modulus. This is a work horse in cryptography that gets unpacked in this section.</p>
+        <p>Function \(f\) introduced in section <span class="figure-number" data-fid="key-exchange"></span> is a modular exponentiation function. It has the form \[f(g,e,n) = g^e \bmod{n}\] where \(g\) is called the base, \(e\) the exponent and \(n\) the modulus. This is a workhorse in cryptography that gets unpacked in this section.</p>
         <h3 class="num">Motivation</h3>
         <p>In order to encrypt data, a mapping function is required that maps secret inputs to encrypted outputs. It must be easy to compute, hard to invert, have useful algebraic structure and be mathematically provable. A map can be mathematically expressed as \[x \mapsto f(x)\] but is simply one group of elements connected (mapped) to another group of elements. Figure <span class="figure-number" data-fid="mappings"></span> shows various mapping ranging from weak to strong.</p>
         <div class="interactions">
@@ -276,32 +276,36 @@
         <p>Given \(X\), the secret \(x\) can be instantly calculated. But even if analytic inversion is not possible (figure <span class="figure-number" data-fid="mappings"></span>b), continuous functions tend to be predictable. Combining \(g^x\) with a modulus operation adds deterministically unpredictable behaviour and irreversibility as shown in figure <span class="figure-number" data-fid="log-dlp"></span>.</p>
         <div class="interactions">
           <div id="alm-log-dlp" class="charta"></div>
-          <div class="figure-numbering ref num" data-fig="log-dlp" data-label="Figure"><p>Continuous vs Discrete Nature of modular exponentiation.</p></div>
+          <div class="figure-numbering ref num" data-fig="log-dlp" data-label="Figure"><p>Predictable continuous functions vs unpredictable modular exponentiation.</p></div>
         </div>
         <p>
           The exponentiation provides mathematical structure with which algebraic operations can be performed and proofs of security conducted.
           Not only does exponentiation enables composibility that allows
-          \[\begin{align} g^b g^a \bmod{n} &= g^{b a} \bmod{n} \\ &= B^a \bmod{n} \end{align}\]
+          \[\begin{align} {g^b}^a \bmod{n} &= g^{b a} \bmod{n} \\ &= B^a \bmod{n} \end{align}\]
           in Diffie-Hellman (section <span class="figure-number" data-fid="key-exchange"></span>).
           It also allows modular exponentiation to be backed up by rich mathematical theory like \(\mathbb{Z}^*_c\) in group theory that provides proofs for the behaviour of the function \(f\).
         </p>
         <p>Addressing the ease of computing \(f\), highly efficient methods exist even for large exponents. The Right-to-Left Binary Method, for example, can compute \(f(g,x,n)\) in \(\Theta(\log x)\) without actually calculating \(g^x\). Therefore, despite the existence of other one-way functions like elliptic curves, lattices, hash functions, isogenies, modular exponentiation is a preferred method for most cryptography.</p>
+        <div class="insight block ref num" data-label="Insight">
+          <h4></h4>
+          <p>Modular Exponentiation use prime and semiprime modulo \(n\) in \[f(g,e,n) = g^e \bmod{n}\] and is an elegant cryptographic machine that provides easy forward computation, hard to reverse bijection mapping with rich mathematical theory backing it up.</p>
+        </div>
         <h3 class="num">Application</h3>
         <p>The perfect mapping of figure <span class="figure-number" data-fid="mappings"></span>d is on the cards but there are still criteria to be addressed. The fixed values in modular exponentiation must be chosen correctly to avoid partial mappings like the one shown in figure <span class="figure-number" data-fid="mappings"></span>c.</p>
-        <p>Modular exponentiation is actually used in two ways in cryptography. One way is to keep the exponent fixed and have a variable base. The second is to have a fixed base and use the exponent as the input variable. \[x \mapsto f(x,e,n) = x^e \bmod{n}\] \[x \mapsto f(g,x,n) = g^x \bmod{n}\]</p>
+        <p>Modular exponentiation is actually used in two ways. One way is to keep the exponent fixed and have a variable base. The second is to have a fixed base and use the exponent as the input variable. \[x \mapsto f(x,e,n) = x^e \bmod{n}\] \[x \mapsto f(g,x,n) = g^x \bmod{n}\]</p>
         <p>General securing criteria is:</p>
         <ul>
           <li>\(n\) must be large - Diffie-Hellman uses a minimum number size of 2048 bits (617 digits) to ensure it is computationally infeasible to test all combinations and find the secret (brute-force)</li>
-          <li>\(n\) must be prime - if not:
+          <li>\(n\) must be prime or semiprime - if not:
             <ul>
               <li>the fixed values (\(e\) or \(g\)) might not meet the necessary criteria</li>
               <li>\(n\) can be factored into smaller numbers making it easier to brute-force</li>
-              <li>the mapping may not even be cyclical, completely breaking encryption (e.g. \(4^x \bmod{16} \mapsto \{4,0,0,...\}\))</li>
+              <li>the mapping may not even be cyclical, completely breaking encryption (e.g. \(4^x \bmod{16}\) results in \(\{4,0,0,...\}\))</li>
             </ul>
           </li>
           <li>the fixed values (\(e\) or \(g\)) must adhere to the necessary criteria causing small mapping cycles that repeat, also making it easier to brute-force</li>
         </ul>
-        <p>The last point is important. Lagrange’s theorem (group theory) states “the order of any element always divides the order of the group”. This is seen in action with, for example, \(4^x \bmod{17}\) that results in a repeating sequence \(\{4,16,13,1\}\). The 4 is not a generator of 17 that is a criteria as explained in section <span class="figure-number" data-fid="exponent-as-input"></span>. The length of the sequence (4) divides the order of the group (\(n-1 = 16\)). The unpredictable behaviour is four times weaker.</p>
+        <p>The last point is important. Lagrange’s theorem (group theory) states “the order of any element always divides the order of the group”. This is seen in action with, for example, \(4^x \bmod{17}\) that results in a repeating sequence \(\{4,16,13,1\}\). The 4 is not a generator of the group that is criteria explained in section <span class="figure-number" data-fid="exponent-as-input"></span>. The length of the sequence (4) divides the order of the group (\(n-1 = 16\)). The unpredictable behaviour is four times weaker.</p>
         <h3 class="num">Base as Input</h3>
         <p>This method is used in RSA encryption that is further discussed in section <span class="figure-number" data-fid="inventing-rsa"></span>. The exponent is kept fixed and the base is the value that gets encrypted. \[f(x,e,n) = x^e \bmod{n}\]</p>
         <p>The criteria is simple. \(n\) must be prime and \(e\) a coprime with \(n-1\). Change the values of \(e\) and \(n\) below and see how the mapping cycles through the numbers in figure <span class="figure-number" data-fid="base-mod-clock"></span>.</p>
@@ -333,8 +337,8 @@
         </div>
         <h3 class="num ref">Exponent as Input</h3>
         <p>This method is used for Diffie-Hellman and uses the Discrete Logarithm Problem \[X = g^x \bmod{n}\]</p>
-        <p>The criteria here is that \(n\) must be prime and \(g\) must be a generator of \(n\). A utilization ratio, \(\gamma\), can be expressed as the number of elements utilized, \(|\zeta|\), divided by the total number of elements in the group, \(n-1\). Thus, when \(n=15\) and \(g=2\), the utilization ratio, \[\gamma = \frac{|\zeta|}{n-1}=\frac{4}{14}\] is approximately 0.286. With \(n=19\) and \(g=2\) it cycles through all the numbers. Thus \(\gamma=1\), which is the case when \(n\) is prime, with one last caveat.</p>
-        <p>Figure <span class="figure-number" data-fid="mod-clock"></span> shows how many numbers are utilised with a clock diagram, depending on the \(n\) and \(g\) values selected in the input boxes. The number sequence is also printed.</p>
+        <p>The criteria here is that \(n\) must be prime (or semiprime for RSA, section <span class="figure-number" data-fid="inventing-rsa"></span>) and \(g\) must be a generator of the group \(\{1,2,...,n-1\}\) (a primitive root modulo \(n\)). A utilization ratio, \(\gamma\), can be expressed as the number of elements utilized, \(|\zeta|\), divided by the total number of elements in the group, \(n-1\). Thus, when \(n=15\) and \(g=2\), \(\zeta = \{2,4,8,1\}\) and the utilization ratio, \[\gamma = \frac{|\zeta|}{n-1}=\frac{4}{14}\] is approximately 0.286. With \(n=19\) and \(g=2\) it cycles through all the numbers.</p>
+        <p>Figure <span class="figure-number" data-fid="mod-clock"></span> shows how many numbers are utilised with a clock diagram, depending on the \(n\) and \(g\) values selected in the input boxes.</p>
         <div class="interactions">
           <p>\(n\):
             <span class="number-input-wrapper">
@@ -365,8 +369,8 @@
           <div id="alm-tooltip" class="gamman tooltip"></div>
           <div class="figure-numbering ref num" data-fig="gamma-n-plot" data-label="Figure"><p>Plot of \(\gamma\) against \(n\) with prime \(n\) values highlighted with green lines.</p></div>
         </div>
-        <p>Figure <span class="figure-number" data-fid="gamma-n-plot"></span> shows a graph of \(\gamma\) over a range of \(n\) values. Even numbers of \(n\) are omitted and prime \(n\) numbers are highlighted with green vertical lines. Click on the points to set \(n\) and \(g\) above and see how each pattern look in the modular clock diagram.</p>
-        <p>The expectation is that \(\gamma=1\) at every prime but some shows \(\gamma<1\). The reason is that, even with \(n\) being prime, \(g\) needs to be a generator for \(n\). Switching between the \(g\) values on figure <span class="figure-number" data-fid="gamma-n-plot"></span> reveals the generators for each prime number. There is a procedure for finding a generator for a prime number but DH typically uses predefined n-g combinations.</p>
+        <p>Figure <span class="figure-number" data-fid="gamma-n-plot"></span> shows a graph of \(\gamma\) over a range of \(n\) values. Even numbers of \(n\) are omitted and prime \(n\) numbers are highlighted with green vertical lines. Click on the points to set \(n\) and \(g\) above and see how each pattern look in figure <span class="figure-number" data-fid="mod-clock"></span>.</p>
+        <p>The expectation is that \(\gamma=1\) at every prime but the matching generator \(g\) must also be selected. Switching between the \(g\) values on figure <span class="figure-number" data-fid="gamma-n-plot"></span> reveals the generators for each group of modulus \(n\). There is a procedure for finding a generator for a group but DH typically uses predefined n-g combinations.</p>
       </section>
       <section>
         <h2 class="num">The Atoms of Math</h2>
@@ -596,7 +600,7 @@
       </section>
       <section>
         <h2 class="num ref">Modular Exponentiation</h2>
-        <p>Function \(f\) introduced in section <span class="figure-number" data-fid="key-exchange"></span> is a modular exponentiation function. It has the form \[f(g,e,n) = g^e \bmod{n}\] where \(g\) is called the base, \(e\) the exponent and \(n\) the modulus. This is a work horse in cryptography that gets unpacked in this section.</p>
+        <p>Function \(f\) introduced in section <span class="figure-number" data-fid="key-exchange"></span> is a modular exponentiation function. It has the form \[f(g,e,n) = g^e \bmod{n}\] where \(g\) is called the base, \(e\) the exponent and \(n\) the modulus. This is a workhorse in cryptography that gets unpacked in this section.</p>
         <h3 class="num">Motivation</h3>
         <p>In order to encrypt data, a mapping function is required that maps secret inputs to encrypted outputs. It must be easy to compute, hard to invert, have useful algebraic structure and be mathematically provable. A map can be mathematically expressed as \[x \mapsto f(x)\] but is simply one group of elements connected (mapped) to another group of elements. Figure <span class="figure-number" data-fid="mappings"></span> shows various mapping ranging from weak to strong.</p>
         <div class="interactions">
@@ -677,26 +681,30 @@
         <p>Given \(X\), the secret \(x\) can be instantly calculated. But even if analytic inversion is not possible (figure <span class="figure-number" data-fid="mappings"></span>b), continuous functions tend to be predictable. Combining \(g^x\) with a modulus operation adds deterministically unpredictable behaviour and irreversibility as shown in figure <span class="figure-number" data-fid="log-dlp"></span>.</p>
         <div class="interactions">
           <div id="cos-log-dlp" class="charta"></div>
-          <div class="figure-numbering ref num" data-fig="log-dlp" data-label="Figure"><p>Continuous vs Discrete Nature of modular exponentiation.</p></div>
+          <div class="figure-numbering ref num" data-fig="log-dlp" data-label="Figure"><p>Predictable continuous functions vs unpredictable modular exponentiation.</p></div>
         </div>
-        <p>The exponentiation provides mathematical structure with which algebraic operations can be performed and proofs of security conducted. Not only does exponentiation enables composibility that allows \[\begin{align} g^b g^a \bmod{n} &= g^{b a} \bmod{n} \\ &= B^a \bmod{n} \end{align}\] in Diffie-Hellman (section <span class="figure-number" data-fid="key-exchange"></span>). It also allows modular exponentiation to be backed up by rich mathematical theory like \(\mathbb{Z}^*_c\) in group theory that provides proofs for the behaviour of the function \(f\).</p>
+        <p>The exponentiation provides mathematical structure with which algebraic operations can be performed and proofs of security conducted. Not only does exponentiation enables composibility that allows \[\begin{align} {g^b}^a \bmod{n} &= g^{b a} \bmod{n} \\ &= B^a \bmod{n} \end{align}\] in Diffie-Hellman (section <span class="figure-number" data-fid="key-exchange"></span>). It also allows modular exponentiation to be backed up by rich mathematical theory like \(\mathbb{Z}^*_c\) in group theory that provides proofs for the behaviour of the function \(f\).</p>
         <p>Addressing the ease of computing \(f\), highly efficient methods exist even for large exponents. The Right-to-Left Binary Method, for example, can compute \(f(g,x,n)\) in \(\Theta(\log x)\) without actually calculating \(g^x\). Therefore, despite the existence of other one-way functions like elliptic curves, lattices, hash functions, isogenies, modular exponentiation is a preferred method for most cryptography.</p>
+        <div class="insight block ref num" data-label="Insight">
+          <h4></h4>
+          <p>Modular Exponentiation use prime and semiprime modulo \(n\) in \[f(g,e,n) = g^e \bmod{n}\] and is an elegant cryptographic machine that provides easy forward computation, hard to reverse bijection mapping with rich mathematical theory backing it up.</p>
+        </div>
         <h3 class="num">Application</h3>
         <p>The perfect mapping of figure <span class="figure-number" data-fid="mappings"></span>d is on the cards but there are still criteria to be addressed. The fixed values in modular exponentiation must be chosen correctly to avoid partial mappings like the one shown in figure <span class="figure-number" data-fid="mappings"></span>c.</p>
-        <p>Modular exponentiation is actually used in two ways in cryptography. One way is to keep the exponent fixed and have a variable base. The second is to have a fixed base and use the exponent as the input variable. \[x \mapsto f(x,e,n) = x^e \bmod{n}\] \[x \mapsto f(g,x,n) = g^x \bmod{n}\]</p>
+        <p>Modular exponentiation is actually used in two ways. One way is to keep the exponent fixed and have a variable base. The second is to have a fixed base and use the exponent as the input variable. \[x \mapsto f(x,e,n) = x^e \bmod{n}\] \[x \mapsto f(g,x,n) = g^x \bmod{n}\]</p>
         <p>General securing criteria is:</p>
         <ul>
           <li>\(n\) must be large - Diffie-Hellman uses a minimum number size of 2048 bits (617 digits) to ensure it is computationally infeasible to test all combinations and find the secret (brute-force)</li>
-          <li>\(n\) must be prime - if not:
+          <li>\(n\) must be prime or semiprime - if not:
             <ul>
               <li>the fixed values (\(e\) or \(g\)) might not meet the necessary criteria</li>
               <li>\(n\) can be factored into smaller numbers making it easier to brute-force</li>
-              <li>the mapping may not even be cyclical, completely breaking encryption (e.g. \(4^x \bmod{16} \mapsto \{4,0,0,...\}\))</li>
+              <li>the mapping may not even be cyclical, completely breaking encryption (e.g. \(4^x \bmod{16}\) results in \(\{4,0,0,...\}\))</li>
             </ul>
           </li>
           <li>the fixed values (\(e\) or \(g\)) must adhere to the necessary criteria causing small mapping cycles that repeat, also making it easier to brute-force</li>
         </ul>
-        <p>The last point is important. Lagrange’s theorem (group theory) states “the order of any element always divides the order of the group”. This is seen in action with, for example, \(4^x \bmod{17}\) that results in a repeating sequence \(\{4,16,13,1\}\). The 4 is not a generator of 17 that is a criteria as explained in section <span class="figure-number" data-fid="exponent-as-input"></span>. The length of the sequence (4) divides the order of the group (\(n-1 = 16\)). The unpredictable behaviour is four times weaker.</p>
+        <p>The last point is important. Lagrange’s theorem (group theory) states “the order of any element always divides the order of the group”. This is seen in action with, for example, \(4^x \bmod{17}\) that results in a repeating sequence \(\{4,16,13,1\}\). The 4 is not a generator of the group that is criteria explained in section <span class="figure-number" data-fid="exponent-as-input"></span>. The length of the sequence (4) divides the order of the group (\(n-1 = 16\)). The unpredictable behaviour is four times weaker.</p>
         <h3 class="num">Base as Input</h3>
         <p>This method is used in RSA encryption that is further discussed in section <span class="figure-number" data-fid="inventing-rsa"></span>. The exponent is kept fixed and the base is the value that gets encrypted. \[f(x,e,n) = x^e \bmod{n}\]</p>
         <p>The criteria is simple. \(n\) must be prime and \(e\) a coprime with \(n-1\). Change the values of \(e\) and \(n\) below and see how the mapping cycles through the numbers in figure <span class="figure-number" data-fid="base-mod-clock"></span>.</p>
@@ -728,8 +736,8 @@
         </div>
         <h3 class="num ref">Exponent as Input</h3>
         <p>This method is used for Diffie-Hellman and uses the Discrete Logarithm Problem \[X = g^x \bmod{n}\]</p>
-        <p>The criteria here is that \(n\) must be prime and \(g\) must be a generator of \(n\). A utilization ratio, \(\gamma\), can be expressed as the number of elements utilized, \(|\zeta|\), divided by the total number of elements in the group, \(n-1\). Thus, when \(n=15\) and \(g=2\), the utilization ratio, \[\gamma = \frac{|\zeta|}{n-1}=\frac{4}{14}\] is approximately 0.286. With \(n=19\) and \(g=2\) it cycles through all the numbers. Thus \(\gamma=1\), which is the case when \(n\) is prime, with one last caveat.</p>
-        <p>Figure <span class="figure-number" data-fid="mod-clock"></span> shows how many numbers are utilised with a clock diagram, depending on the \(n\) and \(g\) values selected in the input boxes. The number sequence is also printed.</p>
+        <p>The criteria here is that \(n\) must be prime (or semiprime for RSA, section <span class="figure-number" data-fid="inventing-rsa"></span>) and \(g\) must be a generator of the group \(\{1,2,...,n-1\}\) (a primitive root modulo \(n\)). A utilization ratio, \(\gamma\), can be expressed as the number of elements utilized, \(|\zeta|\), divided by the total number of elements in the group, \(n-1\). Thus, when \(n=15\) and \(g=2\), \(\zeta = \{2,4,8,1\}\) and the utilization ratio, \[\gamma = \frac{|\zeta|}{n-1}=\frac{4}{14}\] is approximately 0.286. With \(n=19\) and \(g=2\) it cycles through all the numbers.</p>
+        <p>Figure <span class="figure-number" data-fid="mod-clock"></span> shows how many numbers are utilised with a clock diagram, depending on the \(n\) and \(g\) values selected in the input boxes.</p>
         <div class="interactions">
           <p>\(n\):
             <span class="number-input-wrapper">
@@ -760,8 +768,8 @@
           <div id="cos-tooltip" class="gamman tooltip"></div>
           <div class="figure-numbering ref num" data-fig="gamma-n-plot" data-label="Figure"><p>Plot of \(\gamma\) against \(n\) with prime \(n\) values highlighted with green lines.</p></div>
         </div>
-        <p>Figure <span class="figure-number" data-fid="gamma-n-plot"></span> shows a graph of \(\gamma\) over a range of \(n\) values. Even numbers of \(n\) are omitted and prime \(n\) numbers are highlighted with green vertical lines. Click on the points to set \(n\) and \(g\) above and see how each pattern look in the modular clock diagram.</p>
-        <p>The expectation is that \(\gamma=1\) at every prime but some shows \(\gamma<1\). The reason is that, even with \(n\) being prime, \(g\) needs to be a generator for \(n\). Switching between the \(g\) values on figure <span class="figure-number" data-fid="gamma-n-plot"></span> reveals the generators for each prime number. There is a procedure for finding a generator for a prime number but DH typically uses predefined n-g combinations.</p>
+        <p>Figure <span class="figure-number" data-fid="gamma-n-plot"></span> shows a graph of \(\gamma\) over a range of \(n\) values. Even numbers of \(n\) are omitted and prime \(n\) numbers are highlighted with green vertical lines. Click on the points to set \(n\) and \(g\) above and see how each pattern look in figure <span class="figure-number" data-fid="mod-clock"></span>.</p>
+        <p>The expectation is that \(\gamma=1\) at every prime but the matching generator \(g\) must also be selected. Switching between the \(g\) values on figure <span class="figure-number" data-fid="gamma-n-plot"></span> reveals the generators for each group of modulus \(n\). There is a procedure for finding a generator for a group but DH typically uses predefined n-g combinations.</p>
       </section>
       <section>
         <h2 class="num">The Atoms of Math</h2>

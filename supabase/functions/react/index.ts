@@ -18,6 +18,8 @@ const CORS = {
 
 const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 const REACTIONS = ['valuable', 'not_valuable'] as const;
+// Stored as SMALLINT to save space: 1 = valuable, 2 = not_valuable.
+const CODE: Record<typeof REACTIONS[number], number> = { valuable: 1, not_valuable: 2 };
 
 // Crawlers / headless browsers / scrapers — no signal they were filtered.
 const BOT_UA_RE = /bot|crawler|spider|scraper|headless|phantom|selenium|puppeteer|playwright|curl|wget|python-requests|go-http|java\/|apache-httpclient|scrapy|libwww|httpclient|okhttp|axios\/|node-fetch|lighthouse|facebookexternalhit|twitterbot|linkedinbot|whatsapp|slackbot|discordbot|telegrambot|applebot|duckduckbot|bingpreview|ia_archiver/i;
@@ -46,7 +48,7 @@ async function countsFor(
       .from('reaction_events')
       .select('*', { count: 'exact', head: true })
       .eq('page', page)
-      .eq('reaction', reaction);
+      .eq('reaction', CODE[reaction]);
     out[reaction] = count ?? 0;
   }
   return out;
@@ -136,7 +138,7 @@ Deno.serve(async (req: Request): Promise<Response> => {
   await supabase.from('reaction_events').insert({
     session_token: sessionToken,
     page,
-    reaction,
+    reaction: CODE[reaction],
   });
 
   return json({ counts: await countsFor(supabase, page) });

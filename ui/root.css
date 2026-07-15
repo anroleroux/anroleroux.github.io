@@ -170,8 +170,8 @@ body { margin: 0; padding: 0; width: 100%; font-family: 'Inter', system-ui, sans
 .reactions {
   display: flex;
   gap: var(--ms0);
-  justify-content: center;
-  padding: var(--ms3) var(--ms6) 0;
+  justify-content: left;
+  padding: 0 var(--ms6) var(--ms3);
 }
 .react-btn {
   display: inline-flex;

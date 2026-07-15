@@ -485,28 +485,20 @@ sb.auth.onAuthStateChange(function (event, session) {
 
 // ── Article reactions ─────────────────────────────────────────
 // Applause-style: every click counts, throttled server-side. Counts are always
-// shown. Renders into the alm-react / cos-react placeholders (both footers).
+// shown. The buttons live statically in the article HTML; JS only fills in the
+// numbers — every .react-count span carries a data-r of its reaction.
 let reactionCounts = { valuable: 0, not_valuable: 0 };
 let reactionBusy   = false;
 
-function reactionsHTML() {
-  return '' +
-    '<button class="react-btn" onclick="react(\'valuable\')">' +
-      'Valuable <span class="react-count">' + reactionCounts.valuable + '</span></button>' +
-    '<button class="react-btn" onclick="react(\'not_valuable\')">' +
-      'Not valuable <span class="react-count">' + reactionCounts.not_valuable + '</span></button>';
-}
-
 function renderReactions() {
-  let html = reactionsHTML();
-  ['alm-react', 'cos-react'].forEach(function (id) {
-    let el = document.getElementById(id);
-    if (el) el.innerHTML = html;
+  document.querySelectorAll('.react-count').forEach(function (el) {
+    let r = el.getAttribute('data-r');
+    if (r in reactionCounts) el.textContent = reactionCounts[r];
   });
 }
 
 function loadReactions() {
-  if (!document.getElementById('alm-react') && !document.getElementById('cos-react')) return;
+  if (!document.querySelector('.react-count')) return;
   fetch(SUPABASE_URL + '/functions/v1/react?page=' + encodeURIComponent(location.pathname), {
     headers: { 'Authorization': 'Bearer ' + SUPABASE_ANON },
   })

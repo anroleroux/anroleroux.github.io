@@ -164,7 +164,7 @@
       </section>
       <section>
         <h2 class="num ref">Key Exchange</h2>
-        <p>Diffie-Hellman (DH) key exchange was published in 1967 as a method to exchange a secret key over an insecure channel. It uses the hardness of the Discrete Logarithm Problem to calculate an irreversible representation of a secret key. The representation can be sent over an insecure channel. No one can do anything with it, except the communicating parties that use it to obtain a shared secret key.</p>
+        <p>Diffie-Hellman (DH) key exchange was published in 1976 as a method to exchange a secret key over an insecure channel. It uses the hardness of the Discrete Logarithm Problem to calculate an irreversible representation of a secret key. The representation can be sent over an insecure channel. No one can do anything with it, except the communicating parties that use it to obtain a shared secret key.</p>
         <p>Consider a secret key \(a\) and its public representation \(A\) that is owned by Alice. \(A\) can be obtained with \[A = f(g,a,n) = g^a \bmod{n}\]</p>
         <p>
           where \(n\) is a large prime number and \(g\) is a fixed base.
@@ -174,6 +174,7 @@
           Alice sends \(A\) to Bob that computes \(z\) with his secret key \(b\).
           \[\begin{align}
             f(A,b,n) &= A^b \bmod{n} \\
+            &= {g^a}^b \bmod{n} \\
             &= g^{a b} \bmod{n} \\
             &= z \\
           \end{align}\]
@@ -182,6 +183,7 @@
           Bob also obtain \(B\) and sends it to Alice that also computes \(z\) with her secret key \(a\).
           \[\begin{align}
             f(B,a,n) &= B^a \bmod{n} \\
+            &= {g^b}^a \bmod{n} \\
             &= g^{b a} \bmod{n} \\
             &= g^{a b} \bmod{n} \\
             &= z \\
@@ -281,7 +283,7 @@
         <p>
           The exponentiation provides mathematical structure with which algebraic operations can be performed and proofs of security conducted.
           Not only does exponentiation enables composibility that allows
-          \[\begin{align} {g^b}^a \bmod{n} &= g^{b a} \bmod{n} \\ &= B^a \bmod{n} \end{align}\]
+          \[\begin{align} {g^b}^a \bmod{n} &= g^{b a} \bmod{n} \tag{eq 1} \\ &= B^a \bmod{n} \end{align}\]
           in Diffie-Hellman (section <span class="figure-number" data-fid="key-exchange"></span>).
           It also allows modular exponentiation to be backed up by rich mathematical theory like \(\mathbb{Z}^*_c\) in group theory that provides proofs for the behaviour of the function \(f\).
         </p>
@@ -395,27 +397,34 @@
             &=2^4*3^2*5*7
           \end{align}\]
         </p>
-        <p>Notice that all the factors are prime numbers. In fact, every number has only one list of factors that is all prime. This is called the Fundamental Theorem of Arithmetic and was detailed by Carl Friedrich Gauss in 1801. Admittedly I was surprised to only realise this now, especially since it's so fundamental.</p>
+        <p>Notice that all the factors are prime numbers. In fact, every number has only one list of factors that is all prime. This is called the Fundamental Theorem of Arithmetic and was proved by Carl Friedrich Gauss in 1801 with original credit to Euclid. Admittedly I was surprised to only realise this while writing this article.</p>
         <p>Prime numbers are not just weird numbers in everyday counting numbers, they are actually the atoms of which all numbers are made up of. This also means that two prime numbers can be selected, and the product of them will only have those two numbers as factors.</p>
         <p>When asked to find the factors of 679, only 17 will be found to divide it together with 41. When asked about 22790237 one will have to go up to 3187. It becomes apparent that factoring products of two large primes is difficult.</p>
-        <div class="insight block ref num" data-label="Insight">
+        <div class="insight block ref num" data-label="Insight" data-ref="prime-factors">
           <h4></h4>
           <p>Multiplying two large prime numbers results in a new prime number with only the two primes as factors. The multiplication (forward) is easy, but factoring it (backwards) into the two original primes is hard.</p>
         </div>
       </section>
       <section>
         <h2 class="num ref">Inventing RSA</h2>
-        <p>With asymmetric cryptography each person has a public key (\(S\), \(R\)) and a private key (\(s\), \(r\)). Anyone can see the public keys but only the owners ever know the private keys. The sender can encrypt a message with the recipient's public key (\(R\)) and only the recipient can decrypt the message with the matching private key (\(r\)). Encryption is established without exchanging any secret keys.</p>
-        <p>The method in Insight 1 can also be used to encrypt messages. The message \(m\) is used instead of the base \(g\) and raised to the power of an encryption key \(e\). The encrypted message \(M\) is thus \[M=m^e \bmod{n}\] However, it will be convenient to also be able to decrypt \(M\) in the same way by applying a decryption key as another power to get back to \(m\) \[m=M^d \bmod{n}\] which is equivalent to \[\begin{equation} m \equiv m^{e d} \pmod{n} \tag{eq 1} \end{equation}\]</p>
+        <p>With asymmetric cryptography each person has a public key (\(S\), \(R\)) and a private key (\(s\), \(r\)). Anyone can see the public keys but only the owners ever know their own private keys. The sender can encrypt a message with the recipient's public key \(R\) and only the recipient can decrypt the message with the matching private key \(r\). Encryption is established without exchanging any secret keys.</p>
+        <p>The modular exponentiation method in section <span class="figure-number" data-fid="exponent-as-input"></span> can be used to encrypt messages. The message \(m\) is used for the base \(g\) and raised to the power of an encryption key \(e\). The encrypted message \(M\) is \[M = m^e \bmod{n}\]</p>
+        <p>Equation 1 presents the power combination mechanism that will be convenient for decryption of \(M\) by applying a decryption key as another power to get back to \(m\). \[\begin{align} m = M^d \bmod{n} &= {m^e}^d \bmod{n} \\ &= m^{ed} \bmod{n} \end{align}\]</p>
+        <p>It's worth switching to modulo congruence notation. It is like an equal sign, just under the condition of mod \(n\). \[4+3 \neq 1\] \[4+3 \equiv 1 \pmod{6}\]</p>
+        <p>Similarly \[m \equiv m^{ed} \pmod{n} \tag{eq 2}\]</p>
+        <p>The idea is simple but finding \(e\) and \(d\) to be able to accomplish encryption and decryption requires a deep turn in mathematics history.</p>
         <p>Rivest, Shamir and Adleman published RSA in 1977 in which they derived \(e\) and \(d\) to encrypt and decrypt messages. The RSA authors build on math discovered three centuries earlier. The initial version of Euler's theorem was first published in 1736 as a proof of Fermat's little theorem (published without proof in 1640).</p>
-        <p>Refer back to how modulo sequences went though the numbers in section 1. It's clear in the short vulnerable sets that the sequences always end with one \(\{1,2,4,8,1,2,4,8,1,...\}\). The same is true when a large prime modulus is used. This phenomenon can be used to decrypt an encrypted value by moving it forward to the end of the sequence.</p>
-        <p>Euler's theorem: \[m^{\varphi(n)} \equiv 1 \pmod{n}\] shows that there is a power (Euler's Totient) one can raise a base to, that results in a remainder of 1. So if one power (in an exponent) is used to encrypt a value, a second power can be calculated that decrypts it again.</p>
-        <p>It starts by generating two large prime numbers, \(p\) and \(q\), and calculating the product. \[n = p q\] \(n\) is a new prime number that can be publicly shared while \(p\) and \(q\) remain secret because of the irreversibility pointed out by Insight 2. Thus, \(p\) and \(q\) can still be used to calculate Euler's Totient: \[\varphi(n) = (p-1)(q-1)\]</p>
-        <p>\(e\) and \(d\) need to be calculated using \(\varphi(n)\). First, \(1 \pmod{n}\) is isolated in equation 1.</p>
-        <p>\[m^{ed} \equiv m \pmod{n} \iff m^{ed-1} \equiv 1 \pmod{n}\]</p>
+        <p>Refer back to how modulo sequences went though the numbers in section <span class="figure-number" data-fid="exponent-as-input"></span>. Output sequences always end with one like, for example, \(2^x \bmod{11}\) results in \(\{2,4,8,5,10,9,7,3,6,1\}\). This phenomenon can be used to decrypt an encrypted value by moving it forward to the end of the sequence.</p>
+        <div class="insight block ref num" data-label="Insight">
+          <h4></h4>
+          <p>Euler's theorem \[m^{\varphi(n)} \equiv 1 \pmod{n}\] shows that there is a power (Euler's Totient, 1763) one can raise a base to that results in a remainder of 1. So if one power (in an exponent) is used to encrypt a value, a second power can be calculated that decrypts it again.</p>
+        </div>
+        <p>It starts by generating two large prime numbers, \(p\) and \(q\), and calculating the product. \[n = p q\] \(n\) is a new prime number that can be publicly shared while \(p\) and \(q\) remain secret because of the irreversibility pointed out by Insight <span class="figure-number" data-fid="prime-factors"></span>. Thus, \(p\) and \(q\) can still be used to calculate Euler's Totient: \[\varphi(n) = (p-1)(q-1)\]</p>
+        <p>\(e\) and \(d\) need to be calculated using \(\varphi(n)\). First, \(1 \pmod{n}\) is isolated in equation 2.</p>
+        <p>\[m^{ed} \equiv m \iff m^{ed-1} \equiv 1 \pmod{n}\]</p>
         <p>Secondly, Euler's theorem is modified to handle any multiple of \(\varphi(n)\). \[(m^{\varphi(n)})^k \equiv 1^k \equiv 1 \pmod{n}\]</p>
         <p>The latter two equations can now be combined. \[m^{\varphi(n)k} \equiv m^{ed-1} \equiv 1 \pmod{n}\]</p>
-        <p>The exponents \(e\) and \(d\) can then be calculated with: \[ed-1 = \varphi(n)k \iff ed-\varphi(n)k = 1\]</p>
+        <p>The exponents \(e\) and \(d\) can then be calculated with: \[ed-1 = \varphi(n)k \iff ed = \varphi(n)k+1 \iff ed-\varphi(n)k = 1\]</p>
         <p>that can be transformed into modulo form (this is why the multiple \(k\) was required earlier): \[ed \equiv 1 \pmod{\varphi(n)}\]</p>
       </section>
       <section>
@@ -446,7 +455,7 @@
           <p>\(n\):<span id="alm-out-n"></span></p>
           <p>\(\varphi(n)\):<span id="alm-out-phi"></span></p>
         </div>
-        <p>\(e\) must be smaller than \(\varphi(n)\) and be coprime with it. A number that, in its binary form, has zeros and starts and ends with 1 is a preferred for \(e\). \(d\) is then obtained by finding \(d\) where \(e d \bmod{\varphi(n)} = 1\).</p>
+        <p>\(e\) must be smaller than \(\varphi(n)\) and be coprime with it. A number that, in its binary form, has zeros and starts and ends with 1 is a preferred for \(e\). \(d\) is then obtained by finding a \(d\) where \[ed \bmod{\varphi(n)} = 1\] \[\gcd(e,\varphi(n)) = 1\] \[ed \equiv 1 \pmod{\varphi(n)}\]</p>
         <div class="interactions">
           <p>\(e\):<span id="alm-out-e"></span></p>
           <p>\(d\):<span id="alm-out-d"></span></p>
@@ -569,7 +578,7 @@
       </section>
       <section>
         <h2 class="num ref">Key Exchange</h2>
-        <p>Diffie-Hellman (DH) key exchange was published in 1967 as a method to exchange a secret key over an insecure channel. It uses the hardness of the Discrete Logarithm Problem to calculate an irreversible representation of a secret key. The representation can be sent over an insecure channel. No one can do anything with it, except the communicating parties that use it to obtain a shared secret key.</p>
+        <p>Diffie-Hellman (DH) key exchange was published in 1976 as a method to exchange a secret key over an insecure channel. It uses the hardness of the Discrete Logarithm Problem to calculate an irreversible representation of a secret key. The representation can be sent over an insecure channel. No one can do anything with it, except the communicating parties that use it to obtain a shared secret key.</p>
         <p>Consider a secret key \(a\) and its public representation \(A\) that is owned by Alice. \(A\) can be obtained with \[A = f(g,a,n) = g^a \bmod{n}\]</p>
         <p>
           where \(n\) is a large prime number and \(g\) is a fixed base.
@@ -579,6 +588,7 @@
           Alice sends \(A\) to Bob that computes \(z\) with his secret key \(b\).
           \[\begin{align}
             f(A,b,n) &= A^b \bmod{n} \\
+            &= {g^a}^b \bmod{n} \\
             &= g^{a b} \bmod{n} \\
             &= z \\
           \end{align}\]
@@ -587,6 +597,7 @@
           Bob also obtain \(B\) and sends it to Alice that also computes \(z\) with her secret key \(a\).
           \[\begin{align}
             f(B,a,n) &= B^a \bmod{n} \\
+            &= {g^b}^a \bmod{n} \\
             &= g^{b a} \bmod{n} \\
             &= g^{a b} \bmod{n} \\
             &= z \\
@@ -683,7 +694,7 @@
           <div id="cos-log-dlp" class="charta"></div>
           <div class="figure-numbering ref num" data-fig="log-dlp" data-label="Figure"><p>Predictable continuous functions vs unpredictable modular exponentiation.</p></div>
         </div>
-        <p>The exponentiation provides mathematical structure with which algebraic operations can be performed and proofs of security conducted. Not only does exponentiation enables composibility that allows \[\begin{align} {g^b}^a \bmod{n} &= g^{b a} \bmod{n} \\ &= B^a \bmod{n} \end{align}\] in Diffie-Hellman (section <span class="figure-number" data-fid="key-exchange"></span>). It also allows modular exponentiation to be backed up by rich mathematical theory like \(\mathbb{Z}^*_c\) in group theory that provides proofs for the behaviour of the function \(f\).</p>
+        <p>The exponentiation provides mathematical structure with which algebraic operations can be performed and proofs of security conducted. Not only does exponentiation enables composibility that allows \[\begin{align} {g^b}^a \bmod{n} &= g^{b a} \bmod{n} \tag{eq 1} \\ &= B^a \bmod{n} \end{align}\] in Diffie-Hellman (section <span class="figure-number" data-fid="key-exchange"></span>). It also allows modular exponentiation to be backed up by rich mathematical theory like \(\mathbb{Z}^*_c\) in group theory that provides proofs for the behaviour of the function \(f\).</p>
         <p>Addressing the ease of computing \(f\), highly efficient methods exist even for large exponents. The Right-to-Left Binary Method, for example, can compute \(f(g,x,n)\) in \(\Theta(\log x)\) without actually calculating \(g^x\). Therefore, despite the existence of other one-way functions like elliptic curves, lattices, hash functions, isogenies, modular exponentiation is a preferred method for most cryptography.</p>
         <div class="insight block ref num" data-label="Insight">
           <h4></h4>
@@ -794,27 +805,34 @@
             &=2^4*3^2*5*7
           \end{align}\]
         </p>
-        <p>Notice that all the factors are prime numbers. In fact, every number has only one list of factors that is all prime. This is called the Fundamental Theorem of Arithmetic and was detailed by Carl Friedrich Gauss in 1801. Admittedly I was surprised to only realise this now, especially since it's so fundamental.</p>
+        <p>Notice that all the factors are prime numbers. In fact, every number has only one list of factors that is all prime. This is called the Fundamental Theorem of Arithmetic and was proved by Carl Friedrich Gauss in 1801 with original credit to Euclid. Admittedly I was surprised to only realise this while writing this article.</p>
         <p>Prime numbers are not just weird numbers in everyday counting numbers, they are actually the atoms of which all numbers are made up of. This also means that two prime numbers can be selected, and the product of them will only have those two numbers as factors.</p>
         <p>When asked to find the factors of 679, only 17 will be found to divide it together with 41. When asked about 22790237 one will have to go up to 3187. It becomes apparent that factoring products of two large primes is difficult.</p>
-        <div class="insight block ref num" data-label="Insight">
+        <div class="insight block ref num" data-label="Insight" data-ref="prime-factors">
           <h4></h4>
           <p>Multiplying two large prime numbers results in a new prime number with only the two primes as factors. The multiplication (forward) is easy, but factoring it (backwards) into the two original primes is hard.</p>
         </div>
       </section>
       <section>
         <h2 class="num ref">Inventing RSA</h2>
-        <p>With asymmetric cryptography each person has a public key (\(S\), \(R\)) and a private key (\(s\), \(r\)). Anyone can see the public keys but only the owners ever know the private keys. The sender can encrypt a message with the recipient's public key (\(R\)) and only the recipient can decrypt the message with the matching private key (\(r\)). Encryption is established without exchanging any secret keys.</p>
-        <p>The method in Insight 1 can also be used to encrypt messages. The message \(m\) is used instead of the base \(g\) and raised to the power of an encryption key \(e\). The encrypted message \(M\) is thus \[M=m^e \bmod{n}\] However, it will be convenient to also be able to decrypt \(M\) in the same way by applying a decryption key as another power to get back to \(m\) \[m=M^d \bmod{n}\] which is equivalent to \[\begin{equation} m \equiv m^{e d} \pmod{n} \tag{eq 1} \end{equation}\]</p>
+        <p>With asymmetric cryptography each person has a public key (\(S\), \(R\)) and a private key (\(s\), \(r\)). Anyone can see the public keys but only the owners ever know their own private keys. The sender can encrypt a message with the recipient's public key \(R\) and only the recipient can decrypt the message with the matching private key \(r\). Encryption is established without exchanging any secret keys.</p>
+        <p>The modular exponentiation method in section <span class="figure-number" data-fid="exponent-as-input"></span> can be used to encrypt messages. The message \(m\) is used for the base \(g\) and raised to the power of an encryption key \(e\). The encrypted message \(M\) is \[M = m^e \bmod{n}\]</p>
+        <p>Equation 1 presents the power combination mechanism that will be convenient for decryption of \(M\) by applying a decryption key as another power to get back to \(m\). \[\begin{align} m = M^d \bmod{n} &= {m^e}^d \bmod{n} \\ &= m^{ed} \bmod{n} \end{align}\]</p>
+        <p>It's worth switching to modulo congruence notation. It is like an equal sign, just under the condition of mod \(n\). \[4+3 \neq 1\] \[4+3 \equiv 1 \pmod{6}\]</p>
+        <p>Similarly \[m \equiv m^{ed} \pmod{n} \tag{eq 2}\]</p>
+        <p>The idea is simple but finding \(e\) and \(d\) to be able to accomplish encryption and decryption requires a deep turn in mathematics history.</p>
         <p>Rivest, Shamir and Adleman published RSA in 1977 in which they derived \(e\) and \(d\) to encrypt and decrypt messages. The RSA authors build on math discovered three centuries earlier. The initial version of Euler's theorem was first published in 1736 as a proof of Fermat's little theorem (published without proof in 1640).</p>
-        <p>Refer back to how modulo sequences went though the numbers in section 1. It's clear in the short vulnerable sets that the sequences always end with one \(\{1,2,4,8,1,2,4,8,1,...\}\). The same is true when a large prime modulus is used. This phenomenon can be used to decrypt an encrypted value by moving it forward to the end of the sequence.</p>
-        <p>Euler's theorem: \[m^{\varphi(n)} \equiv 1 \pmod{n}\] shows that there is a power (Euler's Totient) one can raise a base to, that results in a remainder of 1. So if one power (in an exponent) is used to encrypt a value, a second power can be calculated that decrypts it again.</p>
-        <p>It starts by generating two large prime numbers, \(p\) and \(q\), and calculating the product. \[n = p q\] \(n\) is a new prime number that can be publicly shared while \(p\) and \(q\) remain secret because of the irreversibility pointed out by Insight 2. Thus, \(p\) and \(q\) can still be used to calculate Euler's Totient: \[\varphi(n) = (p-1)(q-1)\]</p>
-        <p>\(e\) and \(d\) need to be calculated using \(\varphi(n)\). First, \(1 \pmod{n}\) is isolated in equation 1.</p>
-        <p>\[m^{ed} \equiv m \pmod{n} \iff m^{ed-1} \equiv 1 \pmod{n}\]</p>
+        <p>Refer back to how modulo sequences went though the numbers in section <span class="figure-number" data-fid="exponent-as-input"></span>. Output sequences always end with one like, for example, \(2^x \bmod{11}\) results in \(\{2,4,8,5,10,9,7,3,6,1\}\). This phenomenon can be used to decrypt an encrypted value by moving it forward to the end of the sequence.</p>
+        <div class="insight block ref num" data-label="Insight">
+          <h4></h4>
+          <p>Euler's theorem \[m^{\varphi(n)} \equiv 1 \pmod{n}\] shows that there is a power (Euler's Totient, 1763) one can raise a base to that results in a remainder of 1. So if one power (in an exponent) is used to encrypt a value, a second power can be calculated that decrypts it again.</p>
+        </div>
+        <p>It starts by generating two large prime numbers, \(p\) and \(q\), and calculating the product. \[n = p q\] \(n\) is a new prime number that can be publicly shared while \(p\) and \(q\) remain secret because of the irreversibility pointed out by Insight <span class="figure-number" data-fid="prime-factors"></span>. Thus, \(p\) and \(q\) can still be used to calculate Euler's Totient: \[\varphi(n) = (p-1)(q-1)\]</p>
+        <p>\(e\) and \(d\) need to be calculated using \(\varphi(n)\). First, \(1 \pmod{n}\) is isolated in equation 2.</p>
+        <p>\[m^{ed} \equiv m \iff m^{ed-1} \equiv 1 \pmod{n}\]</p>
         <p>Secondly, Euler's theorem is modified to handle any multiple of \(\varphi(n)\). \[(m^{\varphi(n)})^k \equiv 1^k \equiv 1 \pmod{n}\]</p>
         <p>The latter two equations can now be combined. \[m^{\varphi(n)k} \equiv m^{ed-1} \equiv 1 \pmod{n}\]</p>
-        <p>The exponents \(e\) and \(d\) can then be calculated with: \[ed-1 = \varphi(n)k \iff ed-\varphi(n)k = 1\]</p>
+        <p>The exponents \(e\) and \(d\) can then be calculated with: \[ed-1 = \varphi(n)k \iff ed = \varphi(n)k+1 \iff ed-\varphi(n)k = 1\]</p>
         <p>that can be transformed into modulo form (this is why the multiple \(k\) was required earlier): \[ed \equiv 1 \pmod{\varphi(n)}\]</p>
       </section>
       <section>
@@ -845,7 +863,7 @@
           <p>\(n\):<span id="cos-out-n"></span></p>
           <p>\(\varphi(n)\):<span id="cos-out-phi"></span></p>
         </div>
-        <p>\(e\) must be smaller than \(\varphi(n)\) and be coprime with it. A number that, in its binary form, has zeros and starts and ends with 1 is a preferred for \(e\). \(d\) is then obtained by finding \(d\) where \(e d \bmod{\varphi(n)} = 1\).</p>
+        <p>\(e\) must be smaller than \(\varphi(n)\) and be coprime with it. A number that, in its binary form, has zeros and starts and ends with 1 is a preferred for \(e\). \(d\) is then obtained by finding a \(d\) where \[ed \bmod{\varphi(n)} = 1\] \[\gcd(e,\varphi(n)) = 1\] \[ed \equiv 1 \pmod{\varphi(n)}\]</p>
         <div class="interactions">
           <p>\(e\):<span id="cos-out-e"></span></p>
           <p>\(d\):<span id="cos-out-d"></span></p>

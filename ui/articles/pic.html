@@ -301,10 +301,10 @@
           </li>
           <li>the fixed values (\(e\) or \(g\)) must adhere to the necessary criteria causing small mapping cycles that repeat, also making it easier to brute-force</li>
         </ul>
-        <p>The last point is important. Lagrange’s theorem states “the order of any element always divides the order of the group”. This is seen in action with, for example, \(4^x \bmod{17}\) that results in a repeating sequence \(\{4,16,13,1\}\). There 4 is not a generator of 17 that is a criteria as explained in section <span class="figure-number" data-fid="exponent-as-input"></span>. The length of the sequence (4) divides the order of the group (\(n-1 = 16\)). The unpredictable behaviour is four times weaker.</p>
+        <p>The last point is important. Lagrange’s theorem (group theory) states “the order of any element always divides the order of the group”. This is seen in action with, for example, \(4^x \bmod{17}\) that results in a repeating sequence \(\{4,16,13,1\}\). The 4 is not a generator of 17 that is a criteria as explained in section <span class="figure-number" data-fid="exponent-as-input"></span>. The length of the sequence (4) divides the order of the group (\(n-1 = 16\)). The unpredictable behaviour is four times weaker.</p>
         <h3 class="num">Base as Input</h3>
-        <p>This method is used in RSA encryption that is further discussed in section <span class="figure-number" data-fid="inventing-rsa"></span>. \[f(x,e,n) = x^e \bmod{n}\] The criteria is simple. \(n\) must be a prime and \(e\) a coprime with \(n-1\).</p>
-        <p>If the criteria is not met less numbers are cycled through, making brute force attacks easier. Change the values of \(e\) and \(n\) below and see how the mapping cycles through the numbers in figure <span class="figure-number" data-fid="base-mod-clock"></span>.</p>
+        <p>This method is used in RSA encryption that is further discussed in section <span class="figure-number" data-fid="inventing-rsa"></span>. The exponent is kept fixed and the base is the value that gets encrypted. \[f(x,e,n) = x^e \bmod{n}\]</p>
+        <p>The criteria is simple. \(n\) must be prime and \(e\) a coprime with \(n-1\). Change the values of \(e\) and \(n\) below and see how the mapping cycles through the numbers in figure <span class="figure-number" data-fid="base-mod-clock"></span>.</p>
         <div class="interactions">
           <p>\(n\):
             <span class="number-input-wrapper">
@@ -332,14 +332,8 @@
           <div class="figure-numbering ref num" data-fig="base-mod-clock" data-label="Figure"><p>Modular clock diagram.</p></div>
         </div>
         <h3 class="num ref">Exponent as Input</h3>
-        <p>This method is used for Diffie-Hellman and uses the discrete logarithm problem.</p>
-        <div class="insight block ref num" data-label="Insight">
-          <h4></h4>
-          <p>The Discrete Logarithm Problem presents \[X = g^x \bmod{n}\] It is easy to calculate the modulo of an exponential function if the base \(g\), the power \(x\) and the modulus \(n\) is known, but it is hard to calculate \(x\) from \(X\) if \(n\) is large.</p>
-        </div>
-        <p>When \(g=2\) and \(n=11\), an attacker can start at \(x=1\) and test each secret up to \(x=10\) against \(X\). The sequence 2, 4, 8, 5, 10, 9, 7, 3, 6, 1 is produced and if \(X=5\) the attacker knows \(x=4\) (the 4th number in the sequence). When \(x\) gets to \(n-1\), \(X=1\), and then the sequence repeats. To avoid ambiguity, DH secrets are always chosen before repetition occurs. Fortunately there are many numbers to use when \(n\) is large.</p>
-        <p>The next criteria to adhere to is that \(n\) must be prime. When \(n=9\) and \(g=2\), the range of repeating numbers are \(\{2,4,8,7,5,1\}\). The secret can only be one of these numbers instead of utilizing the entire possible range of \(n-1\) numbers and an attacker has less numbers to test. This is because \(n\) is not a prime number.</p>
-        <p>A utilization ratio, \(\gamma\), can be expressed as the number of elements utilized, \(|\zeta|\), divided by the total number of elements in the group, \(n-1\). Thus, when \(n=15\) and \(g=2\), the utilization ratio, \[\gamma = \frac{|\zeta|}{n-1}=\frac{4}{14}\] is approximately 0.286. With \(n=19\) and \(g=2\) it cycles through all the numbers. Thus \(\gamma=1\), which is the case when \(n\) is prime, with one last caveat.</p>
+        <p>This method is used for Diffie-Hellman and uses the Discrete Logarithm Problem \[X = g^x \bmod{n}\]</p>
+        <p>The criteria here is that \(n\) must be prime and \(g\) must be a generator of \(n\). A utilization ratio, \(\gamma\), can be expressed as the number of elements utilized, \(|\zeta|\), divided by the total number of elements in the group, \(n-1\). Thus, when \(n=15\) and \(g=2\), the utilization ratio, \[\gamma = \frac{|\zeta|}{n-1}=\frac{4}{14}\] is approximately 0.286. With \(n=19\) and \(g=2\) it cycles through all the numbers. Thus \(\gamma=1\), which is the case when \(n\) is prime, with one last caveat.</p>
         <p>Figure <span class="figure-number" data-fid="mod-clock"></span> shows how many numbers are utilised with a clock diagram, depending on the \(n\) and \(g\) values selected in the input boxes. The number sequence is also printed.</p>
         <div class="interactions">
           <p>\(n\):
@@ -702,10 +696,10 @@
           </li>
           <li>the fixed values (\(e\) or \(g\)) must adhere to the necessary criteria causing small mapping cycles that repeat, also making it easier to brute-force</li>
         </ul>
-        <p>The last point is important. Lagrange’s theorem states “the order of any element always divides the order of the group”. This is seen in action with, for example, \(4^x \bmod{17}\) that results in a repeating sequence \(\{4,16,13,1\}\). There 4 is not a generator of 17 that is a criteria as explained in section <span class="figure-number" data-fid="exponent-as-input"></span>. The length of the sequence (4) divides the order of the group (\(n-1 = 16\)). The unpredictable behaviour is four times weaker.</p>
+        <p>The last point is important. Lagrange’s theorem (group theory) states “the order of any element always divides the order of the group”. This is seen in action with, for example, \(4^x \bmod{17}\) that results in a repeating sequence \(\{4,16,13,1\}\). The 4 is not a generator of 17 that is a criteria as explained in section <span class="figure-number" data-fid="exponent-as-input"></span>. The length of the sequence (4) divides the order of the group (\(n-1 = 16\)). The unpredictable behaviour is four times weaker.</p>
         <h3 class="num">Base as Input</h3>
-        <p>This method is used in RSA encryption that is further discussed in section <span class="figure-number" data-fid="inventing-rsa"></span>. \[f(x,e,n) = x^e \bmod{n}\] The criteria is simple. \(n\) must be a prime and \(e\) a coprime with \(n-1\).</p>
-        <p>If the criteria is not met less numbers are cycled through, making brute force attacks easier. Change the values of \(e\) and \(n\) below and see how the mapping cycles through the numbers in figure <span class="figure-number" data-fid="base-mod-clock"></span>.</p>
+        <p>This method is used in RSA encryption that is further discussed in section <span class="figure-number" data-fid="inventing-rsa"></span>. The exponent is kept fixed and the base is the value that gets encrypted. \[f(x,e,n) = x^e \bmod{n}\]</p>
+        <p>The criteria is simple. \(n\) must be prime and \(e\) a coprime with \(n-1\). Change the values of \(e\) and \(n\) below and see how the mapping cycles through the numbers in figure <span class="figure-number" data-fid="base-mod-clock"></span>.</p>
         <div class="interactions">
           <p>\(n\):
             <span class="number-input-wrapper">
@@ -733,14 +727,8 @@
           <div class="figure-numbering ref num" data-fig="base-mod-clock" data-label="Figure"><p>Modular clock diagram.</p></div>
         </div>
         <h3 class="num ref">Exponent as Input</h3>
-        <p>This method is used for Diffie-Hellman and uses the discrete logarithm problem.</p>
-        <div class="insight block ref num" data-label="Insight">
-          <h4></h4>
-          <p>The Discrete Logarithm Problem presents \[X = g^x \bmod{n}\] It is easy to calculate the modulo of an exponential function if the base \(g\), the power \(x\) and the modulus \(n\) is known, but it is hard to calculate \(x\) from \(X\) if \(n\) is large.</p>
-        </div>
-        <p>When \(g=2\) and \(n=11\), an attacker can start at \(x=1\) and test each secret up to \(x=10\) against \(X\). The sequence 2, 4, 8, 5, 10, 9, 7, 3, 6, 1 is produced and if \(X=5\) the attacker knows \(x=4\) (the 4th number in the sequence). When \(x\) gets to \(n-1\), \(X=1\), and then the sequence repeats. To avoid ambiguity, DH secrets are always chosen before repetition occurs. Fortunately there are many numbers to use when \(n\) is large.</p>
-        <p>The next criteria to adhere to is that \(n\) must be prime. When \(n=9\) and \(g=2\), the range of repeating numbers are \(\{2,4,8,7,5,1\}\). The secret can only be one of these numbers instead of utilizing the entire possible range of \(n-1\) numbers and an attacker has less numbers to test. This is because \(n\) is not a prime number.</p>
-        <p>A utilization ratio, \(\gamma\), can be expressed as the number of elements utilized, \(|\zeta|\), divided by the total number of elements in the group, \(n-1\). Thus, when \(n=15\) and \(g=2\), the utilization ratio, \[\gamma = \frac{|\zeta|}{n-1}=\frac{4}{14}\] is approximately 0.286. With \(n=19\) and \(g=2\) it cycles through all the numbers. Thus \(\gamma=1\), which is the case when \(n\) is prime, with one last caveat.</p>
+        <p>This method is used for Diffie-Hellman and uses the Discrete Logarithm Problem \[X = g^x \bmod{n}\]</p>
+        <p>The criteria here is that \(n\) must be prime and \(g\) must be a generator of \(n\). A utilization ratio, \(\gamma\), can be expressed as the number of elements utilized, \(|\zeta|\), divided by the total number of elements in the group, \(n-1\). Thus, when \(n=15\) and \(g=2\), the utilization ratio, \[\gamma = \frac{|\zeta|}{n-1}=\frac{4}{14}\] is approximately 0.286. With \(n=19\) and \(g=2\) it cycles through all the numbers. Thus \(\gamma=1\), which is the case when \(n\) is prime, with one last caveat.</p>
         <p>Figure <span class="figure-number" data-fid="mod-clock"></span> shows how many numbers are utilised with a clock diagram, depending on the \(n\) and \(g\) values selected in the input boxes. The number sequence is also printed.</p>
         <div class="interactions">
           <p>\(n\):

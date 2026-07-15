@@ -482,4 +482,54 @@ sb.auth.onAuthStateChange(function (event, session) {
     trackVisit(session);
   }
 });
+
+// ── Article reactions ─────────────────────────────────────────
+// Applause-style: every click counts, throttled server-side. Counts are always
+// shown. Renders into the alm-react / cos-react placeholders (both footers).
+let reactionCounts = { valuable: 0, not_valuable: 0 };
+let reactionBusy   = false;
+
+function reactionsHTML() {
+  return '' +
+    '<button class="react-btn" onclick="react(\'valuable\')">' +
+      'Valuable <span class="react-count">' + reactionCounts.valuable + '</span></button>' +
+    '<button class="react-btn" onclick="react(\'not_valuable\')">' +
+      'Not valuable <span class="react-count">' + reactionCounts.not_valuable + '</span></button>';
+}
+
+function renderReactions() {
+  let html = reactionsHTML();
+  ['alm-react', 'cos-react'].forEach(function (id) {
+    let el = document.getElementById(id);
+    if (el) el.innerHTML = html;
+  });
+}
+
+function loadReactions() {
+  if (!document.getElementById('alm-react') && !document.getElementById('cos-react')) return;
+  fetch(SUPABASE_URL + '/functions/v1/react?page=' + encodeURIComponent(location.pathname), {
+    headers: { 'Authorization': 'Bearer ' + SUPABASE_ANON },
+  })
+    .then(function (r) { return r.json(); })
+    .then(function (d) { if (d && d.counts) { reactionCounts = d.counts; renderReactions(); } })
+    .catch(function () {});
+}
+
+function react(kind) {
+  if (reactionBusy) return;
+  reactionBusy = true;
+  reactionCounts[kind]++;      // optimistic
+  renderReactions();
+  fetch(SUPABASE_URL + '/functions/v1/react', {
+    method:  'POST',
+    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + SUPABASE_ANON },
+    body: JSON.stringify({ session_token: trackToken, page: location.pathname, reaction: kind }),
+  })
+    .then(function (r) { return r.json(); })
+    .then(function (d) { if (d && d.counts) { reactionCounts = d.counts; renderReactions(); } })
+    .catch(function () {})
+    .finally(function () { reactionBusy = false; });
+}
+
+loadReactions();
 //online-end

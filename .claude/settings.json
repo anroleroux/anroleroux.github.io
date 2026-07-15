@@ -6,7 +6,16 @@
       "Edit(/.claude/skills/copy-sync/**)",
       "Bash(pkill -f \"http.server 8765\")",
       "Edit(/.claude/skills/hoist-css/**)",
-      "Read(//home/anro/Projects/.claude/projects/-home-anro-Projects-anroleroux-github-io/memory/**)"
+      "Read(//home/anro/Projects/.claude/projects/-home-anro-Projects-anroleroux-github-io/memory/**)",
+      "mcp__claude_ai_Supabase__list_tables",
+      "mcp__claude_ai_Supabase__list_edge_functions",
+      "mcp__claude_ai_Supabase__apply_migration",
+      "mcp__claude_ai_Supabase__deploy_edge_function",
+      "Bash(curl -s https://hbiyyreqmliesghdclpg.supabase.co/functions/v1/react?page=/articles/pic.html -H 'Authorization: Bearer sb_publishable_OsrWXMOvvDm0PluzQE6-6g_zb2yaaP7')",
+      "Read(//proc/sys/kernel/random/**)",
+      "Bash(curl -s -X POST https://hbiyyreqmliesghdclpg.supabase.co/functions/v1/react -H 'Authorization: Bearer sb_publishable_OsrWXMOvvDm0PluzQE6-6g_zb2yaaP7' -H 'Content-Type: application/json' -H 'User-Agent: Mozilla/5.0 \\(X11; Linux x86_64\\) AppleWebKit/537.36 \\(KHTML, like Gecko\\) Chrome/120 Safari/537.36' -d '{\"session_token\":\"__CMDSUB_OUTPUT__\",\"page\":\"/articles/pic.html\",\"reaction\":\"valuable\"}')",
+      "mcp__claude_ai_Supabase__execute_sql",
+      "Bash(make prd *)"
     ]
   }
 }

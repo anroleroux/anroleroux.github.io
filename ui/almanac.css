@@ -49,3 +49,8 @@
 /* Interactions inputs */
 .almanac .interactions input[type=number], .almanac .interactions input[type=text] { border-color: var(--rule); background: rgba(28,22,16,0.03); color: var(--ink); }
 .almanac .interactions svg { border-color: var(--rule); }
+
+/* Reactions */
+.almanac .reactions { color: var(--ink-muted); }
+.almanac .react-btn { border-color: var(--rule); }
+.almanac .react-btn:hover { border-color: var(--accent); color: var(--accent); }

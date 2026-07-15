@@ -166,6 +166,37 @@ body { margin: 0; padding: 0; width: 100%; font-family: 'Inter', system-ui, sans
 .site-auth-input::placeholder { opacity: 0.5; }
 .site-auth-input:focus { opacity: 1; }
 
+/* ── Reactions widget (shared by almanac + cosmos footers) ─────── */
+.reactions {
+  display: flex;
+  gap: var(--ms0);
+  justify-content: center;
+  padding: var(--ms3) var(--ms6) 0;
+}
+.react-btn {
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--ms-2);
+  background: none;
+  border: 1px solid currentColor;
+  border-radius: var(--ms-2);
+  padding: var(--ms-3) var(--ms1);
+  cursor: pointer;
+  color: inherit;
+  font: inherit;
+  font-size: var(--ts13);
+  letter-spacing: 0.04em;
+  opacity: 0.55;
+  transition: opacity 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+.react-btn:hover { opacity: 1; }
+.react-count {
+  font-family: var(--mono);
+  font-variant-numeric: tabular-nums;
+  font-size: var(--ts11);
+  opacity: 0.75;
+}
+
 /* {{almanac-css}} */
 /* {{cosmos-css}} */
 

@@ -249,6 +249,12 @@ a.alm-brand, a.cos-brand { text-decoration: none; color: inherit; }
 .art-toc a { color: var(--ink-faint); text-decoration: none; }
 .art-toc a:hover { color: var(--accent); }
 
+/* ── Article cross-references (clickable figure / section numbers) ─ */
+/* Colour is inherited from the theme's `article a` rule (accent / gold);
+   scoped under .art-body so it overrides that rule's underline. */
+.art-body .figure-number a { border-bottom: none; transition: opacity 0.2s; }
+.art-body .figure-number a:hover { opacity: 0.7; }
+
 /* ── Article body ─────────────────────────────────────────────── */
 /* .art-body section { padding: var(--ms5) var(--ms6); border-top: 1px solid var(--rule); }
 .art-body section:first-child { padding-top: var(--ms6); }

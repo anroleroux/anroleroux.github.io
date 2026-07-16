@@ -384,10 +384,21 @@ function initRef(p) {
         }
     });
 
-    // Resolve cross-reference spans against the refs collected above.
+    // Resolve cross-reference spans against the refs collected above. When the
+    // target resolves, render the number as a link that jumps to it (works for
+    // both figures and sections, since their ids share the `p-<key>` shape).
     article.querySelectorAll('.figure-number').forEach(function (el) {
         let key = el.dataset.fid || el.dataset.ref;
-        el.textContent = key ? (refs[p + '-' + key] || '') : '';
+        let num = key ? (refs[p + '-' + key] || '') : '';
+        el.textContent = '';
+        if (key && num) {
+            let a = document.createElement('a');
+            a.href = '#' + p + '-' + key;
+            a.textContent = num;
+            el.appendChild(a);
+        } else {
+            el.textContent = num;
+        }
     });
 }
 

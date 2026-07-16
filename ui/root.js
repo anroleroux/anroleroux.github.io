@@ -387,17 +387,21 @@ function initRef(p) {
     // Resolve cross-reference spans against the refs collected above. When the
     // target resolves, render the number as a link that jumps to it (works for
     // both figures and sections, since their ids share the `p-<key>` shape).
+    // Any authored text in the span (e.g. "section", "figure", "Figure") is the
+    // label word; it is kept inside the link so "section 2.4" is all clickable.
     article.querySelectorAll('.figure-number').forEach(function (el) {
-        let key = el.dataset.fid || el.dataset.ref;
-        let num = key ? (refs[p + '-' + key] || '') : '';
+        let key   = el.dataset.fid || el.dataset.ref;
+        let num   = key ? (refs[p + '-' + key] || '') : '';
+        let label = el.textContent.trim();
+        let text  = label && num ? label + ' ' + num : (num || label);
         el.textContent = '';
         if (key && num) {
             let a = document.createElement('a');
             a.href = '#' + p + '-' + key;
-            a.textContent = num;
+            a.textContent = text;
             el.appendChild(a);
         } else {
-            el.textContent = num;
+            el.textContent = text;
         }
     });
 }

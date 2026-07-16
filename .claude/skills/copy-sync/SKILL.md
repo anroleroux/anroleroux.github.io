@@ -65,9 +65,15 @@ right HTML slot, but don't treat the label or markers as literal text:
   verbatim.
 - **`%% … %%`** → an author note to himself. **Ignore** it (e.g. "%% Ignore the
   following two blocks for now %%").
-- **`<ref id>` / `<insight id>`** → a cross-reference, rendered as a resolved
-  number or link ("Figure `<ref diamondDisciplines>`" → "Figure 1"). Don't expect
-  the literal `<ref …>` text in the HTML.
+- **`<ref word id>` / `<insight word id>`** → a cross-reference. The first token
+  is the **label word** ("section", "figure", "Figure", "Insight"), the rest is
+  the target **id**. It renders as `<span class="figure-number" data-fid="id">word</span>`
+  — the word lives **inside** the span so the whole "word number" becomes one link
+  ("`<ref figure diamondDisciplines>`" → clickable "figure 1"). The span is empty
+  in the source; `initRef` fills in the number at runtime, so don't expect the
+  resolved number in the HTML. An older form put the word as plain text *before*
+  the span (`figure <span class="figure-number" data-fid="…"></span>`) — treat that
+  as equivalent when comparing, but write the word-inside-span form.
 - **`<pill X>`** → a pill component (`<span class="pill …">X</span>`).
 - **`<date>`, `<version dropdown>`, `_space_`, `<space>`** → dynamic/interactive
   placeholders; no static text to match.

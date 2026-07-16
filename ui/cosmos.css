@@ -56,3 +56,6 @@
 .cosmos .reactions { color: var(--bone-muted); }
 .cosmos .react-btn { border-color: var(--gold-faint); }
 .cosmos .react-btn:hover { border-color: var(--gold); color: var(--gold); }
+
+/* Visits sparkline */
+.cosmos .art-visits-spark { color: var(--gold); }

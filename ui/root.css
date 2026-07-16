@@ -225,6 +225,12 @@ a.alm-brand, a.cos-brand { text-decoration: none; color: inherit; }
 .art-meta-bar { display: flex; gap: var(--ms5); align-items: baseline; padding: var(--ms1) var(--ms6); border-bottom: 1px solid var(--rule); font-family: var(--mono); font-size: var(--ts11); letter-spacing: 0.8px; color: var(--ink-faint); text-transform: uppercase; }
 .art-meta-item { display: flex; gap: var(--ms-2); align-items: baseline; }
 .art-meta-val { color: var(--ink-muted); font-variant-numeric: tabular-nums; }
+/* Visits sparkline — hidden until the edge function returns a series. The
+   flex on .art-meta-item overrides the [hidden] attribute, so restate it. */
+.art-visits[hidden] { display: none; }
+.art-visits { align-items: center; }
+.art-visits-spark { display: inline-flex; align-items: center; }
+.art-visits-spark .spark-svg { display: block; overflow: visible; }
 
 /* ── Article TOC ──────────────────────────────────────────────── */
 .art-toc { padding: var(--ms2) var(--ms6); border-bottom: 1px solid var(--rule); }

@@ -186,7 +186,7 @@
           \end{align}\]
         </p>
         <p>
-          Bob also obtain \(B\) and sends it to Alice that also computes \(z\) with her secret key \(a\).
+          Bob also obtains \(B\) and sends it to Alice that also computes \(z\) with her secret key \(a\).
           \[\begin{align}
             f(B,a,n) &= B^a \bmod{n} \\
             &= {g^b}^a \bmod{n} \\
@@ -405,7 +405,7 @@
         </p>
         <p>Notice that all the factors are prime numbers. In fact, every number has only one list of factors that is all prime. This is called the Fundamental Theorem of Arithmetic and was proved by Carl Friedrich Gauss in 1801 with original credit to Euclid. Admittedly I was surprised to only realise this while writing this article.</p>
         <p>Prime numbers are not just weird numbers in everyday counting numbers, they are actually the atoms of which all numbers are made up of. This also means that two prime numbers can be selected, and the product of them will only have those two numbers as factors.</p>
-        <p>When asked to find the factors of 679, only 17 will be found to divide it together with 41. When asked about 22790237 one will have to go up to 3187. It becomes apparent that factoring products of two large primes is difficult.</p>
+        <p>When asked to find the factors of 697, only 17 will be found to divide it together with 41. When asked about 22790237 one will have to go up to 3187. It becomes apparent that factoring products of two large primes is difficult.</p>
         <div class="insight block ref num" data-label="Insight" data-ref="prime-factors">
           <h4></h4>
           <p>Multiplying two large prime numbers results in a new prime number with only the two primes as factors. The multiplication (forward) is easy, but factoring it (backwards) into the two original primes is hard.</p>
@@ -414,11 +414,11 @@
       <section>
         <h2 class="num ref">Inventing RSA</h2>
         <p>With asymmetric cryptography each person has a public key (\(S\), \(R\)) and a private key (\(s\), \(r\)). Anyone can see the public keys but only the owners ever know their own private keys. The sender can encrypt a message with the recipient's public key \(R\) and only the recipient can decrypt the message with the matching private key \(r\). Encryption is established without exchanging any secret keys.</p>
-        <p>The modular exponentiation method in <span class="figure-number" data-fid="exponent-as-input">section</span> can be used to encrypt messages. The message \(m\) is used for the base \(g\) and raised to the power of an encryption key \(e\). The encrypted message \(M\) is \[M = m^e \bmod{n}\]</p>
+        <p>The modular exponentiation method in <span class="figure-number" data-fid="exponent-as-input">section</span> can be used to encrypt messages. The message \(m\) is used for the base and raised to the power of an encryption key \(e\). The encrypted message \(M\) is \[M = m^e \bmod{n}\]</p>
         <p>Equation 1 presents the power combination mechanism that will be convenient for decryption of \(M\) by applying a decryption key as another power to get back to \(m\). \[\begin{align} m = M^d \bmod{n} &= {m^e}^d \bmod{n} \\ &= m^{ed} \bmod{n} \end{align}\]</p>
         <p>It's worth switching to modulo congruence notation. It is like an equal sign, just under the condition of mod \(n\). \[4+3 \neq 1\] \[4+3 \equiv 1 \pmod{6}\]</p>
         <p>Similarly \[m \equiv m^{ed} \pmod{n} \tag{eq 2}\]</p>
-        <p>The idea is simple but finding \(e\) and \(d\) to be able to accomplish encryption and decryption requires a deep turn in mathematics history.</p>
+        <p>The idea is intuitive but finding \(e\) and \(d\) to be able to accomplish encryption and decryption requires a deep turn in mathematics history.</p>
         <p>Rivest, Shamir and Adleman published RSA in 1977 in which they derived \(e\) and \(d\) to encrypt and decrypt messages. The RSA authors build on math discovered three centuries earlier. The initial version of Euler's theorem was first published in 1736 as a proof of Fermat's little theorem (published without proof in 1640).</p>
         <p>Refer back to how modulo sequences went though the numbers in <span class="figure-number" data-fid="exponent-as-input">section</span>. Output sequences always end with one like, for example, \(2^x \bmod{11}\) results in \(\{2,4,8,5,10,9,7,3,6,1\}\). This phenomenon can be used to decrypt an encrypted value by moving it forward to the end of the sequence.</p>
         <div class="insight block ref num" data-label="Insight">
@@ -432,6 +432,14 @@
         <p>The latter two equations can now be combined. \[m^{\varphi(n)k} \equiv m^{ed-1} \equiv 1 \pmod{n}\]</p>
         <p>The exponents \(e\) and \(d\) can then be calculated with: \[ed-1 = \varphi(n)k \iff ed = \varphi(n)k+1 \iff ed-\varphi(n)k = 1\]</p>
         <p>that can be transformed into modulo form (this is why the multiple \(k\) was required earlier): \[ed \equiv 1 \pmod{\varphi(n)}\]</p>
+        <p>This means, if \(e=3\) and \(n=11\), then \(d=7\). \[m \mapsto f(m,e,n) \mapsto f(f(m,e,n),d,n) = m\] \[\begin{align} f(f(m,3,11),7,11) &= (m^3 \bmod{11})^7 \bmod{11} \\ &= m^{3*7} \bmod{11} \\ &= m \end{align}\]</p>
+        <p>\[\begin{Bmatrix} 1 \\ 2 \\ 3 \\ 4 \\ 5 \\ 6 \\ 7 \\ 8 \\ 9 \\ 10 \end{Bmatrix} \mapsto \begin{Bmatrix} 1 \\ 8 \\ 5 \\ 9 \\ 4 \\ 7 \\ 2 \\ 6 \\ 3 \\ 10 \end{Bmatrix} \mapsto \begin{Bmatrix} 1 \\ 2 \\ 3 \\ 4 \\ 5 \\ 6 \\ 7 \\ 8 \\ 9 \\ 10 \end{Bmatrix}\]</p>
+        <p>A secret value of \(m=2\) maps to an encrypted value of \(M=8\). Decryption applies the inverse mapping of 8 to 2 again. \[2 \mapsto 8 \mapsto 2\]</p>
+        <p>Test it in <span class="figure-number" data-fid="exponent-as-input">section</span> by setting \(n=11\), \(e=3\) and noting the 2nd number in the \(\zeta\) sequence, it should be 8. Then change to \(e=7\) (\(d\)) and note the 8th number, it should be 2.</p>
+        <div class="insight block ref num" data-label="Insight" data-ref="eulers-theorem">
+          <h4></h4>
+          <p>\[m^{\varphi(n)} \equiv 1 \pmod{n}\] allows a \(d\) to be found that generates the inverse mapping that can be used to decrypt a value.</p>
+        </div>
       </section>
       <section>
         <h2 class="num">Encryption and Decryption</h2>
@@ -610,7 +618,7 @@
           \end{align}\]
         </p>
         <p>
-          Bob also obtain \(B\) and sends it to Alice that also computes \(z\) with her secret key \(a\).
+          Bob also obtains \(B\) and sends it to Alice that also computes \(z\) with her secret key \(a\).
           \[\begin{align}
             f(B,a,n) &= B^a \bmod{n} \\
             &= {g^b}^a \bmod{n} \\
@@ -823,7 +831,7 @@
         </p>
         <p>Notice that all the factors are prime numbers. In fact, every number has only one list of factors that is all prime. This is called the Fundamental Theorem of Arithmetic and was proved by Carl Friedrich Gauss in 1801 with original credit to Euclid. Admittedly I was surprised to only realise this while writing this article.</p>
         <p>Prime numbers are not just weird numbers in everyday counting numbers, they are actually the atoms of which all numbers are made up of. This also means that two prime numbers can be selected, and the product of them will only have those two numbers as factors.</p>
-        <p>When asked to find the factors of 679, only 17 will be found to divide it together with 41. When asked about 22790237 one will have to go up to 3187. It becomes apparent that factoring products of two large primes is difficult.</p>
+        <p>When asked to find the factors of 697, only 17 will be found to divide it together with 41. When asked about 22790237 one will have to go up to 3187. It becomes apparent that factoring products of two large primes is difficult.</p>
         <div class="insight block ref num" data-label="Insight" data-ref="prime-factors">
           <h4></h4>
           <p>Multiplying two large prime numbers results in a new prime number with only the two primes as factors. The multiplication (forward) is easy, but factoring it (backwards) into the two original primes is hard.</p>
@@ -832,11 +840,11 @@
       <section>
         <h2 class="num ref">Inventing RSA</h2>
         <p>With asymmetric cryptography each person has a public key (\(S\), \(R\)) and a private key (\(s\), \(r\)). Anyone can see the public keys but only the owners ever know their own private keys. The sender can encrypt a message with the recipient's public key \(R\) and only the recipient can decrypt the message with the matching private key \(r\). Encryption is established without exchanging any secret keys.</p>
-        <p>The modular exponentiation method in <span class="figure-number" data-fid="exponent-as-input">section</span> can be used to encrypt messages. The message \(m\) is used for the base \(g\) and raised to the power of an encryption key \(e\). The encrypted message \(M\) is \[M = m^e \bmod{n}\]</p>
+        <p>The modular exponentiation method in <span class="figure-number" data-fid="exponent-as-input">section</span> can be used to encrypt messages. The message \(m\) is used for the base and raised to the power of an encryption key \(e\). The encrypted message \(M\) is \[M = m^e \bmod{n}\]</p>
         <p>Equation 1 presents the power combination mechanism that will be convenient for decryption of \(M\) by applying a decryption key as another power to get back to \(m\). \[\begin{align} m = M^d \bmod{n} &= {m^e}^d \bmod{n} \\ &= m^{ed} \bmod{n} \end{align}\]</p>
         <p>It's worth switching to modulo congruence notation. It is like an equal sign, just under the condition of mod \(n\). \[4+3 \neq 1\] \[4+3 \equiv 1 \pmod{6}\]</p>
         <p>Similarly \[m \equiv m^{ed} \pmod{n} \tag{eq 2}\]</p>
-        <p>The idea is simple but finding \(e\) and \(d\) to be able to accomplish encryption and decryption requires a deep turn in mathematics history.</p>
+        <p>The idea is intuitive but finding \(e\) and \(d\) to be able to accomplish encryption and decryption requires a deep turn in mathematics history.</p>
         <p>Rivest, Shamir and Adleman published RSA in 1977 in which they derived \(e\) and \(d\) to encrypt and decrypt messages. The RSA authors build on math discovered three centuries earlier. The initial version of Euler's theorem was first published in 1736 as a proof of Fermat's little theorem (published without proof in 1640).</p>
         <p>Refer back to how modulo sequences went though the numbers in <span class="figure-number" data-fid="exponent-as-input">section</span>. Output sequences always end with one like, for example, \(2^x \bmod{11}\) results in \(\{2,4,8,5,10,9,7,3,6,1\}\). This phenomenon can be used to decrypt an encrypted value by moving it forward to the end of the sequence.</p>
         <div class="insight block ref num" data-label="Insight">
@@ -850,6 +858,14 @@
         <p>The latter two equations can now be combined. \[m^{\varphi(n)k} \equiv m^{ed-1} \equiv 1 \pmod{n}\]</p>
         <p>The exponents \(e\) and \(d\) can then be calculated with: \[ed-1 = \varphi(n)k \iff ed = \varphi(n)k+1 \iff ed-\varphi(n)k = 1\]</p>
         <p>that can be transformed into modulo form (this is why the multiple \(k\) was required earlier): \[ed \equiv 1 \pmod{\varphi(n)}\]</p>
+        <p>This means, if \(e=3\) and \(n=11\), then \(d=7\). \[m \mapsto f(m,e,n) \mapsto f(f(m,e,n),d,n) = m\] \[\begin{align} f(f(m,3,11),7,11) &= (m^3 \bmod{11})^7 \bmod{11} \\ &= m^{3*7} \bmod{11} \\ &= m \end{align}\]</p>
+        <p>\[\begin{Bmatrix} 1 \\ 2 \\ 3 \\ 4 \\ 5 \\ 6 \\ 7 \\ 8 \\ 9 \\ 10 \end{Bmatrix} \mapsto \begin{Bmatrix} 1 \\ 8 \\ 5 \\ 9 \\ 4 \\ 7 \\ 2 \\ 6 \\ 3 \\ 10 \end{Bmatrix} \mapsto \begin{Bmatrix} 1 \\ 2 \\ 3 \\ 4 \\ 5 \\ 6 \\ 7 \\ 8 \\ 9 \\ 10 \end{Bmatrix}\]</p>
+        <p>A secret value of \(m=2\) maps to an encrypted value of \(M=8\). Decryption applies the inverse mapping of 8 to 2 again. \[2 \mapsto 8 \mapsto 2\]</p>
+        <p>Test it in <span class="figure-number" data-fid="exponent-as-input">section</span> by setting \(n=11\), \(e=3\) and noting the 2nd number in the \(\zeta\) sequence, it should be 8. Then change to \(e=7\) (\(d\)) and note the 8th number, it should be 2.</p>
+        <div class="insight block ref num" data-label="Insight" data-ref="eulers-theorem">
+          <h4></h4>
+          <p>\[m^{\varphi(n)} \equiv 1 \pmod{n}\] allows a \(d\) to be found that generates the inverse mapping that can be used to decrypt a value.</p>
+        </div>
       </section>
       <section>
         <h2 class="num">Encryption and Decryption</h2>

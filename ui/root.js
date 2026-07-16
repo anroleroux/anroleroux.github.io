@@ -157,6 +157,21 @@ spRestore.addEventListener('click', function(){
   spRestore.style.display = 'none';
 });
 
+// ── Scroll-to-top button (articles only) ──────────────────────
+let scrollTopBtn = document.getElementById('scroll-top');
+if (scrollTopBtn) {
+  let onScroll = function(){
+    let doc = document.documentElement;
+    let progress = doc.scrollTop / (doc.scrollHeight - window.innerHeight || 1);
+    scrollTopBtn.classList.toggle('visible', progress > 0.2);
+  };
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+  scrollTopBtn.addEventListener('click', function(){
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+}
+
 function pad2(n){ return String(n).padStart(2, '0'); }
 
 let runUpdates = function(){};
@@ -225,6 +240,7 @@ function tick() {
 
   spPanel.className   = dark ? 'night' : 'day';
   spRestore.className = dark ? 'night' : 'day';
+  if (scrollTopBtn) { scrollTopBtn.classList.toggle('night', dark); scrollTopBtn.classList.toggle('day', !dark); }
   spPhase.textContent = phase;
   spPhase.style.color = accent;
   spElev.textContent  = elev.toFixed(1) + '°';
@@ -368,10 +384,21 @@ function initRef(p) {
         }
     });
 
-    // Resolve cross-reference spans against the refs collected above.
+    // Resolve cross-reference spans against the refs collected above. When the
+    // target resolves, render the number as a link that jumps to it (works for
+    // both figures and sections, since their ids share the `p-<key>` shape).
     article.querySelectorAll('.figure-number').forEach(function (el) {
         let key = el.dataset.fid || el.dataset.ref;
-        el.textContent = key ? (refs[p + '-' + key] || '') : '';
+        let num = key ? (refs[p + '-' + key] || '') : '';
+        el.textContent = '';
+        if (key && num) {
+            let a = document.createElement('a');
+            a.href = '#' + p + '-' + key;
+            a.textContent = num;
+            el.appendChild(a);
+        } else {
+            el.textContent = num;
+        }
     });
 }
 

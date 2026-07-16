@@ -54,3 +54,6 @@
 .almanac .reactions { color: var(--ink-muted); }
 .almanac .react-btn { border-color: var(--rule); }
 .almanac .react-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+/* Visits sparkline */
+.almanac .art-visits-spark { color: var(--accent); }

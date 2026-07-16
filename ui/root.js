@@ -524,4 +524,57 @@ function react(kind) {
 }
 
 loadReactions();
+
+// ── Article visits sparkline ───────────────────────────────────
+// A compact line chart of weekly page views over the article's life, shown in
+// the meta bar. The `visits` edge function returns a zero-filled weekly series
+// (page_views is RLS-locked, so it can't be read directly). Counts are total
+// page views — every load, including repeat visits. The .art-visits container
+// starts hidden and is revealed only once there is at least one week of data.
+function visitsSparkline(series) {
+  let W = 72, H = 18, pad = 1.5;
+  let vals = series.map(function (r) { return r.views; });
+  let n = vals.length;
+  let max = Math.max.apply(null, vals);
+  if (max <= 0) max = 1;
+
+  let innerW = W - pad * 2, innerH = H - pad * 2;
+  function px(i) { return pad + (n <= 1 ? innerW / 2 : (i / (n - 1)) * innerW); }
+  function py(v) { return pad + innerH - (v / max) * innerH; }
+
+  let d = '';
+  for (let i = 0; i < n; i++) {
+    d += (i === 0 ? 'M' : 'L') + px(i).toFixed(1) + ' ' + py(vals[i]).toFixed(1);
+  }
+
+  return '<svg class="spark-svg" viewBox="0 0 ' + W + ' ' + H + '" width="' + W + '" height="' + H + '" '
+    + 'fill="none" aria-hidden="true">'
+    + '<path d="' + d + '" stroke="currentColor" stroke-width="1.2" '
+    + 'stroke-linejoin="round" stroke-linecap="round" />'
+    + '<circle cx="' + px(n - 1).toFixed(1) + '" cy="' + py(vals[n - 1]).toFixed(1) + '" r="1.6" fill="currentColor" />'
+    + '</svg>';
+}
+
+function loadVisits() {
+  let containers = document.querySelectorAll('.art-visits');
+  if (!containers.length) return;
+  fetch(SUPABASE_URL + '/functions/v1/visits?page=' + encodeURIComponent(location.pathname), {
+    headers: { 'Authorization': 'Bearer ' + SUPABASE_ANON },
+  })
+    .then(function (r) { return r.json(); })
+    .then(function (d) {
+      if (!d || !d.series || !d.series.length) return; // no data yet — stay hidden
+      let svg = visitsSparkline(d.series);
+      containers.forEach(function (c) {
+        let spark = c.querySelector('.art-visits-spark');
+        let total = c.querySelector('.art-visits-total');
+        if (spark) spark.innerHTML = svg;
+        if (total) total.textContent = d.total;
+        c.hidden = false;
+      });
+    })
+    .catch(function () {});
+}
+
+loadVisits();
 //online-end

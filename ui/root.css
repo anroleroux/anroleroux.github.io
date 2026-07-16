@@ -92,7 +92,7 @@ body { margin: 0; padding: 0; width: 100%; font-family: 'Inter', system-ui, sans
 }
 #sun-panel.day  { background: rgba(243,236,217,0.82); border: 1px solid rgba(28,22,16,0.18); color: rgba(28,22,16,0.92); box-shadow: 0 var(--ms-2) var(--ms2) rgba(28,22,16,0.08); }
 #sun-panel.night{ background: rgba(7,8,13,0.78); border: 1px solid rgba(214,171,94,0.28); color: rgba(236,226,200,0.92); box-shadow: 0 var(--ms-2) var(--ms2) rgba(0,0,0,0.4); }
-#sp-restore {
+#sp-restore, #scroll-top {
   position: fixed; top: var(--ms1); right: var(--ms1);
   display: flex; align-items: center; justify-content: center;
   width: var(--ms3); height: var(--ms3); border-radius: 50%;
@@ -102,9 +102,19 @@ body { margin: 0; padding: 0; width: 100%; font-family: 'Inter', system-ui, sans
   transition: background 0.4s, border-color 0.4s, opacity 0.2s;
   z-index: 200;
 }
-#sp-restore.day   { background: rgba(243,236,217,0.82); border: 1px solid rgba(28,22,16,0.18); color: rgba(28,22,16,0.7); box-shadow: 0 var(--ms-5) var(--ms0) rgba(28,22,16,0.08); }
-#sp-restore.night { background: rgba(7,8,13,0.78); border: 1px solid rgba(214,171,94,0.28); color: rgba(214,171,94,0.8); box-shadow: 0 var(--ms-5) var(--ms0) rgba(0,0,0,0.4); }
+#sp-restore.day, #scroll-top.day     { background: rgba(243,236,217,0.82); border: 1px solid rgba(28,22,16,0.18); color: rgba(28,22,16,0.7); box-shadow: 0 var(--ms-5) var(--ms0) rgba(28,22,16,0.08); }
+#sp-restore.night, #scroll-top.night { background: rgba(7,8,13,0.78); border: 1px solid rgba(214,171,94,0.28); color: rgba(214,171,94,0.8); box-shadow: 0 var(--ms-5) var(--ms0) rgba(0,0,0,0.4); }
 #sp-restore:hover { opacity: 0.8; }
+
+/* Scroll-to-top button (articles) — shares the sun-panel button look,
+   pinned bottom-right one button-height up, revealed past 20% scroll. */
+#scroll-top {
+  top: auto; bottom: var(--ms3);
+  opacity: 0; visibility: hidden;
+  transition: background 0.4s, border-color 0.4s, opacity 0.3s, visibility 0.3s;
+}
+#scroll-top.visible { opacity: 1; visibility: visible; }
+#scroll-top.visible:hover { opacity: 0.8; }
 
 #sp-hide-btn {
   background: transparent; border: none; cursor: pointer; padding: 0;

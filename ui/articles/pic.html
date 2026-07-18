@@ -314,7 +314,7 @@
           <li>the fixed values (\(e\) or \(g\)) must adhere to the necessary criteria causing small mapping cycles that repeat, also making it easier to brute-force</li>
         </ul>
         <p>The last point is important. Lagrange’s theorem (group theory) states “the order of any element always divides the order of the group”. This is seen in action with, for example, \(4^x \bmod{17}\) that results in a repeating sequence \(\{4,16,13,1\}\). The 4 is not a generator of the group that is criteria explained in <span class="figure-number" data-fid="exponent-as-input">section</span>. The length of the sequence (4) divides the order of the group (\(n-1 = 16\)). The unpredictable behaviour is four times weaker.</p>
-        <h3 class="num">Base as Input</h3>
+        <h3 class="num ref">Base as Input</h3>
         <p>This method is used in RSA encryption that is further discussed in <span class="figure-number" data-fid="inventing-rsa">section</span>. The exponent is kept fixed and the base is the value that gets encrypted. \[f(x,e,n) = x^e \bmod{n}\]</p>
         <p>The criteria is simple. \(n\) must be prime and \(e\) a coprime with \(n-1\). Change the values of \(e\) and \(n\) below and see how the mapping cycles through the numbers in <span class="figure-number" data-fid="base-mod-clock">figure</span>.</p>
         <div class="interactions">
@@ -414,32 +414,30 @@
       <section>
         <h2 class="num ref">Inventing RSA</h2>
         <p>With asymmetric cryptography each person has a public key (\(S\), \(R\)) and a private key (\(s\), \(r\)). Anyone can see the public keys but only the owners ever know their own private keys. The sender can encrypt a message with the recipient's public key \(R\) and only the recipient can decrypt the message with the matching private key \(r\). Encryption is established without exchanging any secret keys.</p>
-        <p>The modular exponentiation method in <span class="figure-number" data-fid="exponent-as-input">section</span> can be used to encrypt messages. The message \(m\) is used for the base and raised to the power of an encryption key \(e\). The encrypted message \(M\) is \[M = m^e \bmod{n}\]</p>
-        <p>Equation 1 presents the power combination mechanism that will be convenient for decryption of \(M\) by applying a decryption key as another power to get back to \(m\). \[\begin{align} m = M^d \bmod{n} &= {m^e}^d \bmod{n} \\ &= m^{ed} \bmod{n} \end{align}\]</p>
+        <p>The modular exponentiation method in <span class="figure-number" data-fid="base-as-input">section</span> can be used to encrypt messages. The message \(m\) is used for the base and raised to the power of an encryption key \(e\). The encrypted message \(M\) can be calculated with \[M = m^e \bmod{n}\]</p>
+        <p>Equation 1 presents the power combination mechanism that is convenient for decryption of \(M\) by applying a decryption key as another power to get back to \(m\). \[\begin{align} m = M^d \bmod{n} &= {m^e}^d \bmod{n} \\ &= m^{ed} \bmod{n} \end{align}\]</p>
         <p>It's worth switching to modulo congruence notation. It is like an equal sign, just under the condition of mod \(n\). \[4+3 \neq 1\] \[4+3 \equiv 1 \pmod{6}\]</p>
         <p>Similarly \[m \equiv m^{ed} \pmod{n} \tag{eq 2}\]</p>
         <p>The idea is intuitive but finding \(e\) and \(d\) to be able to accomplish encryption and decryption requires a deep turn in mathematics history.</p>
         <p>Rivest, Shamir and Adleman published RSA in 1977 in which they derived \(e\) and \(d\) to encrypt and decrypt messages. The RSA authors build on math discovered three centuries earlier. The initial version of Euler's theorem was first published in 1736 as a proof of Fermat's little theorem (published without proof in 1640).</p>
-        <p>Refer back to how modulo sequences went though the numbers in <span class="figure-number" data-fid="exponent-as-input">section</span>. Output sequences always end with one like, for example, \(2^x \bmod{11}\) results in \(\{2,4,8,5,10,9,7,3,6,1\}\). This phenomenon can be used to decrypt an encrypted value by moving it forward to the end of the sequence.</p>
-        <div class="insight block ref num" data-label="Insight">
+        <p>An interesting phenomenon can be observed with the modular calculator in <span class="figure-number" data-fid="base-as-input">section</span> is that when \(n\) is prime, \(x^n \bmod{n}\) produces the values of \(x\) as if \(x \bmod{n}\) was taken. This is what Fermat discovered. A revealing observation here is that, for example \(n=11\), the effect is the same for exponents 1,11,21,31 and so on.</p>
+        <p>Dividing by \(x\) results in a form that Euler later proved. The fact that it maps \(x\) to 1 for an exponent \(n-1\) is very significant. \[x \mapsto x^n \equiv x \pmod{n}\] \[x \mapsto x/x \equiv x^{n-1} \equiv 1 \pmod{n}\]</p>
+        <p>Euler's theorem \[m^{\varphi(n)} \equiv 1 \pmod{n}\] shows that there is a power (Euler's Totient, 1763) one can raise a base to that results in a remainder of 1. When \(n\) is prime \[\varphi(n) = n-1\]</p>
+        <p>The exponents \(e\) and \(d\) are calculated with \(\varphi(n)\). First, \(1 \pmod{n}\) is isolated in equation 2. \[m^{ed-1} \equiv 1 \pmod{n} \tag{eq 3}\]</p>
+        <p>Secondly, Euler's theorem is modified to handle any multiple of \(\varphi(n)\). \[(m^{\varphi(n)})^k \equiv 1^k \equiv 1 \pmod{n} \tag{eq 4}\]</p>
+        <p>Equations 3 and 4 are combined. \[m^{\varphi(n)k} \equiv m^{ed-1} \equiv 1 \pmod{n}\]</p>
+        <p>The exponents \(e\) and \(d\) can then be calculated with \[ed-1 = \varphi(n)k \iff ed = \varphi(n)k+1\]</p>
+        <p>that can be transformed into modulo form. \[ed \equiv 1 \pmod{\varphi(n)}\]</p>
+        <div class="insight block ref num" data-label="Insight" data-ref="eulers-theorem">
           <h4></h4>
-          <p>Euler's theorem \[m^{\varphi(n)} \equiv 1 \pmod{n}\] shows that there is a power (Euler's Totient, 1763) one can raise a base to that results in a remainder of 1. So if one power (in an exponent) is used to encrypt a value, a second power can be calculated that decrypts it again.</p>
+          <p>Euler's theorem \[m^{\varphi(n)} \equiv 1 \pmod{n}\] can be used to find exponents \(e\) and \(d\) for encryption \[M = m^e \bmod{n}\] and decryption \[m = M^d \bmod{n}\]</p>
         </div>
-        <p>It starts by generating two large prime numbers, \(p\) and \(q\), and calculating the product. \[n = p q\] \(n\) is a new prime number that can be publicly shared while \(p\) and \(q\) remain secret because of the irreversibility pointed out by <span class="figure-number" data-fid="prime-factors">Insight</span>. Thus, \(p\) and \(q\) can still be used to calculate Euler's Totient: \[\varphi(n) = (p-1)(q-1)\]</p>
-        <p>\(e\) and \(d\) need to be calculated using \(\varphi(n)\). First, \(1 \pmod{n}\) is isolated in equation 2.</p>
-        <p>\[m^{ed} \equiv m \iff m^{ed-1} \equiv 1 \pmod{n}\]</p>
-        <p>Secondly, Euler's theorem is modified to handle any multiple of \(\varphi(n)\). \[(m^{\varphi(n)})^k \equiv 1^k \equiv 1 \pmod{n}\]</p>
-        <p>The latter two equations can now be combined. \[m^{\varphi(n)k} \equiv m^{ed-1} \equiv 1 \pmod{n}\]</p>
-        <p>The exponents \(e\) and \(d\) can then be calculated with: \[ed-1 = \varphi(n)k \iff ed = \varphi(n)k+1 \iff ed-\varphi(n)k = 1\]</p>
-        <p>that can be transformed into modulo form (this is why the multiple \(k\) was required earlier): \[ed \equiv 1 \pmod{\varphi(n)}\]</p>
-        <p>This means, if \(e=3\) and \(n=11\), then \(d=7\). \[m \mapsto f(m,e,n) \mapsto f(f(m,e,n),d,n) = m\] \[\begin{align} f(f(m,3,11),7,11) &= (m^3 \bmod{11})^7 \bmod{11} \\ &= m^{3*7} \bmod{11} \\ &= m \end{align}\]</p>
+        <p>If \(e=3\) and \(n=11\), then \(d=7\). \[m \mapsto f(m,e,n) \mapsto f(f(m,e,n),d,n) = m\] \[\begin{align} f(f(m,3,11),7,11) &= (m^3 \bmod{11})^7 \bmod{11} \\ &= m^{3*7} \bmod{11} \\ &= m \end{align}\]</p>
         <p>\[\begin{Bmatrix} 1 \\ 2 \\ 3 \\ 4 \\ 5 \\ 6 \\ 7 \\ 8 \\ 9 \\ 10 \end{Bmatrix} \mapsto \begin{Bmatrix} 1 \\ 8 \\ 5 \\ 9 \\ 4 \\ 7 \\ 2 \\ 6 \\ 3 \\ 10 \end{Bmatrix} \mapsto \begin{Bmatrix} 1 \\ 2 \\ 3 \\ 4 \\ 5 \\ 6 \\ 7 \\ 8 \\ 9 \\ 10 \end{Bmatrix}\]</p>
         <p>A secret value of \(m=2\) maps to an encrypted value of \(M=8\). Decryption applies the inverse mapping of 8 to 2 again. \[2 \mapsto 8 \mapsto 2\]</p>
         <p>Test it in <span class="figure-number" data-fid="exponent-as-input">section</span> by setting \(n=11\), \(e=3\) and noting the 2nd number in the \(\zeta\) sequence, it should be 8. Then change to \(e=7\) (\(d\)) and note the 8th number, it should be 2.</p>
-        <div class="insight block ref num" data-label="Insight" data-ref="eulers-theorem">
-          <h4></h4>
-          <p>\[m^{\varphi(n)} \equiv 1 \pmod{n}\] allows a \(d\) to be found that generates the inverse mapping that can be used to decrypt a value.</p>
-        </div>
+        <p>The reader might have noticed that \(e\) and \(d\) are obtained from the \(\varphi(n)\). However, \(n\) need to be a public number and, thus, anyone can determine \(d\) and decrypt \(M\). Another strategy will be followed to obtain an \(n\) and \(\varphi(n)\). It starts by generating two large prime numbers, \(p\) and \(q\), and calculating the product. \[n = p q\]</p>
+        <p>\(n\) is a new semiprime number that can be publicly shared while \(p\) and \(q\) remain secret because of the irreversibility pointed out by <span class="figure-number" data-fid="prime-factors">Insight</span>. Thus, \(p\) and \(q\) can still be used to calculate Euler's Totient: \[\varphi(n) = (p-1)(q-1)\]</p>
       </section>
       <section>
         <h2 class="num">Encryption and Decryption</h2>
@@ -740,7 +738,7 @@
           <li>the fixed values (\(e\) or \(g\)) must adhere to the necessary criteria causing small mapping cycles that repeat, also making it easier to brute-force</li>
         </ul>
         <p>The last point is important. Lagrange’s theorem (group theory) states “the order of any element always divides the order of the group”. This is seen in action with, for example, \(4^x \bmod{17}\) that results in a repeating sequence \(\{4,16,13,1\}\). The 4 is not a generator of the group that is criteria explained in <span class="figure-number" data-fid="exponent-as-input">section</span>. The length of the sequence (4) divides the order of the group (\(n-1 = 16\)). The unpredictable behaviour is four times weaker.</p>
-        <h3 class="num">Base as Input</h3>
+        <h3 class="num ref">Base as Input</h3>
         <p>This method is used in RSA encryption that is further discussed in <span class="figure-number" data-fid="inventing-rsa">section</span>. The exponent is kept fixed and the base is the value that gets encrypted. \[f(x,e,n) = x^e \bmod{n}\]</p>
         <p>The criteria is simple. \(n\) must be prime and \(e\) a coprime with \(n-1\). Change the values of \(e\) and \(n\) below and see how the mapping cycles through the numbers in <span class="figure-number" data-fid="base-mod-clock">figure</span>.</p>
         <div class="interactions">
@@ -840,32 +838,30 @@
       <section>
         <h2 class="num ref">Inventing RSA</h2>
         <p>With asymmetric cryptography each person has a public key (\(S\), \(R\)) and a private key (\(s\), \(r\)). Anyone can see the public keys but only the owners ever know their own private keys. The sender can encrypt a message with the recipient's public key \(R\) and only the recipient can decrypt the message with the matching private key \(r\). Encryption is established without exchanging any secret keys.</p>
-        <p>The modular exponentiation method in <span class="figure-number" data-fid="exponent-as-input">section</span> can be used to encrypt messages. The message \(m\) is used for the base and raised to the power of an encryption key \(e\). The encrypted message \(M\) is \[M = m^e \bmod{n}\]</p>
-        <p>Equation 1 presents the power combination mechanism that will be convenient for decryption of \(M\) by applying a decryption key as another power to get back to \(m\). \[\begin{align} m = M^d \bmod{n} &= {m^e}^d \bmod{n} \\ &= m^{ed} \bmod{n} \end{align}\]</p>
+        <p>The modular exponentiation method in <span class="figure-number" data-fid="base-as-input">section</span> can be used to encrypt messages. The message \(m\) is used for the base and raised to the power of an encryption key \(e\). The encrypted message \(M\) can be calculated with \[M = m^e \bmod{n}\]</p>
+        <p>Equation 1 presents the power combination mechanism that is convenient for decryption of \(M\) by applying a decryption key as another power to get back to \(m\). \[\begin{align} m = M^d \bmod{n} &= {m^e}^d \bmod{n} \\ &= m^{ed} \bmod{n} \end{align}\]</p>
         <p>It's worth switching to modulo congruence notation. It is like an equal sign, just under the condition of mod \(n\). \[4+3 \neq 1\] \[4+3 \equiv 1 \pmod{6}\]</p>
         <p>Similarly \[m \equiv m^{ed} \pmod{n} \tag{eq 2}\]</p>
         <p>The idea is intuitive but finding \(e\) and \(d\) to be able to accomplish encryption and decryption requires a deep turn in mathematics history.</p>
         <p>Rivest, Shamir and Adleman published RSA in 1977 in which they derived \(e\) and \(d\) to encrypt and decrypt messages. The RSA authors build on math discovered three centuries earlier. The initial version of Euler's theorem was first published in 1736 as a proof of Fermat's little theorem (published without proof in 1640).</p>
-        <p>Refer back to how modulo sequences went though the numbers in <span class="figure-number" data-fid="exponent-as-input">section</span>. Output sequences always end with one like, for example, \(2^x \bmod{11}\) results in \(\{2,4,8,5,10,9,7,3,6,1\}\). This phenomenon can be used to decrypt an encrypted value by moving it forward to the end of the sequence.</p>
-        <div class="insight block ref num" data-label="Insight">
+        <p>An interesting phenomenon can be observed with the modular calculator in <span class="figure-number" data-fid="base-as-input">section</span> is that when \(n\) is prime, \(x^n \bmod{n}\) produces the values of \(x\) as if \(x \bmod{n}\) was taken. This is what Fermat discovered. A revealing observation here is that, for example \(n=11\), the effect is the same for exponents 1,11,21,31 and so on.</p>
+        <p>Dividing by \(x\) results in a form that Euler later proved. The fact that it maps \(x\) to 1 for an exponent \(n-1\) is very significant. \[x \mapsto x^n \equiv x \pmod{n}\] \[x \mapsto x/x \equiv x^{n-1} \equiv 1 \pmod{n}\]</p>
+        <p>Euler's theorem \[m^{\varphi(n)} \equiv 1 \pmod{n}\] shows that there is a power (Euler's Totient, 1763) one can raise a base to that results in a remainder of 1. When \(n\) is prime \[\varphi(n) = n-1\]</p>
+        <p>The exponents \(e\) and \(d\) are calculated with \(\varphi(n)\). First, \(1 \pmod{n}\) is isolated in equation 2. \[m^{ed-1} \equiv 1 \pmod{n} \tag{eq 3}\]</p>
+        <p>Secondly, Euler's theorem is modified to handle any multiple of \(\varphi(n)\). \[(m^{\varphi(n)})^k \equiv 1^k \equiv 1 \pmod{n} \tag{eq 4}\]</p>
+        <p>Equations 3 and 4 are combined. \[m^{\varphi(n)k} \equiv m^{ed-1} \equiv 1 \pmod{n}\]</p>
+        <p>The exponents \(e\) and \(d\) can then be calculated with \[ed-1 = \varphi(n)k \iff ed = \varphi(n)k+1\]</p>
+        <p>that can be transformed into modulo form. \[ed \equiv 1 \pmod{\varphi(n)}\]</p>
+        <div class="insight block ref num" data-label="Insight" data-ref="eulers-theorem">
           <h4></h4>
-          <p>Euler's theorem \[m^{\varphi(n)} \equiv 1 \pmod{n}\] shows that there is a power (Euler's Totient, 1763) one can raise a base to that results in a remainder of 1. So if one power (in an exponent) is used to encrypt a value, a second power can be calculated that decrypts it again.</p>
+          <p>Euler's theorem \[m^{\varphi(n)} \equiv 1 \pmod{n}\] can be used to find exponents \(e\) and \(d\) for encryption \[M = m^e \bmod{n}\] and decryption \[m = M^d \bmod{n}\]</p>
         </div>
-        <p>It starts by generating two large prime numbers, \(p\) and \(q\), and calculating the product. \[n = p q\] \(n\) is a new prime number that can be publicly shared while \(p\) and \(q\) remain secret because of the irreversibility pointed out by <span class="figure-number" data-fid="prime-factors">Insight</span>. Thus, \(p\) and \(q\) can still be used to calculate Euler's Totient: \[\varphi(n) = (p-1)(q-1)\]</p>
-        <p>\(e\) and \(d\) need to be calculated using \(\varphi(n)\). First, \(1 \pmod{n}\) is isolated in equation 2.</p>
-        <p>\[m^{ed} \equiv m \iff m^{ed-1} \equiv 1 \pmod{n}\]</p>
-        <p>Secondly, Euler's theorem is modified to handle any multiple of \(\varphi(n)\). \[(m^{\varphi(n)})^k \equiv 1^k \equiv 1 \pmod{n}\]</p>
-        <p>The latter two equations can now be combined. \[m^{\varphi(n)k} \equiv m^{ed-1} \equiv 1 \pmod{n}\]</p>
-        <p>The exponents \(e\) and \(d\) can then be calculated with: \[ed-1 = \varphi(n)k \iff ed = \varphi(n)k+1 \iff ed-\varphi(n)k = 1\]</p>
-        <p>that can be transformed into modulo form (this is why the multiple \(k\) was required earlier): \[ed \equiv 1 \pmod{\varphi(n)}\]</p>
-        <p>This means, if \(e=3\) and \(n=11\), then \(d=7\). \[m \mapsto f(m,e,n) \mapsto f(f(m,e,n),d,n) = m\] \[\begin{align} f(f(m,3,11),7,11) &= (m^3 \bmod{11})^7 \bmod{11} \\ &= m^{3*7} \bmod{11} \\ &= m \end{align}\]</p>
+        <p>If \(e=3\) and \(n=11\), then \(d=7\). \[m \mapsto f(m,e,n) \mapsto f(f(m,e,n),d,n) = m\] \[\begin{align} f(f(m,3,11),7,11) &= (m^3 \bmod{11})^7 \bmod{11} \\ &= m^{3*7} \bmod{11} \\ &= m \end{align}\]</p>
         <p>\[\begin{Bmatrix} 1 \\ 2 \\ 3 \\ 4 \\ 5 \\ 6 \\ 7 \\ 8 \\ 9 \\ 10 \end{Bmatrix} \mapsto \begin{Bmatrix} 1 \\ 8 \\ 5 \\ 9 \\ 4 \\ 7 \\ 2 \\ 6 \\ 3 \\ 10 \end{Bmatrix} \mapsto \begin{Bmatrix} 1 \\ 2 \\ 3 \\ 4 \\ 5 \\ 6 \\ 7 \\ 8 \\ 9 \\ 10 \end{Bmatrix}\]</p>
         <p>A secret value of \(m=2\) maps to an encrypted value of \(M=8\). Decryption applies the inverse mapping of 8 to 2 again. \[2 \mapsto 8 \mapsto 2\]</p>
         <p>Test it in <span class="figure-number" data-fid="exponent-as-input">section</span> by setting \(n=11\), \(e=3\) and noting the 2nd number in the \(\zeta\) sequence, it should be 8. Then change to \(e=7\) (\(d\)) and note the 8th number, it should be 2.</p>
-        <div class="insight block ref num" data-label="Insight" data-ref="eulers-theorem">
-          <h4></h4>
-          <p>\[m^{\varphi(n)} \equiv 1 \pmod{n}\] allows a \(d\) to be found that generates the inverse mapping that can be used to decrypt a value.</p>
-        </div>
+        <p>The reader might have noticed that \(e\) and \(d\) are obtained from the \(\varphi(n)\). However, \(n\) need to be a public number and, thus, anyone can determine \(d\) and decrypt \(M\). Another strategy will be followed to obtain an \(n\) and \(\varphi(n)\). It starts by generating two large prime numbers, \(p\) and \(q\), and calculating the product. \[n = p q\]</p>
+        <p>\(n\) is a new semiprime number that can be publicly shared while \(p\) and \(q\) remain secret because of the irreversibility pointed out by <span class="figure-number" data-fid="prime-factors">Insight</span>. Thus, \(p\) and \(q\) can still be used to calculate Euler's Totient: \[\varphi(n) = (p-1)(q-1)\]</p>
       </section>
       <section>
         <h2 class="num">Encryption and Decryption</h2>

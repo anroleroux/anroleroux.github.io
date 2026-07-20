@@ -203,7 +203,7 @@
       </section>
       <section>
         <h2 class="num ref">Modular Exponentiation</h2>
-        <p>Function \(f\) introduced in <span class="figure-number" data-fid="key-exchange">section</span> is a modular exponentiation function. It has the form \[f(g,e,n) = g^e \bmod{n}\] where \(g\) is called the base, \(e\) the exponent and \(n\) the modulus. This is a workhorse in cryptography that gets unpacked in this section.</p>
+        <p>Function \(f\) introduced in <span class="figure-number" data-fid="key-exchange">section</span> is a modular exponentiation function. It has the form \[f(g,e,n) = g^h \bmod{n}\] where \(g\) is called the base, \(h\) the exponent and \(n\) the modulus. This is a workhorse in cryptography that gets unpacked in this section.</p>
         <h3 class="num">Motivation</h3>
         <p>In order to encrypt data, a mapping function is required that maps secret inputs to encrypted outputs. It must be easy to compute, hard to invert, have useful algebraic structure and be mathematically provable. A map can be mathematically expressed as \[x \mapsto f(x)\] but is simply one group of elements connected (mapped) to another group of elements. <span class="figure-number" data-fid="mappings">Figure</span> shows various mapping ranging from weak to strong.</p>
         <div class="interactions">
@@ -296,17 +296,17 @@
         <p>Addressing the ease of computing \(f\), highly efficient methods exist even for large exponents. The Right-to-Left Binary Method, for example, can compute \(f(g,x,n)\) in \(\Theta(\log x)\) without actually calculating \(g^x\). Therefore, despite the existence of other one-way functions like elliptic curves, lattices, hash functions, isogenies, modular exponentiation is a preferred method for most cryptography.</p>
         <div class="insight block ref num" data-label="Insight">
           <h4></h4>
-          <p>Modular Exponentiation use prime or semiprime modulo \(n\) in \[f(g,e,n) = g^e \bmod{n}\] and is an elegant cryptographic machine that provides easy forward computation, hard to reverse bijection mapping with rich mathematical theory backing it up.</p>
+          <p>Modular Exponentiation use prime or semiprime modulo \(n\) in \[f(g,e,n) = g^h \bmod{n}\] and is an elegant cryptographic machine that provides easy forward computation, hard to reverse bijection mapping with rich mathematical theory backing it up.</p>
         </div>
         <h3 class="num">Application</h3>
         <p>The perfect mapping of <span class="figure-number" data-fid="mappings">figure</span>d is on the cards but there are still criteria to be addressed. The fixed values in modular exponentiation must be chosen correctly to avoid partial mappings like the one shown in <span class="figure-number" data-fid="mappings">figure</span>c.</p>
-        <p>Modular exponentiation is actually used in two ways. One way is to keep the exponent fixed and have a variable base. The second is to have a fixed base and use the exponent as the input variable. \[x \mapsto f(x,e,n) = x^e \bmod{n}\] \[x \mapsto f(g,x,n) = g^x \bmod{n}\]</p>
+        <p>Modular exponentiation is actually used in two ways. One way is to keep the exponent fixed and have a variable base. The second is to have a fixed base and use the exponent as the input variable. \[x \mapsto f(x,h,n) = x^h \bmod{n}\] \[x \mapsto f(g,x,n) = g^x \bmod{n}\]</p>
         <p>General securing criteria is:</p>
         <ul>
           <li>\(n\) must be large - Diffie-Hellman uses a minimum number size of 2048 bits (617 digits) to ensure it is computationally infeasible to test all combinations and find the secret (brute-force)</li>
           <li>\(n\) must be prime or semiprime - if not:
             <ul>
-              <li>the fixed values (\(e\) or \(g\)) might not meet the necessary criteria</li>
+              <li>the fixed values (\(h\) or \(g\)) might not meet the necessary criteria</li>
               <li>\(n\) can be factored into smaller numbers making it easier to brute-force</li>
               <li>the mapping may not even be cyclical, completely breaking encryption (e.g. \(4^x \bmod{16}\) results in \(\{4,0,0,...\}\))</li>
             </ul>
@@ -315,8 +315,8 @@
         </ul>
         <p>The last point is important. Lagrange’s theorem (group theory) states “the order of any element always divides the order of the group”. This is seen in action with, for example, \(4^x \bmod{17}\) that results in a repeating sequence \(\{4,16,13,1\}\). The 4 is not a generator of the group that is criteria explained in <span class="figure-number" data-fid="exponent-as-input">section</span>. The length of the sequence (4) divides the order of the group (\(n-1 = 16\)). The unpredictable behaviour is four times weaker.</p>
         <h3 class="num ref">Base as Input</h3>
-        <p>This method is used in RSA encryption that is further discussed in <span class="figure-number" data-fid="inventing-rsa">section</span>. The exponent is kept fixed and the base is the value that gets encrypted. \[f(x,e,n) = x^e \bmod{n}\]</p>
-        <p>The criteria is simple. \(n\) must be prime and \(e\) a coprime with \(n-1\). Change the values of \(e\) and \(n\) below and see how the mapping cycles through the numbers in <span class="figure-number" data-fid="base-mod-clock">figure</span>.</p>
+        <p>This method is used in RSA encryption that is further discussed in <span class="figure-number" data-fid="inventing-rsa">section</span>. The exponent is kept fixed and the base is the value that gets encrypted. \[f(x,e,n) = x^h \bmod{n}\]</p>
+        <p>The criteria is simple. \(n\) must be prime and \(h\) a coprime with \(n-1\). Change the values of \(h\) and \(n\) below and see how the mapping cycles through the numbers in <span class="figure-number" data-fid="base-mod-clock">figure</span>.</p>
         <div class="interactions">
           <p>\(n\):
             <span class="number-input-wrapper">
@@ -328,7 +328,7 @@
             </span>
             <span class="primality"></span>
           </p>
-          <p>\(e\):
+          <p>\(h\):
             <span class="number-input-wrapper">
               <input id="alm-in-mb-e" value="3" type="number" />
               <span class="number-controls">
@@ -634,7 +634,7 @@
       </section>
       <section>
         <h2 class="num ref">Modular Exponentiation</h2>
-        <p>Function \(f\) introduced in <span class="figure-number" data-fid="key-exchange">section</span> is a modular exponentiation function. It has the form \[f(g,e,n) = g^e \bmod{n}\] where \(g\) is called the base, \(e\) the exponent and \(n\) the modulus. This is a workhorse in cryptography that gets unpacked in this section.</p>
+        <p>Function \(f\) introduced in <span class="figure-number" data-fid="key-exchange">section</span> is a modular exponentiation function. It has the form \[f(g,e,n) = g^h \bmod{n}\] where \(g\) is called the base, \(h\) the exponent and \(n\) the modulus. This is a workhorse in cryptography that gets unpacked in this section.</p>
         <h3 class="num">Motivation</h3>
         <p>In order to encrypt data, a mapping function is required that maps secret inputs to encrypted outputs. It must be easy to compute, hard to invert, have useful algebraic structure and be mathematically provable. A map can be mathematically expressed as \[x \mapsto f(x)\] but is simply one group of elements connected (mapped) to another group of elements. <span class="figure-number" data-fid="mappings">Figure</span> shows various mapping ranging from weak to strong.</p>
         <div class="interactions">
@@ -721,17 +721,17 @@
         <p>Addressing the ease of computing \(f\), highly efficient methods exist even for large exponents. The Right-to-Left Binary Method, for example, can compute \(f(g,x,n)\) in \(\Theta(\log x)\) without actually calculating \(g^x\). Therefore, despite the existence of other one-way functions like elliptic curves, lattices, hash functions, isogenies, modular exponentiation is a preferred method for most cryptography.</p>
         <div class="insight block ref num" data-label="Insight">
           <h4></h4>
-          <p>Modular Exponentiation use prime or semiprime modulo \(n\) in \[f(g,e,n) = g^e \bmod{n}\] and is an elegant cryptographic machine that provides easy forward computation, hard to reverse bijection mapping with rich mathematical theory backing it up.</p>
+          <p>Modular Exponentiation use prime or semiprime modulo \(n\) in \[f(g,e,n) = g^h \bmod{n}\] and is an elegant cryptographic machine that provides easy forward computation, hard to reverse bijection mapping with rich mathematical theory backing it up.</p>
         </div>
         <h3 class="num">Application</h3>
         <p>The perfect mapping of <span class="figure-number" data-fid="mappings">figure</span>d is on the cards but there are still criteria to be addressed. The fixed values in modular exponentiation must be chosen correctly to avoid partial mappings like the one shown in <span class="figure-number" data-fid="mappings">figure</span>c.</p>
-        <p>Modular exponentiation is actually used in two ways. One way is to keep the exponent fixed and have a variable base. The second is to have a fixed base and use the exponent as the input variable. \[x \mapsto f(x,e,n) = x^e \bmod{n}\] \[x \mapsto f(g,x,n) = g^x \bmod{n}\]</p>
+        <p>Modular exponentiation is actually used in two ways. One way is to keep the exponent fixed and have a variable base. The second is to have a fixed base and use the exponent as the input variable. \[x \mapsto f(x,h,n) = x^h \bmod{n}\] \[x \mapsto f(g,x,n) = g^x \bmod{n}\]</p>
         <p>General securing criteria is:</p>
         <ul>
           <li>\(n\) must be large - Diffie-Hellman uses a minimum number size of 2048 bits (617 digits) to ensure it is computationally infeasible to test all combinations and find the secret (brute-force)</li>
           <li>\(n\) must be prime or semiprime - if not:
             <ul>
-              <li>the fixed values (\(e\) or \(g\)) might not meet the necessary criteria</li>
+              <li>the fixed values (\(h\) or \(g\)) might not meet the necessary criteria</li>
               <li>\(n\) can be factored into smaller numbers making it easier to brute-force</li>
               <li>the mapping may not even be cyclical, completely breaking encryption (e.g. \(4^x \bmod{16}\) results in \(\{4,0,0,...\}\))</li>
             </ul>
@@ -740,8 +740,8 @@
         </ul>
         <p>The last point is important. Lagrange’s theorem (group theory) states “the order of any element always divides the order of the group”. This is seen in action with, for example, \(4^x \bmod{17}\) that results in a repeating sequence \(\{4,16,13,1\}\). The 4 is not a generator of the group that is criteria explained in <span class="figure-number" data-fid="exponent-as-input">section</span>. The length of the sequence (4) divides the order of the group (\(n-1 = 16\)). The unpredictable behaviour is four times weaker.</p>
         <h3 class="num ref">Base as Input</h3>
-        <p>This method is used in RSA encryption that is further discussed in <span class="figure-number" data-fid="inventing-rsa">section</span>. The exponent is kept fixed and the base is the value that gets encrypted. \[f(x,e,n) = x^e \bmod{n}\]</p>
-        <p>The criteria is simple. \(n\) must be prime and \(e\) a coprime with \(n-1\). Change the values of \(e\) and \(n\) below and see how the mapping cycles through the numbers in <span class="figure-number" data-fid="base-mod-clock">figure</span>.</p>
+        <p>This method is used in RSA encryption that is further discussed in <span class="figure-number" data-fid="inventing-rsa">section</span>. The exponent is kept fixed and the base is the value that gets encrypted. \[f(x,e,n) = x^h \bmod{n}\]</p>
+        <p>The criteria is simple. \(n\) must be prime and \(h\) a coprime with \(n-1\). Change the values of \(h\) and \(n\) below and see how the mapping cycles through the numbers in <span class="figure-number" data-fid="base-mod-clock">figure</span>.</p>
         <div class="interactions">
           <p>\(n\):
             <span class="number-input-wrapper">
@@ -753,7 +753,7 @@
             </span>
             <span class="primality"></span>
           </p>
-          <p>\(e\):
+          <p>\(h\):
             <span class="number-input-wrapper">
               <input id="cos-in-mb-e" value="3" type="number" />
               <span class="number-controls">

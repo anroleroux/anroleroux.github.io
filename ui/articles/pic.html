@@ -203,7 +203,7 @@
       </section>
       <section>
         <h2 class="num ref">Modular Exponentiation</h2>
-        <p>Function \(f\) introduced in <span class="figure-number" data-fid="key-exchange">section</span> is a modular exponentiation function. It has the form \[f(g,e,n) = g^e \bmod{n}\] where \(g\) is called the base, \(e\) the exponent and \(n\) the modulus. This is a workhorse in cryptography that gets unpacked in this section.</p>
+        <p>Function \(f\) introduced in <span class="figure-number" data-fid="key-exchange">section</span> is a modular exponentiation function. It has the form \[f(g,e,n) = g^h \bmod{n}\] where \(g\) is called the base, \(h\) the exponent and \(n\) the modulus. This is a workhorse in cryptography that gets unpacked in this section.</p>
         <h3 class="num">Motivation</h3>
         <p>In order to encrypt data, a mapping function is required that maps secret inputs to encrypted outputs. It must be easy to compute, hard to invert, have useful algebraic structure and be mathematically provable. A map can be mathematically expressed as \[x \mapsto f(x)\] but is simply one group of elements connected (mapped) to another group of elements. <span class="figure-number" data-fid="mappings">Figure</span> shows various mapping ranging from weak to strong.</p>
         <div class="interactions">
@@ -296,17 +296,17 @@
         <p>Addressing the ease of computing \(f\), highly efficient methods exist even for large exponents. The Right-to-Left Binary Method, for example, can compute \(f(g,x,n)\) in \(\Theta(\log x)\) without actually calculating \(g^x\). Therefore, despite the existence of other one-way functions like elliptic curves, lattices, hash functions, isogenies, modular exponentiation is a preferred method for most cryptography.</p>
         <div class="insight block ref num" data-label="Insight">
           <h4></h4>
-          <p>Modular Exponentiation use prime and semiprime modulo \(n\) in \[f(g,e,n) = g^e \bmod{n}\] and is an elegant cryptographic machine that provides easy forward computation, hard to reverse bijection mapping with rich mathematical theory backing it up.</p>
+          <p>Modular Exponentiation use prime or semiprime modulo \(n\) in \[f(g,e,n) = g^h \bmod{n}\] and is an elegant cryptographic machine that provides easy forward computation, hard to reverse bijection mapping with rich mathematical theory backing it up.</p>
         </div>
         <h3 class="num">Application</h3>
         <p>The perfect mapping of <span class="figure-number" data-fid="mappings">figure</span>d is on the cards but there are still criteria to be addressed. The fixed values in modular exponentiation must be chosen correctly to avoid partial mappings like the one shown in <span class="figure-number" data-fid="mappings">figure</span>c.</p>
-        <p>Modular exponentiation is actually used in two ways. One way is to keep the exponent fixed and have a variable base. The second is to have a fixed base and use the exponent as the input variable. \[x \mapsto f(x,e,n) = x^e \bmod{n}\] \[x \mapsto f(g,x,n) = g^x \bmod{n}\]</p>
+        <p>Modular exponentiation is actually used in two ways. One way is to keep the exponent fixed and have a variable base. The second is to have a fixed base and use the exponent as the input variable. \[x \mapsto f(x,h,n) = x^h \bmod{n}\] \[x \mapsto f(g,x,n) = g^x \bmod{n}\]</p>
         <p>General securing criteria is:</p>
         <ul>
           <li>\(n\) must be large - Diffie-Hellman uses a minimum number size of 2048 bits (617 digits) to ensure it is computationally infeasible to test all combinations and find the secret (brute-force)</li>
           <li>\(n\) must be prime or semiprime - if not:
             <ul>
-              <li>the fixed values (\(e\) or \(g\)) might not meet the necessary criteria</li>
+              <li>the fixed values (\(h\) or \(g\)) might not meet the necessary criteria</li>
               <li>\(n\) can be factored into smaller numbers making it easier to brute-force</li>
               <li>the mapping may not even be cyclical, completely breaking encryption (e.g. \(4^x \bmod{16}\) results in \(\{4,0,0,...\}\))</li>
             </ul>
@@ -315,8 +315,8 @@
         </ul>
         <p>The last point is important. Lagrange’s theorem (group theory) states “the order of any element always divides the order of the group”. This is seen in action with, for example, \(4^x \bmod{17}\) that results in a repeating sequence \(\{4,16,13,1\}\). The 4 is not a generator of the group that is criteria explained in <span class="figure-number" data-fid="exponent-as-input">section</span>. The length of the sequence (4) divides the order of the group (\(n-1 = 16\)). The unpredictable behaviour is four times weaker.</p>
         <h3 class="num ref">Base as Input</h3>
-        <p>This method is used in RSA encryption that is further discussed in <span class="figure-number" data-fid="inventing-rsa">section</span>. The exponent is kept fixed and the base is the value that gets encrypted. \[f(x,e,n) = x^e \bmod{n}\]</p>
-        <p>The criteria is simple. \(n\) must be prime and \(e\) a coprime with \(n-1\). Change the values of \(e\) and \(n\) below and see how the mapping cycles through the numbers in <span class="figure-number" data-fid="base-mod-clock">figure</span>.</p>
+        <p>This method is used in RSA encryption that is further discussed in <span class="figure-number" data-fid="inventing-rsa">section</span>. The exponent is kept fixed and the base is the value that gets encrypted. \[f(x,e,n) = x^h \bmod{n}\]</p>
+        <p>The criteria is simple. \(n\) must be prime and \(h\) a coprime with \(n-1\). Change the values of \(h\) and \(n\) below and see how the mapping cycles through the numbers in <span class="figure-number" data-fid="base-mod-clock">figure</span>.</p>
         <div class="interactions">
           <p>\(n\):
             <span class="number-input-wrapper">
@@ -328,7 +328,7 @@
             </span>
             <span class="primality"></span>
           </p>
-          <p>\(e\):
+          <p>\(h\):
             <span class="number-input-wrapper">
               <input id="alm-in-mb-e" value="3" type="number" />
               <span class="number-controls">
@@ -416,27 +416,28 @@
         <p>With asymmetric cryptography each person has a public key (\(S\), \(R\)) and a private key (\(s\), \(r\)). Anyone can see the public keys but only the owners ever know their own private keys. The sender can encrypt a message with the recipient's public key \(R\) and only the recipient can decrypt the message with the matching private key \(r\). Encryption is established without exchanging any secret keys.</p>
         <p>The modular exponentiation method in <span class="figure-number" data-fid="base-as-input">section</span> can be used to encrypt messages. The message \(m\) is used for the base and raised to the power of an encryption key \(e\). The encrypted message \(M\) can be calculated with \[M = m^e \bmod{n}\]</p>
         <p>Equation 1 presents the power combination mechanism that is convenient for decryption of \(M\) by applying a decryption key as another power to get back to \(m\). \[\begin{align} m = M^d \bmod{n} &= {m^e}^d \bmod{n} \\ &= m^{ed} \bmod{n} \end{align}\]</p>
-        <p>It's worth switching to modulo congruence notation. It is like an equal sign, just under the condition of mod \(n\). \[4+3 \neq 1\] \[4+3 \equiv 1 \pmod{6}\]</p>
+        <p>At this point it's worth switching to modulo congruence notation. It is like an equal sign, just under the condition of mod \(n\). \[4+3 \neq 1\] \[4+3 \equiv 1 \pmod{6}\]</p>
         <p>Similarly \[m \equiv m^{ed} \pmod{n} \tag{eq 2}\]</p>
-        <p>The idea is intuitive but finding \(e\) and \(d\) to be able to accomplish encryption and decryption requires a deep turn in mathematics history.</p>
+        <p>The idea is intuitive but finding \(e\) and \(d\) to be able to accomplish encryption and decryption requires a turn in mathematics history.</p>
+        <h3 class="num">Mathematical Insights</h3>
         <p>Rivest, Shamir and Adleman published RSA in 1977 in which they derived \(e\) and \(d\) to encrypt and decrypt messages. The RSA authors build on math discovered three centuries earlier. The initial version of Euler's theorem was first published in 1736 as a proof of Fermat's little theorem (published without proof in 1640).</p>
-        <p>An interesting phenomenon can be observed with the modular calculator in <span class="figure-number" data-fid="base-as-input">section</span> is that when \(n\) is prime, \(x^n \bmod{n}\) produces the values of \(x\) as if \(x \bmod{n}\) was taken. This is what Fermat discovered. A revealing observation here is that, for example \(n=11\), the effect is the same for exponents 1,11,21,31 and so on.</p>
-        <p>Dividing by \(x\) results in a form that Euler later proved. The fact that it maps \(x\) to 1 for an exponent \(n-1\) is very significant. \[x \mapsto x^n \equiv x \pmod{n}\] \[x \mapsto x/x \equiv x^{n-1} \equiv 1 \pmod{n}\]</p>
-        <p>Euler's theorem \[m^{\varphi(n)} \equiv 1 \pmod{n}\] shows that there is a power (Euler's Totient, 1763) one can raise a base to that results in a remainder of 1. When \(n\) is prime \[\varphi(n) = n-1\]</p>
-        <p>The exponents \(e\) and \(d\) are calculated with \(\varphi(n)\). First, \(1 \pmod{n}\) is isolated in equation 2. \[m^{ed-1} \equiv 1 \pmod{n} \tag{eq 3}\]</p>
+        <p>An interesting phenomenon can be observed in <span class="figure-number" data-fid="base-as-input">section</span> when \(n\) is prime. Fermat saw that, for \(x \leq n\), \[x = x^n \bmod{n}\] The implications of this discovery can not be overstated since it's also equal to a normal modular operation. A revealing observation here is that there are thus repeating exponents simply equalling \(x\). \[x \equiv x^n \equiv x^{k(n-1)+1} \pmod{n}\] The reader can test this in <span class="figure-number" data-fid="base-as-input">section</span> by taking \(n=11\) and changing \(h\) from 1, to 11, to 21, to 31, and so on. The result is the same for all values of \(k\). The period length, \(n-1\), is a very significant number. It is called Euler's Totient (discovered in 1763) and is denoted \(\varphi(n)\). Dividing by \(x\) results in a form that Euler later proved. It maps all values for \(x\) to 1. \[x/x \equiv x^n/x \equiv x^{n-1} \equiv 1 \pmod{n}\]</p>
+        <p>Euler's theorem \[m^{\varphi(n)} \equiv 1 \pmod{n}\] shows that there is a power one can raise a base to that results in a remainder of 1 when \(n\) is prime. The exponents \(e\) and \(d\) are calculated with \(\varphi(n)\). First, \(1 \pmod{n}\) is isolated in equation 2. \[m^{ed-1} \equiv 1 \pmod{n} \tag{eq 3}\]</p>
         <p>Secondly, Euler's theorem is modified to handle any multiple of \(\varphi(n)\). \[(m^{\varphi(n)})^k \equiv 1^k \equiv 1 \pmod{n} \tag{eq 4}\]</p>
         <p>Equations 3 and 4 are combined. \[m^{\varphi(n)k} \equiv m^{ed-1} \equiv 1 \pmod{n}\]</p>
         <p>The exponents \(e\) and \(d\) can then be calculated with \[ed-1 = \varphi(n)k \iff ed = \varphi(n)k+1\]</p>
         <p>that can be transformed into modulo form. \[ed \equiv 1 \pmod{\varphi(n)}\]</p>
-        <div class="insight block ref num" data-label="Insight" data-ref="eulers-theorem">
+        <div class="insight block ref num" data-label="Insight">
           <h4></h4>
-          <p>Euler's theorem \[m^{\varphi(n)} \equiv 1 \pmod{n}\] can be used to find exponents \(e\) and \(d\) for encryption \[M = m^e \bmod{n}\] and decryption \[m = M^d \bmod{n}\]</p>
+          <p>The values in modular exponentiation are governed by mod \(n\). The exponents live in a mod \(\varphi(n)\) world. The \(d\) exponent forwards a message encrypted with \(e\) to produce the original message again.</p>
         </div>
-        <p>If \(e=3\) and \(n=11\), then \(d=7\). \[m \mapsto f(m,e,n) \mapsto f(f(m,e,n),d,n) = m\] \[\begin{align} f(f(m,3,11),7,11) &= (m^3 \bmod{11})^7 \bmod{11} \\ &= m^{3*7} \bmod{11} \\ &= m \end{align}\]</p>
-        <p>\[\begin{Bmatrix} 1 \\ 2 \\ 3 \\ 4 \\ 5 \\ 6 \\ 7 \\ 8 \\ 9 \\ 10 \end{Bmatrix} \mapsto \begin{Bmatrix} 1 \\ 8 \\ 5 \\ 9 \\ 4 \\ 7 \\ 2 \\ 6 \\ 3 \\ 10 \end{Bmatrix} \mapsto \begin{Bmatrix} 1 \\ 2 \\ 3 \\ 4 \\ 5 \\ 6 \\ 7 \\ 8 \\ 9 \\ 10 \end{Bmatrix}\]</p>
+        <h3 class="num">Mappings</h3>
+        <p>The original-encryption-decryption workflow can be expressed function wise as \[m \mapsto f(m,e,n) \mapsto f(f(m,e,n),d,n)\] If the message is \(m\), \(e=3\) and \(n=11\), then \(d=7\) \[f(m,3,11) = m^3 \bmod{11}\] and \[\begin{align} f(f(m,3,11),7,11) &= (m^3 \bmod{11})^7 \bmod{11} \\ &= m^{3*7} \bmod{11} \\ &= m \end{align}\]</p>
+        <p>For all possible values of \(m\) \[\begin{Bmatrix} 1 \\ 2 \\ 3 \\ 4 \\ 5 \\ 6 \\ 7 \\ 8 \\ 9 \\ 10 \end{Bmatrix} \mapsto \begin{Bmatrix} 1 \\ 8 \\ 5 \\ 9 \\ 4 \\ 7 \\ 2 \\ 6 \\ 3 \\ 10 \end{Bmatrix} \mapsto \begin{Bmatrix} 1 \\ 2 \\ 3 \\ 4 \\ 5 \\ 6 \\ 7 \\ 8 \\ 9 \\ 10 \end{Bmatrix}\]</p>
         <p>A secret value of \(m=2\) maps to an encrypted value of \(M=8\). Decryption applies the inverse mapping of 8 to 2 again. \[2 \mapsto 8 \mapsto 2\]</p>
-        <p>Test it in <span class="figure-number" data-fid="exponent-as-input">section</span> by setting \(n=11\), \(e=3\) and noting the 2nd number in the \(\zeta\) sequence, it should be 8. Then change to \(e=7\) (\(d\)) and note the 8th number, it should be 2.</p>
-        <p>The reader might have noticed that \(e\) and \(d\) are obtained from the \(\varphi(n)\). However, \(n\) need to be a public number and, thus, anyone can determine \(d\) and decrypt \(M\). Another strategy will be followed to obtain an \(n\) and \(\varphi(n)\). It starts by generating two large prime numbers, \(p\) and \(q\), and calculating the product. \[n = p q\]</p>
+        <p>Test it in <span class="figure-number" data-fid="base-as-input">section</span> by setting \(n=11\), \(h=3\) and noting the 2nd number in the \(\zeta\) sequence, it should be 8. Then change to \(h=7\) and note the 8th number, it should be 2.</p>
+        <h3 class="num">Decoupling Modulo and Totient</h3>
+        <p>The reader might have noticed that \(e\) and \(d\) are obtained from the \(\varphi(n)\). However, \(n\) is a public number and, thus, anyone will be able to determine \(d\) and decrypt \(M\). Another strategy will be followed to obtain an \(n\) and \(\varphi(n)\). It starts by generating two large prime numbers, \(p\) and \(q\), and calculating the product. \[n = p q\]</p>
         <p>\(n\) is a new semiprime number that can be publicly shared while \(p\) and \(q\) remain secret because of the irreversibility pointed out by <span class="figure-number" data-fid="prime-factors">Insight</span>. Thus, \(p\) and \(q\) can still be used to calculate Euler's Totient: \[\varphi(n) = (p-1)(q-1)\]</p>
       </section>
       <section>
@@ -511,8 +512,8 @@
       </section>
       <section>
         <h2 class="num">Conclusion</h2>
-        <p>This article shows how prime numbers are used to secure DH key exchange and RSA. Even SHA-256 hash algorithms used in authentication rely on prime numbers for randomization. This junction in math and cryptography is such a contested topic that there are two Millennium Prize Problems, the P vs NP Problem and the Riemann Hypothesis, that relates to it. Proving them is important because if any two of these prove different than what is assumed, current cryptography standards are in trouble.</p>
-        <p>People often fall ignorant of the role of mathematics. Prime numbers get far less attention than they should be since they are the atoms of the numbers we use everyday. Euler and Fermat probably did not realise how important their theories would become centuries later. Mathematics is a deep, slow form of knowledge that should not be discarded if its value cannot immediately be realised.</p>
+        <p>Prime numbers get far less attention than they should be since they are the atoms of the numbers we use everyday. This article shows how prime numbers are used to secure DH key exchange and RSA. Modular exponentiation is a simple powerful tool that addresses various cryptographic needs.</p>
+        <p>People often fall ignorant of the role of mathematics. Euler and Fermat probably did not realise how important their theories would become centuries later. Mathematics is a deep, slow form of knowledge that should not be discarded if its value cannot immediately be realised.</p>
         <p>The beauty and genius with which the key-exchange, encryption and authentication problems were solved is astonishing. But as always, it was made possible by many discoveries and innovations that came before it. Big or small, don't stop exploring and don't despise small contributions.</p>
       </section>
     </article>
@@ -633,7 +634,7 @@
       </section>
       <section>
         <h2 class="num ref">Modular Exponentiation</h2>
-        <p>Function \(f\) introduced in <span class="figure-number" data-fid="key-exchange">section</span> is a modular exponentiation function. It has the form \[f(g,e,n) = g^e \bmod{n}\] where \(g\) is called the base, \(e\) the exponent and \(n\) the modulus. This is a workhorse in cryptography that gets unpacked in this section.</p>
+        <p>Function \(f\) introduced in <span class="figure-number" data-fid="key-exchange">section</span> is a modular exponentiation function. It has the form \[f(g,e,n) = g^h \bmod{n}\] where \(g\) is called the base, \(h\) the exponent and \(n\) the modulus. This is a workhorse in cryptography that gets unpacked in this section.</p>
         <h3 class="num">Motivation</h3>
         <p>In order to encrypt data, a mapping function is required that maps secret inputs to encrypted outputs. It must be easy to compute, hard to invert, have useful algebraic structure and be mathematically provable. A map can be mathematically expressed as \[x \mapsto f(x)\] but is simply one group of elements connected (mapped) to another group of elements. <span class="figure-number" data-fid="mappings">Figure</span> shows various mapping ranging from weak to strong.</p>
         <div class="interactions">
@@ -720,17 +721,17 @@
         <p>Addressing the ease of computing \(f\), highly efficient methods exist even for large exponents. The Right-to-Left Binary Method, for example, can compute \(f(g,x,n)\) in \(\Theta(\log x)\) without actually calculating \(g^x\). Therefore, despite the existence of other one-way functions like elliptic curves, lattices, hash functions, isogenies, modular exponentiation is a preferred method for most cryptography.</p>
         <div class="insight block ref num" data-label="Insight">
           <h4></h4>
-          <p>Modular Exponentiation use prime and semiprime modulo \(n\) in \[f(g,e,n) = g^e \bmod{n}\] and is an elegant cryptographic machine that provides easy forward computation, hard to reverse bijection mapping with rich mathematical theory backing it up.</p>
+          <p>Modular Exponentiation use prime or semiprime modulo \(n\) in \[f(g,e,n) = g^h \bmod{n}\] and is an elegant cryptographic machine that provides easy forward computation, hard to reverse bijection mapping with rich mathematical theory backing it up.</p>
         </div>
         <h3 class="num">Application</h3>
         <p>The perfect mapping of <span class="figure-number" data-fid="mappings">figure</span>d is on the cards but there are still criteria to be addressed. The fixed values in modular exponentiation must be chosen correctly to avoid partial mappings like the one shown in <span class="figure-number" data-fid="mappings">figure</span>c.</p>
-        <p>Modular exponentiation is actually used in two ways. One way is to keep the exponent fixed and have a variable base. The second is to have a fixed base and use the exponent as the input variable. \[x \mapsto f(x,e,n) = x^e \bmod{n}\] \[x \mapsto f(g,x,n) = g^x \bmod{n}\]</p>
+        <p>Modular exponentiation is actually used in two ways. One way is to keep the exponent fixed and have a variable base. The second is to have a fixed base and use the exponent as the input variable. \[x \mapsto f(x,h,n) = x^h \bmod{n}\] \[x \mapsto f(g,x,n) = g^x \bmod{n}\]</p>
         <p>General securing criteria is:</p>
         <ul>
           <li>\(n\) must be large - Diffie-Hellman uses a minimum number size of 2048 bits (617 digits) to ensure it is computationally infeasible to test all combinations and find the secret (brute-force)</li>
           <li>\(n\) must be prime or semiprime - if not:
             <ul>
-              <li>the fixed values (\(e\) or \(g\)) might not meet the necessary criteria</li>
+              <li>the fixed values (\(h\) or \(g\)) might not meet the necessary criteria</li>
               <li>\(n\) can be factored into smaller numbers making it easier to brute-force</li>
               <li>the mapping may not even be cyclical, completely breaking encryption (e.g. \(4^x \bmod{16}\) results in \(\{4,0,0,...\}\))</li>
             </ul>
@@ -739,8 +740,8 @@
         </ul>
         <p>The last point is important. Lagrange’s theorem (group theory) states “the order of any element always divides the order of the group”. This is seen in action with, for example, \(4^x \bmod{17}\) that results in a repeating sequence \(\{4,16,13,1\}\). The 4 is not a generator of the group that is criteria explained in <span class="figure-number" data-fid="exponent-as-input">section</span>. The length of the sequence (4) divides the order of the group (\(n-1 = 16\)). The unpredictable behaviour is four times weaker.</p>
         <h3 class="num ref">Base as Input</h3>
-        <p>This method is used in RSA encryption that is further discussed in <span class="figure-number" data-fid="inventing-rsa">section</span>. The exponent is kept fixed and the base is the value that gets encrypted. \[f(x,e,n) = x^e \bmod{n}\]</p>
-        <p>The criteria is simple. \(n\) must be prime and \(e\) a coprime with \(n-1\). Change the values of \(e\) and \(n\) below and see how the mapping cycles through the numbers in <span class="figure-number" data-fid="base-mod-clock">figure</span>.</p>
+        <p>This method is used in RSA encryption that is further discussed in <span class="figure-number" data-fid="inventing-rsa">section</span>. The exponent is kept fixed and the base is the value that gets encrypted. \[f(x,e,n) = x^h \bmod{n}\]</p>
+        <p>The criteria is simple. \(n\) must be prime and \(h\) a coprime with \(n-1\). Change the values of \(h\) and \(n\) below and see how the mapping cycles through the numbers in <span class="figure-number" data-fid="base-mod-clock">figure</span>.</p>
         <div class="interactions">
           <p>\(n\):
             <span class="number-input-wrapper">
@@ -752,7 +753,7 @@
             </span>
             <span class="primality"></span>
           </p>
-          <p>\(e\):
+          <p>\(h\):
             <span class="number-input-wrapper">
               <input id="cos-in-mb-e" value="3" type="number" />
               <span class="number-controls">
@@ -840,27 +841,28 @@
         <p>With asymmetric cryptography each person has a public key (\(S\), \(R\)) and a private key (\(s\), \(r\)). Anyone can see the public keys but only the owners ever know their own private keys. The sender can encrypt a message with the recipient's public key \(R\) and only the recipient can decrypt the message with the matching private key \(r\). Encryption is established without exchanging any secret keys.</p>
         <p>The modular exponentiation method in <span class="figure-number" data-fid="base-as-input">section</span> can be used to encrypt messages. The message \(m\) is used for the base and raised to the power of an encryption key \(e\). The encrypted message \(M\) can be calculated with \[M = m^e \bmod{n}\]</p>
         <p>Equation 1 presents the power combination mechanism that is convenient for decryption of \(M\) by applying a decryption key as another power to get back to \(m\). \[\begin{align} m = M^d \bmod{n} &= {m^e}^d \bmod{n} \\ &= m^{ed} \bmod{n} \end{align}\]</p>
-        <p>It's worth switching to modulo congruence notation. It is like an equal sign, just under the condition of mod \(n\). \[4+3 \neq 1\] \[4+3 \equiv 1 \pmod{6}\]</p>
+        <p>At this point it's worth switching to modulo congruence notation. It is like an equal sign, just under the condition of mod \(n\). \[4+3 \neq 1\] \[4+3 \equiv 1 \pmod{6}\]</p>
         <p>Similarly \[m \equiv m^{ed} \pmod{n} \tag{eq 2}\]</p>
-        <p>The idea is intuitive but finding \(e\) and \(d\) to be able to accomplish encryption and decryption requires a deep turn in mathematics history.</p>
+        <p>The idea is intuitive but finding \(e\) and \(d\) to be able to accomplish encryption and decryption requires a turn in mathematics history.</p>
+        <h3 class="num">Mathematical Insights</h3>
         <p>Rivest, Shamir and Adleman published RSA in 1977 in which they derived \(e\) and \(d\) to encrypt and decrypt messages. The RSA authors build on math discovered three centuries earlier. The initial version of Euler's theorem was first published in 1736 as a proof of Fermat's little theorem (published without proof in 1640).</p>
-        <p>An interesting phenomenon can be observed with the modular calculator in <span class="figure-number" data-fid="base-as-input">section</span> is that when \(n\) is prime, \(x^n \bmod{n}\) produces the values of \(x\) as if \(x \bmod{n}\) was taken. This is what Fermat discovered. A revealing observation here is that, for example \(n=11\), the effect is the same for exponents 1,11,21,31 and so on.</p>
-        <p>Dividing by \(x\) results in a form that Euler later proved. The fact that it maps \(x\) to 1 for an exponent \(n-1\) is very significant. \[x \mapsto x^n \equiv x \pmod{n}\] \[x \mapsto x/x \equiv x^{n-1} \equiv 1 \pmod{n}\]</p>
-        <p>Euler's theorem \[m^{\varphi(n)} \equiv 1 \pmod{n}\] shows that there is a power (Euler's Totient, 1763) one can raise a base to that results in a remainder of 1. When \(n\) is prime \[\varphi(n) = n-1\]</p>
-        <p>The exponents \(e\) and \(d\) are calculated with \(\varphi(n)\). First, \(1 \pmod{n}\) is isolated in equation 2. \[m^{ed-1} \equiv 1 \pmod{n} \tag{eq 3}\]</p>
+        <p>An interesting phenomenon can be observed in <span class="figure-number" data-fid="base-as-input">section</span> when \(n\) is prime. Fermat saw that, for \(x \leq n\), \[x = x^n \bmod{n}\] The implications of this discovery can not be overstated since it's also equal to a normal modular operation. A revealing observation here is that there are thus repeating exponents simply equalling \(x\). \[x \equiv x^n \equiv x^{k(n-1)+1} \pmod{n}\] The reader can test this in <span class="figure-number" data-fid="base-as-input">section</span> by taking \(n=11\) and changing \(h\) from 1, to 11, to 21, to 31, and so on. The result is the same for all values of \(k\). The period length, \(n-1\), is a very significant number. It is called Euler's Totient (discovered in 1763) and is denoted \(\varphi(n)\). Dividing by \(x\) results in a form that Euler later proved. It maps all values for \(x\) to 1. \[x/x \equiv x^n/x \equiv x^{n-1} \equiv 1 \pmod{n}\]</p>
+        <p>Euler's theorem \[m^{\varphi(n)} \equiv 1 \pmod{n}\] shows that there is a power one can raise a base to that results in a remainder of 1 when \(n\) is prime. The exponents \(e\) and \(d\) are calculated with \(\varphi(n)\). First, \(1 \pmod{n}\) is isolated in equation 2. \[m^{ed-1} \equiv 1 \pmod{n} \tag{eq 3}\]</p>
         <p>Secondly, Euler's theorem is modified to handle any multiple of \(\varphi(n)\). \[(m^{\varphi(n)})^k \equiv 1^k \equiv 1 \pmod{n} \tag{eq 4}\]</p>
         <p>Equations 3 and 4 are combined. \[m^{\varphi(n)k} \equiv m^{ed-1} \equiv 1 \pmod{n}\]</p>
         <p>The exponents \(e\) and \(d\) can then be calculated with \[ed-1 = \varphi(n)k \iff ed = \varphi(n)k+1\]</p>
         <p>that can be transformed into modulo form. \[ed \equiv 1 \pmod{\varphi(n)}\]</p>
-        <div class="insight block ref num" data-label="Insight" data-ref="eulers-theorem">
+        <div class="insight block ref num" data-label="Insight">
           <h4></h4>
-          <p>Euler's theorem \[m^{\varphi(n)} \equiv 1 \pmod{n}\] can be used to find exponents \(e\) and \(d\) for encryption \[M = m^e \bmod{n}\] and decryption \[m = M^d \bmod{n}\]</p>
+          <p>The values in modular exponentiation are governed by mod \(n\). The exponents live in a mod \(\varphi(n)\) world. The \(d\) exponent forwards a message encrypted with \(e\) to produce the original message again.</p>
         </div>
-        <p>If \(e=3\) and \(n=11\), then \(d=7\). \[m \mapsto f(m,e,n) \mapsto f(f(m,e,n),d,n) = m\] \[\begin{align} f(f(m,3,11),7,11) &= (m^3 \bmod{11})^7 \bmod{11} \\ &= m^{3*7} \bmod{11} \\ &= m \end{align}\]</p>
-        <p>\[\begin{Bmatrix} 1 \\ 2 \\ 3 \\ 4 \\ 5 \\ 6 \\ 7 \\ 8 \\ 9 \\ 10 \end{Bmatrix} \mapsto \begin{Bmatrix} 1 \\ 8 \\ 5 \\ 9 \\ 4 \\ 7 \\ 2 \\ 6 \\ 3 \\ 10 \end{Bmatrix} \mapsto \begin{Bmatrix} 1 \\ 2 \\ 3 \\ 4 \\ 5 \\ 6 \\ 7 \\ 8 \\ 9 \\ 10 \end{Bmatrix}\]</p>
+        <h3 class="num">Mappings</h3>
+        <p>The original-encryption-decryption workflow can be expressed function wise as \[m \mapsto f(m,e,n) \mapsto f(f(m,e,n),d,n)\] If the message is \(m\), \(e=3\) and \(n=11\), then \(d=7\) \[f(m,3,11) = m^3 \bmod{11}\] and \[\begin{align} f(f(m,3,11),7,11) &= (m^3 \bmod{11})^7 \bmod{11} \\ &= m^{3*7} \bmod{11} \\ &= m \end{align}\]</p>
+        <p>For all possible values of \(m\) \[\begin{Bmatrix} 1 \\ 2 \\ 3 \\ 4 \\ 5 \\ 6 \\ 7 \\ 8 \\ 9 \\ 10 \end{Bmatrix} \mapsto \begin{Bmatrix} 1 \\ 8 \\ 5 \\ 9 \\ 4 \\ 7 \\ 2 \\ 6 \\ 3 \\ 10 \end{Bmatrix} \mapsto \begin{Bmatrix} 1 \\ 2 \\ 3 \\ 4 \\ 5 \\ 6 \\ 7 \\ 8 \\ 9 \\ 10 \end{Bmatrix}\]</p>
         <p>A secret value of \(m=2\) maps to an encrypted value of \(M=8\). Decryption applies the inverse mapping of 8 to 2 again. \[2 \mapsto 8 \mapsto 2\]</p>
-        <p>Test it in <span class="figure-number" data-fid="exponent-as-input">section</span> by setting \(n=11\), \(e=3\) and noting the 2nd number in the \(\zeta\) sequence, it should be 8. Then change to \(e=7\) (\(d\)) and note the 8th number, it should be 2.</p>
-        <p>The reader might have noticed that \(e\) and \(d\) are obtained from the \(\varphi(n)\). However, \(n\) need to be a public number and, thus, anyone can determine \(d\) and decrypt \(M\). Another strategy will be followed to obtain an \(n\) and \(\varphi(n)\). It starts by generating two large prime numbers, \(p\) and \(q\), and calculating the product. \[n = p q\]</p>
+        <p>Test it in <span class="figure-number" data-fid="base-as-input">section</span> by setting \(n=11\), \(h=3\) and noting the 2nd number in the \(\zeta\) sequence, it should be 8. Then change to \(h=7\) and note the 8th number, it should be 2.</p>
+        <h3 class="num">Decoupling Modulo and Totient</h3>
+        <p>The reader might have noticed that \(e\) and \(d\) are obtained from the \(\varphi(n)\). However, \(n\) is a public number and, thus, anyone will be able to determine \(d\) and decrypt \(M\). Another strategy will be followed to obtain an \(n\) and \(\varphi(n)\). It starts by generating two large prime numbers, \(p\) and \(q\), and calculating the product. \[n = p q\]</p>
         <p>\(n\) is a new semiprime number that can be publicly shared while \(p\) and \(q\) remain secret because of the irreversibility pointed out by <span class="figure-number" data-fid="prime-factors">Insight</span>. Thus, \(p\) and \(q\) can still be used to calculate Euler's Totient: \[\varphi(n) = (p-1)(q-1)\]</p>
       </section>
       <section>
@@ -935,8 +937,8 @@
       </section>
       <section>
         <h2 class="num">Conclusion</h2>
-        <p>This article shows how prime numbers are used to secure DH key exchange and RSA. Even SHA-256 hash algorithms used in authentication rely on prime numbers for randomization. This junction in math and cryptography is such a contested topic that there are two Millennium Prize Problems, the P vs NP Problem and the Riemann Hypothesis, that relates to it. Proving them is important because if any two of these prove different than what is assumed, current cryptography standards are in trouble.</p>
-        <p>People often fall ignorant of the role of mathematics. Prime numbers get far less attention than they should be since they are the atoms of the numbers we use everyday. Euler and Fermat probably did not realise how important their theories would become centuries later. Mathematics is a deep, slow form of knowledge that should not be discarded if its value cannot immediately be realised.</p>
+        <p>Prime numbers get far less attention than they should be since they are the atoms of the numbers we use everyday. This article shows how prime numbers are used to secure DH key exchange and RSA. Modular exponentiation is a simple powerful tool that addresses various cryptographic needs.</p>
+        <p>People often fall ignorant of the role of mathematics. Euler and Fermat probably did not realise how important their theories would become centuries later. Mathematics is a deep, slow form of knowledge that should not be discarded if its value cannot immediately be realised.</p>
         <p>The beauty and genius with which the key-exchange, encryption and authentication problems were solved is astonishing. But as always, it was made possible by many discoveries and innovations that came before it. Big or small, don't stop exploring and don't despise small contributions.</p>
       </section>
     </article>

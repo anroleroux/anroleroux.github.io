@@ -5,7 +5,7 @@ const IP_LIMIT_MAX      = 30;         // max requests per window per IP
 const IP_LIMIT_WINDOW   = 60_000;     // 1 minute in ms
 const IP_LIMIT_PRUNE    = 120_000;    // prune rate_limit rows older than 2 min
 
-const SESSION_LIMIT_MAX    = 20;      // max accepted reactions per session+page per window
+const SESSION_LIMIT_MAX    = 5;       // max accepted reactions per session+page per window
 const SESSION_LIMIT_WINDOW = 60_000;  // 1 minute in ms
 
 const ALLOWED_ORIGIN = 'https://anroleroux.github.io';
@@ -17,9 +17,9 @@ const CORS = {
 };
 
 const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
-const REACTIONS = ['valuable', 'not_valuable'] as const;
-// Stored as SMALLINT to save space: 1 = valuable, 2 = not_valuable.
-const CODE: Record<typeof REACTIONS[number], number> = { valuable: 1, not_valuable: 2 };
+// Reactions are stored as SMALLINT codes 1..REACTION_COUNT. This function stays
+// agnostic to what each code means — the labels live in the article HTML/JS.
+const REACTION_COUNT = 3;
 
 // Crawlers / headless browsers / scrapers — no signal they were filtered.
 const BOT_UA_RE = /bot|crawler|spider|scraper|headless|phantom|selenium|puppeteer|playwright|curl|wget|python-requests|go-http|java\/|apache-httpclient|scrapy|libwww|httpclient|okhttp|axios\/|node-fetch|lighthouse|facebookexternalhit|twitterbot|linkedinbot|whatsapp|slackbot|discordbot|telegrambot|applebot|duckduckbot|bingpreview|ia_archiver/i;
@@ -37,19 +37,20 @@ function json(body: unknown, status = 200): Response {
   });
 }
 
-// Count valuable / not_valuable for a page (head counts — no row transfer).
+// Count each reaction code for a page (head counts — no row transfer). Keyed by
+// the numeric code; the article decides what each code means.
 async function countsFor(
   supabase: ReturnType<typeof createClient>,
   page: string,
-): Promise<{ valuable: number; not_valuable: number }> {
-  const out = { valuable: 0, not_valuable: 0 };
-  for (const reaction of REACTIONS) {
+): Promise<Record<number, number>> {
+  const out: Record<number, number> = {};
+  for (let code = 1; code <= REACTION_COUNT; code++) {
     const { count } = await supabase
       .from('reaction_events')
       .select('*', { count: 'exact', head: true })
       .eq('page', page)
-      .eq('reaction', CODE[reaction]);
-    out[reaction] = count ?? 0;
+      .eq('reaction', code);
+    out[code] = count ?? 0;
   }
   return out;
 }
@@ -86,12 +87,13 @@ Deno.serve(async (req: Request): Promise<Response> => {
   if (typeof body.session_token !== 'string' || !UUID_RE.test(body.session_token)) {
     return new Response('Bad Request', { status: 400, headers: CORS });
   }
-  if (typeof body.reaction !== 'string' || !REACTIONS.includes(body.reaction as typeof REACTIONS[number])) {
+  if (typeof body.reaction !== 'number' || !Number.isInteger(body.reaction)
+      || body.reaction < 1 || body.reaction > REACTION_COUNT) {
     return new Response('Bad Request', { status: 400, headers: CORS });
   }
 
   const sessionToken = body.session_token;
-  const reaction     = body.reaction as typeof REACTIONS[number];
+  const reaction     = body.reaction;
   const page         = typeof body.page === 'string' ? body.page.slice(0, 500) : '/';
   const userAgent    = req.headers.get('user-agent')?.slice(0, 500) ?? null;
 
@@ -138,7 +140,7 @@ Deno.serve(async (req: Request): Promise<Response> => {
   await supabase.from('reaction_events').insert({
     session_token: sessionToken,
     page,
-    reaction: CODE[reaction],
+    reaction: reaction,
   });
 
   return json({ counts: await countsFor(supabase, page) });

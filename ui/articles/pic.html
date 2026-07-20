@@ -415,7 +415,13 @@
         <h2 class="num ref">Inventing RSA</h2>
         <p>With asymmetric cryptography each person has a public key (\(S\), \(R\)) and a private key (\(s\), \(r\)). Anyone can see the public keys but only the owners ever know their own private keys. The sender can encrypt a message with the recipient's public key \(R\) and only the recipient can decrypt the message with the matching private key \(r\). Encryption is established without exchanging any secret keys.</p>
         <p>The modular exponentiation method in <span class="figure-number" data-fid="base-as-input">section</span> can be used to encrypt messages. The message \(m\) is used for the base and raised to the power of an encryption key \(e\). The encrypted message \(M\) can be calculated with \[M = m^e \bmod{n}\]</p>
-        <p>Equation 1 presents the power combination mechanism that is convenient for decryption of \(M\) by applying a decryption key as another power to get back to \(m\). \[\begin{align} m = M^d \bmod{n} &= {m^e}^d \bmod{n} \\ &= m^{ed} \bmod{n} \end{align}\]</p>
+        <p>
+          Equation 1 presents the power combination mechanism that is convenient for decryption of \(M\) by applying a decryption key as another power to get back to \(m\).
+          \[\begin{align}
+            m &= M^d \bmod{n} \\
+            &= m^{ed} \bmod{n}
+          \end{align}\]
+        </p>
         <p>At this point it's worth switching to modulo congruence notation. It is like an equal sign, just under the condition of mod \(n\). \[4+3 \neq 1\] \[4+3 \equiv 1 \pmod{6}\]</p>
         <p>Similarly \[m \equiv m^{ed} \pmod{n} \tag{eq 2}\]</p>
         <p>The idea is intuitive but finding \(e\) and \(d\) to be able to accomplish encryption and decryption requires a turn in mathematics history.</p>
@@ -519,8 +525,9 @@
     </article>
 
     <div class="reactions">
-      <button class="react-btn" onclick="react('valuable')">Valuable <span class="react-count" data-r="valuable">0</span></button>
-      <button class="react-btn" onclick="react('not_valuable')">Not valuable <span class="react-count" data-r="not_valuable">0</span></button>
+      <button class="react-btn" onclick="react(1)">Informative <span class="react-count" data-r="1">0</span></button>
+      <button class="react-btn" onclick="react(2)">Helpful <span class="react-count" data-r="2">0</span></button>
+      <button class="react-btn" onclick="react(3)">Enjoyable <span class="react-count" data-r="3">0</span></button>
     </div>
 
     <footer class="alm-foot">
@@ -717,7 +724,16 @@
           <div id="cos-log-dlp" class="charta"></div>
           <div class="figure-numbering ref num" data-fig="log-dlp" data-label="Figure"><p>Predictable continuous functions vs unpredictable modular exponentiation.</p></div>
         </div>
-        <p>The exponentiation provides mathematical structure with which algebraic operations can be performed and proofs of security conducted. Not only does exponentiation enables composibility that allows \[\begin{align} {g^b}^a \bmod{n} &= g^{b a} \bmod{n} \tag{eq 1} \\ &= B^a \bmod{n} \end{align}\] in Diffie-Hellman (<span class="figure-number" data-fid="key-exchange">section</span>). It also allows modular exponentiation to be backed up by rich mathematical theory like \(\mathbb{Z}^*_c\) in group theory that provides proofs for the behaviour of the function \(f\).</p>
+        <p>
+          The exponentiation provides mathematical structure with which algebraic operations can be performed and proofs of security conducted.
+          Not only does exponentiation enables composibility that allows
+          \[\begin{align}
+            {g^b}^a \bmod{n} &= g^{b a} \bmod{n} \tag{eq 1} \\
+            &= B^a \bmod{n}
+          \end{align}\]
+          in Diffie-Hellman (<span class="figure-number" data-fid="key-exchange">section</span>).
+          It also allows modular exponentiation to be backed up by rich mathematical theory like \(\mathbb{Z}^*_c\) in group theory that provides proofs for the behaviour of the function \(f\).
+        </p>
         <p>Addressing the ease of computing \(f\), highly efficient methods exist even for large exponents. The Right-to-Left Binary Method, for example, can compute \(f(g,x,n)\) in \(\Theta(\log x)\) without actually calculating \(g^x\). Therefore, despite the existence of other one-way functions like elliptic curves, lattices, hash functions, isogenies, modular exponentiation is a preferred method for most cryptography.</p>
         <div class="insight block ref num" data-label="Insight">
           <h4></h4>
@@ -840,7 +856,13 @@
         <h2 class="num ref">Inventing RSA</h2>
         <p>With asymmetric cryptography each person has a public key (\(S\), \(R\)) and a private key (\(s\), \(r\)). Anyone can see the public keys but only the owners ever know their own private keys. The sender can encrypt a message with the recipient's public key \(R\) and only the recipient can decrypt the message with the matching private key \(r\). Encryption is established without exchanging any secret keys.</p>
         <p>The modular exponentiation method in <span class="figure-number" data-fid="base-as-input">section</span> can be used to encrypt messages. The message \(m\) is used for the base and raised to the power of an encryption key \(e\). The encrypted message \(M\) can be calculated with \[M = m^e \bmod{n}\]</p>
-        <p>Equation 1 presents the power combination mechanism that is convenient for decryption of \(M\) by applying a decryption key as another power to get back to \(m\). \[\begin{align} m = M^d \bmod{n} &= {m^e}^d \bmod{n} \\ &= m^{ed} \bmod{n} \end{align}\]</p>
+        <p>
+          Equation 1 presents the power combination mechanism that is convenient for decryption of \(M\) by applying a decryption key as another power to get back to \(m\).
+          \[\begin{align}
+            m &= M^d \bmod{n} \\
+            &= m^{e d} \bmod{n}
+          \end{align}\]
+        </p>
         <p>At this point it's worth switching to modulo congruence notation. It is like an equal sign, just under the condition of mod \(n\). \[4+3 \neq 1\] \[4+3 \equiv 1 \pmod{6}\]</p>
         <p>Similarly \[m \equiv m^{ed} \pmod{n} \tag{eq 2}\]</p>
         <p>The idea is intuitive but finding \(e\) and \(d\) to be able to accomplish encryption and decryption requires a turn in mathematics history.</p>
@@ -944,8 +966,9 @@
     </article>
 
     <div class="reactions">
-      <button class="react-btn" onclick="react('valuable')">Valuable <span class="react-count" data-r="valuable">0</span></button>
-      <button class="react-btn" onclick="react('not_valuable')">Not valuable <span class="react-count" data-r="not_valuable">0</span></button>
+      <button class="react-btn" onclick="react(1)">Informative <span class="react-count" data-r="1">0</span></button>
+      <button class="react-btn" onclick="react(2)">Helpful <span class="react-count" data-r="2">0</span></button>
+      <button class="react-btn" onclick="react(3)">Enjoyable <span class="react-count" data-r="3">0</span></button>
     </div>
 
     <footer class="cos-foot">

@@ -518,7 +518,7 @@ sb.auth.onAuthStateChange(function (event, session) {
 // Applause-style: every click counts, throttled server-side. Counts are always
 // shown. The buttons live statically in the article HTML; JS only fills in the
 // numbers — every .react-count span carries a data-r of its reaction.
-let reactionCounts = { valuable: 0, not_valuable: 0 };
+let reactionCounts = { 1: 0, 2: 0, 3: 0 };
 let reactionBusy   = false;
 
 function renderReactions() {

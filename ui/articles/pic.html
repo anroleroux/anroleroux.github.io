@@ -196,8 +196,8 @@
           \end{align}\]
         </p>
         <div class="interactions inlim">
-          <img src="DHAuth.svg" alt="The Diffie-Hellman key exchange method." class="art-rsa-img" />
-          <div class="figure-numbering ref num" data-fig="dh-diagram" data-label="Figure"><p>The Diffie-Hellman key exchange method.</p></div>
+          <img src="dh.svg" alt="The Diffie-Hellman key exchange workflow." class="art-rsa-img" />
+          <div class="figure-numbering ref num" data-fig="dh-diagram" data-label="Figure"><p>The Diffie-Hellman key exchange workflow.</p></div>
         </div>
         <p>Note that the same private key (\(z\)) was established without exposing secret keys \(a\) or \(b\) and no one can compute \(z\) with only \(g\), \(n\), \(A\) and \(B\).</p>
       </section>
@@ -306,14 +306,14 @@
           <li>\(n\) must be large - Diffie-Hellman uses a minimum number size of 2048 bits (617 digits) to ensure it is computationally infeasible to test all combinations and find the secret (brute-force)</li>
           <li>\(n\) must be prime or semiprime - if not:
             <ul>
-              <li>the fixed values (\(h\) or \(g\)) might not meet the necessary criteria</li>
+              <li>it may become impossible to let the fixed values (\(h\) or \(g\)) meet the necessary criteria</li>
               <li>\(n\) can be factored into smaller numbers making it easier to brute-force</li>
               <li>the mapping may not even be cyclical, completely breaking encryption (e.g. \(4^x \bmod{16}\) results in \(\{4,0,0,...\}\))</li>
             </ul>
           </li>
-          <li>the fixed values (\(e\) or \(g\)) must adhere to the necessary criteria causing small mapping cycles that repeat, also making it easier to brute-force</li>
+          <li>the fixed values (\(h\) or \(g\)) must adhere to the necessary criteria to avoid causing small mapping cycles that repeat, making it easier to brute-force</li>
         </ul>
-        <p>The last point is important. Lagrange’s theorem (group theory) states “the order of any element always divides the order of the group”. This is seen in action with, for example, \(4^x \bmod{17}\) that results in a repeating sequence \(\{4,16,13,1\}\). The 4 is not a generator of the group that is criteria explained in <span class="figure-number" data-fid="exponent-as-input">section</span>. The length of the sequence (4) divides the order of the group (\(n-1 = 16\)). The unpredictable behaviour is four times weaker.</p>
+        <p>The last point is important. Lagrange’s theorem (group theory) states “the order of any element always divides the order of the group”. This is seen in action with, for example, \(4^x \bmod{17}\) that results in a repeating sequence \(\{4,16,13,1\}\). The 4 is not a generator of the group that is explained in <span class="figure-number" data-fid="exponent-as-input">section</span>. The length of the sequence (4) divides the order of the group (\(n-1 = 16\)). The unpredictable behaviour is four times weaker.</p>
         <h3 class="num ref">Base as Input</h3>
         <p>This method is used in RSA encryption that is further discussed in <span class="figure-number" data-fid="inventing-rsa">section</span>. The exponent is kept fixed and the base is the value that gets encrypted. \[f(x,e,n) = x^h \bmod{n}\]</p>
         <p>The criteria is simple. \(n\) must be prime and \(h\) a coprime with \(n-1\). Change the values of \(h\) and \(n\) below and see how the mapping cycles through the numbers in <span class="figure-number" data-fid="base-mod-clock">figure</span>.</p>
@@ -408,17 +408,22 @@
         <p>When asked to find the factors of 697, only 17 will be found to divide it together with 41. When asked about 22790237 one will have to go up to 3187. It becomes apparent that factoring products of two large primes is difficult.</p>
         <div class="insight block ref num" data-label="Insight" data-ref="prime-factors">
           <h4></h4>
-          <p>Multiplying two large prime numbers results in a new prime number with only the two primes as factors. The multiplication (forward) is easy, but factoring it (backwards) into the two original primes is hard.</p>
+          <p>Multiplying two large prime numbers results in a new semiprime number with only the two primes as factors. The multiplication (forward) is easy, but factoring it (backwards) into the two original primes is hard.</p>
         </div>
       </section>
       <section>
         <h2 class="num ref">Inventing RSA</h2>
         <p>With asymmetric cryptography each person has a public key (\(S\), \(R\)) and a private key (\(s\), \(r\)). Anyone can see the public keys but only the owners ever know their own private keys. The sender can encrypt a message with the recipient's public key \(R\) and only the recipient can decrypt the message with the matching private key \(r\). Encryption is established without exchanging any secret keys.</p>
+        <div class="interactions inlim">
+          <img src="rsa.svg" alt="The RSA workflow." class="art-rsa-img" />
+          <div class="figure-numbering ref num" data-fig="rsa-workflow" data-label="Figure"><p>The RSA workflow.</p></div>
+        </div>
         <p>The modular exponentiation method in <span class="figure-number" data-fid="base-as-input">section</span> can be used to encrypt messages. The message \(m\) is used for the base and raised to the power of an encryption key \(e\). The encrypted message \(M\) can be calculated with \[M = m^e \bmod{n}\]</p>
         <p>
           Equation 1 presents the power combination mechanism that is convenient for decryption of \(M\) by applying a decryption key as another power to get back to \(m\).
           \[\begin{align}
             m &= M^d \bmod{n} \\
+            &= {m^e}^d \bmod{n} \\
             &= m^{ed} \bmod{n}
           \end{align}\]
         </p>
@@ -448,8 +453,7 @@
       </section>
       <section>
         <h2 class="num">Encryption and Decryption</h2>
-        <p>Two primes are required to produce the modulus \(n\) and Euler's Totient \(\varphi(n)\).</p>
-        <p>\[n = p q\] \[\varphi(n) = (p-1)(q-1)\]</p>
+        <p>Two large primes are generated to compute the modulus \(n\) and \(\varphi(n)\). \(e\) must be smaller than, and be coprime with, \(\varphi(n)\). \(d\) is then obtained with \[ed \equiv 1 \pmod{\varphi(n)}\]</p>
         <div class="interactions">
           <p>\(p\):
             <span class="number-input-wrapper">
@@ -473,14 +477,11 @@
           </p>
           <p>\(n\):<span id="alm-out-n"></span></p>
           <p>\(\varphi(n)\):<span id="alm-out-phi"></span></p>
-        </div>
-        <p>\(e\) must be smaller than \(\varphi(n)\) and be coprime with it. A number that, in its binary form, has zeros and starts and ends with 1 is a preferred for \(e\). \(d\) is then obtained by finding a \(d\) where \[ed \bmod{\varphi(n)} = 1\] \[\gcd(e,\varphi(n)) = 1\] \[ed \equiv 1 \pmod{\varphi(n)}\]</p>
-        <div class="interactions">
           <p>\(e\):<span id="alm-out-e"></span></p>
           <p>\(d\):<span id="alm-out-d"></span></p>
         </div>
         <h3 class="num">Encryption on a Single Number</h3>
-        <p>The public key consists of \(e\) and \(n\). Anyone can use a recipient's public key to encrypt a number \(x\) with \(c = x^e \bmod{n}\).</p>
+        <p>The public key consists of \(e\) and \(n\). Anyone can use a recipient's public key to encrypt a message with \(x^e \bmod{n}\).</p>
         <div class="interactions">
           <p>\(x\):
             <span class="number-input-wrapper">
@@ -491,20 +492,21 @@
               </span>
             </span>
           </p>
-          <p>\(c\):<span id="alm-out-c"></span></p>
+          <p>\(X\):<span id="alm-out-c"></span></p>
         </div>
-        <p>The recipient's private key consists of \(d\) and \(n\). The encrypted number can be decrypted with \(x = c^d \bmod{n}\).</p>
+        <p>The recipient's private key consists of \(d\) and \(n\). The encrypted message can be decrypted with \(X^d \bmod{n}\).</p>
         <div class="interactions">
           <p>\(x\):<span id="alm-out-x"></span></p>
         </div>
         <h3 class="num">Encryption on a String</h3>
-        <p>The number \(x\) is probably only 4 bytes. To encrypt strings of bytes a padding scheme is used that first converts the string into a 4 byte sequence of padded numbers that can be passed through encryption. The padding scheme is reversed after decoding to obtain the original message.</p>
+        <p>The number \(x\) is usually only 4 bytes. Padding schemes like OAEP (Optimal Asymmetric Encryption Padding) are used to encrypt text. It first converts the string into a fixed packet size sequence that can be passed through encryption. Each packet is small enough to be encrypted by \(n\) and padded with random bits to prevent deterministic attacks. The padding scheme is reversed after decoding to obtain the original message.</p>
+        <p>A message can be entered in the textbox below that will be encrypted with \(m^e \bmod{n}\) and decrypted with \(M^d \bmod{n}\) while padding wraps it.</p>
         <div class="interactions">
           <p>Original message:<input id="alm-in-orig-msg" value="Testing. Does this work? Great!" type="text" /></p>
           <p>Original characters:<span id="alm-out-orig-msg"></span></p>
           <p>Padded message:<span id="alm-out-padd-msg"></span></p>
-          <p>Encrypted message:<span id="alm-out-encr-msg"></span></p>
-          <p>Decrypted message:<span id="alm-out-decr-msg"></span></p>
+          <p>Encrypted message \(M\):<span id="alm-out-encr-msg"></span></p>
+          <p>Decrypted message \(m\):<span id="alm-out-decr-msg"></span></p>
         </div>
       </section>
       <section>
@@ -512,8 +514,10 @@
         <p>Notice that only two of the original goals were covered thus far. The receiver still needs to know that the sender is in fact the sender. With RSA this can be done by simply encrypting a string with the sender's private key. The receiver can then use the sender's public key to decrypt it and see if it makes sense. The only problem is that everyone can decrypt that message.</p>
         <p>A popular solution to get both encryption and authentication is to run the message content through a hashing function like SHA-256 prior to encryption. The hashing is an irreversible function that takes in data and produces an unpredictable digest (number) that's unique. Hashing the message and encrypting the hash with the private key is called signing the message or creating a digital signature.</p>
         <p>Anyone that decrypts the signature only gets the hash digest. However, the recipient can apply the same hashing on the private-key-decoded message and compare it with the hash. If it matches, the recipient knows that the message is signed by the sender. Authentication is established together with secure encryption. The RSA encryption-decryption flow with authentication can be seen in the following diagram.</p>
+        <p>RSA is not used anymore for key exchange in the latest TLS 1.3 standard that secures that internet. But it's still used heavily for authentication. DH is primarily used for key exchange to establish ephemeral keys for additional forward secrecy (preventing access to all data if an attacker gets hold of a static private key). A DH key exchange flow with RSA authentication can be seen in the following diagram.</p>
         <div class="interactions inlim">
-          <img src="RSAAuth.svg" alt="RSA Encryption and Authentication Flow" class="art-rsa-img" />
+          <img src="auth.svg" alt="The authentication workflow." class="art-rsa-img" />
+          <div class="figure-numbering ref num" data-fig="auth-workflow" data-label="Figure"><p>The authentication workflow.</p></div>
         </div>
       </section>
       <section>
@@ -634,8 +638,8 @@
           \end{align}\]
         </p>
         <div class="interactions inlim">
-          <img src="DHAuth.svg" alt="The Diffie-Hellman key exchange method." class="art-rsa-img" />
-          <div class="figure-numbering ref num" data-fig="dh-diagram" data-label="Figure"><p>The Diffie-Hellman key exchange method.</p></div>
+          <img src="dh.svg" alt="The Diffie-Hellman key exchange workflow." class="art-rsa-img" />
+          <div class="figure-numbering ref num" data-fig="dh-diagram" data-label="Figure"><p>The Diffie-Hellman key exchange workflow.</p></div>
         </div>
         <p>Note that the same private key (\(z\)) was established without exposing secret keys \(a\) or \(b\) and no one can compute \(z\) with only \(g\), \(n\), \(A\) and \(B\).</p>
       </section>
@@ -747,14 +751,14 @@
           <li>\(n\) must be large - Diffie-Hellman uses a minimum number size of 2048 bits (617 digits) to ensure it is computationally infeasible to test all combinations and find the secret (brute-force)</li>
           <li>\(n\) must be prime or semiprime - if not:
             <ul>
-              <li>the fixed values (\(h\) or \(g\)) might not meet the necessary criteria</li>
+              <li>it may become impossible to let the fixed values (\(h\) or \(g\)) meet the necessary criteria</li>
               <li>\(n\) can be factored into smaller numbers making it easier to brute-force</li>
               <li>the mapping may not even be cyclical, completely breaking encryption (e.g. \(4^x \bmod{16}\) results in \(\{4,0,0,...\}\))</li>
             </ul>
           </li>
-          <li>the fixed values (\(e\) or \(g\)) must adhere to the necessary criteria causing small mapping cycles that repeat, also making it easier to brute-force</li>
+          <li>the fixed values (\(h\) or \(g\)) must adhere to the necessary criteria to avoid causing small mapping cycles that repeat, making it easier to brute-force</li>
         </ul>
-        <p>The last point is important. Lagrange’s theorem (group theory) states “the order of any element always divides the order of the group”. This is seen in action with, for example, \(4^x \bmod{17}\) that results in a repeating sequence \(\{4,16,13,1\}\). The 4 is not a generator of the group that is criteria explained in <span class="figure-number" data-fid="exponent-as-input">section</span>. The length of the sequence (4) divides the order of the group (\(n-1 = 16\)). The unpredictable behaviour is four times weaker.</p>
+        <p>The last point is important. Lagrange’s theorem (group theory) states “the order of any element always divides the order of the group”. This is seen in action with, for example, \(4^x \bmod{17}\) that results in a repeating sequence \(\{4,16,13,1\}\). The 4 is not a generator of the group that is explained in <span class="figure-number" data-fid="exponent-as-input">section</span>. The length of the sequence (4) divides the order of the group (\(n-1 = 16\)). The unpredictable behaviour is four times weaker.</p>
         <h3 class="num ref">Base as Input</h3>
         <p>This method is used in RSA encryption that is further discussed in <span class="figure-number" data-fid="inventing-rsa">section</span>. The exponent is kept fixed and the base is the value that gets encrypted. \[f(x,e,n) = x^h \bmod{n}\]</p>
         <p>The criteria is simple. \(n\) must be prime and \(h\) a coprime with \(n-1\). Change the values of \(h\) and \(n\) below and see how the mapping cycles through the numbers in <span class="figure-number" data-fid="base-mod-clock">figure</span>.</p>
@@ -849,12 +853,16 @@
         <p>When asked to find the factors of 697, only 17 will be found to divide it together with 41. When asked about 22790237 one will have to go up to 3187. It becomes apparent that factoring products of two large primes is difficult.</p>
         <div class="insight block ref num" data-label="Insight" data-ref="prime-factors">
           <h4></h4>
-          <p>Multiplying two large prime numbers results in a new prime number with only the two primes as factors. The multiplication (forward) is easy, but factoring it (backwards) into the two original primes is hard.</p>
+          <p>Multiplying two large prime numbers results in a new semiprime number with only the two primes as factors. The multiplication (forward) is easy, but factoring it (backwards) into the two original primes is hard.</p>
         </div>
       </section>
       <section>
         <h2 class="num ref">Inventing RSA</h2>
         <p>With asymmetric cryptography each person has a public key (\(S\), \(R\)) and a private key (\(s\), \(r\)). Anyone can see the public keys but only the owners ever know their own private keys. The sender can encrypt a message with the recipient's public key \(R\) and only the recipient can decrypt the message with the matching private key \(r\). Encryption is established without exchanging any secret keys.</p>
+        <div class="interactions inlim">
+          <img src="rsa.svg" alt="The RSA workflow." class="art-rsa-img" />
+          <div class="figure-numbering ref num" data-fig="rsa-workflow" data-label="Figure"><p>The RSA workflow.</p></div>
+        </div>
         <p>The modular exponentiation method in <span class="figure-number" data-fid="base-as-input">section</span> can be used to encrypt messages. The message \(m\) is used for the base and raised to the power of an encryption key \(e\). The encrypted message \(M\) can be calculated with \[M = m^e \bmod{n}\]</p>
         <p>
           Equation 1 presents the power combination mechanism that is convenient for decryption of \(M\) by applying a decryption key as another power to get back to \(m\).
@@ -889,8 +897,7 @@
       </section>
       <section>
         <h2 class="num">Encryption and Decryption</h2>
-        <p>Two primes are required to produce the modulus \(n\) and Euler's Totient \(\varphi(n)\).</p>
-        <p>\[n = p q\] \[\varphi(n) = (p-1)(q-1)\]</p>
+        <p>Two large primes are generated to compute the modulus \(n\) and \(\varphi(n)\). \(e\) must be smaller than, and be coprime with, \(\varphi(n)\). \(d\) is then obtained with \[ed \equiv 1 \pmod{\varphi(n)}\]</p>
         <div class="interactions">
           <p>\(p\):
             <span class="number-input-wrapper">
@@ -914,14 +921,11 @@
           </p>
           <p>\(n\):<span id="cos-out-n"></span></p>
           <p>\(\varphi(n)\):<span id="cos-out-phi"></span></p>
-        </div>
-        <p>\(e\) must be smaller than \(\varphi(n)\) and be coprime with it. A number that, in its binary form, has zeros and starts and ends with 1 is a preferred for \(e\). \(d\) is then obtained by finding a \(d\) where \[ed \bmod{\varphi(n)} = 1\] \[\gcd(e,\varphi(n)) = 1\] \[ed \equiv 1 \pmod{\varphi(n)}\]</p>
-        <div class="interactions">
           <p>\(e\):<span id="cos-out-e"></span></p>
           <p>\(d\):<span id="cos-out-d"></span></p>
         </div>
         <h3 class="num">Encryption on a Single Number</h3>
-        <p>The public key consists of \(e\) and \(n\). Anyone can use a recipient's public key to encrypt a number \(x\) with \(c = x^e \bmod{n}\).</p>
+        <p>The public key consists of \(e\) and \(n\). Anyone can use a recipient's public key to encrypt a message with \(x^e \bmod{n}\).</p>
         <div class="interactions">
           <p>\(x\):
             <span class="number-input-wrapper">
@@ -932,20 +936,21 @@
               </span>
             </span>
           </p>
-          <p>\(c\):<span id="cos-out-c"></span></p>
+          <p>\(X\):<span id="cos-out-c"></span></p>
         </div>
-        <p>The recipient's private key consists of \(d\) and \(n\). The encrypted number can be decrypted with \(x = c^d \bmod{n}\).</p>
+        <p>The recipient's private key consists of \(d\) and \(n\). The encrypted message can be decrypted with \(X^d \bmod{n}\).</p>
         <div class="interactions">
           <p>\(x\):<span id="cos-out-x"></span></p>
         </div>
         <h3 class="num">Encryption on a String</h3>
-        <p>The number \(x\) is probably only 4 bytes. To encrypt strings of bytes a padding scheme is used that first converts the string into a 4 byte sequence of padded numbers that can be passed through encryption. The padding scheme is reversed after decoding to obtain the original message.</p>
+        <p>The number \(x\) is usually only 4 bytes. Padding schemes like OAEP (Optimal Asymmetric Encryption Padding) are used to encrypt text. It first converts the string into a fixed packet size sequence that can be passed through encryption. Each packet is small enough to be encrypted by \(n\) and padded with random bits to prevent deterministic attacks. The padding scheme is reversed after decoding to obtain the original message.</p>
+        <p>A message can be entered in the textbox below that will be encrypted with \(m^e \bmod{n}\) and decrypted with \(M^d \bmod{n}\) while padding wraps it.</p>
         <div class="interactions">
           <p>Original message:<input id="cos-in-orig-msg" value="Testing. Does this work? Great!" type="text" /></p>
           <p>Original characters:<span id="cos-out-orig-msg"></span></p>
           <p>Padded message:<span id="cos-out-padd-msg"></span></p>
-          <p>Encrypted message:<span id="cos-out-encr-msg"></span></p>
-          <p>Decrypted message:<span id="cos-out-decr-msg"></span></p>
+          <p>Encrypted message \(M\):<span id="cos-out-encr-msg"></span></p>
+          <p>Decrypted message \(m\):<span id="cos-out-decr-msg"></span></p>
         </div>
       </section>
       <section>
@@ -953,8 +958,10 @@
         <p>Notice that only two of the original goals were covered thus far. The receiver still needs to know that the sender is in fact the sender. With RSA this can be done by simply encrypting a string with the sender's private key. The receiver can then use the sender's public key to decrypt it and see if it makes sense. The only problem is that everyone can decrypt that message.</p>
         <p>A popular solution to get both encryption and authentication is to run the message content through a hashing function like SHA-256 prior to encryption. The hashing is an irreversible function that takes in data and produces an unpredictable digest (number) that's unique. Hashing the message and encrypting the hash with the private key is called signing the message or creating a digital signature.</p>
         <p>Anyone that decrypts the signature only gets the hash digest. However, the recipient can apply the same hashing on the private-key-decoded message and compare it with the hash. If it matches, the recipient knows that the message is signed by the sender. Authentication is established together with secure encryption. The RSA encryption-decryption flow with authentication can be seen in the following diagram.</p>
+        <p>RSA is not used anymore for key exchange in the latest TLS 1.3 standard that secures that internet. But it's still used heavily for authentication. DH is primarily used for key exchange to establish ephemeral keys for additional forward secrecy (preventing access to all data if an attacker gets hold of a static private key). A DH key exchange flow with RSA authentication can be seen in the following diagram.</p>
         <div class="interactions inlim">
-          <img src="RSAAuth.svg" alt="RSA Encryption and Authentication Flow" class="art-rsa-img" />
+          <img src="auth.svg" alt="The authentication workflow." class="art-rsa-img" />
+          <div class="figure-numbering ref num" data-fig="auth-workflow" data-label="Figure"><p>The authentication workflow.</p></div>
         </div>
       </section>
       <section>

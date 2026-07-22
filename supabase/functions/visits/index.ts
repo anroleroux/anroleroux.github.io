@@ -4,7 +4,7 @@ import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 // article meta-bar can draw a sparkline. page_views is RLS-locked, so this
 // connects as service role and calls the `visits_weekly` SQL function.
 
-const ALLOWED_ORIGIN = 'https://anroleroux.github.io';
+const ALLOWED_ORIGIN = 'https://anroleroux.co.za';
 
 const CORS = {
   'Access-Control-Allow-Origin':  ALLOWED_ORIGIN,

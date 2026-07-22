@@ -10,7 +10,7 @@ permissions:
   id-token: write
 
 concurrency:
-  group: pages
+  group: pages-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
@@ -36,27 +36,19 @@ jobs:
       - uses: actions/deploy-pages@v5
         id: deployment
 
-  deploy-preview:
+  # Non-main branches: validate the build only. Never deploys, so branch
+  # pushes can't touch the live GitHub Pages site or its custom domain.
+  # For a visual preview of a branch, build locally with `make dev`.
+  build-check:
     if: github.ref != 'refs/heads/main'
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+    permissions:
+      contents: read
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
 
-      - name: Build dev version
-        run: make dev
-
-      # - name: Build prod version
-      #   run: |
-      #     make dev
-      #     mkdir -p ui/dist/dev
-      #     cp ui/dist/index.html ui/dist/dev/index.html
-
-      - uses: actions/upload-pages-artifact@v5
-        with:
-          path: ui/dist
-
-      - uses: actions/deploy-pages@v5
-        id: deployment
+      - name: Build prod version (no deploy)
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_PUBLISHABLE_KEY: ${{ secrets.SUPABASE_PUBLISHABLE_KEY }}
+        run: make prd

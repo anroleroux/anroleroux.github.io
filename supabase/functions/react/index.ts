@@ -8,7 +8,7 @@ const IP_LIMIT_PRUNE    = 120_000;    // prune rate_limit rows older than 2 min
 const SESSION_LIMIT_MAX    = 5;       // max accepted reactions per session+page per window
 const SESSION_LIMIT_WINDOW = 60_000;  // 1 minute in ms
 
-const ALLOWED_ORIGIN = 'https://anroleroux.github.io';
+const ALLOWED_ORIGIN = 'https://anroleroux.co.za';
 
 const CORS = {
   'Access-Control-Allow-Origin':  ALLOWED_ORIGIN,

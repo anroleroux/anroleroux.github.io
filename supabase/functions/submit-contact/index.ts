@@ -4,7 +4,7 @@ import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 const RATE_LIMIT_MAX    = 5;          // max submissions per window per IP
 const RATE_LIMIT_WINDOW = 600_000;    // 10 minutes in ms
 
-const ALLOWED_ORIGIN = 'https://anroleroux.github.io';
+const ALLOWED_ORIGIN = 'https://anroleroux.co.za';
 
 const CORS = {
   'Access-Control-Allow-Origin':  ALLOWED_ORIGIN,

@@ -5,7 +5,7 @@ const RATE_LIMIT_MAX    = 30;         // max requests per window per IP
 const RATE_LIMIT_WINDOW = 60_000;     // 1 minute in ms
 const RATE_LIMIT_PRUNE  = 120_000;    // prune rows older than 2 min
 
-const ALLOWED_ORIGIN = 'https://anroleroux.github.io';
+const ALLOWED_ORIGIN = 'https://anroleroux.co.za';
 
 const CORS = {
   'Access-Control-Allow-Origin':  ALLOWED_ORIGIN,
@@ -35,7 +35,7 @@ async function fetchGeo(ip: string): Promise<GeoResult> {
   if (ip === 'unknown') return empty;
   try {
     const res = await fetch(`https://ipapi.co/${ip}/json/`, {
-      headers: { 'User-Agent': 'anroleroux.github.io/analytics' },
+      headers: { 'User-Agent': 'anroleroux.co.za/analytics' },
       signal: AbortSignal.timeout(2000), // don't block the response more than 2s
     });
     if (!res.ok) return empty;

@@ -52,17 +52,6 @@
     }
     .art-version-select:focus { outline: none; }
 
-    /* ── Note block ───────────────────────────────────────────────── */
-    .note.block {
-      border-left: 2px solid var(--accent); padding: var(--ms1) var(--ms3);
-      margin: var(--ms3) 0; background: rgba(28,22,16,0.03); max-width: 66ch;
-    }
-    .note.block h4 {
-      font-family: var(--mono); font-size: var(--ts11); letter-spacing: 1.4px;
-      text-transform: uppercase; color: var(--accent); margin: 0 0 var(--ms-1); font-weight: 500;
-    }
-    .note.block p { font-size: var(--ts14); margin: 0; }
-
     /* ── Graph container ──────────────────────────────────────────── */
     .art-graph-wrap {
       border: 1px solid var(--rule); border-radius: 2px; overflow: hidden;
@@ -96,8 +85,6 @@
 
     /* ── Cosmos overrides for art-* classes ───────────────────────── */
     .cosmos .art-version-select { color: var(--bone-muted); }
-    .cosmos .note.block { border-left-color: var(--gold); background: rgba(214,171,94,0.04); }
-    .cosmos .note.block h4 { color: var(--gold); }
     .cosmos .art-graph-wrap { border-color: var(--bone-fainter); background: rgba(236,226,200,0.02); }
     .cosmos .art-node-details { border-top-color: var(--bone-fainter); }
     .cosmos .art-detail-title { font-family: var(--display); font-weight: 300; color: var(--bone); }
@@ -107,10 +94,6 @@
     .cosmos .art-connections-list a:hover { border-bottom-color: var(--gold); }
     .cosmos .art-detail-content p { color: var(--bone-muted); }
 
-    /* ── Responsive ───────────────────────────────────────────────── */
-    @media (max-width: 800px) {
-      .note.block { padding: var(--ms0) var(--ms2); }
-    }
   </style>
 </head>
 <body>
@@ -258,13 +241,6 @@
     </footer>
 
   </div><!-- /alm-layer -->
-
-
-
-
-
-
-
 
   <!-- ── COSMOS (night) ────────────────────────────────────────── -->
   <div id="cos-layer" class="cosmos">

@@ -11,6 +11,7 @@
 
 CREATE TABLE IF NOT EXISTS reaction_events (
   id             BIGSERIAL    PRIMARY KEY,
+  env            SMALLINT     NOT NULL CHECK (env IN (0, 1)),  -- 0 = staging, 1 = production
   session_token  UUID         NOT NULL,
   page           TEXT         NOT NULL,
   reaction       TEXT         NOT NULL CHECK (reaction IN ('valuable', 'not_valuable')),
@@ -20,6 +21,8 @@ CREATE TABLE IF NOT EXISTS reaction_events (
 -- Fast COUNT(*) per page + reaction (display)
 CREATE INDEX IF NOT EXISTS reaction_events_page_reaction_idx
   ON reaction_events (page, reaction);
+CREATE INDEX IF NOT EXISTS reaction_events_env_page_idx
+  ON reaction_events (env, page, reaction);
 
 -- Sliding-window throttle lookup by session + page
 CREATE INDEX IF NOT EXISTS reaction_events_session_page_created_idx

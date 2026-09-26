@@ -101,10 +101,7 @@
       <h1 class="art-h1">Un<em>Log</em></h1>
       <p class="art-lede">A focused daily logging webapp for tracking what matters — without the noise.</p>
       <div class="app-cta-group">
-        <a class="app-cta-btn primary" href="/unlog" target="_blank" rel="noopener">
-          Start using online version →
-        </a>
-        <a class="app-cta-btn" href="/unlog" target="_blank" rel="noopener">
+        <a class="app-cta-btn primary" href="/unlog/offline/" target="_blank" rel="noopener">
           Start using offline version →
         </a>
         <a class="app-cta-btn" href="https://github.com/anroleroux/unlog" target="_blank" rel="noopener">
@@ -130,28 +127,38 @@
       </section>
       <section>
         <h2>Workflow</h2>
-        <p>The workflow starts with an Attributes page where important characteristics or results are defined. Attributes are also grouped together. An example might be a group of Strengths and a group of Wins. The Strengths group might have Communication and Problem Solving as attributes. The Wins group may have "Developed part counting system" as a successful project you pioneered. The attributes capture what the subject has to offer and will next be used to prioritize ideas. Step 1: Create Attribute Groups under the Attributes → Attribute Groups submenu and then populate Attributes.</p>
+        <p>The workflow starts with an Attributes page where important characteristics or results are defined. Attributes are also grouped together. An example might be a group of Strengths and a group of Wins. The Strengths group might have Communication and Problem Solving as attributes. The Wins group may have "Developed part counting system" as a successful project you pioneered. The attributes capture what the subject has to offer and will next be used to prioritize ideas.</p>
+        <div class="note block">
+          <h4>Step 1</h4>
+          <p>Create Attribute Groups under the Attributes → Attribute Groups submenu and then populate Attributes.</p>
+        </div>
         <p>Before continuing it is necessary to mention that Attributes or any other entries does not have to be perfect before continuing to next steps further down the workflow. The application is built to adapt to any change made anywhere in the workflow.</p>
         <p>Another useful feature is to add a Gemini API key in the Settings page and enable attribute and criteria rating population with Gemini. This way an LLM can check how well attributes and criteria relate (based on names and descriptions) and automatically fill the ratings for all the attributes and all the criteria for each idea. Ratings can be changed anytime but it can be very laborious to manually enter ratings.</p>
-        <p>With attributes defined, ideas can be populated. That is done on the ideas page. But before starting with ideas, criteria should also be defined for further weighing of ideas. Criteria is different from attributes in the sense that attributes weigh ideas based on qualities of the subject while criteria weigh it further based on external factors like demand, cost to manufacture or technical feasibility. Step 2: Add criteria under the Ideas → Criteria submenu and then add Ideas.</p>
-        <p>Ratings are necessary to weigh ideas and generate the priorities. A rating is required to indicate how well an attribute or criteria relate to an idea. A score of ten resembles the highest relation, and 0 the lowest. The idea priorities are then calculated and sorted from highest priority to the lowest. Step 3: Add and modify attribute and criteria ratings in the idea detail view or under the Ideas → Attribute/Criteria Ratings.</p>
-        <p>Portfolio items are next created and linked back to ideas. A portfolio item can be a product, project or service. Items are then linked back to one or more ideas to establish their priorities. Step 4: Create Portfolio Items in the Portfolio page.</p>
-        <p>Milestones are created, linking to Portfolio Items. Tasks are created, linking to a Milestone. Dependencies can be created between Milestones and Tasks. Step 5: Create Milestones and Tasks under the Milestones → Tasks submenu.</p>
+        <p>With attributes defined, ideas can be populated. That is done on the ideas page. But before starting with ideas, criteria should also be defined for further weighing of ideas. Criteria is different from attributes in the sense that attributes weigh ideas based on qualities of the subject while criteria weigh it further based on external factors like demand, cost to manufacture or technical feasibility.</p>
+        <div class="note block">
+          <h4>Step 2</h4>
+          <p>Add criteria under the Ideas → Criteria submenu and then add Ideas.</p>
+        </div>
+        <p>Ratings are necessary to weigh ideas and generate the priorities. A rating is required to indicate how well an attribute or criteria relate to an idea. A score of ten resembles the highest relation, and 0 the lowest. The idea priorities are then calculated and sorted from highest priority to the lowest.</p>
+        <div class="note block">
+          <h4>Step 3</h4>
+          <p>Add and modify attribute and criteria ratings in the idea detail view or under the Ideas → Attribute/Criteria Ratings.</p>
+        </div>
+        <p>Portfolio items are next created and linked back to ideas. A portfolio item can be a product, project or service. Items are then linked back to one or more ideas to establish their priorities.</p>
+        <div class="note block">
+          <h4>Step 4</h4>
+          <p>Create Portfolio Items in the Portfolio page.</p>
+        </div>
+        <p>Milestones are created, linking to Portfolio Items. Tasks are created, linking to a Milestone. Dependencies can be created between Milestones and Tasks.</p>
+        <div class="note block">
+          <h4>Step 5</h4>
+          <p>Create Milestones and Tasks under the Milestones → Tasks submenu.</p>
+        </div>
       </section>
       <section>
         <h2>Privacy &amp; Deployment</h2>
-        <p>The typical information that gets entered into this app can be sensitive. The app was therefore designed to be used in multiple ways.</p>
+        <p>The typical information that gets entered into this app can be sensitive. It is therefore built to run entirely under your own control — there is no hosted service and no account to create. Two ways to run it:</p>
         <div class="deploy-grid">
-          <div class="deploy-card">
-            <div class="deploy-card-label">cloud</div>
-            <h3 class="deploy-card-name">Online Managed</h3>
-            <p>The cloud version of the app can be accessed online. It uses GitHub and Supabase for authentication and the back-end. Anyone can log in and use it. It is the easiest but least private since the database managers can see users' data.</p>
-          </div>
-          <div class="deploy-card">
-            <div class="deploy-card-label">self-hosted</div>
-            <h3 class="deploy-card-name">Online Self Managed</h3>
-            <p>Users can also fork the project on GitHub and set up Supabase only they have access to.</p>
-          </div>
           <div class="deploy-card">
             <div class="deploy-card-label">local</div>
             <h3 class="deploy-card-name">Local Self Managed</h3>
@@ -199,10 +206,7 @@
       <h1 class="art-h1">Un<em>Log</em></h1>
       <p class="art-lede">A focused daily logging webapp for tracking what matters — without the noise.</p>
       <div class="app-cta-group">
-        <a class="app-cta-btn primary" href="/unlog" target="_blank" rel="noopener">
-          Start using online version →
-        </a>
-        <a class="app-cta-btn" href="/unlog" target="_blank" rel="noopener">
+        <a class="app-cta-btn primary" href="/unlog/offline/" target="_blank" rel="noopener">
           Start using offline version →
         </a>
         <a class="app-cta-btn" href="https://github.com/anroleroux/unlog" target="_blank" rel="noopener">
@@ -228,28 +232,38 @@
       </section>
       <section>
         <h2>Workflow</h2>
-        <p>The workflow starts with an Attributes page where important characteristics or results are defined. Attributes are also grouped together. An example might be a group of Strengths and a group of Wins. The Strengths group might have Communication and Problem Solving as attributes. The Wins group may have "Developed part counting system" as a successful project you pioneered. The attributes capture what the subject has to offer and will next be used to prioritize ideas. Step 1: Create Attribute Groups under the Attributes → Attribute Groups submenu and then populate Attributes.</p>
+        <p>The workflow starts with an Attributes page where important characteristics or results are defined. Attributes are also grouped together. An example might be a group of Strengths and a group of Wins. The Strengths group might have Communication and Problem Solving as attributes. The Wins group may have "Developed part counting system" as a successful project you pioneered. The attributes capture what the subject has to offer and will next be used to prioritize ideas.</p>
+        <div class="note block">
+          <h4>Step 1</h4>
+          <p>Create Attribute Groups under the Attributes → Attribute Groups submenu and then populate Attributes.</p>
+        </div>
         <p>Before continuing it is necessary to mention that Attributes or any other entries does not have to be perfect before continuing to next steps further down the workflow. The application is built to adapt to any change made anywhere in the workflow.</p>
         <p>Another useful feature is to add a Gemini API key in the Settings page and enable attribute and criteria rating population with Gemini. This way an LLM can check how well attributes and criteria relate (based on names and descriptions) and automatically fill the ratings for all the attributes and all the criteria for each idea. Ratings can be changed anytime but it can be very laborious to manually enter ratings.</p>
-        <p>With attributes defined, ideas can be populated. That is done on the ideas page. But before starting with ideas, criteria should also be defined for further weighing of ideas. Criteria is different from attributes in the sense that attributes weigh ideas based on qualities of the subject while criteria weigh it further based on external factors like demand, cost to manufacture or technical feasibility. Step 2: Add criteria under the Ideas → Criteria submenu and then add Ideas.</p>
-        <p>Ratings are necessary to weigh ideas and generate the priorities. A rating is required to indicate how well an attribute or criteria relate to an idea. A score of ten resembles the highest relation, and 0 the lowest. The idea priorities are then calculated and sorted from highest priority to the lowest. Step 3: Add and modify attribute and criteria ratings in the idea detail view or under the Ideas → Attribute/Criteria Ratings.</p>
-        <p>Portfolio items are next created and linked back to ideas. A portfolio item can be a product, project or service. Items are then linked back to one or more ideas to establish their priorities. Step 4: Create Portfolio Items in the Portfolio page.</p>
-        <p>Milestones are created, linking to Portfolio Items. Tasks are created, linking to a Milestone. Dependencies can be created between Milestones and Tasks. Step 5: Create Milestones and Tasks under the Milestones → Tasks submenu.</p>
+        <p>With attributes defined, ideas can be populated. That is done on the ideas page. But before starting with ideas, criteria should also be defined for further weighing of ideas. Criteria is different from attributes in the sense that attributes weigh ideas based on qualities of the subject while criteria weigh it further based on external factors like demand, cost to manufacture or technical feasibility.</p>
+        <div class="note block">
+          <h4>Step 2</h4>
+          <p>Add criteria under the Ideas → Criteria submenu and then add Ideas.</p>
+        </div>
+        <p>Ratings are necessary to weigh ideas and generate the priorities. A rating is required to indicate how well an attribute or criteria relate to an idea. A score of ten resembles the highest relation, and 0 the lowest. The idea priorities are then calculated and sorted from highest priority to the lowest.</p>
+        <div class="note block">
+          <h4>Step 3</h4>
+          <p>Add and modify attribute and criteria ratings in the idea detail view or under the Ideas → Attribute/Criteria Ratings.</p>
+        </div>
+        <p>Portfolio items are next created and linked back to ideas. A portfolio item can be a product, project or service. Items are then linked back to one or more ideas to establish their priorities.</p>
+        <div class="note block">
+          <h4>Step 4</h4>
+          <p>Create Portfolio Items in the Portfolio page.</p>
+        </div>
+        <p>Milestones are created, linking to Portfolio Items. Tasks are created, linking to a Milestone. Dependencies can be created between Milestones and Tasks.</p>
+        <div class="note block">
+          <h4>Step 5</h4>
+          <p>Create Milestones and Tasks under the Milestones → Tasks submenu.</p>
+        </div>
       </section>
       <section>
         <h2>Privacy &amp; Deployment</h2>
-        <p>The typical information that gets entered into this app can be sensitive. The app was therefore designed to be used in multiple ways.</p>
+        <p>The typical information that gets entered into this app can be sensitive. It is therefore built to run entirely under your own control — there is no hosted service and no account to create. Two ways to run it:</p>
         <div class="deploy-grid">
-          <div class="deploy-card">
-            <div class="deploy-card-label">cloud</div>
-            <h3 class="deploy-card-name">Online Managed</h3>
-            <p>The cloud version of the app can be accessed online. It uses GitHub and Supabase for authentication and the back-end. Anyone can log in and use it. It is the easiest but least private since the database managers can see users' data.</p>
-          </div>
-          <div class="deploy-card">
-            <div class="deploy-card-label">self-hosted</div>
-            <h3 class="deploy-card-name">Online Self Managed</h3>
-            <p>Users can also fork the project on GitHub and set up Supabase only they have access to.</p>
-          </div>
           <div class="deploy-card">
             <div class="deploy-card-label">local</div>
             <h3 class="deploy-card-name">Local Self Managed</h3>

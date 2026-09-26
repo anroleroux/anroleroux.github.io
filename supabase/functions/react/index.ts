@@ -1,5 +1,58 @@
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 
+// ── Origin → CORS + environment ──────────────────────────────────────────────
+// DUPLICATED VERBATIM IN EVERY EDGE FUNCTION — keep the four copies identical.
+// It cannot live in a shared module: Supabase will not accept a function whose
+// name starts with an underscore, so there is no `_shared/` to import from.
+//
+// Staging and production run the SAME online build against the SAME Supabase
+// project, distinguished only by hostname. That makes the request Origin the
+// authoritative source for `env`: the browser sets it and page script cannot
+// forge it, so it is preferred over the build stamp the client sends.
+//
+// When the site moves domains, the new hostnames must be added here — in all
+// four functions — and the functions redeployed BEFORE the DNS cutover, or CORS
+// starts failing closed the moment traffic arrives on the new name.
+const STAGING = 0;
+const PRODUCTION = 1;
+
+const ENV_BY_ORIGIN: Record<string, number> = {
+  'https://anroleroux.co.za':          PRODUCTION,
+  'https://www.anroleroux.co.za':      PRODUCTION,
+  'https://anroleroux.github.io':      PRODUCTION,  // pre-custom-domain Pages URL
+  'https://staging.anroleroux.co.za':  STAGING,
+};
+
+// Used when a request carries no Origin at all (curl, server-to-server calls).
+const DEFAULT_ORIGIN = 'https://anroleroux.co.za';
+
+function isAllowedOrigin(origin: string | null): boolean {
+  return origin !== null && origin in ENV_BY_ORIGIN;
+}
+
+/** CORS headers echoing the caller's origin, or the production origin if absent. */
+function corsFor(req: Request, methods: string): Record<string, string> {
+  const origin = req.headers.get('origin');
+  return {
+    'Access-Control-Allow-Origin': isAllowedOrigin(origin) ? origin! : DEFAULT_ORIGIN,
+    'Access-Control-Allow-Methods': `${methods}, OPTIONS`,
+    'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+    'Vary': 'Origin',
+  };
+}
+
+/**
+ * Resolve which build a request came from. Origin first (server-authoritative);
+ * only when the origin is unknown do we fall back to the client's stamp, and an
+ * invalid stamp resolves to production so a malformed request can never quietly
+ * hide traffic in the staging bucket.
+ */
+function envFor(req: Request, claimed: unknown): number {
+  const origin = req.headers.get('origin');
+  if (isAllowedOrigin(origin)) return ENV_BY_ORIGIN[origin!];
+  return claimed === STAGING ? STAGING : PRODUCTION;
+}
+
 // ── Throttle config ──────────────────────────────────────────────────────────
 const IP_LIMIT_MAX      = 30;         // max requests per window per IP
 const IP_LIMIT_WINDOW   = 60_000;     // 1 minute in ms
@@ -7,14 +60,6 @@ const IP_LIMIT_PRUNE    = 120_000;    // prune rate_limit rows older than 2 min
 
 const SESSION_LIMIT_MAX    = 5;       // max accepted reactions per session+page per window
 const SESSION_LIMIT_WINDOW = 60_000;  // 1 minute in ms
-
-const ALLOWED_ORIGIN = 'https://anroleroux.co.za';
-
-const CORS = {
-  'Access-Control-Allow-Origin':  ALLOWED_ORIGIN,
-  'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
-  'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-};
 
 const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 // Reactions are stored as SMALLINT codes 1..REACTION_COUNT. This function stays
@@ -30,18 +75,12 @@ async function hashValue(value: string): Promise<string> {
   return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
 }
 
-function json(body: unknown, status = 200): Response {
-  return new Response(JSON.stringify(body), {
-    status,
-    headers: { ...CORS, 'Content-Type': 'application/json' },
-  });
-}
-
 // Count each reaction code for a page (head counts — no row transfer). Keyed by
 // the numeric code; the article decides what each code means.
 async function countsFor(
   supabase: ReturnType<typeof createClient>,
   page: string,
+  env: number,
 ): Promise<Record<number, number>> {
   const out: Record<number, number> = {};
   for (let code = 1; code <= REACTION_COUNT; code++) {
@@ -49,6 +88,7 @@ async function countsFor(
       .from('reaction_events')
       .select('*', { count: 'exact', head: true })
       .eq('page', page)
+      .eq('env', env)
       .eq('reaction', code);
     out[code] = count ?? 0;
   }
@@ -56,6 +96,14 @@ async function countsFor(
 }
 
 Deno.serve(async (req: Request): Promise<Response> => {
+  const CORS = corsFor(req, 'GET, POST');
+
+  const json = (body: unknown, status = 200): Response =>
+    new Response(JSON.stringify(body), {
+      status,
+      headers: { ...CORS, 'Content-Type': 'application/json' },
+    });
+
   if (req.method === 'OPTIONS') {
     return new Response(null, { status: 204, headers: CORS });
   }
@@ -69,7 +117,7 @@ Deno.serve(async (req: Request): Promise<Response> => {
   if (req.method === 'GET') {
     const url  = new URL(req.url);
     const page = (url.searchParams.get('page') ?? '/').slice(0, 500);
-    return json({ counts: await countsFor(supabase, page) });
+    return json({ counts: await countsFor(supabase, page, envFor(req, Number(url.searchParams.get('env')))) });
   }
 
   if (req.method !== 'POST') {
@@ -77,7 +125,7 @@ Deno.serve(async (req: Request): Promise<Response> => {
   }
 
   // ── Parse + validate ───────────────────────────────────────────────────────
-  let body: { session_token?: unknown; page?: unknown; reaction?: unknown } = {};
+  let body: { session_token?: unknown; page?: unknown; reaction?: unknown; env?: unknown } = {};
   try {
     body = await req.json();
   } catch {
@@ -96,10 +144,11 @@ Deno.serve(async (req: Request): Promise<Response> => {
   const reaction     = body.reaction;
   const page         = typeof body.page === 'string' ? body.page.slice(0, 500) : '/';
   const userAgent    = req.headers.get('user-agent')?.slice(0, 500) ?? null;
+  const env          = envFor(req, body.env);
 
   // Bot check — echo current counts so bots get no signal they were filtered.
   if (userAgent && BOT_UA_RE.test(userAgent)) {
-    return json({ counts: await countsFor(supabase, page) });
+    return json({ counts: await countsFor(supabase, page, env) });
   }
 
   // ── IP rate limit (sliding window by hashed IP; shared rate_limits table) ───
@@ -114,7 +163,7 @@ Deno.serve(async (req: Request): Promise<Response> => {
     .gte('created_at', ipWindowStart);
 
   if ((ipCount ?? 0) >= IP_LIMIT_MAX) {
-    return json({ counts: await countsFor(supabase, page), throttled: true }, 429);
+    return json({ counts: await countsFor(supabase, page, env), throttled: true }, 429);
   }
   await supabase.from('rate_limits').insert({ ip_hash: ipHash });
 
@@ -130,18 +179,20 @@ Deno.serve(async (req: Request): Promise<Response> => {
     .select('*', { count: 'exact', head: true })
     .eq('session_token', sessionToken)
     .eq('page', page)
+    .eq('env', env)
     .gte('created_at', sessWindowStart);
 
   if ((sessCount ?? 0) >= SESSION_LIMIT_MAX) {
-    return json({ counts: await countsFor(supabase, page), throttled: true }, 429);
+    return json({ counts: await countsFor(supabase, page, env), throttled: true }, 429);
   }
 
   // ── Record the click ───────────────────────────────────────────────────────
   await supabase.from('reaction_events').insert({
     session_token: sessionToken,
+    env,
     page,
     reaction: reaction,
   });
 
-  return json({ counts: await countsFor(supabase, page) });
+  return json({ counts: await countsFor(supabase, page, env) });
 });

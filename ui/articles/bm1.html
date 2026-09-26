@@ -45,11 +45,6 @@
   <script src="https://d3js.org/d3.v7.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
   <style>
-    /* ── Note block ───────────────────────────────────────────────── */
-    .note.block { border-left: 2px solid var(--accent); padding: var(--ms1) var(--ms3); margin: var(--ms3) 0; background: rgba(28,22,16,0.03); max-width: 66ch; }
-    .note.block h4 { font-family: var(--mono); font-size: var(--ts11); letter-spacing: 1.4px; text-transform: uppercase; color: var(--accent); margin: 0 0 var(--ms-1); font-weight: 500; }
-    .note.block p { font-size: var(--ts14); margin: 0; }
-
     /* ── Governing summary table ──────────────────────────────────── */
     .gov-table { width: 100%; max-width: 66ch; border-collapse: collapse; font-family: var(--sans); font-size: var(--ts14); color: var(--ink-muted); margin: var(--ms2) 0 var(--ms3); }
     .gov-table th { font-family: var(--mono); font-size: var(--ts11); letter-spacing: 1px; text-transform: uppercase; color: var(--ink-faint); font-weight: 500; text-align: left; padding: var(--ms-2) var(--ms1) var(--ms-2) 0; border-bottom: 1px solid var(--rule); }
@@ -73,8 +68,6 @@
     .figure-numbering p { font-family: var(--mono); font-size: var(--ts13); color: var(--ink-faint); margin: 0; line-height: 1.5; max-width: 60ch; }
 
     /* ── Cosmos overrides ─────────────────────────────────────────── */
-    .cosmos .note.block { border-left-color: var(--gold); background: rgba(214,171,94,0.04); }
-    .cosmos .note.block h4 { color: var(--gold); }
     .cosmos .gov-table th { color: var(--bone-faint); border-bottom-color: var(--bone-fainter); }
     .cosmos .gov-table td { border-bottom-color: var(--bone-fainter); color: var(--bone-muted); }
     .cosmos .gov-table td:first-child { font-family: var(--display); color: var(--bone); }

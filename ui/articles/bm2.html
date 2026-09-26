@@ -45,11 +45,6 @@
   <script src="https://d3js.org/d3.v7.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
   <style>
-    /* ── Note block ───────────────────────────────────────────────────── */
-    .note.block { border-left: 2px solid var(--accent); padding: var(--ms1) var(--ms3); margin: var(--ms3) 0; background: rgba(28,22,16,0.03); max-width: 66ch; }
-    .note.block h4 { font-family: var(--mono); font-size: var(--ts11); letter-spacing: 1.4px; text-transform: uppercase; color: var(--accent); margin: 0 0 var(--ms-1); font-weight: 500; }
-    .note.block p { font-size: var(--ts14); margin: 0; }
-
     /* ── Figure / D3 chart ────────────────────────────────────────────── */
     .art-fig { margin: var(--ms3) 0; max-width: 66ch; }
     .charta svg { display: block; width: 100%; height: auto; }
@@ -80,8 +75,6 @@
     input.est-slider { display: block; width: 100%; margin-top: var(--ms-2); cursor: pointer; accent-color: var(--accent); }
 
     /* ── Cosmos overrides ─────────────────────────────────────────────── */
-    .cosmos .note.block { border-left-color: var(--gold); background: rgba(214,171,94,0.04); }
-    .cosmos .note.block h4 { color: var(--gold); }
     .cosmos .charta .axis-label { fill: var(--bone-muted); }
     .cosmos .charta .panel-title { fill: var(--bone); }
     .cosmos .charta .tick text { fill: var(--bone-faint); }
@@ -439,12 +432,6 @@ print("Mode shapes (columns):\n", Phi)</code>
     </footer>
 
   </div><!-- /alm-layer -->
-
-
-
-
-
-
 
   <!-- ── COSMOS (night) ────────────────────────────────────────── -->
   <div id="cos-layer" class="cosmos">

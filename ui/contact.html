@@ -297,15 +297,20 @@
 <script>
 // ── Contact form submission ───────────────────────────────
 (function () {
-  var ENDPOINT    = 'https://hbiyyreqmliesghdclpg.supabase.co/functions/v1/submit-contact';
-  var ANON        = 'sb_publishable_OsrWXMOvvDm0PluzQE6-6g_zb2yaaP7';
-  var SESSION_KEY = 'alr_sid';
-
   function wire(formId) {
     var form = document.getElementById(formId);
     if (!form) return;
     var status = form.querySelector('.cf-status');
     var btn    = form.querySelector('button[type=submit]');
+
+    //online-start
+    // SUPABASE_URL / SUPABASE_ANON / DB_ENV / SESSION_KEY all come from
+    // index.js, which defines them inside its own //online block — so both
+    // blocks are stripped together. SESSION_KEY in particular must not be
+    // redeclared here: the contact form has to read the same localStorage key
+    // the tracker writes, or submissions stop joining to their session.
+    var ENDPOINT = SUPABASE_URL + '/functions/v1/submit-contact';
+    var ANON     = SUPABASE_ANON;
 
     form.addEventListener('submit', function (e) {
       e.preventDefault();
@@ -323,6 +328,7 @@
           looking_for:   form.elements['looking_for'].value,
           note:          form.elements['note'].value,
           session_token: localStorage.getItem(SESSION_KEY),
+          env:           DB_ENV,
         }),
       }).then(function (r) {
         return r.json().catch(function () { return {}; }).then(function (j) {
@@ -342,6 +348,13 @@
         status.textContent = 'Network error. Please try again.';
       }).finally(function () { btn.disabled = false; });
     });
+    return;
+    //online-end
+
+    // Offline build: there is no back-end to post to.
+    btn.disabled = true;
+    status.className = 'cf-status';
+    status.textContent = 'Offline build — the contact form is disabled.';
   }
 
   wire('alm-contact-form');

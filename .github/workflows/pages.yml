@@ -8,15 +8,19 @@ name: Deploy to GitHub Pages
 #     - other branches  → build-check only, never deploys
 #
 #   anroleroux/staging.anroleroux    (STAGING)
-#     - main + feature  → build `make dev`, deploy to staging.anroleroux.co.za
-#     - prod            → promote: push HEAD to the production repo's main,
-#                         which triggers the production deploy above
+#     - any branch      → build `make stg`, deploy to staging.anroleroux.co.za
+#     - main            → deploy to staging AND promote: push HEAD to the
+#                         production repo's main, which triggers the production
+#                         deploy above
 #
-# Pushing to main only ever updates staging. Production is promoted by merging
-# main into the `prod` branch and pushing it.
+# A feature branch deploys to staging so you can look at it. Merging it to main
+# deploys that merge to staging and then promotes it to production — the trunk
+# IS production, so a merge to main ships within a minute. The promotion is
+# gated on the staging deploy (`needs:`), so a merge that fails to build never
+# reaches production.
 #
 # Keeping the file identical in both repos matters: promotion pushes staging's
-# prod into prod's main, which carries this workflow file with it. If the two
+# main into prod's main, which carries this workflow file with it. If the two
 # ever diverged, a promotion would overwrite prod's workflow.
 
 on:
@@ -75,10 +79,13 @@ jobs:
           SUPABASE_PUBLISHABLE_KEY: ${{ secrets.SUPABASE_PUBLISHABLE_KEY }}
         run: make prd
 
-  # STAGING repo, any branch except `prod` → build the dev preview and deploy
-  # it to staging.anroleroux.co.za. No secrets: `make dev` is the offline build.
+  # STAGING repo, every branch → build the staging version and deploy
+  # it to staging.anroleroux.co.za. This is an ONLINE build against the same
+  # Supabase project as production; its rows are tagged env=0 so the two are
+  # distinguishable. Staging exists to exercise the real backend wiring before
+  # promotion, which the offline `make dev` build cannot do.
   deploy-staging:
-    if: github.repository == 'anroleroux/staging.anroleroux' && github.ref != 'refs/heads/prod'
+    if: github.repository == 'anroleroux/staging.anroleroux'
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
@@ -86,11 +93,11 @@ jobs:
     steps:
       - uses: actions/checkout@v7
 
-      - name: Build dev version
-        run: make dev
-
-      - name: Set staging custom domain
-        run: echo "staging.anroleroux.co.za" > ui/dist/CNAME
+      - name: Build staging version
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_PUBLISHABLE_KEY: ${{ secrets.SUPABASE_PUBLISHABLE_KEY }}
+        run: make stg
 
       - uses: actions/upload-pages-artifact@v5
         with:
@@ -99,14 +106,15 @@ jobs:
       - uses: actions/deploy-pages@v5
         id: deployment
 
-  # STAGING repo, `prod` branch → promote to production by pushing to the prod
-  # repo's main. The prod repo's own workflow (deploy-prod above) then builds
-  # and deploys. Auth is a write-enabled deploy key registered on the prod repo,
+  # STAGING repo, `main` → promote to production by pushing to the prod repo's
+  # main. The prod repo's own workflow (deploy-prod above) then builds and
+  # deploys. Auth is a write-enabled deploy key registered on the prod repo,
   # with its private half stored as the PROD_DEPLOY_KEY secret in this repo.
   # The push is a plain fast-forward; it will be rejected (not forced) if the
   # histories have diverged, which is a deliberate safety signal.
   promote-prod:
-    if: github.repository == 'anroleroux/staging.anroleroux' && github.ref == 'refs/heads/prod'
+    if: github.repository == 'anroleroux/staging.anroleroux' && github.ref == 'refs/heads/main'
+    needs: deploy-staging     # a failed staging build never promotes
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7

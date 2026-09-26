@@ -4,9 +4,10 @@
 -- `visits` edge function calls this function as service role and returns the
 -- series to the client. Buckets are ISO weeks (Monday-start, date_trunc's
 -- default) and the range is zero-filled from the first week with a view to the
--- current week, so the line has no gaps.
+-- current week, so the line has no gaps. Results are scoped to one env, so
+-- staging traffic never appears in the production sparkline.
 
-CREATE OR REPLACE FUNCTION visits_weekly(p_page TEXT)
+CREATE OR REPLACE FUNCTION visits_weekly(p_page TEXT, p_env SMALLINT)
 RETURNS TABLE (week DATE, views BIGINT)
 LANGUAGE sql
 STABLE
@@ -14,7 +15,7 @@ AS $$
   WITH counts AS (
     SELECT date_trunc('week', created_at) AS week, COUNT(*)::BIGINT AS views
     FROM page_views
-    WHERE page = p_page
+    WHERE page = p_page AND env = p_env
     GROUP BY 1
   ),
   bounds AS (

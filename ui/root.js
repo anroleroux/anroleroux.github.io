@@ -416,9 +416,20 @@ initRef('cos');
 
 //online-start
 // ── Supabase (shared by auth + tracking) ──────────────────────
-let SUPABASE_URL  = 'https://hbiyyreqmliesghdclpg.supabase.co';
-let SUPABASE_ANON = 'sb_publishable_OsrWXMOvvDm0PluzQE6-6g_zb2yaaP7';
+// URL and key are substituted at build time by `make stg` / `make prd` from the
+// SUPABASE_URL / SUPABASE_PUBLISHABLE_KEY variables. They are not secrets — they
+// ship in this file — but keeping them out of source lets the two environments
+// point at different projects without a code change. `make dev` strips this whole
+// block, so the offline build never sees the placeholders.
+let SUPABASE_URL  = '__SUPABASE_URL__';
+let SUPABASE_ANON = '__SUPABASE_PUBLISHABLE_KEY__';
 let SESSION_KEY   = 'alr_sid';
+
+// Which build this is: 1 = production, 0 = staging. `make stg` rewrites it.
+// Both builds talk to the same Supabase project, so every row written from here
+// carries this tag. The edge functions prefer the request Origin over it — this
+// is only the fallback for a call with no recognised origin.
+let DB_ENV = 1;
 
 let sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
 
@@ -439,6 +450,7 @@ function trackVisit(authSession) {
     headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + bearer },
     body: JSON.stringify({
       session_token: trackToken,
+      env:           DB_ENV,
       page:          location.pathname,
       referrer:      document.referrer || null,
     }),
@@ -535,7 +547,7 @@ function renderReactions() {
 
 function loadReactions() {
   if (!document.querySelector('.react-count')) return;
-  fetch(SUPABASE_URL + '/functions/v1/react?page=' + encodeURIComponent(location.pathname), {
+  fetch(SUPABASE_URL + '/functions/v1/react?page=' + encodeURIComponent(location.pathname) + '&env=' + DB_ENV, {
     headers: { 'Authorization': 'Bearer ' + SUPABASE_ANON },
   })
     .then(function (r) { return r.json(); })
@@ -551,7 +563,7 @@ function react(kind) {
   fetch(SUPABASE_URL + '/functions/v1/react', {
     method:  'POST',
     headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + SUPABASE_ANON },
-    body: JSON.stringify({ session_token: trackToken, page: location.pathname, reaction: kind }),
+    body: JSON.stringify({ session_token: trackToken, env: DB_ENV, page: location.pathname, reaction: kind }),
   })
     .then(function (r) { return r.json(); })
     .then(function (d) { if (d && d.counts) { reactionCounts = d.counts; renderReactions(); } })
@@ -594,7 +606,7 @@ function visitsSparkline(series) {
 function loadVisits() {
   let containers = document.querySelectorAll('.art-visits');
   if (!containers.length) return;
-  fetch(SUPABASE_URL + '/functions/v1/visits?page=' + encodeURIComponent(location.pathname), {
+  fetch(SUPABASE_URL + '/functions/v1/visits?page=' + encodeURIComponent(location.pathname) + '&env=' + DB_ENV, {
     headers: { 'Authorization': 'Bearer ' + SUPABASE_ANON },
   })
     .then(function (r) { return r.json(); })

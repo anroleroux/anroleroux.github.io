@@ -5,6 +5,10 @@
 --   page_views  — one row per page load
 --   rate_limits — sliding-window IP-hash entries; aged out by the edge function
 --
+-- Every interaction table carries `env` (0 = staging, 1 = production): both
+-- builds write to this one project, so each row records which produced it.
+-- rate_limits has no env — it is infrastructure, shared across both builds.
+--
 -- The edge function uses the service role key; no direct client access is
 -- needed. RLS is enabled on all tables and no policies are granted, so
 -- direct anon/authenticated requests are rejected.
@@ -12,6 +16,7 @@
 -- Sessions
 CREATE TABLE IF NOT EXISTS sessions (
   session_token  UUID         PRIMARY KEY,
+  env            SMALLINT     NOT NULL CHECK (env IN (0, 1)),  -- 0 = staging, 1 = production
   user_id        UUID         REFERENCES auth.users(id) ON DELETE SET NULL,  -- nullable; populated on future auth
   ip_hash        TEXT         NOT NULL,
   country        CHAR(2),               -- ISO 3166-1 alpha-2 from cf-ipcountry; NULL if unknown
@@ -32,6 +37,7 @@ CREATE INDEX IF NOT EXISTS sessions_created_at_idx ON sessions (created_at);
 -- Page views
 CREATE TABLE IF NOT EXISTS page_views (
   id             BIGSERIAL    PRIMARY KEY,
+  env            SMALLINT     NOT NULL CHECK (env IN (0, 1)),  -- 0 = staging, 1 = production
   session_token  UUID         NOT NULL REFERENCES sessions(session_token) ON DELETE CASCADE,
   page           TEXT         NOT NULL DEFAULT '/',
   referrer       TEXT,
@@ -41,6 +47,7 @@ CREATE TABLE IF NOT EXISTS page_views (
 CREATE INDEX IF NOT EXISTS page_views_session_idx    ON page_views (session_token);
 CREATE INDEX IF NOT EXISTS page_views_created_at_idx ON page_views (created_at);
 CREATE INDEX IF NOT EXISTS page_views_page_idx       ON page_views (page);
+CREATE INDEX IF NOT EXISTS page_views_env_page_idx    ON page_views (env, page);
 
 -- Rate limits (sliding window; rows older than 2 min are pruned by the edge function)
 CREATE TABLE IF NOT EXISTS rate_limits (

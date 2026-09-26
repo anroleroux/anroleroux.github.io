@@ -11,6 +11,7 @@
 
 CREATE TABLE IF NOT EXISTS contact_requests (
   id             BIGSERIAL    PRIMARY KEY,
+  env            SMALLINT     NOT NULL CHECK (env IN (0, 1)),  -- 0 = staging, 1 = production
   name           TEXT         NOT NULL,
   surname        TEXT         NOT NULL,
   email          TEXT         NOT NULL,

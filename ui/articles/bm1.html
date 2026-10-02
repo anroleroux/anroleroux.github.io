@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>The Beauty of Motion — Anro le Roux</title>
+  <title>Basics of Motion — Anro le Roux</title>
   <link rel="icon" href="/favicon.ico" sizes="32x32" />
   <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
   <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
@@ -12,7 +12,7 @@
   <meta property="og:type" content="article" />
   <meta property="og:site_name" content="Anro le Roux" />
   <meta property="og:locale" content="en_ZA" />
-  <meta property="og:title" content="The Beauty of Motion — Anro le Roux" />
+  <meta property="og:title" content="Basics of Motion — Anro le Roux" />
   <meta property="og:description" content="How stiffness, damping, and inertia govern every moving thing in the universe — an interactive introduction to the dynamics of motion." />
   <meta property="og:url" content="https://anroleroux.co.za/bm1.html" />
   <meta property="og:image" content="https://anroleroux.co.za/og.png" />
@@ -21,14 +21,14 @@
   <meta property="og:image:alt" content="Anro le Roux — engineering, programming, mathematics and leadership." />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:image" content="https://anroleroux.co.za/og.png" />
-  <meta name="twitter:title" content="The Beauty of Motion — Anro le Roux" />
+  <meta name="twitter:title" content="Basics of Motion — Anro le Roux" />
   <meta name="twitter:description" content="How stiffness, damping, and inertia govern every moving thing in the universe — an interactive introduction to the dynamics of motion." />
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "Article",
     "image": "https://anroleroux.co.za/og.png",
-    "headline": "The Beauty of Motion",
+    "headline": "Basics of Motion",
     "description": "How stiffness, damping, and inertia govern every moving thing in the universe — an interactive introduction to the dynamics of motion.",
     "url": "https://anroleroux.co.za/bm1.html",
     "mainEntityOfPage": "https://anroleroux.co.za/bm1.html",
@@ -50,7 +50,7 @@
     .gov-table th { font-family: var(--mono); font-size: var(--ts11); letter-spacing: 1px; text-transform: uppercase; color: var(--ink-faint); font-weight: 500; text-align: left; padding: var(--ms-2) var(--ms1) var(--ms-2) 0; border-bottom: 1px solid var(--rule); }
     .gov-table td { padding: var(--ms0) var(--ms1) var(--ms0) 0; border-bottom: 1px solid var(--rule); vertical-align: top; line-height: 1.6; }
     .gov-table td:first-child { font-family: var(--serif); font-size: var(--ts15); color: var(--ink); white-space: nowrap; }
-    .gov-table-mobile { display: none; margin: var(--ms2) 0 var(--ms3); }
+    .gov-list { margin: var(--ms2) 0 var(--ms3); }
     .gov-mob-row { padding: var(--ms1) 0; border-bottom: 1px solid var(--rule); }
     .gov-mob-row:last-child { border-bottom: none; }
     .gov-mob-row dt { font-family: var(--serif); font-size: var(--ts17); color: var(--ink); margin: 0 0 var(--ms-1); }
@@ -82,10 +82,6 @@
     .cosmos .figure-numbering p { color: var(--bone-faint); }
 
     /* ── Responsive ───────────────────────────────────────────────── */
-    @media (max-width: 1099px) {
-      .gov-table { display: none; }
-      .gov-table-mobile { display: block; }
-    }
     @media (max-width: 800px) {
       .gov-table { font-size: var(--ts13); }
     }
@@ -144,8 +140,8 @@
     </nav>
 
     <header class="art-hero">
-      <div class="art-eyebrow">§ work · engineering</div>
-      <h1 class="art-h1">The Beauty of <em>Motion</em></h1>
+      <div class="art-eyebrow">article · engineering mathematics · Beauty of Motion</div>
+      <h1 class="art-h1">Basics of <em>Motion</em></h1>
       <p class="art-lede">How stiffness, damping, and inertia govern every moving thing in the universe.</p>
     </header>
 
@@ -169,84 +165,173 @@
 
     <article class="art-body">
       <section>
-        <p>Beauty is often simple ideas that can have complex and widely applicable results. This subject is one such example. A third of this article is intended to be understandable to anyone that is interested. Engineering colleagues may find this annoyingly basic, but revisiting the basics is not necessarily a bad thing.</p>
+        <p>Beauty is often simple ideas that can have complex and widely applicable results. I believe this subject is one such example. A third of this post is intended to be understandable to anyone that is interested. My engineering colleagues may find this annoyingly basic, but, revisiting the basics is not necessarily a bad thing.</p>
         <p>Imagine a fictional particle that has no mass, suspended in the vacuum of space. Such a particle has no inertia (requires no energy to get it moving), no friction or resistance against anything (nothing to prevent it from moving) and is not connected to anything that will pull it back to its original location. If we apply even the tiniest force, it will shoot away infinitely far in an infinitesimal short period of time. There is nothing governing its motion.</p>
         <div class="art-fig"><div class="charta ungoverned-fig"></div></div>
-        <div class="figure-numbering ref num" data-fig="ungoverned" data-label="Figure"><p>The same force step applied to a completely ungoverned particle — no stiffness, no damping, no mass. The instant the force is applied the position shoots to infinity and stays there. With no restoring force and no resistance, there is nothing to bring it back.</p></div>
+        <div class="figure-numbering ref num" data-fig="no-gov" data-label="Figure"><p>The same force step applied to a completely ungoverned particle — no stiffness, no damping, no mass. The instant the force is applied the position shoots to infinity and stays there. With no restoring force and no resistance, there is nothing to bring it back.</p></div>
       </section>
       <section>
         <h2 class="num">Governing Interactions</h2>
-        <p>As Figure <span class="figure-number" data-fid="ungoverned"></span> shows, the ungoverned particle not only instantly moved infinitely far, it also instantly moved at an infinite velocity, as well as instantly had an infinite acceleration as long as the force acted upon it. Fortunately everything has mass, making matter lazy to move. Additionally, friction and resistance is all around us dissipating kinetic energy into everything it touches. And finally, there are forces that hold things together in a surprisingly stretchy manner.</p>
+        <p><span class="figure-number" data-fid="no-gov">Figure</span> show how the ungoverned particle, not only moved instantly infinitely far (the arrow pointing to infinity), it also instantly moved at an infinite velocity (vertical lines), as well as instantly had an infinite acceleration (the sharp bent) as long as the force acted upon it. Fortunately all matter has mass, making it lazy to change a state of stasis or motion. Additionally friction is all around us, dissipating kinetic energy into everything moving objects touches. But forces that strive to reduce displacement will be the starting consideration.</p>
         <div class="note block">
           <h4>Note</h4>
-          <p>This article is only concerned with macroscopic physical phenomena where bodies move relatively slow compared to light. The fictitious infinities of position, velocity and acceleration in the imaginary absence of governing interactions is the important takeaway.</p>
+          <p>This article is only concerned with macroscopic physical phenomena where bodies move relatively slow (compared to light). The fictitious infinities of position, velocity and acceleration in the imaginary absence of governing interactions is the important takeaway.</p>
         </div>
-        <h3 class="num">Stiffness</h3>
-        <p>If our particle gets connected to an immovable base, the stretchiness, squishiness or bendiness of the connecting member resists a change in position of the particle. We signify such a member as a spring. The assumption is that the stiffness is linear and the spring applies an opposite force that is proportional to the distance moved away from its original location — Hooke's Law.</p>
-        <p>This may seem like a very idealistic model of reality but is actually a very good approximation. From your eyeballs to a guitar string, everything can compress and stretch. Even buildings bend and prop shafts twist in the same springy way. The contact point of a glass marble on a sheet of glass deforms both surfaces to create a contact patch of \[a = \left( \frac{3FR}{4E^*} \right)^{\frac{1}{3}}\] without which the stress would be infinite and crack the glass.</p>
-        <p>With only stiffness governing our particle, applying a force moves it proportional to that force. The force acting on the particle steps up instantaneously, stays constant and disappears again after a moment. The position of the particle follows the same form as the force (Figure <span class="figure-number" data-fid="stiffness"></span>). It instantaneously moves to distance \(x\) and back to zero. The position is now governed but it still reaches infinite speeds and acceleration.</p>
-        <div class="art-fig"><div class="charta force-resp-fig"></div></div>
-        <div class="figure-numbering ref num" data-fig="stiffness" data-label="Figure"><p>A step-up–down force applied to an object governed only by stiffness. The position responds instantaneously and proportionally, mirroring the form of the force exactly.</p></div>
-        <h3 class="num">Damping</h3>
-        <p>The second law of thermodynamics says that entropy always increases. If we define entropy as the spread of energy we can see how any moving thing spreads its kinetic energy to the surroundings. Everything that moves bumps into air molecules or scrapes along surfaces. Even rolling ball bearings compress the crystal lattice in their races, absorbing some of the briefly stored potential energy and converting it into heat.</p>
-        <p>With only damping applied to our fictional particle, its speed is governed. Position wise, it can still move infinitely far but it can only move as fast as a force applied to it allows. Thus its position changes linearly while the force is applied (Figure <span class="figure-number" data-fid="damping"></span>).</p>
-        <div class="art-fig"><div class="charta damping-resp-fig"></div></div>
-        <div class="figure-numbering ref num" data-fig="damping" data-label="Figure"><p>A step-up–down force applied to an object governed only by damping. Velocity is proportional to force, so position ramps linearly during the force and holds flat once it is removed — no inertia to carry it further.</p></div>
-        <h3 class="num">Inertia</h3>
-        <p>Enough playing around with imaginary massless particles. All matter has mass, and mass brings about very interesting phenomena. First, it bends spacetime resulting in gravity. Secondly, it makes objects lazy to get moving and then lazy to slow down again. We call this inertia and define it with Newton's second law of motion: \[F = ma\]</p>
-        <p>Now, accounting for mass, our particle's acceleration is governed and its position changes quadratically when the force is applied. Notice in Figure <span class="figure-number" data-fid="inertia"></span> how the position keeps on changing after the force is removed with a constant velocity. Without damping it can reach infinite speeds and continue into infinity.</p>
-        <div class="art-fig"><div class="charta inertia-resp-fig"></div></div>
-        <div class="figure-numbering ref num" data-fig="inertia" data-label="Figure"><p>A step-up–down force applied to an object governed only by inertia. Position rises quadratically as the constant acceleration builds velocity. When the force is removed the acceleration drops to zero but the velocity — and therefore the position — carry on indefinitely.</p></div>
-        <h3 class="num">Summary</h3>
-        <p>Three independent interactions govern the motion of all physical objects. Each opposes change in a different quantity.</p>
         <table class="gov-table">
           <thead>
             <tr>
-              <th>Element</th>
-              <th>Opposes change in</th>
-              <th>Characterisation</th>
-              <th>Sources</th>
+              <th>Constraint</th>
+              <th>Caused by</th>
+              <th>Presented as</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Displacement</td>
+              <td>Connection between bodies</td>
+              <td>Limited displacement</td>
+            </tr>
+            <tr>
+              <td>Velocity</td>
+              <td>Friction, Damping</td>
+              <td>Limited gradient</td>
+            </tr>
+            <tr>
+              <td>Acceleration</td>
+              <td>Mass, Inertia</td>
+              <td>Round corners</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="table-numbering figure-numbering ref num" data-fig="govs" data-label="Table"><p>Table of governing effects and how it's presented on a displacement graph.</p></div>
+        <h3 class="num">Displacement Constraints</h3>
+        <p>A car driving on a level freeway has no direct displacement constraint relative to an earlier location. It can stop and freely remain anywhere on the freeway. It has, what is called, rigid body motion. When pulling a trailer, the car and trailer can be approximated as lumped masses connected by a stiff spring. Both, together, still exhibit rigid body motion but relative displacement between them is resisted. When accelerating and decelerating, the trailer coupler (and surrounding structure) will slightly stretch and compress respectively.</p>
+        <p>There are different types of displacement constraints. The car body and wheels can also be approximated as lumped masses connected by softer springs (suspension). Zooming in on one part like a chassis beam, it can be approximated by a thousand slices connected by springs. Even the car on a slope, free to roll, will be pulled to a lower point. Similar to a pendulum, this is also a form of distance constraint. Here gravity acts as the displacement constraining force that drops to zero at the lowest point.</p>
+        <p>The <span class="figure-number" data-fid="no-gov">Figure</span> particle’s displacement will become limited when connected to a stationary object. Most connected systems, except for example pendulums, can be modeled as lumped bodies joined by flexible members (springs). The assumption is that the stiffness is linear and the spring applies an opposite force that is proportional to the distance moved away from its original location (Hooke’s Law).</p>
+        <p>\[F = kx\]</p>
+        <p>This may seem like a very idealistic model of reality but is actually a very good approximation. From your eyeballs to a guitar string, everything can compress and stretch. Even buildings bend and prop shafts twist in the same near linear springy way. The contact point of a marble resting on a sheet of glass deforms both surfaces to create a contact patch, without which the stress would be infinite and crack the glass.</p>
+        <div class="art-fig"><div class="charta force-resp-fig"></div></div>
+        <div class="figure-numbering ref num" data-fig="fictSgraph" data-label="Figure"><p>A step-up-down force applied on an object only governed by stiffness. The position responds instantaneously and proportionally, mirroring the form of the force exactly.</p></div>
+        <p><span class="figure-number" data-fid="fictSgraph">Figure</span> shows how applying a force to the particle now will displace it proportional to the force. It instantaneously moves to the equilibrium distance between the acting force and the constraining spring force. The position is now governed but it still reaches infinite speeds and acceleration. The graph still has both the vertical gradient and sharp bents.</p>
+        <h3 class="num">Velocity Constrains</h3>
+        <p>The second law of thermodynamics says that entropy always increases. If we define entropy as the spread of energy we can see how any moving object spreads its kinetic energy to the surroundings. Everything that moves bumps into air molecules or scraps along surfaces. Even rolling ball bearings compress the crystal lattice in their races, absorbing some of the briefly stored potential energy and converting it into heat.</p>
+        <p>The resistance to motion (or velocity) becomes intuitively more as speed increases. This is called damping, but there are also different types of velocity constraints. Air resistance is a resisting force proportional to velocity squared. Friction force between two surfaces is usually modeled as a constant resisting force. However, for low Reynolds numbers like viscous oil flowing laminarly through an orifice in a damper, the damping resistance force is linearly proportional to velocity.</p>
+        <p>\[F = cv\]</p>
+        <p>With only damping applied to the <span class="figure-number" data-fid="no-gov">Figure</span> particle, its velocity is limited. Displacement wise, it can still move infinitely far (exhibit rigid body motion) but gets stopped by damping when no force is applied to it. It also still has sharp corners because of the lack of inertia.</p>
+        <div class="art-fig"><div class="charta damping-resp-fig"></div></div>
+        <div class="figure-numbering ref num" data-fig="fictDgraph" data-label="Figure"><p>A step-up-down force applied on an object only governed by damping. Velocity is proportional to force, so position ramps linearly during the force and holds flat once it is removed — no inertia to carry it further.</p></div>
+        <h3 class="num">Acceleration Constraints</h3>
+        <p>Enough playing around with imaginary massless particles. All matter has mass, and mass brings about very interesting phenomena. It makes objects lazy to get moving or slow down, governing acceleration. This is called inertia and defined with Newton's second law of motion.</p>
+        <p>\[F = ma\]</p>
+        <p>Only accounting for mass, the <span class="figure-number" data-fid="no-gov">Figure</span> particle acceleration is governed and the position changes quadratically when the force is applied. Notice how the position now keeps on changing after the force is removed with a constant velocity. Without damping it can reach infinite speeds and continue into infinity.</p>
+        <div class="art-fig"><div class="charta inertia-resp-fig"></div></div>
+        <div class="figure-numbering ref num" data-fig="fictMgraph" data-label="Figure"><p>A step-up–down force applied to an object governed only by inertia. Position rises quadratically as the constant acceleration builds velocity. When the force is removed the acceleration drops to zero but the velocity — and therefore the position — carry on indefinitely.</p></div>
+      </section>
+      <section>
+        <h2 class="num">Component Summary</h2>
+        <p>The three components are stiffness, damping and inertia that opposes displacement, velocity and acceleration respectively. It's important to point out that velocity is the change in displacement and acceleration is the change in velocity.</p>
+        <table class="gov-table">
+          <thead>
+            <tr>
+              <th></th>
+              <th>Oppose</th>
             </tr>
           </thead>
           <tbody>
             <tr>
               <td>Stiffness</td>
-              <td>displacement</td>
-              <td>\(F = kx\)</td>
-              <td>spring, material stiffness, air compression</td>
+              <td>Displacement</td>
             </tr>
             <tr>
               <td>Damping</td>
-              <td>velocity</td>
-              <td>\(F = cv\), \(F = a \rho v^2\)</td>
-              <td>air resistance, fluid resistance, surface friction, material deformation</td>
+              <td>Velocity → Change in Displacement</td>
             </tr>
             <tr>
               <td>Inertia</td>
-              <td>acceleration</td>
-              <td>\(F = ma\), \(T = I\alpha\)</td>
-              <td>linear mass, rotational inertia</td>
+              <td>Acceleration → Change in Velocity → Change in change in Displacement</td>
             </tr>
           </tbody>
         </table>
-        <dl class="gov-table-mobile">
+        <div class="table-numbering figure-numbering ref num" data-fig="components" data-label="Table"><p>Governing components and type of movement they oppose.</p></div>
+        <p>That is why displacement is the y-value in <span class="figure-number" data-fid="no-gov">Figure</span>, velocity is the gradient (change in displacement) and acceleration are bends (change in gradient). In calculus the rate of change of a value is a derivative so:</p>
+        <p>\[v = \frac{dx}{dt}, \quad a = \frac{dv}{dt} \quad \text{and} \quad a = \frac{d^2x}{dt^2}\]</p>
+        <h3 class="num">Stiffness</h3>
+        <dl class="gov-list">
           <div class="gov-mob-row">
-            <dt>Stiffness</dt>
-            <dd><span class="gov-mob-label">Opposes</span>displacement</dd>
-            <dd><span class="gov-mob-label">Formula</span>\(F = kx\)</dd>
-            <dd><span class="gov-mob-label">Sources</span>spring, material stiffness, air compression</dd>
+            <dd><span class="gov-mob-label">Causes</span>Spring, material elasticity, air compression, shaft torsion</dd>
+            <dd><span class="gov-mob-label">Opposes</span>Displacement</dd>
+            <dd><span class="gov-mob-label">Function of</span>displacement, \(x\)</dd>
+            <dd><span class="gov-mob-label">Stores or Dissipates Energy</span>Stores potential energy</dd>
+            <dd><span class="gov-mob-label">Typical Symbol, Unit, Characteristic</span>\(k\), N/m, \(F = kx\)</dd>
           </div>
+        </dl>
+        <table class="gov-table">
+          <thead>
+            <tr>
+              <th>Mechanism</th>
+              <th>Equation</th>
+              <th>Parameter</th>
+              <th>Units</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Hooke spring</td>
+              <td>\(F = kx\)</td>
+              <td>Stiffness \(k\)</td>
+              <td>N/m</td>
+            </tr>
+            <tr>
+              <td>Torsional spring</td>
+              <td>\(T = k_t \theta\)</td>
+              <td>Nm/rad</td>
+              <td>Nm/rad</td>
+            </tr>
+            <tr>
+              <td>Beam bending</td>
+              <td>\(F = \frac{3EI}{L^3}x\)</td>
+              <td>Structural stiffness</td>
+              <td>N/m</td>
+            </tr>
+            <tr>
+              <td>Gravity pendulum</td>
+              <td>\(F \approx mg\frac{x}{L}\)</td>
+              <td>Gravity stiffness</td>
+              <td>N/m</td>
+            </tr>
+            <tr>
+              <td>Gas spring</td>
+              <td>\(F = P(x)A\)</td>
+              <td>Pressure stiffness</td>
+              <td>N/m</td>
+            </tr>
+            <tr>
+              <td>Magnetic spring</td>
+              <td>nonlinear \(F(x)\)</td>
+              <td>Magnetic field</td>
+              <td>N</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="table-numbering figure-numbering ref num" data-fig="sequs" data-label="Table"><p>Various mechanisms of stiffness</p></div>
+        <h3 class="num">Damping</h3>
+        <dl class="gov-list">
           <div class="gov-mob-row">
-            <dt>Damping</dt>
-            <dd><span class="gov-mob-label">Opposes</span>velocity</dd>
-            <dd><span class="gov-mob-label">Formula</span>\(F = cv\), \(F = a \rho v^2\)</dd>
-            <dd><span class="gov-mob-label">Sources</span>air resistance, fluid resistance, surface friction, material deformation</dd>
+            <dd><span class="gov-mob-label">Causes</span>Air resistance, fluid resistance, surface friction, material deformation energy absorption</dd>
+            <dd><span class="gov-mob-label">Opposes</span>Velocity (rate of change of displacement)</dd>
+            <dd><span class="gov-mob-label">Function of</span>velocity, \(v\), \(\dot{x}\)</dd>
+            <dd><span class="gov-mob-label">Stores or Dissipates Energy</span>Dissipates kinetic energy</dd>
+            <dd><span class="gov-mob-label">Typical Symbol, Unit, Characteristic</span>\(c\), N s/m, \(F = cv\)</dd>
           </div>
+        </dl>
+        <h3 class="num">Inertia</h3>
+        <dl class="gov-list">
           <div class="gov-mob-row">
-            <dt>Inertia</dt>
-            <dd><span class="gov-mob-label">Opposes</span>acceleration</dd>
-            <dd><span class="gov-mob-label">Formula</span>\(F = ma\), \(T = I\alpha\)</dd>
-            <dd><span class="gov-mob-label">Sources</span>linear mass, rotational inertia</dd>
+            <dd><span class="gov-mob-label">Causes</span>Linear acceleration, rotational acceleration</dd>
+            <dd><span class="gov-mob-label">Opposes</span>Acceleration (rate of change of velocity)</dd>
+            <dd><span class="gov-mob-label">Function of</span>acceleration, \(a\), \(\ddot{x}\)</dd>
+            <dd><span class="gov-mob-label">Stores or Dissipates Energy</span>Stores kinetic energy</dd>
+            <dd><span class="gov-mob-label">Typical Symbol, Unit, Characteristic</span>\(m\), kg, \(F = ma\)</dd>
           </div>
         </dl>
       </section>
@@ -316,8 +401,8 @@
     </nav>
 
     <header class="art-hero">
-      <div class="art-eyebrow">§ work · engineering</div>
-      <h1 class="art-h1">The Beauty of <em>Motion</em></h1>
+      <div class="art-eyebrow">article · engineering mathematics · Beauty of Motion</div>
+      <h1 class="art-h1">Basics of <em>Motion</em></h1>
       <p class="art-lede">How stiffness, damping, and inertia govern every moving thing in the universe.</p>
     </header>
 
@@ -341,84 +426,173 @@
 
     <article class="art-body">
       <section>
-        <p>Beauty is often simple ideas that can have complex and widely applicable results. This subject is one such example. A third of this article is intended to be understandable to anyone that is interested. Engineering colleagues may find this annoyingly basic, but revisiting the basics is not necessarily a bad thing.</p>
+        <p>Beauty is often simple ideas that can have complex and widely applicable results. I believe this subject is one such example. A third of this post is intended to be understandable to anyone that is interested. My engineering colleagues may find this annoyingly basic, but, revisiting the basics is not necessarily a bad thing.</p>
         <p>Imagine a fictional particle that has no mass, suspended in the vacuum of space. Such a particle has no inertia (requires no energy to get it moving), no friction or resistance against anything (nothing to prevent it from moving) and is not connected to anything that will pull it back to its original location. If we apply even the tiniest force, it will shoot away infinitely far in an infinitesimal short period of time. There is nothing governing its motion.</p>
         <div class="art-fig"><div class="charta ungoverned-fig"></div></div>
-        <div class="figure-numbering ref num" data-fig="ungoverned" data-label="Figure"><p>The same force step applied to a completely ungoverned particle — no stiffness, no damping, no mass. The instant the force is applied the position shoots to infinity and stays there. With no restoring force and no resistance, there is nothing to bring it back.</p></div>
+        <div class="figure-numbering ref num" data-fig="no-gov" data-label="Figure"><p>The same force step applied to a completely ungoverned particle — no stiffness, no damping, no mass. The instant the force is applied the position shoots to infinity and stays there. With no restoring force and no resistance, there is nothing to bring it back.</p></div>
       </section>
       <section>
         <h2 class="num">Governing Interactions</h2>
-        <p>As Figure <span class="figure-number" data-fid="ungoverned"></span> shows, the ungoverned particle not only instantly moved infinitely far, it also instantly moved at an infinite velocity, as well as instantly had an infinite acceleration as long as the force acted upon it. Fortunately everything has mass, making matter lazy to move. Additionally, friction and resistance is all around us dissipating kinetic energy into everything it touches. And finally, there are forces that hold things together in a surprisingly stretchy manner.</p>
+        <p><span class="figure-number" data-fid="no-gov">Figure</span> show how the ungoverned particle, not only moved instantly infinitely far (the arrow pointing to infinity), it also instantly moved at an infinite velocity (vertical lines), as well as instantly had an infinite acceleration (the sharp bent) as long as the force acted upon it. Fortunately all matter has mass, making it lazy to change a state of stasis or motion. Additionally friction is all around us, dissipating kinetic energy into everything moving objects touches. But forces that strive to reduce displacement will be the starting consideration.</p>
         <div class="note block">
           <h4>Note</h4>
-          <p>This article is only concerned with macroscopic physical phenomena where bodies move relatively slow compared to light. The fictitious infinities of position, velocity and acceleration in the imaginary absence of governing interactions is the important takeaway.</p>
+          <p>This article is only concerned with macroscopic physical phenomena where bodies move relatively slow (compared to light). The fictitious infinities of position, velocity and acceleration in the imaginary absence of governing interactions is the important takeaway.</p>
         </div>
-        <h3 class="num">Stiffness</h3>
-        <p>If our particle gets connected to an immovable base, the stretchiness, squishiness or bendiness of the connecting member resists a change in position of the particle. We signify such a member as a spring. The assumption is that the stiffness is linear and the spring applies an opposite force that is proportional to the distance moved away from its original location — Hooke's Law.</p>
-        <p>This may seem like a very idealistic model of reality but is actually a very good approximation. From your eyeballs to a guitar string, everything can compress and stretch. Even buildings bend and prop shafts twist in the same springy way. The contact point of a glass marble on a sheet of glass deforms both surfaces to create a contact patch of \[a = \left( \frac{3FR}{4E^*} \right)^{\frac{1}{3}}\] without which the stress would be infinite and crack the glass.</p>
-        <p>With only stiffness governing our particle, applying a force moves it proportional to that force. The force acting on the particle steps up instantaneously, stays constant and disappears again after a moment. The position of the particle follows the same form as the force (Figure <span class="figure-number" data-fid="stiffness"></span>). It instantaneously moves to distance \(x\) and back to zero. The position is now governed but it still reaches infinite speeds and acceleration.</p>
-        <div class="art-fig"><div class="charta force-resp-fig"></div></div>
-        <div class="figure-numbering ref num" data-fig="stiffness" data-label="Figure"><p>A step-up–down force applied to an object governed only by stiffness. The position responds instantaneously and proportionally, mirroring the form of the force exactly.</p></div>
-        <h3 class="num">Damping</h3>
-        <p>The second law of thermodynamics says that entropy always increases. If we define entropy as the spread of energy we can see how any moving thing spreads its kinetic energy to the surroundings. Everything that moves bumps into air molecules or scrapes along surfaces. Even rolling ball bearings compress the crystal lattice in their races, absorbing some of the briefly stored potential energy and converting it into heat.</p>
-        <p>With only damping applied to our fictional particle, its speed is governed. Position wise, it can still move infinitely far but it can only move as fast as a force applied to it allows. Thus its position changes linearly while the force is applied (Figure <span class="figure-number" data-fid="damping"></span>).</p>
-        <div class="art-fig"><div class="charta damping-resp-fig"></div></div>
-        <div class="figure-numbering ref num" data-fig="damping" data-label="Figure"><p>A step-up–down force applied to an object governed only by damping. Velocity is proportional to force, so position ramps linearly during the force and holds flat once it is removed — no inertia to carry it further.</p></div>
-        <h3 class="num">Inertia</h3>
-        <p>Enough playing around with imaginary massless particles. All matter has mass, and mass brings about very interesting phenomena. First, it bends spacetime resulting in gravity. Secondly, it makes objects lazy to get moving and then lazy to slow down again. We call this inertia and define it with Newton's second law of motion: \[F = ma\]</p>
-        <p>Now, accounting for mass, our particle's acceleration is governed and its position changes quadratically when the force is applied. Notice in Figure <span class="figure-number" data-fid="inertia"></span> how the position keeps on changing after the force is removed with a constant velocity. Without damping it can reach infinite speeds and continue into infinity.</p>
-        <div class="art-fig"><div class="charta inertia-resp-fig"></div></div>
-        <div class="figure-numbering ref num" data-fig="inertia" data-label="Figure"><p>A step-up–down force applied to an object governed only by inertia. Position rises quadratically as the constant acceleration builds velocity. When the force is removed the acceleration drops to zero but the velocity — and therefore the position — carry on indefinitely.</p></div>
-        <h3 class="num">Summary</h3>
-        <p>Three independent interactions govern the motion of all physical objects. Each opposes change in a different quantity.</p>
         <table class="gov-table">
           <thead>
             <tr>
-              <th>Element</th>
-              <th>Opposes change in</th>
-              <th>Characterisation</th>
-              <th>Sources</th>
+              <th>Constraint</th>
+              <th>Caused by</th>
+              <th>Presented as</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Displacement</td>
+              <td>Connection between bodies</td>
+              <td>Limited displacement</td>
+            </tr>
+            <tr>
+              <td>Velocity</td>
+              <td>Friction, Damping</td>
+              <td>Limited gradient</td>
+            </tr>
+            <tr>
+              <td>Acceleration</td>
+              <td>Mass, Inertia</td>
+              <td>Round corners</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="table-numbering figure-numbering ref num" data-fig="govs" data-label="Table"><p>Table of governing effects and how it's presented on a displacement graph.</p></div>
+        <h3 class="num">Displacement Constraints</h3>
+        <p>A car driving on a level freeway has no direct displacement constraint relative to an earlier location. It can stop and freely remain anywhere on the freeway. It has, what is called, rigid body motion. When pulling a trailer, the car and trailer can be approximated as lumped masses connected by a stiff spring. Both, together, still exhibit rigid body motion but relative displacement between them is resisted. When accelerating and decelerating, the trailer coupler (and surrounding structure) will slightly stretch and compress respectively.</p>
+        <p>There are different types of displacement constraints. The car body and wheels can also be approximated as lumped masses connected by softer springs (suspension). Zooming in on one part like a chassis beam, it can be approximated by a thousand slices connected by springs. Even the car on a slope, free to roll, will be pulled to a lower point. Similar to a pendulum, this is also a form of distance constraint. Here gravity acts as the displacement constraining force that drops to zero at the lowest point.</p>
+        <p>The <span class="figure-number" data-fid="no-gov">Figure</span> particle’s displacement will become limited when connected to a stationary object. Most connected systems, except for example pendulums, can be modeled as lumped bodies joined by flexible members (springs). The assumption is that the stiffness is linear and the spring applies an opposite force that is proportional to the distance moved away from its original location (Hooke’s Law).</p>
+        <p>\[F = kx\]</p>
+        <p>This may seem like a very idealistic model of reality but is actually a very good approximation. From your eyeballs to a guitar string, everything can compress and stretch. Even buildings bend and prop shafts twist in the same near linear springy way. The contact point of a marble resting on a sheet of glass deforms both surfaces to create a contact patch, without which the stress would be infinite and crack the glass.</p>
+        <div class="art-fig"><div class="charta force-resp-fig"></div></div>
+        <div class="figure-numbering ref num" data-fig="fictSgraph" data-label="Figure"><p>A step-up-down force applied on an object only governed by stiffness. The position responds instantaneously and proportionally, mirroring the form of the force exactly.</p></div>
+        <p><span class="figure-number" data-fid="fictSgraph">Figure</span> shows how applying a force to the particle now will displace it proportional to the force. It instantaneously moves to the equilibrium distance between the acting force and the constraining spring force. The position is now governed but it still reaches infinite speeds and acceleration. The graph still has both the vertical gradient and sharp bents.</p>
+        <h3 class="num">Velocity Constrains</h3>
+        <p>The second law of thermodynamics says that entropy always increases. If we define entropy as the spread of energy we can see how any moving object spreads its kinetic energy to the surroundings. Everything that moves bumps into air molecules or scraps along surfaces. Even rolling ball bearings compress the crystal lattice in their races, absorbing some of the briefly stored potential energy and converting it into heat.</p>
+        <p>The resistance to motion (or velocity) becomes intuitively more as speed increases. This is called damping, but there are also different types of velocity constraints. Air resistance is a resisting force proportional to velocity squared. Friction force between two surfaces is usually modeled as a constant resisting force. However, for low Reynolds numbers like viscous oil flowing laminarly through an orifice in a damper, the damping resistance force is linearly proportional to velocity.</p>
+        <p>\[F = cv\]</p>
+        <p>With only damping applied to the <span class="figure-number" data-fid="no-gov">Figure</span> particle, its velocity is limited. Displacement wise, it can still move infinitely far (exhibit rigid body motion) but gets stopped by damping when no force is applied to it. It also still has sharp corners because of the lack of inertia.</p>
+        <div class="art-fig"><div class="charta damping-resp-fig"></div></div>
+        <div class="figure-numbering ref num" data-fig="fictDgraph" data-label="Figure"><p>A step-up-down force applied on an object only governed by damping. Velocity is proportional to force, so position ramps linearly during the force and holds flat once it is removed — no inertia to carry it further.</p></div>
+        <h3 class="num">Acceleration Constraints</h3>
+        <p>Enough playing around with imaginary massless particles. All matter has mass, and mass brings about very interesting phenomena. It makes objects lazy to get moving or slow down, governing acceleration. This is called inertia and defined with Newton's second law of motion.</p>
+        <p>\[F = ma\]</p>
+        <p>Only accounting for mass, the <span class="figure-number" data-fid="no-gov">Figure</span> particle acceleration is governed and the position changes quadratically when the force is applied. Notice how the position now keeps on changing after the force is removed with a constant velocity. Without damping it can reach infinite speeds and continue into infinity.</p>
+        <div class="art-fig"><div class="charta inertia-resp-fig"></div></div>
+        <div class="figure-numbering ref num" data-fig="fictMgraph" data-label="Figure"><p>A step-up–down force applied to an object governed only by inertia. Position rises quadratically as the constant acceleration builds velocity. When the force is removed the acceleration drops to zero but the velocity — and therefore the position — carry on indefinitely.</p></div>
+      </section>
+      <section>
+        <h2 class="num">Component Summary</h2>
+        <p>The three components are stiffness, damping and inertia that opposes displacement, velocity and acceleration respectively. It's important to point out that velocity is the change in displacement and acceleration is the change in velocity.</p>
+        <table class="gov-table">
+          <thead>
+            <tr>
+              <th></th>
+              <th>Oppose</th>
             </tr>
           </thead>
           <tbody>
             <tr>
               <td>Stiffness</td>
-              <td>displacement</td>
-              <td>\(F = kx\)</td>
-              <td>spring, material stiffness, air compression</td>
+              <td>Displacement</td>
             </tr>
             <tr>
               <td>Damping</td>
-              <td>velocity</td>
-              <td>\(F = cv\), \(F = a \rho v^2\)</td>
-              <td>air resistance, fluid resistance, surface friction, material deformation</td>
+              <td>Velocity → Change in Displacement</td>
             </tr>
             <tr>
               <td>Inertia</td>
-              <td>acceleration</td>
-              <td>\(F = ma\), \(T = I\alpha\)</td>
-              <td>linear mass, rotational inertia</td>
+              <td>Acceleration → Change in Velocity → Change in change in Displacement</td>
             </tr>
           </tbody>
         </table>
-        <dl class="gov-table-mobile">
+        <div class="table-numbering figure-numbering ref num" data-fig="components" data-label="Table"><p>Governing components and type of movement they oppose.</p></div>
+        <p>That is why displacement is the y-value in <span class="figure-number" data-fid="no-gov">Figure</span>, velocity is the gradient (change in displacement) and acceleration are bends (change in gradient). In calculus the rate of change of a value is a derivative so:</p>
+        <p>\[v = \frac{dx}{dt}, \quad a = \frac{dv}{dt} \quad \text{and} \quad a = \frac{d^2x}{dt^2}\]</p>
+        <h3 class="num">Stiffness</h3>
+        <dl class="gov-list">
           <div class="gov-mob-row">
-            <dt>Stiffness</dt>
-            <dd><span class="gov-mob-label">Opposes</span>displacement</dd>
-            <dd><span class="gov-mob-label">Formula</span>\(F = kx\)</dd>
-            <dd><span class="gov-mob-label">Sources</span>spring, material stiffness, air compression</dd>
+            <dd><span class="gov-mob-label">Causes</span>Spring, material elasticity, air compression, shaft torsion</dd>
+            <dd><span class="gov-mob-label">Opposes</span>Displacement</dd>
+            <dd><span class="gov-mob-label">Function of</span>displacement, \(x\)</dd>
+            <dd><span class="gov-mob-label">Stores or Dissipates Energy</span>Stores potential energy</dd>
+            <dd><span class="gov-mob-label">Typical Symbol, Unit, Characteristic</span>\(k\), N/m, \(F = kx\)</dd>
           </div>
+        </dl>
+        <table class="gov-table">
+          <thead>
+            <tr>
+              <th>Mechanism</th>
+              <th>Equation</th>
+              <th>Parameter</th>
+              <th>Units</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Hooke spring</td>
+              <td>\(F = kx\)</td>
+              <td>Stiffness \(k\)</td>
+              <td>N/m</td>
+            </tr>
+            <tr>
+              <td>Torsional spring</td>
+              <td>\(T = k_t \theta\)</td>
+              <td>Nm/rad</td>
+              <td>Nm/rad</td>
+            </tr>
+            <tr>
+              <td>Beam bending</td>
+              <td>\(F = \frac{3EI}{L^3}x\)</td>
+              <td>Structural stiffness</td>
+              <td>N/m</td>
+            </tr>
+            <tr>
+              <td>Gravity pendulum</td>
+              <td>\(F \approx mg\frac{x}{L}\)</td>
+              <td>Gravity stiffness</td>
+              <td>N/m</td>
+            </tr>
+            <tr>
+              <td>Gas spring</td>
+              <td>\(F = P(x)A\)</td>
+              <td>Pressure stiffness</td>
+              <td>N/m</td>
+            </tr>
+            <tr>
+              <td>Magnetic spring</td>
+              <td>nonlinear \(F(x)\)</td>
+              <td>Magnetic field</td>
+              <td>N</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="table-numbering figure-numbering ref num" data-fig="sequs" data-label="Table"><p>Various mechanisms of stiffness</p></div>
+        <h3 class="num">Damping</h3>
+        <dl class="gov-list">
           <div class="gov-mob-row">
-            <dt>Damping</dt>
-            <dd><span class="gov-mob-label">Opposes</span>velocity</dd>
-            <dd><span class="gov-mob-label">Formula</span>\(F = cv\), \(F = a \rho v^2\)</dd>
-            <dd><span class="gov-mob-label">Sources</span>air resistance, fluid resistance, surface friction, material deformation</dd>
+            <dd><span class="gov-mob-label">Causes</span>Air resistance, fluid resistance, surface friction, material deformation energy absorption</dd>
+            <dd><span class="gov-mob-label">Opposes</span>Velocity (rate of change of displacement)</dd>
+            <dd><span class="gov-mob-label">Function of</span>velocity, \(v\), \(\dot{x}\)</dd>
+            <dd><span class="gov-mob-label">Stores or Dissipates Energy</span>Dissipates kinetic energy</dd>
+            <dd><span class="gov-mob-label">Typical Symbol, Unit, Characteristic</span>\(c\), N s/m, \(F = cv\)</dd>
           </div>
+        </dl>
+        <h3 class="num">Inertia</h3>
+        <dl class="gov-list">
           <div class="gov-mob-row">
-            <dt>Inertia</dt>
-            <dd><span class="gov-mob-label">Opposes</span>acceleration</dd>
-            <dd><span class="gov-mob-label">Formula</span>\(F = ma\), \(T = I\alpha\)</dd>
-            <dd><span class="gov-mob-label">Sources</span>linear mass, rotational inertia</dd>
+            <dd><span class="gov-mob-label">Causes</span>Linear acceleration, rotational acceleration</dd>
+            <dd><span class="gov-mob-label">Opposes</span>Acceleration (rate of change of velocity)</dd>
+            <dd><span class="gov-mob-label">Function of</span>acceleration, \(a\), \(\ddot{x}\)</dd>
+            <dd><span class="gov-mob-label">Stores or Dissipates Energy</span>Stores kinetic energy</dd>
+            <dd><span class="gov-mob-label">Typical Symbol, Unit, Characteristic</span>\(m\), kg, \(F = ma\)</dd>
           </div>
         </dl>
       </section>

@@ -1,0 +1,523 @@
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 990.047 822.376" width="990.047"
+      height="822.376"><!-- svg-source:excalidraw -->
+      <metadata></metadata>
+      <defs>
+            <style class="style-fonts">
+      @font-face { font-family: Excalifont; src: url(data:font/woff2;base64,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); }</style>
+      </defs>
+      <g stroke-linecap="round"
+            transform="translate(136.999 60.833) rotate(0 23.656 23.656)">
+            <path
+                  d="M25.87 0.54 C30.77 0.61, 36.75 3.43, 40.36 6.94 C43.97 10.45, 47.1 16.53, 47.53 21.6 C47.95 26.68, 45.87 33.32, 42.9 37.41 C39.93 41.49, 34.58 44.87, 29.72 46.12 C24.87 47.36, 18.28 46.91, 13.77 44.87 C9.26 42.84, 4.79 38.33, 2.65 33.88 C0.51 29.43, -0.26 23.03, 0.93 18.19 C2.12 13.35, 5.6 7.79, 9.78 4.83 C13.97 1.87, 23.13 1.15, 26.04 0.43 C28.96 -0.29, 27.33 0.17, 27.28 0.52 M26.41 -0.19 C31.32 -0.18, 37.71 3.04, 41.27 6.6 C44.83 10.16, 47.51 15.93, 47.79 21.19 C48.06 26.44, 45.98 33.95, 42.92 38.14 C39.85 42.34, 34.44 45.13, 29.4 46.36 C24.36 47.58, 17.15 47.68, 12.68 45.48 C8.21 43.28, 4.67 37.79, 2.59 33.16 C0.51 28.53, -1.11 22.6, 0.2 17.71 C1.51 12.82, 6.1 6.68, 10.45 3.81 C14.79 0.95, 23.57 1.14, 26.26 0.52 C28.95 -0.11, 26.57 -0.16, 26.6 0.05"
+                  stroke="#1e1e1e" stroke-width="2" fill="none"></path>
+      </g>
+      <g stroke-linecap="round"
+            transform="translate(489.506 691.669) rotate(0 37.359 15.609)">
+            <path
+                  d="M31.68 -0.04 C39.07 -0.59, 50.39 1.17, 57.41 3.04 C64.43 4.9, 71.35 7.99, 73.8 11.13 C76.25 14.28, 75.37 18.93, 72.12 21.92 C68.88 24.91, 61.66 27.59, 54.35 29.09 C47.03 30.58, 35.97 31.57, 28.22 30.88 C20.47 30.18, 12.64 27.62, 7.85 24.93 C3.06 22.24, -0.74 17.96, -0.53 14.73 C-0.33 11.5, 3.36 7.97, 9.07 5.55 C14.78 3.14, 29.17 1.09, 33.7 0.26 C38.24 -0.58, 36.25 0.47, 36.27 0.53 M55.97 1.89 C62.92 3.51, 68.32 7.59, 71.31 10.74 C74.3 13.89, 76.32 17.73, 73.9 20.79 C71.47 23.84, 63.85 27.24, 56.74 29.06 C49.63 30.88, 38.96 32.4, 31.25 31.7 C23.54 30.99, 15.54 27.69, 10.49 24.84 C5.44 21.99, 1.3 17.75, 0.95 14.61 C0.59 11.46, 3.54 8.22, 8.35 5.98 C13.16 3.74, 22.15 1.77, 29.82 1.18 C37.48 0.59, 50.4 2.04, 54.34 2.45 C58.28 2.86, 53.72 3.75, 53.45 3.63"
+                  stroke="#1e1e1e" stroke-width="2" fill="none"></path>
+      </g>
+      <g stroke-linecap="round">
+            <g
+                  transform="translate(77.031 728.896) rotate(0 451.344 0)">
+                  <path
+                        d="M-0.81 -0.52 C149.61 -0.46, 752.62 0.07, 903.02 -0.01 M0.97 1.83 C151.21 2.12, 751.75 1.86, 902.24 1.52"
+                        stroke="#1e1e1e" stroke-width="2" fill="none"></path>
+            </g>
+            <g
+                  transform="translate(77.031 728.896) rotate(0 451.344 0)">
+                  <path
+                        d="M878.76 10.09 C885.96 7.86, 894.83 2.55, 902.24 1.52 M878.76 10.09 C884.45 9.03, 888.07 5.73, 902.24 1.52"
+                        stroke="#1e1e1e" stroke-width="2" fill="none"></path>
+            </g>
+            <g
+                  transform="translate(77.031 728.896) rotate(0 451.344 0)">
+                  <path
+                        d="M878.74 -7.01 C885.89 -3.39, 894.77 -2.85, 902.24 1.52 M878.74 -7.01 C884.56 -4.36, 888.18 -3.96, 902.24 1.52"
+                        stroke="#1e1e1e" stroke-width="2" fill="none"></path>
+            </g>
+      </g>
+      <mask></mask>
+      <g stroke-linecap="round">
+            <g
+                  transform="translate(87.531 743.896) rotate(0 0 -358.640)">
+                  <path
+                        d="M-0.82 0.03 C-0.78 -119.32, 0.25 -597.41, 0.56 -716.91 M0.95 -1.01 C0.85 -120.66, -0.07 -599.76, -0.09 -718.84"
+                        stroke="#1e1e1e" stroke-width="2" fill="none"></path>
+            </g>
+            <g
+                  transform="translate(87.531 743.896) rotate(0 0 -358.640)">
+                  <path
+                        d="M8.49 -695.36 C5.9 -702.14, 3.67 -708.94, -0.09 -718.84 M8.49 -695.36 C6.32 -703.6, 2.57 -710.57, -0.09 -718.84"
+                        stroke="#1e1e1e" stroke-width="2" fill="none"></path>
+            </g>
+            <g
+                  transform="translate(87.531 743.896) rotate(0 0 -358.640)">
+                  <path
+                        d="M-8.61 -695.34 C-5.63 -702.01, -2.27 -708.82, -0.09 -718.84 M-8.61 -695.34 C-5.22 -703.7, -3.41 -710.68, -0.09 -718.84"
+                        stroke="#1e1e1e" stroke-width="2" fill="none"></path>
+            </g>
+      </g>
+      <mask></mask>
+      <g stroke-linecap="round"
+            transform="translate(382.813 404.903) rotate(0 23.656 23.656)">
+            <path
+                  d="M21.99 0.08 C26.89 -0.64, 33.7 1.51, 37.78 4.41 C41.86 7.31, 45.34 12.61, 46.47 17.46 C47.59 22.3, 46.67 28.94, 44.52 33.5 C42.37 38.06, 38.05 42.6, 33.57 44.83 C29.08 47.06, 22.44 48.19, 17.62 46.88 C12.79 45.56, 7.47 41.24, 4.61 36.94 C1.75 32.63, 0.02 26.01, 0.45 21.04 C0.89 16.07, 3.58 10.59, 7.22 7.09 C10.86 3.6, 19.63 1.22, 22.28 0.08 C24.93 -1.07, 23.04 -0.15, 23.11 0.21 M18.18 0.52 C22.78 -0.94, 28.9 0.47, 33.33 2.63 C37.77 4.78, 42.63 8.72, 44.8 13.44 C46.97 18.16, 47.74 25.99, 46.35 30.93 C44.96 35.86, 40.54 40.34, 36.46 43.06 C32.38 45.77, 26.95 47.77, 21.85 47.19 C16.75 46.61, 9.46 43.35, 5.87 39.59 C2.29 35.82, 0.68 29.49, 0.35 24.6 C0.01 19.71, 0.82 14.12, 3.88 10.23 C6.93 6.34, 16.23 2.86, 18.69 1.27 C21.14 -0.31, 18.57 0.53, 18.62 0.74"
+                  stroke="#1e1e1e" stroke-width="2" fill="none"></path>
+      </g>
+      <g stroke-linecap="round"
+            transform="translate(682.209 259.208) rotate(0 23.656 23.656)">
+            <path
+                  d="M21.12 0.48 C25.9 -0.29, 32.92 1.02, 37.14 3.82 C41.35 6.62, 45.14 12.37, 46.41 17.28 C47.67 22.18, 46.82 28.63, 44.72 33.25 C42.63 37.86, 38.41 42.73, 33.85 44.98 C29.29 47.22, 22.36 48, 17.38 46.72 C12.4 45.43, 6.87 41.4, 3.97 37.28 C1.07 33.17, -0.55 27.09, -0.02 22.02 C0.52 16.95, 3.56 10.45, 7.19 6.86 C10.81 3.26, 19.18 1.48, 21.74 0.43 C24.29 -0.61, 22.38 0.3, 22.52 0.59 M19.17 0.99 C23.79 -0.34, 30.33 0.04, 34.77 2.45 C39.2 4.87, 43.94 10.82, 45.77 15.48 C47.6 20.14, 47.42 25.57, 45.74 30.41 C44.07 35.25, 40.02 41.62, 35.72 44.5 C31.42 47.39, 24.9 48.46, 19.95 47.7 C15 46.93, 9.34 43.77, 6.04 39.9 C2.73 36.04, 0.36 29.63, 0.12 24.5 C-0.12 19.37, 1.54 13.02, 4.59 9.14 C7.64 5.26, 16.06 2.63, 18.42 1.2 C20.78 -0.22, 18.69 0.31, 18.74 0.59"
+                  stroke="#1e1e1e" stroke-width="2" fill="none"></path>
+      </g>
+      <g stroke-linecap="round"
+            transform="translate(844.566 113.677) rotate(0 23.656 23.656)">
+            <path
+                  d="M25.18 -0.43 C30.03 -0.42, 36.17 3, 39.83 6.51 C43.5 10.02, 46.56 15.68, 47.17 20.65 C47.77 25.62, 46.32 32.06, 43.48 36.33 C40.64 40.6, 35 44.7, 30.14 46.27 C25.28 47.85, 18.97 47.83, 14.31 45.76 C9.65 43.69, 4.4 38.5, 2.19 33.85 C-0.02 29.2, -0.21 22.65, 1.05 17.83 C2.31 13.02, 5.59 7.99, 9.75 4.98 C13.91 1.96, 23.08 0.44, 26 -0.26 C28.93 -0.97, 27.26 0.23, 27.3 0.74 M23.24 -0.35 C27.99 -0.92, 33.38 1.47, 37.42 4.58 C41.46 7.69, 46.17 13.31, 47.48 18.33 C48.78 23.35, 47.63 30.14, 45.24 34.69 C42.86 39.25, 37.94 43.81, 33.18 45.64 C28.41 47.48, 21.54 47.31, 16.65 45.68 C11.75 44.05, 6.45 40.09, 3.83 35.85 C1.21 31.62, 0.34 25.32, 0.93 20.27 C1.52 15.22, 3.72 8.97, 7.37 5.54 C11.01 2.11, 20.3 0.58, 22.79 -0.31 C25.29 -1.19, 22.45 -0.26, 22.34 0.22"
+                  stroke="#1e1e1e" stroke-width="2" fill="none"></path>
+      </g>
+      <g transform="translate(10 389.614) rotate(0 30.229 12.5)">
+            <text x="0" y="17.619" font-family="Excalifont, Xiaolai, Segoe UI Emoji"
+                  font-size="20px" fill="#1e1e1e" text-anchor="start" style="white-space: pre;"
+                  direction="ltr" dominant-baseline="alphabetic">height</text>
+      </g>
+      <g transform="translate(868.872 740.875) rotate(0 19.969 12.5)">
+            <text x="0" y="17.619" font-family="Excalifont, Xiaolai, Segoe UI Emoji"
+                  font-size="20px" fill="#1e1e1e" text-anchor="start" style="white-space: pre;"
+                  direction="ltr" dominant-baseline="alphabetic">time</text>
+      </g>
+      <g stroke-linecap="round">
+            <g
+                  transform="translate(82.211 80.896) rotate(0 24.152 0)">
+                  <path d="M-0.37 0.08 C7.69 0.09, 40.53 0.58, 48.6 0.49" stroke="#1e1e1e"
+                        stroke-width="2.5" fill="none" stroke-dasharray="1.5 8"></path>
+            </g>
+      </g>
+      <mask></mask>
+      <g stroke-linecap="round">
+            <g
+                  transform="translate(838.210 134.717) rotate(0 -381.485 0)">
+                  <path d="M-1.15 1.2 C-128.43 1.45, -636.78 1.38, -763.9 1.17" stroke="#1e1e1e"
+                        stroke-width="2.5" fill="none" stroke-dasharray="1.5 8"></path>
+            </g>
+      </g>
+      <mask></mask>
+      <g transform="translate(49.573 68.907) rotate(0 12.549 12.5)">
+            <text x="0" y="17.619" font-family="Excalifont, Xiaolai, Segoe UI Emoji"
+                  font-size="20px" fill="#1e1e1e" text-anchor="start" style="white-space: pre;"
+                  direction="ltr" dominant-baseline="alphabetic">x0</text>
+      </g>
+      <g transform="translate(51.840 125.921) rotate(0 10.179 12.5)">
+            <text x="0" y="17.619" font-family="Excalifont, Xiaolai, Segoe UI Emoji"
+                  font-size="20px" fill="#1e1e1e" text-anchor="start" style="white-space: pre;"
+                  direction="ltr" dominant-baseline="alphabetic">x1</text>
+      </g>
+      <g stroke-linecap="round"
+            transform="translate(580.213 457.308) rotate(0 28.517 18.313)">
+            <path
+                  d="M25.28 0.96 C30.94 0.13, 38.01 0.43, 43.06 2.25 C48.12 4.06, 53.5 8.12, 55.58 11.84 C57.66 15.57, 57.79 20.98, 55.56 24.59 C53.33 28.2, 47.73 31.49, 42.19 33.5 C36.64 35.51, 28.34 37.17, 22.3 36.65 C16.26 36.13, 9.75 33.51, 5.94 30.38 C2.13 27.25, -0.93 21.8, -0.58 17.87 C-0.22 13.95, 2.84 9.66, 8.09 6.85 C13.34 4.03, 26.09 1.83, 30.93 1 C35.76 0.16, 37.03 1.54, 37.09 1.83 M26.78 -1.25 C32.73 -1.75, 41.23 0.13, 46.13 2.88 C51.03 5.63, 54.65 11.08, 56.18 15.25 C57.71 19.43, 57.81 24.54, 55.31 27.92 C52.8 31.3, 46.89 34.01, 41.15 35.53 C35.41 37.05, 26.86 38.11, 20.87 37.04 C14.88 35.98, 8.69 32.41, 5.22 29.13 C1.76 25.86, -0.58 21.21, 0.1 17.37 C0.78 13.52, 4.93 8.85, 9.29 6.07 C13.65 3.28, 23.36 1.75, 26.24 0.66 C29.13 -0.43, 26.66 -0.68, 26.59 -0.49"
+                  stroke="#1e1e1e" stroke-width="2" fill="none"></path>
+      </g>
+      <g stroke-linecap="round"
+            transform="translate(573.719 493.467) rotate(89.999 27.836 16.894)">
+            <path
+                  d="M21.85 0.83 C27.35 -0.02, 35.71 0.63, 40.89 2.21 C46.06 3.8, 50.64 7.03, 52.91 10.35 C55.19 13.67, 56.23 18.75, 54.55 22.16 C52.88 25.57, 48.02 28.74, 42.85 30.79 C37.68 32.85, 29.43 34.97, 23.54 34.49 C17.64 34.01, 11.27 30.84, 7.51 27.91 C3.74 24.99, 1.06 20.46, 0.93 16.95 C0.81 13.44, 1.61 9.68, 6.75 6.85 C11.9 4.03, 26.51 0.89, 31.83 0 C37.14 -0.89, 38.85 1.35, 38.65 1.51 M34.03 1.6 C40.02 2.26, 47 4.85, 50.67 7.52 C54.34 10.18, 56.14 14.11, 56.07 17.6 C55.99 21.08, 54.02 25.77, 50.21 28.41 C46.41 31.06, 39.11 32.9, 33.23 33.46 C27.35 34.02, 20.02 33.7, 14.93 31.77 C9.84 29.84, 4.79 25.41, 2.7 21.89 C0.6 18.37, 0.63 14.14, 2.39 10.65 C4.14 7.17, 8.15 2.49, 13.22 0.97 C18.3 -0.55, 29.71 1.68, 32.82 1.53 C35.94 1.38, 32.09 -0.13, 31.9 0.08"
+                  stroke="#1e1e1e" stroke-width="2" fill="none"></path>
+      </g>
+      <g stroke-linecap="round">
+            <g
+                  transform="translate(184.160 104.381) rotate(0 105.289 147.701)">
+                  <path
+                        d="M0.88 0.3 C18.16 18.91, 69.33 63.16, 104.29 112.24 C139.26 161.32, 192.99 264.15, 210.66 294.79 M-0.12 -0.59 C17.01 17.61, 68.65 61, 103.66 110.4 C138.67 159.79, 192.14 265.2, 209.93 295.78"
+                        stroke="#1e1e1e" stroke-width="2" fill="none"></path>
+            </g>
+            <g
+                  transform="translate(184.160 104.381) rotate(0 105.289 147.701)">
+                  <path
+                        d="M191.15 279.28 C198.28 285.87, 205.2 290.76, 209.93 295.78 M191.15 279.28 C194.87 284.19, 201.34 287.71, 209.93 295.78"
+                        stroke="#1e1e1e" stroke-width="2" fill="none"></path>
+            </g>
+            <g
+                  transform="translate(184.160 104.381) rotate(0 105.289 147.701)">
+                  <path
+                        d="M206.15 271.07 C208.1 280.63, 209.8 288.38, 209.93 295.78 M206.15 271.07 C206.13 278.11, 208.87 283.67, 209.93 295.78"
+                        stroke="#1e1e1e" stroke-width="2" fill="none"></path>
+            </g>
+      </g>
+      <mask></mask>
+      <g stroke-linecap="round">
+            <g
+                  transform="translate(421.881 459.717) rotate(0 42.679 111.870)">
+                  <path
+                        d="M0 0 C12.92 29.25, 22.52 58.45, 41.8 98.88 M0 0 C10.7 26.01, 22.85 52.8, 41.8 98.88 M41.8 98.88 C57.06 139, 69.68 176.57, 85.36 223.74 M41.8 98.88 C59.25 145.22, 74.76 192.84, 85.36 223.74"
+                        stroke="#1e1e1e" stroke-width="2" fill="none"></path>
+            </g>
+            <g
+                  transform="translate(421.881 459.717) rotate(0 42.679 111.870)">
+                  <path
+                        d="M69.72 204.23 C75.05 210.7, 77.12 217.09, 85.36 223.74 M69.72 204.23 C73.6 209.19, 78.79 214.86, 85.36 223.74"
+                        stroke="#1e1e1e" stroke-width="2" fill="none"></path>
+            </g>
+            <g
+                  transform="translate(421.881 459.717) rotate(0 42.679 111.870)">
+                  <path
+                        d="M85.92 198.75 C86.59 206.8, 84.01 214.77, 85.36 223.74 M85.92 198.75 C85.48 205.19, 86.36 212.32, 85.36 223.74"
+                        stroke="#1e1e1e" stroke-width="2" fill="none"></path>
+            </g>
+      </g>
+      <mask></mask>
+      <g stroke-linecap="round">
+            <g
+                  transform="translate(548.932 682.051) rotate(0 21.046 -69.159)">
+                  <path
+                        d="M0 0 C2.69 -9.9, 7.45 -24.52, 14.67 -54.31 M0 0 C4.38 -18.12, 9.16 -37.49, 14.67 -54.31 M14.67 -54.31 C24.91 -82.83, 31.95 -112.93, 42.09 -138.32 M14.67 -54.31 C24.34 -81.65, 32.81 -111.13, 42.09 -138.32"
+                        stroke="#1e1e1e" stroke-width="2" fill="none"></path>
+            </g>
+            <g
+                  transform="translate(548.932 682.051) rotate(0 21.046 -69.159)">
+                  <path
+                        d="M42.9 -113.33 C42.06 -116.96, 43.42 -125.16, 42.09 -138.32 M42.9 -113.33 C42.01 -121.52, 41.56 -130.99, 42.09 -138.32"
+                        stroke="#1e1e1e" stroke-width="2" fill="none"></path>
+            </g>
+            <g
+                  transform="translate(548.932 682.051) rotate(0 21.046 -69.159)">
+                  <path
+                        d="M26.65 -118.66 C29.34 -120.96, 34.27 -128, 42.09 -138.32 M26.65 -118.66 C31.25 -125.07, 36.29 -132.73, 42.09 -138.32"
+                        stroke="#1e1e1e" stroke-width="2" fill="none"></path>
+            </g>
+      </g>
+      <mask></mask>
+      <g stroke-linecap="round"
+            transform="translate(588.471 431.077) rotate(89.999 28.490 19.269)">
+            <path
+                  d="M37.18 1.8 C42.82 2.8, 49.57 5.02, 52.74 8.52 C55.9 12.02, 56.95 18.71, 56.18 22.8 C55.4 26.89, 52.62 30.29, 48.08 33.05 C43.54 35.8, 35.24 38.96, 28.96 39.32 C22.68 39.68, 15.02 37.9, 10.39 35.22 C5.76 32.55, 2.16 27.59, 1.17 23.27 C0.17 18.96, 1.69 13.13, 4.44 9.33 C7.18 5.54, 11.53 1.67, 17.64 0.5 C23.74 -0.66, 36.79 1.86, 41.06 2.33 C45.33 2.8, 43.57 3.03, 43.26 3.32 M15.89 0.57 C21.29 -1.27, 30.79 0.02, 36.6 1.15 C42.41 2.28, 47.25 4.29, 50.73 7.34 C54.21 10.39, 57.63 15.04, 57.48 19.42 C57.32 23.8, 54.18 30.59, 49.79 33.6 C45.39 36.62, 37.29 37.44, 31.09 37.54 C24.89 37.63, 17.61 36.47, 12.59 34.19 C7.58 31.91, 2.7 27.44, 0.99 23.87 C-0.72 20.31, -0.33 16.2, 2.34 12.8 C5.01 9.41, 14.58 5.14, 17 3.5 C19.42 1.86, 17.04 3.04, 16.86 2.99"
+                  stroke="#1e1e1e" stroke-width="2" fill="none"></path>
+      </g>
+      <g stroke-linecap="round">
+            <g
+                  transform="translate(627.265 416.793) rotate(0 29.768 -55.200)">
+                  <path
+                        d="M0.47 1.09 C4.49 -8.32, 15.36 -37.47, 25.24 -55.96 C35.12 -74.46, 54.12 -100.72, 59.74 -109.87 M-0.74 0.61 C3.07 -9.19, 14.61 -39, 24.58 -57.75 C34.55 -76.51, 53.36 -103.22, 59.08 -111.93"
+                        stroke="#1e1e1e" stroke-width="2" fill="none"></path>
+            </g>
+            <g
+                  transform="translate(627.265 416.793) rotate(0 29.768 -55.200)">
+                  <path
+                        d="M53.04 -87.67 C57.13 -96.3, 58.75 -106.43, 59.08 -111.93 M53.04 -87.67 C56.03 -95.92, 57.83 -104.97, 59.08 -111.93"
+                        stroke="#1e1e1e" stroke-width="2" fill="none"></path>
+            </g>
+            <g
+                  transform="translate(627.265 416.793) rotate(0 29.768 -55.200)">
+                  <path
+                        d="M38.86 -97.24 C48.56 -102.16, 55.76 -108.53, 59.08 -111.93 M38.86 -97.24 C46.69 -102.14, 53.37 -107.89, 59.08 -111.93"
+                        stroke="#1e1e1e" stroke-width="2" fill="none"></path>
+            </g>
+      </g>
+      <mask></mask>
+      <g stroke-linecap="round">
+            <g
+                  transform="translate(727.616 257.290) rotate(0 54.948 -51.400)">
+                  <path
+                        d="M-1.04 -0.58 C7.47 -9.98, 32.35 -40.47, 50.71 -57.38 C69.07 -74.28, 99.36 -94.44, 109.13 -102.02 M0.62 1.72 C9.08 -7.46, 31.78 -38.73, 50.28 -56.34 C68.78 -73.95, 101.79 -96.38, 111.62 -103.95"
+                        stroke="#1e1e1e" stroke-width="2" fill="none"></path>
+            </g>
+            <g
+                  transform="translate(727.616 257.290) rotate(0 54.948 -51.400)">
+                  <path
+                        d="M97.69 -83.18 C100.7 -87.07, 103.88 -95.69, 111.62 -103.95 M97.69 -83.18 C102.64 -91.63, 108.41 -99.28, 111.62 -103.95"
+                        stroke="#1e1e1e" stroke-width="2" fill="none"></path>
+            </g>
+            <g
+                  transform="translate(727.616 257.290) rotate(0 54.948 -51.400)">
+                  <path
+                        d="M87.6 -96.99 C93.25 -97.02, 99.19 -101.87, 111.62 -103.95 M87.6 -96.99 C96.17 -100.39, 105.63 -103, 111.62 -103.95"
+                        stroke="#1e1e1e" stroke-width="2" fill="none"></path>
+            </g>
+      </g>
+      <mask></mask>
+      <g stroke-linecap="round"
+            transform="translate(226.503 36.993) rotate(0 6.578 32.596)">
+            <path
+                  d="M3.29 0 C5.37 0.25, 7.2 -0.19, 9.87 0 M3.29 0 C5.78 -0.06, 8.65 -0.13, 9.87 0 M9.87 0 C11.79 0.38, 12.31 0.97, 13.16 3.29 M9.87 0 C11.84 0.58, 14.12 -0.05, 13.16 3.29 M13.16 3.29 C13.83 20.55, 13.5 38.82, 13.16 61.9 M13.16 3.29 C12.78 24.42, 12.91 45.44, 13.16 61.9 M13.16 61.9 C12.94 64.96, 13.04 65.74, 9.87 65.19 M13.16 61.9 C13.92 63.11, 11.75 65.05, 9.87 65.19 M9.87 65.19 C8.48 65.13, 6.39 64.95, 3.29 65.19 M9.87 65.19 C7.52 65.3, 4.92 65.23, 3.29 65.19 M3.29 65.19 C0.69 65.47, 0.67 63.51, 0 61.9 M3.29 65.19 C1.5 64.93, -0.9 63.74, 0 61.9 M0 61.9 C0.39 39.8, -0.17 15.24, 0 3.29 M0 61.9 C0.03 45.42, 0.2 29.75, 0 3.29 M0 3.29 C-0.96 1.52, 0.68 -0.08, 3.29 0 M0 3.29 C-0.33 -0.02, 1.75 0.9, 3.29 0"
+                  stroke="#1e1e1e" stroke-width="2" fill="none"></path>
+      </g>
+      <g stroke-linecap="round">
+            <g
+                  transform="translate(250.676 102.262) rotate(0 6.981 -0.239)">
+                  <path
+                        d="M-0.04 -0.16 C2.16 -0.15, 11.02 -0.12, 13.43 -0.17 M-0.73 -0.72 C1.61 -0.85, 11.89 -1.13, 14.39 -0.97"
+                        stroke="#1e1e1e" stroke-width="2" fill="none"></path>
+            </g>
+      </g>
+      <mask></mask>
+      <g transform="translate(227.573 10) rotate(0 6.979 12.5)">
+            <text x="0" y="17.619" font-family="Excalifont, Xiaolai, Segoe UI Emoji"
+                  font-size="20px" fill="#1e1e1e" text-anchor="start" style="white-space: pre;"
+                  direction="ltr" dominant-baseline="alphabetic">P</text>
+      </g>
+      <g transform="translate(251.747 72.448) rotate(0 6.129 12.5)">
+            <text x="0" y="17.619" font-family="Excalifont, Xiaolai, Segoe UI Emoji"
+                  font-size="20px" fill="#1e1e1e" text-anchor="start" style="white-space: pre;"
+                  direction="ltr" dominant-baseline="alphabetic">K</text>
+      </g>
+      <g stroke-linecap="round"
+            transform="translate(465.762 406.494) rotate(0 5.835 14.871)">
+            <path
+                  d="M2.92 0 C4.89 -0.22, 6.21 -0.25, 8.75 0 M2.92 0 C4.47 -0.09, 6.27 -0.08, 8.75 0 M8.75 0 C10.71 0.22, 11.13 0.71, 11.67 2.92 M8.75 0 C10.3 -0.34, 12.51 -0.11, 11.67 2.92 M11.67 2.92 C12.34 9.96, 12.42 18.14, 11.67 26.83 M11.67 2.92 C11.43 9.01, 11.33 15.38, 11.67 26.83 M11.67 26.83 C11.78 27.9, 9.84 29.3, 8.75 29.74 M11.67 26.83 C10.91 28.88, 10.08 28.98, 8.75 29.74 M8.75 29.74 C7.14 29.71, 5.95 29.63, 2.92 29.74 M8.75 29.74 C6.84 29.84, 4.89 29.66, 2.92 29.74 M2.92 29.74 C1.09 28.82, -0.28 29.24, 0 26.83 M2.92 29.74 C0.29 30.4, 0.55 28.99, 0 26.83 M0 26.83 C0.88 20.45, 0.35 12.67, 0 2.92 M0 26.83 C0.18 20.08, -0.37 13.73, 0 2.92 M0 2.92 C-0.97 0.27, 0.54 -0.51, 2.92 0 M0 2.92 C-0.49 0.33, 0.73 -0.28, 2.92 0"
+                  stroke="#1e1e1e" stroke-width="2" fill="none"></path>
+      </g>
+      <g
+            transform="translate(443.139 370.617) rotate(0 6.979 12.5)">
+            <text x="0" y="17.619" font-family="Excalifont, Xiaolai, Segoe UI Emoji"
+                  font-size="20px" fill="#1e1e1e" text-anchor="start" style="white-space: pre;"
+                  direction="ltr" dominant-baseline="alphabetic">P</text>
+      </g>
+      <g
+            transform="translate(465.536 381.098) rotate(0 6.129 12.5)">
+            <text x="0" y="17.619" font-family="Excalifont, Xiaolai, Segoe UI Emoji"
+                  font-size="20px" fill="#1e1e1e" text-anchor="start" style="white-space: pre;"
+                  direction="ltr" dominant-baseline="alphabetic">K</text>
+      </g>
+      <g stroke-linecap="round"
+            transform="translate(444.405 397.464) rotate(0 5.912 19.404)">
+            <path
+                  d="M2.96 0 C4.21 -0.08, 5.68 -0.09, 8.87 0 M2.96 0 C5.2 -0.06, 7.46 -0.06, 8.87 0 M8.87 0 C11.56 0.42, 11.41 0.98, 11.83 2.96 M8.87 0 C9.94 -0.56, 11.63 0.2, 11.83 2.96 M11.83 2.96 C10.98 13.11, 11.18 24.26, 11.83 35.85 M11.83 2.96 C11.28 10.91, 11.23 19.13, 11.83 35.85 M11.83 35.85 C11.33 37.46, 11.25 38.96, 8.87 38.81 M11.83 35.85 C12.14 38.46, 11.55 39.77, 8.87 38.81 M8.87 38.81 C7.4 38.92, 5.92 38.95, 2.96 38.81 M8.87 38.81 C6.84 38.76, 4.89 38.9, 2.96 38.81 M2.96 38.81 C1.36 38.73, -0.18 38.74, 0 35.85 M2.96 38.81 C0.84 39.47, 0 37.23, 0 35.85 M0 35.85 C-0.27 22.92, -0.27 10.44, 0 2.96 M0 35.85 C0.51 26.27, -0.13 17.82, 0 2.96 M0 2.96 C0.15 1.23, 1.55 -0.59, 2.96 0 M0 2.96 C0.31 0.8, 1.24 0.69, 2.96 0"
+                  stroke="#1e1e1e" stroke-width="2" fill="none"></path>
+      </g>
+      <g stroke-linecap="round"
+            transform="translate(461.837 653.024) rotate(0 6.578 32.596)">
+            <path
+                  d="M3.29 0 C4.3 -0.15, 6.05 0.06, 9.87 0 M3.29 0 C5.37 -0.15, 7.25 -0.06, 9.87 0 M9.87 0 C12.43 0.37, 13.06 1.82, 13.16 3.29 M9.87 0 C11.39 -0.07, 12.76 0.2, 13.16 3.29 M13.16 3.29 C13.91 16.8, 13.53 29, 13.16 61.9 M13.16 3.29 C12.98 22.94, 12.66 43.08, 13.16 61.9 M13.16 61.9 C13.49 63.17, 12.41 64.34, 9.87 65.19 M13.16 61.9 C12.04 64.84, 12.3 65.97, 9.87 65.19 M9.87 65.19 C8.08 65.19, 7.06 65.41, 3.29 65.19 M9.87 65.19 C7.81 65.12, 5.86 65.3, 3.29 65.19 M3.29 65.19 C0.97 65.8, 0.7 64.57, 0 61.9 M3.29 65.19 C0.65 65.09, 0.11 65.09, 0 61.9 M0 61.9 C0.74 44.89, -0.82 26.73, 0 3.29 M0 61.9 C-0.33 49, 0.31 35.93, 0 3.29 M0 3.29 C0.75 0.2, 1.5 -0.76, 3.29 0 M0 3.29 C-0.19 0.72, 0.84 -1.07, 3.29 0"
+                  stroke="#1e1e1e" stroke-width="2" fill="none"></path>
+      </g>
+      <g stroke-linecap="round">
+            <g
+                  transform="translate(439.082 717.487) rotate(0 6.981 -0.239)">
+                  <path
+                        d="M-0.27 0.17 C2.11 0.19, 11.72 -0.34, 14.05 -0.44 M0.59 -0.21 C2.92 -0.05, 11.56 0.22, 13.66 0.27"
+                        stroke="#1e1e1e" stroke-width="2" fill="none"></path>
+            </g>
+      </g>
+      <mask></mask>
+      <g
+            transform="translate(438.478 691.766) rotate(0 6.979 12.5)">
+            <text x="0" y="17.619" font-family="Excalifont, Xiaolai, Segoe UI Emoji"
+                  font-size="20px" fill="#1e1e1e" text-anchor="start" style="white-space: pre;"
+                  direction="ltr" dominant-baseline="alphabetic">P</text>
+      </g>
+      <g transform="translate(462.651 628.516) rotate(0 6.129 12.5)">
+            <text x="0" y="17.619" font-family="Excalifont, Xiaolai, Segoe UI Emoji"
+                  font-size="20px" fill="#1e1e1e" text-anchor="start" style="white-space: pre;"
+                  direction="ltr" dominant-baseline="alphabetic">K</text>
+      </g>
+      <g stroke-linecap="round"
+            transform="translate(659.323 252.042) rotate(0 5.684 19.286)">
+            <path
+                  d="M2.84 0 C3.97 -0.1, 4.92 -0.04, 8.53 0 M2.84 0 C4.19 -0.1, 5.44 0, 8.53 0 M8.53 0 C11.02 0.51, 10.57 0.31, 11.37 2.84 M8.53 0 C11.47 -0.11, 11.66 1.11, 11.37 2.84 M11.37 2.84 C11.89 16.41, 10.93 28.12, 11.37 35.73 M11.37 2.84 C11.2 11.77, 11.16 21.11, 11.37 35.73 M11.37 35.73 C12.09 36.66, 10.63 38.5, 8.53 38.57 M11.37 35.73 C10.47 36.86, 11.42 39.03, 8.53 38.57 M8.53 38.57 C6.71 38.32, 4.8 38.51, 2.84 38.57 M8.53 38.57 C6.34 38.58, 4.31 38.48, 2.84 38.57 M2.84 38.57 C0.81 39.06, 0.5 36.87, 0 35.73 M2.84 38.57 C1.22 38.68, -0.35 38.7, 0 35.73 M0 35.73 C-0.13 29.6, -0.41 21.93, 0 2.84 M0 35.73 C-0.59 25.76, -0.29 14.42, 0 2.84 M0 2.84 C0.32 0.78, 0.93 -0.67, 2.84 0 M0 2.84 C0.51 0.69, 0.65 0.51, 2.84 0"
+                  stroke="#1e1e1e" stroke-width="2" fill="none"></path>
+      </g>
+      <g
+            transform="translate(638.081 235.031) rotate(0 6.979 12.5)">
+            <text x="0" y="17.619" font-family="Excalifont, Xiaolai, Segoe UI Emoji"
+                  font-size="20px" fill="#1e1e1e" text-anchor="start" style="white-space: pre;"
+                  direction="ltr" dominant-baseline="alphabetic">P</text>
+      </g>
+      <g transform="translate(660.319 225.640) rotate(0 6.129 12.5)">
+            <text x="0" y="17.619" font-family="Excalifont, Xiaolai, Segoe UI Emoji"
+                  font-size="20px" fill="#1e1e1e" text-anchor="start" style="white-space: pre;"
+                  direction="ltr" dominant-baseline="alphabetic">K</text>
+      </g>
+      <g stroke-linecap="round"
+            transform="translate(637.664 260.037) rotate(0 5.833 15.306)">
+            <path
+                  d="M2.92 0 C4.8 0.17, 6.04 0.16, 8.75 0 M2.92 0 C4.64 -0.11, 6.72 -0.03, 8.75 0 M8.75 0 C10.94 0.14, 12.57 1.13, 11.67 2.92 M8.75 0 C10.57 0.57, 12.52 0.44, 11.67 2.92 M11.67 2.92 C10.83 8.93, 11.26 15.42, 11.67 27.7 M11.67 2.92 C11.86 10.46, 11.37 17.75, 11.67 27.7 M11.67 27.7 C12.53 30.04, 10.85 29.78, 8.75 30.61 M11.67 27.7 C10.72 29.54, 9.76 30.04, 8.75 30.61 M8.75 30.61 C7.28 30.47, 5.4 30.64, 2.92 30.61 M8.75 30.61 C7.51 30.52, 6.16 30.64, 2.92 30.61 M2.92 30.61 C0.67 31.55, -0.89 29.99, 0 27.7 M2.92 30.61 C1.54 30.53, 0.92 29.24, 0 27.7 M0 27.7 C0.21 19.1, 0.92 12.1, 0 2.92 M0 27.7 C-0.05 22, 0.18 16.86, 0 2.92 M0 2.92 C-0.26 1.41, 1.21 0.03, 2.92 0 M0 2.92 C-0.21 1.04, 0.96 -0.95, 2.92 0"
+                  stroke="#1e1e1e" stroke-width="2" fill="none"></path>
+      </g>
+      <g stroke-linecap="round"
+            transform="translate(915.341 93.115) rotate(0 6.578 32.596)">
+            <path
+                  d="M3.29 0 C5.76 0.22, 7.84 -0.04, 9.87 0 M3.29 0 C5.71 -0.11, 8.36 -0.01, 9.87 0 M9.87 0 C11.87 -0.47, 12.33 2.07, 13.16 3.29 M9.87 0 C13.06 -0.18, 13.1 0.23, 13.16 3.29 M13.16 3.29 C14.01 19.98, 14.27 37.19, 13.16 61.9 M13.16 3.29 C13.14 18.31, 12.87 33.83, 13.16 61.9 M13.16 61.9 C13.35 64.13, 11.27 65.77, 9.87 65.19 M13.16 61.9 C14.15 63.61, 12.2 64.23, 9.87 65.19 M9.87 65.19 C7.71 65.22, 5.96 65.03, 3.29 65.19 M9.87 65.19 C7.96 65.06, 5.98 65.24, 3.29 65.19 M3.29 65.19 C0.44 64.96, 0.05 64.57, 0 61.9 M3.29 65.19 C1.13 65.92, 0.92 64.46, 0 61.9 M0 61.9 C-0.73 38.47, -0.86 15.31, 0 3.29 M0 61.9 C0.36 39.16, 0.27 16.61, 0 3.29 M0 3.29 C-0.91 1.48, 0.17 0.84, 3.29 0 M0 3.29 C0.99 1.89, 1.22 -0.16, 3.29 0"
+                  stroke="#1e1e1e" stroke-width="2" fill="none"></path>
+      </g>
+      <g stroke-linecap="round">
+            <g
+                  transform="translate(939.515 158.383) rotate(0 6.981 -0.239)">
+                  <path
+                        d="M0.36 0.34 C2.68 0.26, 11.62 0.22, 13.89 0 M-0.11 0.04 C2.13 0.05, 11.12 -0.6, 13.42 -0.72"
+                        stroke="#1e1e1e" stroke-width="2" fill="none"></path>
+            </g>
+      </g>
+      <mask></mask>
+      <g
+            transform="translate(916.411 66.121) rotate(0 6.979 12.5)">
+            <text x="0" y="17.619" font-family="Excalifont, Xiaolai, Segoe UI Emoji"
+                  font-size="20px" fill="#1e1e1e" text-anchor="start" style="white-space: pre;"
+                  direction="ltr" dominant-baseline="alphabetic">P</text>
+      </g>
+      <g transform="translate(940.585 128.569) rotate(0 6.129 12.5)">
+            <text x="0" y="17.619" font-family="Excalifont, Xiaolai, Segoe UI Emoji"
+                  font-size="20px" fill="#1e1e1e" text-anchor="start" style="white-space: pre;"
+                  direction="ltr" dominant-baseline="alphabetic">K</text>
+      </g>
+      <g stroke-linecap="round">
+            <g
+                  transform="translate(389.498 452.447) rotate(0 -16.576 24.076)">
+                  <path
+                        d="M0.41 0.54 C-2.27 4.95, -12.79 23.88, -15.73 26.46 C-18.67 29.04, -14.3 12.47, -17.25 16.01 C-20.2 19.56, -30.81 42.34, -33.43 47.71 M-0.04 0.34 C-2.79 4.59, -12.97 23.15, -15.92 25.62 C-18.87 28.09, -14.83 11.44, -17.75 15.17 C-20.67 18.89, -30.83 42.43, -33.45 47.99"
+                        stroke="#1e1e1e" stroke-width="1" fill="none"></path>
+            </g>
+            <g
+                  transform="translate(389.498 452.447) rotate(0 -16.576 24.076)">
+                  <path
+                        d="M-32.08 29.86 C-31.7 37.29, -32.68 42.69, -33.45 47.99 M-32.08 29.86 C-32.45 36.77, -33.39 43.87, -33.45 47.99"
+                        stroke="#1e1e1e" stroke-width="1" fill="none"></path>
+            </g>
+            <g
+                  transform="translate(389.498 452.447) rotate(0 -16.576 24.076)">
+                  <path
+                        d="M-20.75 34.98 C-24.52 40.58, -29.66 44.09, -33.45 47.99 M-20.75 34.98 C-25.37 39.92, -30.58 45.09, -33.45 47.99"
+                        stroke="#1e1e1e" stroke-width="1" fill="none"></path>
+            </g>
+      </g>
+      <mask></mask>
+      <g transform="translate(343.358 502.486) rotate(0 5.729 12.5)">
+            <text x="0" y="17.619" font-family="Excalifont, Xiaolai, Segoe UI Emoji"
+                  font-size="20px" fill="#1e1e1e" text-anchor="start" style="white-space: pre;"
+                  direction="ltr" dominant-baseline="alphabetic">H</text>
+      </g>
+      <g stroke-linecap="round">
+            <g
+                  transform="translate(507.890 737.337) rotate(0 -16.576 24.076)">
+                  <path
+                        d="M-0.15 0.18 C-2.9 4.62, -13.62 24.05, -16.36 26.54 C-19.11 29.03, -13.86 11.54, -16.6 15.12 C-19.35 18.7, -30.09 42.44, -32.85 48.03 M0.77 -0.2 C-2.08 4.08, -13.96 23.12, -16.88 25.74 C-19.8 28.35, -14.15 11.69, -16.77 15.47 C-19.38 19.26, -29.74 43.14, -32.58 48.46"
+                        stroke="#1e1e1e" stroke-width="1" fill="none"></path>
+            </g>
+            <g
+                  transform="translate(507.890 737.337) rotate(0 -16.576 24.076)">
+                  <path
+                        d="M-30.84 30.37 C-31.13 36.04, -31.47 42.85, -32.58 48.46 M-30.84 30.37 C-31.16 34.63, -31.29 38.01, -32.58 48.46"
+                        stroke="#1e1e1e" stroke-width="1" fill="none"></path>
+            </g>
+            <g
+                  transform="translate(507.890 737.337) rotate(0 -16.576 24.076)">
+                  <path
+                        d="M-19.62 35.72 C-23.59 39.62, -27.61 44.67, -32.58 48.46 M-19.62 35.72 C-22.35 38.82, -24.87 41.06, -32.58 48.46"
+                        stroke="#1e1e1e" stroke-width="1" fill="none"></path>
+            </g>
+      </g>
+      <mask></mask>
+      <g transform="translate(462.060 787.376) rotate(0 6.219 12.5)">
+            <text x="0" y="17.619" font-family="Excalifont, Xiaolai, Segoe UI Emoji"
+                  font-size="20px" fill="#1e1e1e" text-anchor="start" style="white-space: pre;"
+                  direction="ltr" dominant-baseline="alphabetic">S</text>
+      </g>
+      <g stroke-linecap="round">
+            <g
+                  transform="translate(654.348 523.612) rotate(293.569 -14.789 25.603)">
+                  <path
+                        d="M-0.83 -0.39 C-2.86 4.25, -11.13 25.38, -13.13 28.39 C-15.13 31.41, -10.19 14.07, -12.84 17.71 C-15.5 21.36, -26.12 44.69, -29.06 50.28 M0.93 -1.64 C-1.22 3.08, -11.96 26.11, -14.34 29.47 C-16.71 32.84, -10.95 14.97, -13.32 18.54 C-15.69 22.11, -25.97 45.38, -28.54 50.9"
+                        stroke="#1e1e1e" stroke-width="1" fill="none"></path>
+            </g>
+            <g
+                  transform="translate(654.348 523.612) rotate(293.569 -14.789 25.603)">
+                  <path
+                        d="M-27.14 32.77 C-27.96 36, -29 41.58, -28.54 50.9 M-27.14 32.77 C-28.04 36.84, -27.6 40.67, -28.54 50.9"
+                        stroke="#1e1e1e" stroke-width="1" fill="none"></path>
+            </g>
+            <g
+                  transform="translate(654.348 523.612) rotate(293.569 -14.789 25.603)">
+                  <path
+                        d="M-15.81 37.92 C-19.15 39.93, -22.69 44.38, -28.54 50.9 M-15.81 37.92 C-19.26 40.75, -21.33 43.44, -28.54 50.9"
+                        stroke="#1e1e1e" stroke-width="1" fill="none"></path>
+            </g>
+      </g>
+      <mask></mask>
+      <g
+            transform="translate(658.119 570.252) rotate(0 5.729 12.5)">
+            <text x="0" y="17.619" font-family="Excalifont, Xiaolai, Segoe UI Emoji"
+                  font-size="20px" fill="#1e1e1e" text-anchor="start" style="white-space: pre;"
+                  direction="ltr" dominant-baseline="alphabetic">H</text>
+      </g>
+      <g stroke-linecap="round">
+            <g
+                  transform="translate(681.381 442.223) rotate(230.589 -14.080 23.381)">
+                  <path
+                        d="M-0.11 0.46 C-1.86 4.86, -8.46 23.92, -10.6 26.53 C-12.75 29.14, -10.13 12.85, -12.98 16.13 C-15.84 19.41, -25.14 41.03, -27.72 46.21 M0.83 0.22 C-0.73 4.47, -7.14 23.08, -9.52 25.83 C-11.9 28.59, -10.47 13.3, -13.44 16.74 C-16.42 20.17, -25.01 41.56, -27.38 46.43"
+                        stroke="#1e1e1e" stroke-width="1" fill="none"></path>
+            </g>
+            <g
+                  transform="translate(681.381 442.223) rotate(230.589 -14.080 23.381)">
+                  <path
+                        d="M-26.24 29.33 C-25.82 33.6, -26.03 38.48, -27.38 46.43 M-26.24 29.33 C-26.75 34.85, -26.46 39.57, -27.38 46.43"
+                        stroke="#1e1e1e" stroke-width="1" fill="none"></path>
+            </g>
+            <g
+                  transform="translate(681.381 442.223) rotate(230.589 -14.080 23.381)">
+                  <path
+                        d="M-15.51 34.06 C-18.07 37, -21.26 40.57, -27.38 46.43 M-15.51 34.06 C-19.28 38.1, -22.23 41.39, -27.38 46.43"
+                        stroke="#1e1e1e" stroke-width="1" fill="none"></path>
+            </g>
+      </g>
+      <mask></mask>
+      <g
+            transform="translate(698.558 450.047) rotate(0 5.669 12.5)">
+            <text x="0" y="17.619" font-family="Excalifont, Xiaolai, Segoe UI Emoji"
+                  font-size="20px" fill="#1e1e1e" text-anchor="start" style="white-space: pre;"
+                  direction="ltr" dominant-baseline="alphabetic">h</text>
+      </g>
+      <g stroke-linecap="round">
+            <g
+                  transform="translate(580.220 416.692) rotate(108.259 -14.080 23.381)">
+                  <path
+                        d="M0.3 -0.43 C-1.24 3.97, -7.57 23.71, -9.77 26.43 C-11.98 29.14, -9.92 12.5, -12.93 15.88 C-15.93 19.25, -25.19 41.46, -27.82 46.67 M-0.21 0.54 C-1.73 4.78, -7.74 23.04, -9.94 25.68 C-12.13 28.31, -10.42 12.78, -13.36 16.35 C-16.29 19.93, -25.09 41.94, -27.53 47.13"
+                        stroke="#1e1e1e" stroke-width="1" fill="none"></path>
+            </g>
+            <g
+                  transform="translate(580.220 416.692) rotate(108.259 -14.080 23.381)">
+                  <path
+                        d="M-26.5 30.02 C-27.38 34.3, -26.25 36.7, -27.53 47.13 M-26.5 30.02 C-27.14 34.69, -27.06 38.91, -27.53 47.13"
+                        stroke="#1e1e1e" stroke-width="1" fill="none"></path>
+            </g>
+            <g
+                  transform="translate(580.220 416.692) rotate(108.259 -14.080 23.381)">
+                  <path
+                        d="M-15.74 34.68 C-18.79 38.05, -19.85 39.5, -27.53 47.13 M-15.74 34.68 C-19.14 38.15, -21.81 41.18, -27.53 47.13"
+                        stroke="#1e1e1e" stroke-width="1" fill="none"></path>
+            </g>
+      </g>
+      <mask></mask>
+      <g transform="translate(535.967 397.512) rotate(0 5.429 12.5)">
+            <text x="0" y="17.619" font-family="Excalifont, Xiaolai, Segoe UI Emoji"
+                  font-size="20px" fill="#1e1e1e" text-anchor="start" style="white-space: pre;"
+                  direction="ltr" dominant-baseline="alphabetic">s</text>
+      </g>
+      <g stroke-linecap="round">
+            <g
+                  transform="translate(761.272 296.716) rotate(282.953 -14.620 23.793)">
+                  <path
+                        d="M-0.46 0.36 C-2.53 5.11, -10.3 26.05, -12.59 29.03 C-14.89 32.01, -11.48 15.08, -14.24 18.22 C-17 21.37, -26.69 43.02, -29.16 47.91 M0.31 0.07 C-1.81 5.14, -10.7 26.62, -12.93 29.73 C-15.17 32.85, -10.42 15.91, -13.1 18.77 C-15.77 21.63, -26.25 42.09, -29 46.91"
+                        stroke="#1e1e1e" stroke-width="1" fill="none"></path>
+            </g>
+            <g
+                  transform="translate(761.272 296.716) rotate(282.953 -14.620 23.793)">
+                  <path
+                        d="M-26.59 30.57 C-26.63 35.31, -27.82 39.02, -29 46.91 M-26.59 30.57 C-27.09 35.14, -28.27 39.99, -29 46.91"
+                        stroke="#1e1e1e" stroke-width="1" fill="none"></path>
+            </g>
+            <g
+                  transform="translate(761.272 296.716) rotate(282.953 -14.620 23.793)">
+                  <path
+                        d="M-16.65 35.94 C-19.45 39.17, -23.36 41.4, -29 46.91 M-16.65 35.94 C-19.94 39.03, -23.92 42.38, -29 46.91"
+                        stroke="#1e1e1e" stroke-width="1" fill="none"></path>
+            </g>
+      </g>
+      <mask></mask>
+      <g
+            transform="translate(768.073 332.990) rotate(0 5.729 12.5)">
+            <text x="0" y="17.619" font-family="Excalifont, Xiaolai, Segoe UI Emoji"
+                  font-size="20px" fill="#1e1e1e" text-anchor="start" style="white-space: pre;"
+                  direction="ltr" dominant-baseline="alphabetic">H</text>
+      </g>
+</svg>

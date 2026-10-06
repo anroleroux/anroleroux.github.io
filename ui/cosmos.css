@@ -59,3 +59,5 @@
 
 /* Visits sparkline */
 .cosmos .art-visits-spark { color: var(--gold); }
+/* Article figure images — invert dark-on-light SVGs for the dark theme */
+.cosmos .art-fig img { filter: invert(1) sepia(0.15); }

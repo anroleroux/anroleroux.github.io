@@ -172,11 +172,8 @@
       </section>
       <section>
         <h2 class="num">Governing Interactions</h2>
-        <p><span class="figure-number" data-fid="no-gov">Figure</span> show how the ungoverned particle, not only moved instantly infinitely far (the arrow pointing to infinity), it also instantly moved at an infinite velocity (vertical lines), as well as instantly had an infinite acceleration (the sharp bent) as long as the force acted upon it. Fortunately all matter has mass, making it lazy to change a state of stasis or motion. Additionally friction is all around us, dissipating kinetic energy into everything moving objects touches. But forces that strive to reduce displacement will be the starting consideration.</p>
-        <div class="note block">
-          <h4>Note</h4>
-          <p>This article is only concerned with macroscopic physical phenomena where bodies move relatively slow (compared to light). The fictitious infinities of position, velocity and acceleration in the imaginary absence of governing interactions is the important takeaway.</p>
-        </div>
+        <p><span class="figure-number" data-fid="no-gov">Figure</span> show how the ungoverned particle, not only moved instantly infinitely far (the arrow pointing to infinity), it also instantly moved at an infinite velocity (vertical lines), as well as instantly had an infinite acceleration (the sharp bent) as long as the force acted upon it. Fortunately all matter has mass, making it lazy to change a state of stasis or motion.</p>
+        <p>The mass, or more generally referred to as inertia makes the bends rounder as listed in <span class="figure-number" data-fid="govs">Table</span>. Additionally friction is all around us, dissipating kinetic energy into everything moving objects touches. It limits the speed that can be reached, reducing the gradient. But forces that strive to reduce displacement will be the starting consideration.</p>
         <table class="gov-table">
           <thead>
             <tr>
@@ -204,6 +201,10 @@
           </tbody>
         </table>
         <div class="table-numbering figure-numbering ref num" data-fig="govs" data-label="Table"><p>Table of governing effects and how it's presented on a displacement graph.</p></div>
+        <div class="note block">
+          <h4>Note</h4>
+          <p>This article is only concerned with macroscopic physical phenomena where bodies move relatively slow (compared to light). The fictitious infinities of position, velocity and acceleration in the imaginary absence of governing interactions is the important takeaway.</p>
+        </div>
         <h3 class="num">Displacement Constraints</h3>
         <p>A car driving on a level freeway has no direct displacement constraint relative to an earlier location. It can stop and freely remain anywhere on the freeway. It has, what is called, rigid body motion. When pulling a trailer, the car and trailer can be approximated as lumped masses connected by a stiff spring. Both, together, still exhibit rigid body motion but relative displacement between them is resisted. When accelerating and decelerating, the trailer coupler (and surrounding structure) will slightly stretch and compress respectively.</p>
         <p>There are different types of displacement constraints. The car body and wheels can also be approximated as lumped masses connected by softer springs (suspension). Zooming in on one part like a chassis beam, it can be approximated by a thousand slices connected by springs. Even the car on a slope, free to roll, will be pulled to a lower point. Similar to a pendulum, this is also a form of distance constraint. Here gravity acts as the displacement constraining force that drops to zero at the lowest point.</p>
@@ -214,7 +215,7 @@
         <div class="figure-numbering ref num" data-fig="fictSgraph" data-label="Figure"><p>A step-up-down force applied on an object only governed by stiffness. The position responds instantaneously and proportionally, mirroring the form of the force exactly.</p></div>
         <p><span class="figure-number" data-fid="fictSgraph">Figure</span> shows how applying a force to the particle now will displace it proportional to the force. It instantaneously moves to the equilibrium distance between the acting force and the constraining spring force. The position is now governed but it still reaches infinite speeds and acceleration. The graph still has both the vertical gradient and sharp bents.</p>
         <h3 class="num">Velocity Constrains</h3>
-        <p>The second law of thermodynamics says that entropy always increases. If we define entropy as the spread of energy we can see how any moving object spreads its kinetic energy to the surroundings. Everything that moves bumps into air molecules or scraps along surfaces. Even rolling ball bearings compress the crystal lattice in their races, absorbing some of the briefly stored potential energy and converting it into heat.</p>
+        <p>The second law of thermodynamics says that entropy always increases. If entropy is defined as the spread of energy one can see how any moving object spreads its kinetic energy to the surroundings. Everything that moves bumps into air molecules or scraps along surfaces. Even rolling ball bearings compress the crystal lattice in their races, absorbing some of the briefly stored potential energy and converting it into heat.</p>
         <p>The resistance to motion (or velocity) becomes intuitively more as speed increases. This is called damping, but there are also different types of velocity constraints. Air resistance is a resisting force proportional to velocity squared. Friction force between two surfaces is usually modeled as a constant resisting force. However, for low Reynolds numbers like viscous oil flowing laminarly through an orifice in a damper, the damping resistance force is linearly proportional to velocity.</p>
         <p>\[F = cv\]</p>
         <p>With only damping applied to the <span class="figure-number" data-fid="no-gov">Figure</span> particle, its velocity is limited. Displacement wise, it can still move infinitely far (exhibit rigid body motion) but gets stopped by damping when no force is applied to it. It also still has sharp corners because of the lack of inertia.</p>
@@ -229,7 +230,8 @@
       </section>
       <section>
         <h2 class="num">Component Summary</h2>
-        <p>The three components are stiffness, damping and inertia that opposes displacement, velocity and acceleration respectively. It's important to point out that velocity is the change in displacement and acceleration is the change in velocity.</p>
+        <p>The three components are stiffness, damping and inertia that opposes displacement, velocity and acceleration respectively. It's important to point out that velocity is the rate of change in displacement and acceleration is the rate of change in velocity. Energy is also pulled into the picture as it goes hand-in-hand with the components.</p>
+        <h3 class="num">Movement Calculus</h3>
         <table class="gov-table">
           <thead>
             <tr>
@@ -253,16 +255,21 @@
           </tbody>
         </table>
         <div class="table-numbering figure-numbering ref num" data-fig="components" data-label="Table"><p>Governing components and type of movement they oppose.</p></div>
-        <p>That is why displacement is the y-value in <span class="figure-number" data-fid="no-gov">Figure</span>, velocity is the gradient (change in displacement) and acceleration are bends (change in gradient). In calculus the rate of change of a value is a derivative so:</p>
-        <p>\[v = \frac{dx}{dt}, \quad a = \frac{dv}{dt} \quad \text{and} \quad a = \frac{d^2x}{dt^2}\]</p>
-        <h3 class="num">Stiffness</h3>
+        <p>That is why displacement is the y-value in <span class="figure-number" data-fid="no-gov">Figure</span>, velocity is the gradient (rate of change in displacement) and acceleration are bends (how the gradient changes). In calculus the rate of change of a value is a derivative and can be written as:</p>
+        <p>\[v = \frac{dx}{dt}, \quad a = \frac{dv}{dt} = \frac{d^2x}{dt^2}\]</p>
+        <p>The stiffness displacement graph is therefore the derivative of the damping displacement graph and the damping graph the derivative of the inertia graph. When looking from a velocity perspective, the damping velocity graph looks the same as the stiffness. The pattern is shown in <span class="figure-number" data-fid="diff-smd">Figure</span> that shows all nine combinations of components and perspectives. Diagonals stay the same and differentiation is from right to left and top to bottom.</p>
+        <div class="art-fig"><div class="charta diff-smd-fig"></div></div>
+        <div class="figure-numbering ref num" data-fig="diff-smd" data-label="Figure"><p>The same step force applied to a particle governed only by stiffness, damping or inertia, seen as position, velocity and acceleration. Each row is the derivative of the row above, so moving down a row looks the same as moving one column to the left. Where a graph jumps, its derivative becomes an infinite spike.</p></div>
+        <h3 class="num">Component Details</h3>
         <dl class="gov-list">
           <div class="gov-mob-row">
+            <dt>Stiffness</dt>
             <dd><span class="gov-mob-label">Causes</span>Spring, material elasticity, air compression, shaft torsion</dd>
             <dd><span class="gov-mob-label">Opposes</span>Displacement</dd>
             <dd><span class="gov-mob-label">Function of</span>displacement, \(x\)</dd>
             <dd><span class="gov-mob-label">Stores or Dissipates Energy</span>Stores potential energy</dd>
-            <dd><span class="gov-mob-label">Typical Symbol, Unit, Characteristic</span>\(k\), N/m, \(F = kx\)</dd>
+            <dd><span class="gov-mob-label">Typical Symbol, Unit</span>\(k\), N/m</dd>
+            <dd><span class="gov-mob-label">Typical Characteristic</span>\(F = kx\)</dd>
           </div>
         </dl>
         <table class="gov-table">
@@ -314,54 +321,68 @@
           </tbody>
         </table>
         <div class="table-numbering figure-numbering ref num" data-fig="sequs" data-label="Table"><p>Various mechanisms of stiffness</p></div>
-        <h3 class="num">Damping</h3>
         <dl class="gov-list">
           <div class="gov-mob-row">
+            <dt>Damping</dt>
             <dd><span class="gov-mob-label">Causes</span>Air resistance, fluid resistance, surface friction, material deformation energy absorption</dd>
             <dd><span class="gov-mob-label">Opposes</span>Velocity (rate of change of displacement)</dd>
             <dd><span class="gov-mob-label">Function of</span>velocity, \(v\), \(\dot{x}\)</dd>
             <dd><span class="gov-mob-label">Stores or Dissipates Energy</span>Dissipates kinetic energy</dd>
-            <dd><span class="gov-mob-label">Typical Symbol, Unit, Characteristic</span>\(c\), N s/m, \(F = cv\)</dd>
+            <dd><span class="gov-mob-label">Typical Symbol, Unit</span>\(c\), N s/m</dd>
+            <dd><span class="gov-mob-label">Typical Characteristic</span>\(F = cv\)</dd>
           </div>
         </dl>
-        <h3 class="num">Inertia</h3>
         <dl class="gov-list">
           <div class="gov-mob-row">
+            <dt>Inertia</dt>
             <dd><span class="gov-mob-label">Causes</span>Linear acceleration, rotational acceleration</dd>
             <dd><span class="gov-mob-label">Opposes</span>Acceleration (rate of change of velocity)</dd>
             <dd><span class="gov-mob-label">Function of</span>acceleration, \(a\), \(\ddot{x}\)</dd>
             <dd><span class="gov-mob-label">Stores or Dissipates Energy</span>Stores kinetic energy</dd>
-            <dd><span class="gov-mob-label">Typical Symbol, Unit, Characteristic</span>\(m\), kg, \(F = ma\)</dd>
+            <dd><span class="gov-mob-label">Typical Symbol, Unit</span>\(m\), kg</dd>
+            <dd><span class="gov-mob-label">Typical Characteristic</span>\(F = ma\)</dd>
           </div>
         </dl>
+        <h3 class="num">Energy Relation</h3>
+        <p>Note how stiffness and inertia stores energy while only damping dissipates energy. These properties result in the effect that energy is usually transferred back and forth between stiffness storage and inertia storage. In between such transfers, energy gets dissipated due to damping. An example is used to highlight this point next.</p>
       </section>
       <section>
         <h2 class="num">Motion-Energy Relationship</h2>
-        <p>Consider a ball that is dropped from a height of \(x_1\) and bounced on the ground. It starts with potential energy (P in <span class="figure-number" data-fid="ball-energy">Figure</span>) because of its height. As it picks up speed the potential energy gets converted to kinetic energy (K). The energy transfer is completed right before it hits the ground.</p>
+        <p>Consider a ball that is dropped from a height of \(x_0\) and bounced on the ground. It starts with potential energy (P in <span class="figure-number" data-fid="ball-energy">Figure</span>) because of its height. As it picks up speed the potential energy gets converted to kinetic energy (K). The energy transfer is completed right before it hits the ground.</p>
         <div class="art-fig"><img src="bl.svg" alt="A ball being dropped and bounces. P and K indicate potential and kinetic energy." /></div>
         <div class="figure-numbering ref num" data-fig="ball-energy" data-label="Figure"><p>A ball being dropped and bounces. P and K indicate potential and kinetic energy.</p></div>
         <p>Energy is briefly converted back into potential energy again when the ball hits the ground and deforms. It now wants to return to its original shape since all the kinetic energy used to squash the ball is depleted. The ball starts to accelerate back up converting the squash potential energy into kinetic energy and then back into potential as the ball comes to a complete stop at its highest rebound position \(x_1\).</p>
-        <p>However, we do not only see a potential - kinetic - potential - kinetic - potential energy transfer. Much more has also happened in the process. As the ball was falling and bouncing up through the air it was constantly losing energy towards displacing the air molecules. Then as it bounced the deformation of the ball absorbs some energy as heat because of the fibers and polymers that rub against each other. Even the floor can deform, taking some of the ball’s energy and contributing to the bounce sound.</p>
+        <p>Additional to the potential-kinetic-potential-kinetic-potential energy transfer, energy gets dissipated while moving through the air and other effects. Kinetic energy right before impact is equal to the starting (\(x_0\)) potential energy (ignoring drag energy loss). The highest (at impact) velocity (\(v_{max}\)) can be calculated as:</p>
+        <p>\[KE = \tfrac{1}{2} m v_{max}^2 \approx m g x_0 = PE\]</p>
+        <p>\[v_{max} \approx \sqrt{2 g x_0}\]</p>
+        <p>A drag force of \(F_d = \tfrac{1}{2} C_d \rho A v^2\) would have worked to slow the ball down all the way from \(x_0\) to the floor (from \(v = 0\) to \(v = v_{max}\)).</p>
+        <p>When the ball hits the floor a new energy conversion branch splits off from the main branch. Steel balls bouncing on steel are 99% elastic, restoring its spherical shape when leaving the floor. Sports balls has a contact time with the floor that is much shorter than the period of the ball’s first natural frequency. This causes it to oscillate between a squished and stretched oval shape while travelling up after impact.</p>
+        <p>A considerable amount of energy goes into this oscillation that dissipates it into sound energy (S) and heat energy, both outside (H) and inside the rubber (h). Even the floor, if flexible relative to the ball’s dynamics, will also absorb energy and vibrate, dissipating it as sound energy. The vibrating phenomena is possible because of stiffness and inertia and will be seen again in <span class="figure-number" data-fid="stiffness-and-inertia">Section</span>.</p>
       </section>
       <section>
         <h2 class="num">Combined Effect of Governing Interactions</h2>
-        <p>In nature all three elements work together as energy gets passed between them. But before we go all out and mix everything together again, let's see how they behave two at a time.</p>
+        <p>In nature all three elements work together as energy gets transferred between them. But before we go all out and mix everything up again, let's see how two-two work together.</p>
         <h3 class="num">Stiffness and Damping</h3>
-        <p>Without mass there is no inertia to carry the particle past its mark. The spring decides where the particle wants to come to rest and the damper governs how quickly it gets there. When the force steps up, the position eases smoothly toward its steady offset of \(F/k\); when the force is removed it relaxes back to zero just as smoothly. There is no overshoot and no oscillation — with no kinetic energy store, the motion can only ever approach its target, never pass it (Figure <span class="figure-number" data-fid="sd"></span>).</p>
+        <p>Without mass there is no inertia to carry the particle past its mark. The spring decides where the particle wants to come to rest and the damper governs how quickly it gets there. When the force steps up, the position eases smoothly toward its steady offset of \(F/k\); when the force is removed it relaxes back to zero just as smoothly. There is no overshoot and no oscillation — with no kinetic energy store, the motion can only ever approach its target, never pass it (Figure <span class="figure-number" data-fid="fictSDgraph"></span>).</p>
         <div class="art-fig"><div class="charta sd-resp-fig"></div></div>
-        <div class="figure-numbering ref num" data-fig="sd" data-label="Figure"><p>A step-up–down force applied to an object governed by stiffness and damping. The position eases toward its steady offset and relaxes back without ever overshooting — with no mass there is no kinetic energy to carry it past the mark.</p></div>
+        <div class="figure-numbering ref num" data-fig="fictSDgraph" data-label="Figure"><p>A step-up-down force applied on an object governed by stiffness and damping.</p></div>
         <h3 class="num">Inertia and Damping</h3>
-        <p>Here there is no spring, so nothing pulls the particle back to where it started. The damper caps how fast it can move and the mass smooths the start and the stop. While the force acts, the particle accelerates and settles into a steady drift; once the force is gone the mass keeps it coasting, but the damper steadily bleeds the velocity away until it glides to a halt — and there it stays, with no restoring force to call it home (Figure <span class="figure-number" data-fid="md"></span>).</p>
+        <p>Here there is no spring, so nothing pulls the particle back to where it started. The damper caps how fast it can move and the mass smooths the start and the stop. While the force acts, the particle accelerates and settles into a steady drift; once the force is gone the mass keeps it coasting, but the damper steadily bleeds the velocity away until it glides to a halt — and there it stays, with no restoring force to call it home (Figure <span class="figure-number" data-fid="fictMDgraph"></span>).</p>
         <div class="art-fig"><div class="charta md-resp-fig"></div></div>
-        <div class="figure-numbering ref num" data-fig="md" data-label="Figure"><p>A step-up–down force applied to an object governed by inertia and damping. The mass drifts while the force acts and coasts to a halt once it is removed; with no spring there is nothing to return it to the start.</p></div>
-        <h3 class="num">Stiffness and Inertia</h3>
-        <p>This is where it gets interesting. With this combination — the two governing interactions that can store and release energy — energy can be shifted back and forth indefinitely. Just like a pendulum or an idealistic bouncing ball, the spring and mass system will oscillate after perturbation. The spring turns position into a restoring force, the mass turns that force into motion, and with no damper to dissipate anything the two simply trade potential and kinetic energy forever. The force kicks the system into motion and it never settles (Figure <span class="figure-number" data-fid="sm"></span>).</p>
+        <div class="figure-numbering ref num" data-fig="fictMDgraph" data-label="Figure"><p>A step-up-down force applied on an object governed by inertia and damping.</p></div>
+        <h3 class="num ref">Stiffness and Inertia</h3>
+        <p>This is where it gets interesting. With this combination the two energy storable and releasable governing interactions, energy can be indefinitely shifted. Just like a pendulum or an idealistic bouncing ball, the spring and mass system will oscillate after perturbation.</p>
         <div class="art-fig"><div class="charta sm-resp-fig"></div></div>
-        <div class="figure-numbering ref num" data-fig="sm" data-label="Figure"><p>A step-up–down force applied to an object governed by stiffness and inertia. With no damper to dissipate energy, the spring and mass trade potential and kinetic energy indefinitely and the system oscillates without end.</p></div>
+        <div class="figure-numbering ref num" data-fig="fictSMgraph" data-label="Figure"><p>A step-up-down force applied on an object governed by stiffness and inertia.</p></div>
         <h3 class="num">Full System</h3>
-        <p>Add the damper back to the spring and mass of Figure <span class="figure-number" data-fid="sm"></span> and we have the complete picture — the single equation that governs very nearly everything that moves: \[m\ddot{x} + c\dot{x} + kx = F\] The stored energy still sloshes between spring and mass, but now the damper drains a little of it with every swing. The particle overshoots its steady offset, rings a few times, and settles (Figure <span class="figure-number" data-fid="smd"></span>). Remove the force and it rings back down to rest. Stiffness, damping and inertia acting together — every trajectory, every vibration and every impact in the physical world is some version of this one balance.</p>
+        <p>Add the damper back to the spring and mass of Figure <span class="figure-number" data-fid="fictSMgraph"></span> and we have the complete picture — the single equation that governs very nearly everything that moves: \[m\ddot{x} + c\dot{x} + kx = F\] The stored energy still sloshes between spring and mass, but now the damper drains a little of it with every swing. The particle overshoots its steady offset, rings a few times, and settles (Figure <span class="figure-number" data-fid="fictSMDgraph"></span>). Remove the force and it rings back down to rest. Stiffness, damping and inertia acting together — every trajectory, every vibration and every impact in the physical world is some version of this one balance.</p>
         <div class="art-fig"><div class="charta smd-resp-fig"></div></div>
-        <div class="figure-numbering ref num" data-fig="smd" data-label="Figure"><p>A step-up–down force applied to an object governed by stiffness, inertia and damping. The damped oscillation overshoots, rings down and settles — the behaviour of very nearly every real moving object.</p></div>
+        <div class="figure-numbering ref num" data-fig="fictSMDgraph" data-label="Figure"><p>A step-up-down force applied on an object governed by stiffness, inertia and damping.</p></div>
+      </section>
+      <section>
+        <h2 class="num">Conclusion</h2>
+        <p>There is much more detail to go into when looking at how stiffness and damping forces act on a mass. For example, the motion of the mass can be tuned over damped, under damped or critically damped. The analytic equations of motion can also be derived to calculate the position of the mass as a function of time. Such depth is however easily to find on the internet. This article series will rather move on to exploring the interesting effects of larger interacting systems.</p>
+        <p>The single degree of freedom (DoF) system is useful for understanding stiffness, mass and damping (SMD) forces on point objects but seldom represents real world scenarios. As hinted to in section 1, even a marble’s atoms move relative to each other with SMD interacting forces. What seemed to be a single point object is actually, like all matter, a continuous multi-DoF SMD system. In the next article on the Beauty of Motion multi-DoF SMD systems will be explored.</p>
       </section>
     </article>
 
@@ -432,11 +453,8 @@
       </section>
       <section>
         <h2 class="num">Governing Interactions</h2>
-        <p><span class="figure-number" data-fid="no-gov">Figure</span> show how the ungoverned particle, not only moved instantly infinitely far (the arrow pointing to infinity), it also instantly moved at an infinite velocity (vertical lines), as well as instantly had an infinite acceleration (the sharp bent) as long as the force acted upon it. Fortunately all matter has mass, making it lazy to change a state of stasis or motion. Additionally friction is all around us, dissipating kinetic energy into everything moving objects touches. But forces that strive to reduce displacement will be the starting consideration.</p>
-        <div class="note block">
-          <h4>Note</h4>
-          <p>This article is only concerned with macroscopic physical phenomena where bodies move relatively slow (compared to light). The fictitious infinities of position, velocity and acceleration in the imaginary absence of governing interactions is the important takeaway.</p>
-        </div>
+        <p><span class="figure-number" data-fid="no-gov">Figure</span> show how the ungoverned particle, not only moved instantly infinitely far (the arrow pointing to infinity), it also instantly moved at an infinite velocity (vertical lines), as well as instantly had an infinite acceleration (the sharp bent) as long as the force acted upon it. Fortunately all matter has mass, making it lazy to change a state of stasis or motion.</p>
+        <p>The mass, or more generally referred to as inertia makes the bends rounder as listed in <span class="figure-number" data-fid="govs">Table</span>. Additionally friction is all around us, dissipating kinetic energy into everything moving objects touches. It limits the speed that can be reached, reducing the gradient. But forces that strive to reduce displacement will be the starting consideration.</p>
         <table class="gov-table">
           <thead>
             <tr>
@@ -464,6 +482,10 @@
           </tbody>
         </table>
         <div class="table-numbering figure-numbering ref num" data-fig="govs" data-label="Table"><p>Table of governing effects and how it's presented on a displacement graph.</p></div>
+        <div class="note block">
+          <h4>Note</h4>
+          <p>This article is only concerned with macroscopic physical phenomena where bodies move relatively slow (compared to light). The fictitious infinities of position, velocity and acceleration in the imaginary absence of governing interactions is the important takeaway.</p>
+        </div>
         <h3 class="num">Displacement Constraints</h3>
         <p>A car driving on a level freeway has no direct displacement constraint relative to an earlier location. It can stop and freely remain anywhere on the freeway. It has, what is called, rigid body motion. When pulling a trailer, the car and trailer can be approximated as lumped masses connected by a stiff spring. Both, together, still exhibit rigid body motion but relative displacement between them is resisted. When accelerating and decelerating, the trailer coupler (and surrounding structure) will slightly stretch and compress respectively.</p>
         <p>There are different types of displacement constraints. The car body and wheels can also be approximated as lumped masses connected by softer springs (suspension). Zooming in on one part like a chassis beam, it can be approximated by a thousand slices connected by springs. Even the car on a slope, free to roll, will be pulled to a lower point. Similar to a pendulum, this is also a form of distance constraint. Here gravity acts as the displacement constraining force that drops to zero at the lowest point.</p>
@@ -474,7 +496,7 @@
         <div class="figure-numbering ref num" data-fig="fictSgraph" data-label="Figure"><p>A step-up-down force applied on an object only governed by stiffness. The position responds instantaneously and proportionally, mirroring the form of the force exactly.</p></div>
         <p><span class="figure-number" data-fid="fictSgraph">Figure</span> shows how applying a force to the particle now will displace it proportional to the force. It instantaneously moves to the equilibrium distance between the acting force and the constraining spring force. The position is now governed but it still reaches infinite speeds and acceleration. The graph still has both the vertical gradient and sharp bents.</p>
         <h3 class="num">Velocity Constrains</h3>
-        <p>The second law of thermodynamics says that entropy always increases. If we define entropy as the spread of energy we can see how any moving object spreads its kinetic energy to the surroundings. Everything that moves bumps into air molecules or scraps along surfaces. Even rolling ball bearings compress the crystal lattice in their races, absorbing some of the briefly stored potential energy and converting it into heat.</p>
+        <p>The second law of thermodynamics says that entropy always increases. If entropy is defined as the spread of energy one can see how any moving object spreads its kinetic energy to the surroundings. Everything that moves bumps into air molecules or scraps along surfaces. Even rolling ball bearings compress the crystal lattice in their races, absorbing some of the briefly stored potential energy and converting it into heat.</p>
         <p>The resistance to motion (or velocity) becomes intuitively more as speed increases. This is called damping, but there are also different types of velocity constraints. Air resistance is a resisting force proportional to velocity squared. Friction force between two surfaces is usually modeled as a constant resisting force. However, for low Reynolds numbers like viscous oil flowing laminarly through an orifice in a damper, the damping resistance force is linearly proportional to velocity.</p>
         <p>\[F = cv\]</p>
         <p>With only damping applied to the <span class="figure-number" data-fid="no-gov">Figure</span> particle, its velocity is limited. Displacement wise, it can still move infinitely far (exhibit rigid body motion) but gets stopped by damping when no force is applied to it. It also still has sharp corners because of the lack of inertia.</p>
@@ -489,7 +511,8 @@
       </section>
       <section>
         <h2 class="num">Component Summary</h2>
-        <p>The three components are stiffness, damping and inertia that opposes displacement, velocity and acceleration respectively. It's important to point out that velocity is the change in displacement and acceleration is the change in velocity.</p>
+        <p>The three components are stiffness, damping and inertia that opposes displacement, velocity and acceleration respectively. It's important to point out that velocity is the rate of change in displacement and acceleration is the rate of change in velocity. Energy is also pulled into the picture as it goes hand-in-hand with the components.</p>
+        <h3 class="num">Movement Calculus</h3>
         <table class="gov-table">
           <thead>
             <tr>
@@ -513,16 +536,21 @@
           </tbody>
         </table>
         <div class="table-numbering figure-numbering ref num" data-fig="components" data-label="Table"><p>Governing components and type of movement they oppose.</p></div>
-        <p>That is why displacement is the y-value in <span class="figure-number" data-fid="no-gov">Figure</span>, velocity is the gradient (change in displacement) and acceleration are bends (change in gradient). In calculus the rate of change of a value is a derivative so:</p>
-        <p>\[v = \frac{dx}{dt}, \quad a = \frac{dv}{dt} \quad \text{and} \quad a = \frac{d^2x}{dt^2}\]</p>
-        <h3 class="num">Stiffness</h3>
+        <p>That is why displacement is the y-value in <span class="figure-number" data-fid="no-gov">Figure</span>, velocity is the gradient (rate of change in displacement) and acceleration are bends (how the gradient changes). In calculus the rate of change of a value is a derivative and can be written as:</p>
+        <p>\[v = \frac{dx}{dt}, \quad a = \frac{dv}{dt} = \frac{d^2x}{dt^2}\]</p>
+        <p>The stiffness displacement graph is therefore the derivative of the damping displacement graph and the damping graph the derivative of the inertia graph. When looking from a velocity perspective, the damping velocity graph looks the same as the stiffness. The pattern is shown in <span class="figure-number" data-fid="diff-smd">Figure</span> that shows all nine combinations of components and perspectives. Diagonals stay the same and differentiation is from right to left and top to bottom.</p>
+        <div class="art-fig"><div class="charta diff-smd-fig"></div></div>
+        <div class="figure-numbering ref num" data-fig="diff-smd" data-label="Figure"><p>The same step force applied to a particle governed only by stiffness, damping or inertia, seen as position, velocity and acceleration. Each row is the derivative of the row above, so moving down a row looks the same as moving one column to the left. Where a graph jumps, its derivative becomes an infinite spike.</p></div>
+        <h3 class="num">Component Details</h3>
         <dl class="gov-list">
           <div class="gov-mob-row">
+            <dt>Stiffness</dt>
             <dd><span class="gov-mob-label">Causes</span>Spring, material elasticity, air compression, shaft torsion</dd>
             <dd><span class="gov-mob-label">Opposes</span>Displacement</dd>
             <dd><span class="gov-mob-label">Function of</span>displacement, \(x\)</dd>
             <dd><span class="gov-mob-label">Stores or Dissipates Energy</span>Stores potential energy</dd>
-            <dd><span class="gov-mob-label">Typical Symbol, Unit, Characteristic</span>\(k\), N/m, \(F = kx\)</dd>
+            <dd><span class="gov-mob-label">Typical Symbol, Unit</span>\(k\), N/m</dd>
+            <dd><span class="gov-mob-label">Typical Characteristic</span>\(F = kx\)</dd>
           </div>
         </dl>
         <table class="gov-table">
@@ -574,54 +602,68 @@
           </tbody>
         </table>
         <div class="table-numbering figure-numbering ref num" data-fig="sequs" data-label="Table"><p>Various mechanisms of stiffness</p></div>
-        <h3 class="num">Damping</h3>
         <dl class="gov-list">
           <div class="gov-mob-row">
+            <dt>Damping</dt>
             <dd><span class="gov-mob-label">Causes</span>Air resistance, fluid resistance, surface friction, material deformation energy absorption</dd>
             <dd><span class="gov-mob-label">Opposes</span>Velocity (rate of change of displacement)</dd>
             <dd><span class="gov-mob-label">Function of</span>velocity, \(v\), \(\dot{x}\)</dd>
             <dd><span class="gov-mob-label">Stores or Dissipates Energy</span>Dissipates kinetic energy</dd>
-            <dd><span class="gov-mob-label">Typical Symbol, Unit, Characteristic</span>\(c\), N s/m, \(F = cv\)</dd>
+            <dd><span class="gov-mob-label">Typical Symbol, Unit</span>\(c\), N s/m</dd>
+            <dd><span class="gov-mob-label">Typical Characteristic</span>\(F = cv\)</dd>
           </div>
         </dl>
-        <h3 class="num">Inertia</h3>
         <dl class="gov-list">
           <div class="gov-mob-row">
+            <dt>Inertia</dt>
             <dd><span class="gov-mob-label">Causes</span>Linear acceleration, rotational acceleration</dd>
             <dd><span class="gov-mob-label">Opposes</span>Acceleration (rate of change of velocity)</dd>
             <dd><span class="gov-mob-label">Function of</span>acceleration, \(a\), \(\ddot{x}\)</dd>
             <dd><span class="gov-mob-label">Stores or Dissipates Energy</span>Stores kinetic energy</dd>
-            <dd><span class="gov-mob-label">Typical Symbol, Unit, Characteristic</span>\(m\), kg, \(F = ma\)</dd>
+            <dd><span class="gov-mob-label">Typical Symbol, Unit</span>\(m\), kg</dd>
+            <dd><span class="gov-mob-label">Typical Characteristic</span>\(F = ma\)</dd>
           </div>
         </dl>
+        <h3 class="num">Energy Relation</h3>
+        <p>Note how stiffness and inertia stores energy while only damping dissipates energy. These properties result in the effect that energy is usually transferred back and forth between stiffness storage and inertia storage. In between such transfers, energy gets dissipated due to damping. An example is used to highlight this point next.</p>
       </section>
       <section>
         <h2 class="num">Motion-Energy Relationship</h2>
-        <p>Consider a ball that is dropped from a height of \(x_1\) and bounced on the ground. It starts with potential energy (P in <span class="figure-number" data-fid="ball-energy">Figure</span>) because of its height. As it picks up speed the potential energy gets converted to kinetic energy (K). The energy transfer is completed right before it hits the ground.</p>
+        <p>Consider a ball that is dropped from a height of \(x_0\) and bounced on the ground. It starts with potential energy (P in <span class="figure-number" data-fid="ball-energy">Figure</span>) because of its height. As it picks up speed the potential energy gets converted to kinetic energy (K). The energy transfer is completed right before it hits the ground.</p>
         <div class="art-fig"><img src="bl.svg" alt="A ball being dropped and bounces. P and K indicate potential and kinetic energy." /></div>
         <div class="figure-numbering ref num" data-fig="ball-energy" data-label="Figure"><p>A ball being dropped and bounces. P and K indicate potential and kinetic energy.</p></div>
         <p>Energy is briefly converted back into potential energy again when the ball hits the ground and deforms. It now wants to return to its original shape since all the kinetic energy used to squash the ball is depleted. The ball starts to accelerate back up converting the squash potential energy into kinetic energy and then back into potential as the ball comes to a complete stop at its highest rebound position \(x_1\).</p>
-        <p>However, we do not only see a potential - kinetic - potential - kinetic - potential energy transfer. Much more has also happened in the process. As the ball was falling and bouncing up through the air it was constantly losing energy towards displacing the air molecules. Then as it bounced the deformation of the ball absorbs some energy as heat because of the fibers and polymers that rub against each other. Even the floor can deform, taking some of the ball’s energy and contributing to the bounce sound.</p>
+        <p>Additional to the potential-kinetic-potential-kinetic-potential energy transfer, energy gets dissipated while moving through the air and other effects. Kinetic energy right before impact is equal to the starting (\(x_0\)) potential energy (ignoring drag energy loss). The highest (at impact) velocity (\(v_{max}\)) can be calculated as:</p>
+        <p>\[KE = \tfrac{1}{2} m v_{max}^2 \approx m g x_0 = PE\]</p>
+        <p>\[v_{max} \approx \sqrt{2 g x_0}\]</p>
+        <p>A drag force of \(F_d = \tfrac{1}{2} C_d \rho A v^2\) would have worked to slow the ball down all the way from \(x_0\) to the floor (from \(v = 0\) to \(v = v_{max}\)).</p>
+        <p>When the ball hits the floor a new energy conversion branch splits off from the main branch. Steel balls bouncing on steel are 99% elastic, restoring its spherical shape when leaving the floor. Sports balls has a contact time with the floor that is much shorter than the period of the ball’s first natural frequency. This causes it to oscillate between a squished and stretched oval shape while travelling up after impact.</p>
+        <p>A considerable amount of energy goes into this oscillation that dissipates it into sound energy (S) and heat energy, both outside (H) and inside the rubber (h). Even the floor, if flexible relative to the ball’s dynamics, will also absorb energy and vibrate, dissipating it as sound energy. The vibrating phenomena is possible because of stiffness and inertia and will be seen again in <span class="figure-number" data-fid="stiffness-and-inertia">Section</span>.</p>
       </section>
       <section>
         <h2 class="num">Combined Effect of Governing Interactions</h2>
-        <p>In nature all three elements work together as energy gets passed between them. But before we go all out and mix everything together again, let's see how they behave two at a time.</p>
+        <p>In nature all three elements work together as energy gets transferred between them. But before we go all out and mix everything up again, let's see how two-two work together.</p>
         <h3 class="num">Stiffness and Damping</h3>
-        <p>Without mass there is no inertia to carry the particle past its mark. The spring decides where the particle wants to come to rest and the damper governs how quickly it gets there. When the force steps up, the position eases smoothly toward its steady offset of \(F/k\); when the force is removed it relaxes back to zero just as smoothly. There is no overshoot and no oscillation — with no kinetic energy store, the motion can only ever approach its target, never pass it (Figure <span class="figure-number" data-fid="sd"></span>).</p>
+        <p>Without mass there is no inertia to carry the particle past its mark. The spring decides where the particle wants to come to rest and the damper governs how quickly it gets there. When the force steps up, the position eases smoothly toward its steady offset of \(F/k\); when the force is removed it relaxes back to zero just as smoothly. There is no overshoot and no oscillation — with no kinetic energy store, the motion can only ever approach its target, never pass it (Figure <span class="figure-number" data-fid="fictSDgraph"></span>).</p>
         <div class="art-fig"><div class="charta sd-resp-fig"></div></div>
-        <div class="figure-numbering ref num" data-fig="sd" data-label="Figure"><p>A step-up–down force applied to an object governed by stiffness and damping. The position eases toward its steady offset and relaxes back without ever overshooting — with no mass there is no kinetic energy to carry it past the mark.</p></div>
+        <div class="figure-numbering ref num" data-fig="fictSDgraph" data-label="Figure"><p>A step-up-down force applied on an object governed by stiffness and damping.</p></div>
         <h3 class="num">Inertia and Damping</h3>
-        <p>Here there is no spring, so nothing pulls the particle back to where it started. The damper caps how fast it can move and the mass smooths the start and the stop. While the force acts, the particle accelerates and settles into a steady drift; once the force is gone the mass keeps it coasting, but the damper steadily bleeds the velocity away until it glides to a halt — and there it stays, with no restoring force to call it home (Figure <span class="figure-number" data-fid="md"></span>).</p>
+        <p>Here there is no spring, so nothing pulls the particle back to where it started. The damper caps how fast it can move and the mass smooths the start and the stop. While the force acts, the particle accelerates and settles into a steady drift; once the force is gone the mass keeps it coasting, but the damper steadily bleeds the velocity away until it glides to a halt — and there it stays, with no restoring force to call it home (Figure <span class="figure-number" data-fid="fictMDgraph"></span>).</p>
         <div class="art-fig"><div class="charta md-resp-fig"></div></div>
-        <div class="figure-numbering ref num" data-fig="md" data-label="Figure"><p>A step-up–down force applied to an object governed by inertia and damping. The mass drifts while the force acts and coasts to a halt once it is removed; with no spring there is nothing to return it to the start.</p></div>
-        <h3 class="num">Stiffness and Inertia</h3>
-        <p>This is where it gets interesting. With this combination — the two governing interactions that can store and release energy — energy can be shifted back and forth indefinitely. Just like a pendulum or an idealistic bouncing ball, the spring and mass system will oscillate after perturbation. The spring turns position into a restoring force, the mass turns that force into motion, and with no damper to dissipate anything the two simply trade potential and kinetic energy forever. The force kicks the system into motion and it never settles (Figure <span class="figure-number" data-fid="sm"></span>).</p>
+        <div class="figure-numbering ref num" data-fig="fictMDgraph" data-label="Figure"><p>A step-up-down force applied on an object governed by inertia and damping.</p></div>
+        <h3 class="num ref">Stiffness and Inertia</h3>
+        <p>This is where it gets interesting. With this combination the two energy storable and releasable governing interactions, energy can be indefinitely shifted. Just like a pendulum or an idealistic bouncing ball, the spring and mass system will oscillate after perturbation.</p>
         <div class="art-fig"><div class="charta sm-resp-fig"></div></div>
-        <div class="figure-numbering ref num" data-fig="sm" data-label="Figure"><p>A step-up–down force applied to an object governed by stiffness and inertia. With no damper to dissipate energy, the spring and mass trade potential and kinetic energy indefinitely and the system oscillates without end.</p></div>
+        <div class="figure-numbering ref num" data-fig="fictSMgraph" data-label="Figure"><p>A step-up-down force applied on an object governed by stiffness and inertia.</p></div>
         <h3 class="num">Full System</h3>
-        <p>Add the damper back to the spring and mass of Figure <span class="figure-number" data-fid="sm"></span> and we have the complete picture — the single equation that governs very nearly everything that moves: \[m\ddot{x} + c\dot{x} + kx = F\] The stored energy still sloshes between spring and mass, but now the damper drains a little of it with every swing. The particle overshoots its steady offset, rings a few times, and settles (Figure <span class="figure-number" data-fid="smd"></span>). Remove the force and it rings back down to rest. Stiffness, damping and inertia acting together — every trajectory, every vibration and every impact in the physical world is some version of this one balance.</p>
+        <p>Add the damper back to the spring and mass of Figure <span class="figure-number" data-fid="fictSMgraph"></span> and we have the complete picture — the single equation that governs very nearly everything that moves: \[m\ddot{x} + c\dot{x} + kx = F\] The stored energy still sloshes between spring and mass, but now the damper drains a little of it with every swing. The particle overshoots its steady offset, rings a few times, and settles (Figure <span class="figure-number" data-fid="fictSMDgraph"></span>). Remove the force and it rings back down to rest. Stiffness, damping and inertia acting together — every trajectory, every vibration and every impact in the physical world is some version of this one balance.</p>
         <div class="art-fig"><div class="charta smd-resp-fig"></div></div>
-        <div class="figure-numbering ref num" data-fig="smd" data-label="Figure"><p>A step-up–down force applied to an object governed by stiffness, inertia and damping. The damped oscillation overshoots, rings down and settles — the behaviour of very nearly every real moving object.</p></div>
+        <div class="figure-numbering ref num" data-fig="fictSMDgraph" data-label="Figure"><p>A step-up-down force applied on an object governed by stiffness, inertia and damping.</p></div>
+      </section>
+      <section>
+        <h2 class="num">Conclusion</h2>
+        <p>There is much more detail to go into when looking at how stiffness and damping forces act on a mass. For example, the motion of the mass can be tuned over damped, under damped or critically damped. The analytic equations of motion can also be derived to calculate the position of the mass as a function of time. Such depth is however easily to find on the internet. This article series will rather move on to exploring the interesting effects of larger interacting systems.</p>
+        <p>The single degree of freedom (DoF) system is useful for understanding stiffness, mass and damping (SMD) forces on point objects but seldom represents real world scenarios. As hinted to in section 1, even a marble’s atoms move relative to each other with SMD interacting forces. What seemed to be a single point object is actually, like all matter, a continuous multi-DoF SMD system. In the next article on the Beauty of Motion multi-DoF SMD systems will be explored.</p>
       </section>
     </article>
 
@@ -1014,6 +1056,143 @@ function drawInertiaResponse(layerId, isDark) {
 
 drawInertiaResponse('alm-layer', false);
 drawInertiaResponse('cos-layer', true);
+
+// ── diff-smd: stiffness / damping / inertia × position / velocity / acceleration ──
+// The same step force applied to each single-component particle, seen from
+// three derivatives. Each row down differentiates the row above, so a sharp
+// corner becomes a jump and a jump becomes an infinite spike (drawn as an
+// ∞ arrow; a spike's own derivative is a ± pair of arrows).
+//   stiffness  x = F/k        → v = ±∞ spikes   → a = ±∞ spike pairs
+//   damping    x = ramp       → v = F/c (step)  → a = ±∞ spikes
+//   inertia    x = quadratic  → v = ramp        → a = F/m (step)
+function drawDiffGrid(layerId, isDark) {
+  var container = document.querySelector('#' + layerId + ' .diff-smd-fig');
+  if (!container) return;
+  container.innerHTML = '';
+
+  var posCol  = isDark ? '#d6ab5e' : '#8a3a13';
+  var guide   = isDark ? 'rgba(236,226,200,0.18)' : 'rgba(28,22,16,0.14)';
+  var zeroCol = isDark ? 'rgba(236,226,200,0.30)' : 'rgba(28,22,16,0.22)';
+
+  var W = 640, H = 530;
+  var m = { top: 34, right: 12, bottom: 40, left: 64 };
+  var colGap = 22, rowGap = 28;
+  var cellW = (W - m.left - m.right - 2 * colGap) / 3;
+  var cellH = (H - m.top - m.bottom - 2 * rowGap) / 3;
+
+  var t0 = 1, t1 = 3, tMax = 5;
+  var zero = [[0,0],[tMax,0]];
+  var quad = [[0,0],[t0,0]];
+  for (var i = 1; i <= 60; i++) {
+    var tc = t0 + (t1 - t0) * i / 60;
+    quad.push([tc, 0.25 * Math.pow(tc - t0, 2)]);   // a = 0.5
+  }
+  quad.push([tMax, 1 + (tMax - t1)]);                 // coasts at v = 1
+
+  // rows: position, velocity, acceleration · columns: stiffness, damping, inertia
+  // imp: infinite spikes [t, sign] · dbl: derivative of a spike, a ± arrow pair
+  var cells = [
+    [ { data: [[0,0],[t0,0],[t0,1],[t1,1],[t1,0],[tMax,0]] },
+      { data: [[0,0],[t0,0],[t1,1],[tMax,1]] },
+      { data: quad } ],
+    [ { data: zero, imp: [[t0, 1], [t1, -1]] },
+      { data: [[0,0],[t0,0],[t0,0.5],[t1,0.5],[t1,0],[tMax,0]] },
+      { data: [[0,0],[t0,0],[t1,1],[tMax,1]] } ],
+    [ { data: zero, dbl: [[t0, 1], [t1, -1]] },
+      { data: zero, imp: [[t0, 1], [t1, -1]] },
+      { data: [[0,0],[t0,0],[t0,0.5],[t1,0.5],[t1,0],[tMax,0]] } ]
+  ];
+  var colTitles = ['Stiffness only', 'Damping only', 'Inertia only'];
+  var rowLabels = ['position x', 'velocity v', 'acceleration a'];
+
+  var x = d3.scaleLinear().domain([0, tMax]).range([0, cellW]);
+
+  var svg = d3.select(container).append('svg')
+    .attr('viewBox', '0 0 ' + W + ' ' + H)
+    .attr('preserveAspectRatio', 'xMidYMid meet');
+
+  var markId = layerId + '-arrow-diff';
+  svg.append('defs').append('marker')
+    .attr('id', markId)
+    .attr('viewBox', '0 0 10 10').attr('refX', 5).attr('refY', 5)
+    .attr('markerWidth', 6).attr('markerHeight', 6)
+    .attr('orient', 'auto')
+    .append('path').attr('d', 'M 0 0 L 10 5 L 0 10 z').attr('fill', posCol);
+
+  cells.forEach(function(row, ri) {
+    row.forEach(function(cell, ci) {
+      var left = m.left + ci * (cellW + colGap);
+      var top  = m.top + ri * (cellH + rowGap);
+      var g = svg.append('g').attr('transform', 'translate(' + left + ',' + top + ')');
+
+      // spikes run off to ±∞, so their cells get a symmetric axis
+      var spikes = cell.imp || cell.dbl;
+      var hi = d3.max(cell.data, function(d){ return d[1]; });
+      var y = d3.scaleLinear().domain(spikes ? [-1.25, 1.25] : [0, hi * 1.25]).range([cellH, 0]);
+
+      if (ri === 0) {
+        g.append('text').attr('class', 'panel-title')
+          .attr('x', cellW / 2).attr('y', -14).attr('text-anchor', 'middle').text(colTitles[ci]);
+      }
+      if (ci === 0) {
+        g.append('text').attr('class', 'axis-label').attr('transform', 'rotate(-90)')
+          .attr('x', -cellH / 2).attr('y', -18).attr('text-anchor', 'middle').text(rowLabels[ri]);
+      }
+
+      // time axis: ticks on the bottom row only
+      var xAxis = d3.axisBottom(x).ticks(5).tickFormat(function(d){ return d + 's'; });
+      if (ri < 2) xAxis.tickValues([]).tickSizeOuter(0);
+      g.append('g').attr('transform', 'translate(0,' + cellH + ')').call(xAxis);
+      g.append('g').call(d3.axisLeft(y).tickValues([]).tickSizeOuter(0));
+
+      [t0, t1].forEach(function(tt) {
+        g.append('line').attr('x1', x(tt)).attr('x2', x(tt))
+          .attr('y1', cellH).attr('y2', 0)
+          .attr('stroke', guide).attr('stroke-width', 1).attr('stroke-dasharray', '3 3');
+      });
+      if (spikes) {
+        g.append('line').attr('x1', 0).attr('x2', cellW)
+          .attr('y1', y(0)).attr('y2', y(0))
+          .attr('stroke', zeroCol).attr('stroke-width', 1);
+      }
+
+      var line = d3.line().x(function(d){ return x(d[0]); }).y(function(d){ return y(d[1]); });
+      g.append('path').datum(cell.data).attr('fill', 'none')
+        .attr('stroke', posCol).attr('stroke-width', 2)
+        .attr('stroke-linejoin', 'round').attr('d', line);
+
+      function arrow(px, sign) {
+        g.append('line')
+          .attr('x1', px).attr('y1', y(0))
+          .attr('x2', px).attr('y2', y(sign * 1.05))
+          .attr('stroke', posCol).attr('stroke-width', 2)
+          .attr('marker-end', 'url(#' + markId + ')');
+      }
+      function infLabel(px, sign) {
+        g.append('text')
+          .attr('x', px + 8).attr('y', sign > 0 ? y(1) + 4 : y(-1) + 4)
+          .attr('fill', posCol).attr('font-size', 13).attr('opacity', 0.75)
+          .text(sign > 0 ? '∞' : '−∞');
+      }
+      (cell.imp || []).forEach(function(s) {
+        arrow(x(s[0]), s[1]);
+        infLabel(x(s[0]), s[1]);
+      });
+      (cell.dbl || []).forEach(function(s) {
+        arrow(x(s[0]) - 4, s[1]);
+        arrow(x(s[0]) + 4, -s[1]);
+        infLabel(x(s[0]) + 4, s[1]);
+      });
+    });
+  });
+
+  svg.append('text').attr('class', 'axis-label')
+    .attr('x', m.left + (W - m.left - m.right) / 2).attr('y', H - 4).attr('text-anchor', 'middle')
+    .text('time (s)');
+}
+
+drawDiffGrid('alm-layer', false);
+drawDiffGrid('cos-layer', true);
 
 // ── Figures 5–8: combined governing interactions ──────────────
 // Numerically integrate  m·x'' + c·x' + k·x = F(t)  for a step-up–down force.
